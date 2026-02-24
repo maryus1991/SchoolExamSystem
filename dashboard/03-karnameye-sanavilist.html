@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لیست کارنامه ثانویه | آزمون‌یار</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);--gradient-2:linear-gradient(135deg,#00CEC9 0%,#81ecec 100%);--gradient-3:linear-gradient(135deg,#fd79a8 0%,#fab1d3 100%);}
+    [data-theme="dark"]{--bg:#0f0e1a;--bg-2:#1a1830;--sidebar-bg:#1a1830;--card-bg:rgba(26,24,48,0.85);--card-border:rgba(162,155,254,0.15);--text-main:#e8e6ff;--text-muted:#a29bfe;--text-light:#6c6a8a;--shadow:0 8px 32px rgba(0,0,0,0.4);--shadow-hover:0 16px 48px rgba(108,92,231,0.3);--topbar-bg:rgba(26,24,48,0.92);--border:rgba(162,155,254,0.12);}
+    *{font-family:'Vazirmatn',sans-serif;}body{background:var(--bg);color:var(--text-main);transition:all 0.3s;}
+    .sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);box-shadow:var(--shadow);position:fixed;right:0;top:0;z-index:1000;display:flex;flex-direction:column;border-left:1px solid var(--border);transition:all 0.3s;}
+    .sidebar-logo{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;}
+    .logo-icon{width:42px;height:42px;background:var(--gradient-1);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;box-shadow:0 4px 15px rgba(108,92,231,0.4);}
+    .sidebar-nav{padding:1rem 0;flex:1;overflow-y:auto;}
+    .nav-section-title{padding:0.5rem 1.5rem;font-size:0.7rem;font-weight:700;color:var(--text-light);text-transform:uppercase;margin-top:0.5rem;}
+    .sidebar-link{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.5rem;color:var(--text-muted);text-decoration:none;border-radius:12px;margin:0.15rem 0.75rem;transition:all 0.2s;font-size:0.88rem;font-weight:500;}
+    .sidebar-link:hover,.sidebar-link.active{background:var(--gradient-1);color:white;box-shadow:0 4px 15px rgba(108,92,231,0.35);}
+    .badge-count{margin-right:auto;background:var(--accent);color:white;border-radius:50px;padding:1px 8px;font-size:0.7rem;font-weight:700;}
+    .sidebar-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);}
+    .topbar{position:fixed;top:0;right:260px;left:0;height:64px;background:var(--topbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:999;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;box-shadow:0 2px 20px rgba(108,92,231,0.06);transition:all 0.3s;}
+    .topbar-actions{display:flex;align-items:center;gap:0.75rem;margin-right:auto;}
+    .topbar-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:1rem;position:relative;}
+    .topbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
+    .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--bg-2);}
+    .avatar-placeholder{width:38px;height:38px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.9rem;}
+    .main-content{margin-right:260px;padding-top:64px;min-height:100vh;}
+    .page-body{padding:2rem;}
+    .glass-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;box-shadow:var(--shadow);backdrop-filter:blur(20px);transition:all 0.3s;}
+    .glass-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);}
+    .section-title{font-size:1rem;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:0.5rem;}
+    .section-title::before{content:'';width:4px;height:20px;background:var(--gradient-1);border-radius:50px;display:inline-block;}
+    .badge-status{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.75rem;font-weight:600;}
+    .badge-success{background:rgba(0,184,148,0.15);color:var(--success);}
+    .badge-warning{background:rgba(253,203,110,0.2);color:#d9a010;}
+    .badge-danger{background:rgba(225,112,85,0.15);color:var(--danger);}
+    .badge-info{background:rgba(108,92,231,0.12);color:var(--primary);}
+    .theme-toggle{width:52px;height:28px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background 0.3s;}
+    [data-theme="dark"] .theme-toggle{background:var(--primary);}
+    .theme-toggle-thumb{position:absolute;top:3px;right:3px;width:22px;height:22px;background:white;border-radius:50%;transition:transform 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}
+    [data-theme="dark"] .theme-toggle-thumb{transform:translateX(-24px);}
+    /* Table styles */
+    .modern-table{width:100%;border-collapse:separate;border-spacing:0 6px;}
+    .modern-table thead th{font-size:0.78rem;font-weight:700;color:var(--text-muted);padding:0.75rem 1rem;border:none;text-align:right;}
+    .modern-table tbody tr{background:var(--bg);border-radius:12px;transition:all 0.2s;cursor:pointer;}
+    .modern-table tbody tr:hover{background:rgba(108,92,231,0.06);transform:translateX(-2px);}
+    .modern-table tbody td{padding:0.875rem 1rem;border:none;font-size:0.88rem;vertical-align:middle;}
+    .modern-table tbody td:first-child{border-radius:0 12px 12px 0;}
+    .modern-table tbody td:last-child{border-radius:12px 0 0 12px;}
+    /* Search & filter bar */
+    .filter-bar{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;backdrop-filter:blur(20px);}
+    .search-input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1rem;color:var(--text-main);font-family:Vazirmatn,sans-serif;font-size:0.85rem;outline:none;}
+    .search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(108,92,231,0.1);}
+    .filter-select{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1rem;color:var(--text-main);font-family:Vazirmatn,sans-serif;font-size:0.85rem;outline:none;}
+    .score-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:800;}
+    .page-header{margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate-in{animation:fadeInUp 0.5s ease forwards;}
+    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
+    .pagination-custom .page-link{font-family:Vazirmatn,sans-serif;border-radius:8px;margin:0 2px;border-color:var(--border);color:var(--text-main);}
+    .pagination-custom .page-item.active .page-link{background:var(--gradient-1);border:none;}
+  </style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon"><i class="bi bi-mortarboard-fill"></i></div><div><div style="font-weight:800;font-size:1.1rem;color:var(--text-main);">آزمون‌یار</div><div style="font-size:0.72rem;color:var(--text-muted);">پلتفرم هوشمند آزمون</div></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">منو اصلی</div>
+    <a href="01-profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> پروفایل من</a>
+    <a href="11-account.html" class="sidebar-link"><i class="bi bi-gear"></i> اطلاعات حساب</a>
+    <div class="nav-section-title">کارنامه‌ها</div>
+    <a href="02-karnameye-sales.html" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> کارنامه ثالث</a>
+    <a href="03-karnameye-sanavilist.html" class="sidebar-link active"><i class="bi bi-collection"></i> لیست کارنامه ثانویه</a>
+    <a href="05-karnameye-avalilist.html" class="sidebar-link"><i class="bi bi-list-columns"></i> لیست کارنامه اولیه</a>
+    <div class="nav-section-title">آزمون‌ها</div>
+    <a href="07-exam-list.html" class="sidebar-link"><i class="bi bi-journal-check"></i> آزمون‌های شرکت‌کرده</a>
+    <a href="09-question-list.html" class="sidebar-link"><i class="bi bi-bank"></i> بانک سوالات <span class="badge-count">۱۲۴</span></a>
+    <div class="nav-section-title">پشتیبانی</div>
+    <a href="12-ticket-list.html" class="sidebar-link"><i class="bi bi-ticket-perforated"></i> تیکت‌ها <span class="badge-count">۳</span></a>
+    <a href="13-ticket-send.html" class="sidebar-link"><i class="bi bi-plus-circle"></i> ارسال تیکت</a>
+  </nav>
+  <div class="sidebar-footer"><a href="#" class="sidebar-link" style="margin:0;"><i class="bi bi-box-arrow-right"></i> خروج</a></div>
+</aside>
+<header class="topbar">
+  <button class="topbar-btn d-lg-none" onclick="document.getElementById('sidebar').classList.toggle('show')"><i class="bi bi-list"></i></button>
+  <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0" style="font-size:0.85rem;"><li class="breadcrumb-item"><a href="01-profile.html" style="color:var(--primary);text-decoration:none;">داشبورد</a></li><li class="breadcrumb-item active" style="color:var(--text-muted);">کارنامه ثانویه</li></ol></nav>
+  <div class="topbar-actions">
+    <div class="topbar-btn"><i class="bi bi-bell"></i><span class="notif-dot"></span></div>
+    <div class="theme-toggle" onclick="toggleTheme()"><div class="theme-toggle-thumb" id="themeIcon">☀️</div></div>
+    <div class="avatar-placeholder">ع</div>
+  </div>
+</header>
+<main class="main-content"><div class="page-body animate-in">
+
+  <div class="page-header">
+    <div>
+      <h5 style="font-weight:800;margin-bottom:0.25rem;">لیست کارنامه ثانویه</h5>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin:0;">مشاهده و بررسی نتایج آزمون‌های ثانویه</p>
+    </div>
+    <div style="display:flex;gap:0.5rem;">
+      <button style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.5rem 1.25rem;font-family:Vazirmatn,sans-serif;font-weight:600;font-size:0.85rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><i class="bi bi-download"></i> دانلود همه</button>
+    </div>
+  </div>
+
+  <!-- Summary mini cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--primary);">۱۸</div><div style="font-size:0.8rem;color:var(--text-muted);">کل کارنامه‌ها</div></div></div>
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--success);">۱۴</div><div style="font-size:0.8rem;color:var(--text-muted);">نتیجه عالی</div></div></div>
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--secondary);">۷۶٪</div><div style="font-size:0.8rem;color:var(--text-muted);">میانگین درصد</div></div></div>
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--warning);">۲۴</div><div style="font-size:0.8rem;color:var(--text-muted);">بهترین رتبه</div></div></div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-bar">
+    <input type="text" class="search-input" placeholder="🔍 جستجو در کارنامه‌ها..." id="searchInput" oninput="filterTable()">
+    <select class="filter-select" onchange="filterTable()" id="statusFilter">
+      <option value="">همه وضعیت‌ها</option>
+      <option value="عالی">عالی</option>
+      <option value="خوب">خوب</option>
+      <option value="متوسط">متوسط</option>
+    </select>
+    <select class="filter-select">
+      <option>همه آزمون‌ها</option>
+      <option>ریاضی</option>
+      <option>فیزیک</option>
+      <option>ادبیات</option>
+    </select>
+    <div style="margin-right:auto;font-size:0.82rem;color:var(--text-muted);">نمایش <strong id="rowCount">18</strong> نتیجه</div>
+  </div>
+
+  <!-- Table -->
+  <div class="glass-card p-0 overflow-hidden">
+    <div class="table-responsive p-3">
+      <table class="modern-table" id="mainTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>عنوان آزمون</th>
+            <th>تاریخ برگزاری</th>
+            <th>نمره</th>
+            <th>درصد</th>
+            <th>رتبه</th>
+            <th>وضعیت</th>
+            <th>عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-status="عالی">
+            <td style="font-weight:700;color:var(--text-muted);">۱</td>
+            <td><div style="font-weight:700;">آزمون جامع ریاضی پایه دوازدهم</div><div style="font-size:0.75rem;color:var(--text-muted);">سری الف • ۴۵ سوال</div></td>
+            <td style="color:var(--text-muted);">۱۴۰۳/۰۹/۱۵</td>
+            <td><div class="score-circle" style="background:rgba(108,92,231,0.12);color:var(--primary);">۱۷.۵</div></td>
+            <td><span style="font-weight:800;color:var(--success);">۸۵٪</span></td>
+            <td><span style="font-weight:700;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">۱۲</span></td>
+            <td><span class="badge-status badge-success">عالی</span></td>
+            <td><a href="04-karnameye-sanavi-detail.html" style="background:var(--gradient-1);color:white;border-radius:8px;padding:0.3rem 0.75rem;font-size:0.78rem;font-weight:600;text-decoration:none;display:inline-block;"><i class="bi bi-eye"></i> مشاهده</a></td>
+          </tr>
+          <tr data-status="خوب">
+            <td style="font-weight:700;color:var(--text-muted);">۲</td>
+            <td><div style="font-weight:700;">آزمون فیزیک فصل سوم</div><div style="font-size:0.75rem;color:var(--text-muted);">سری ب • ۳۵ سوال</div></td>
+            <td style="color:var(--text-muted);">۱۴۰۳/۰۸/۲۸</td>
+            <td><div class="score-circle" style="background:rgba(0,206,201,0.12);color:var(--secondary);">۱۴.۵</div></td>
+            <td><span style="font-weight:800;color:var(--secondary);">۷۲٪</span></td>
+            <td><span style="font-weight:700;color:var(--text-main);">۲۵</span></td>
+            <td><span class="badge-status badge-info">خوب</span></td>
+            <td><a href="04-karnameye-sanavi-detail.html" style="background:var(--gradient-2);color:white;border-radius:8px;padding:0.3rem 0.75rem;font-size:0.78rem;font-weight:600;text-decoration:none;display:inline-block;"><i class="bi bi-eye"></i> مشاهده</a></td>
+          </tr>
+          <tr data-status="عالی">
+            <td style="font-weight:700;color:var(--text-muted);">۳</td>
+            <td><div style="font-weight:700;">آزمون ادبیات فارسی</div><div style="font-size:0.75rem;color:var(--text-muted);">سری الف • ۴۰ سوال</div></td>
+            <td style="color:var(--text-muted);">۱۴۰۳/۰۸/۱۰</td>
+            <td><div class="score-circle" style="background:rgba(0,184,148,0.12);color:var(--success);">۱۸.۵</div></td>
+            <td><span style="font-weight:800;color:var(--success);">۹۱٪</span></td>
+            <td><span style="font-weight:700;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">۵</span></td>
+            <td><span class="badge-status badge-success">عالی</span></td>
+            <td><a href="04-karnameye-sanavi-detail.html" style="background:var(--gradient-1);color:white;border-radius:8px;padding:0.3rem 0.75rem;font-size:0.78rem;font-weight:600;text-decoration:none;display:inline-block;"><i class="bi bi-eye"></i> مشاهده</a></td>
+          </tr>
+          <tr data-status="متوسط">
+            <td style="font-weight:700;color:var(--text-muted);">۴</td>
+            <td><div style="font-weight:700;">آزمون زبان انگلیسی پیشرفته</div><div style="font-size:0.75rem;color:var(--text-muted);">سری ج • ۵۰ سوال</div></td>
+            <td style="color:var(--text-muted);">۱۴۰۳/۰۷/۲۵</td>
+            <td><div class="score-circle" style="background:rgba(225,112,85,0.12);color:var(--danger);">۱۲.۵</div></td>
+            <td><span style="font-weight:800;color:var(--danger);">۶۳٪</span></td>
+            <td><span style="font-weight:700;color:var(--text-main);">۴۸</span></td>
+            <td><span class="badge-status badge-warning">متوسط</span></td>
+            <td><a href="04-karnameye-sanavi-detail.html" style="background:linear-gradient(135deg,#fdcb6e,#e17055);color:white;border-radius:8px;padding:0.3rem 0.75rem;font-size:0.78rem;font-weight:600;text-decoration:none;display:inline-block;"><i class="bi bi-eye"></i> مشاهده</a></td>
+          </tr>
+          <tr data-status="خوب">
+            <td style="font-weight:700;color:var(--text-muted);">۵</td>
+            <td><div style="font-weight:700;">آزمون شیمی فصل دوم</div><div style="font-size:0.75rem;color:var(--text-muted);">سری الف • ۳۰ سوال</div></td>
+            <td style="color:var(--text-muted);">۱۴۰۳/۰۷/۰۵</td>
+            <td><div class="score-circle" style="background:rgba(253,203,110,0.15);color:#d9a010;">۱۳.۵</div></td>
+            <td><span style="font-weight:800;color:#d9a010;">۶۸٪</span></td>
+            <td><span style="font-weight:700;color:var(--text-main);">۳۲</span></td>
+            <td><span class="badge-status badge-info">خوب</span></td>
+            <td><a href="04-karnameye-sanavi-detail.html" style="background:var(--gradient-1);color:white;border-radius:8px;padding:0.3rem 0.75rem;font-size:0.78rem;font-weight:600;text-decoration:none;display:inline-block;"><i class="bi bi-eye"></i> مشاهده</a></td>
+          </tr>
+          <tr data-status="عالی">
+            <td style="font-weight:700;color:var(--text-muted);">۶</td>
+            <td><div style="font-weight:700;">آزمون تاریخ و جغرافیا</div><div style="font-size:0.75rem;color:var(--text-muted);">سری ب • ۲۵ سوال</div></td>
+            <td style="color:var(--text-muted);">۱۴۰۳/۰۶/۲۰</td>
+            <td><div class="score-circle" style="background:rgba(108,92,231,0.12);color:var(--primary);">۱۷</div></td>
+            <td><span style="font-weight:800;color:var(--primary);">۸۲٪</span></td>
+            <td><span style="font-weight:700;color:var(--text-main);">۱۸</span></td>
+            <td><span class="badge-status badge-success">عالی</span></td>
+            <td><a href="04-karnameye-sanavi-detail.html" style="background:var(--gradient-1);color:white;border-radius:8px;padding:0.3rem 0.75rem;font-size:0.78rem;font-weight:600;text-decoration:none;display:inline-block;"><i class="bi bi-eye"></i> مشاهده</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between align-items-center p-3 border-top" style="border-color:var(--border)!important;">
+      <div style="font-size:0.82rem;color:var(--text-muted);">نمایش ۱ تا ۶ از ۱۸ نتیجه</div>
+      <nav><ul class="pagination pagination-custom mb-0" style="font-size:0.85rem;">
+        <li class="page-item disabled"><a class="page-link">قبلی</a></li>
+        <li class="page-item active"><a class="page-link">۱</a></li>
+        <li class="page-item"><a class="page-link">۲</a></li>
+        <li class="page-item"><a class="page-link">۳</a></li>
+        <li class="page-item"><a class="page-link">بعدی</a></li>
+      </ul></nav>
+    </div>
+  </div>
+
+</div></main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
+  const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
+  function filterTable(){
+    const q=document.getElementById('searchInput').value.toLowerCase();
+    const st=document.getElementById('statusFilter').value;
+    const rows=document.querySelectorAll('#mainTable tbody tr');
+    let count=0;
+    rows.forEach(r=>{
+      const text=r.textContent.toLowerCase();
+      const status=r.dataset.status||'';
+      const show=text.includes(q)&&(st===''||status===st);
+      r.style.display=show?'':'none';
+      if(show)count++;
+    });
+    document.getElementById('rowCount').textContent=count;
+  }
+</script>
+</body></html>

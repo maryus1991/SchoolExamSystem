@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>راهنمای صفحات — داشبورد مصحح</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+:root{--bg-primary:#f0f4ff;--bg-surface:#ffffff;--bg-glass:rgba(255,255,255,0.7);--border-color:rgba(79,70,229,0.12);--gradient-primary:linear-gradient(135deg,#4f46e5,#7c3aed);--accent:#4f46e5;--text-primary:#1e1b4b;--text-secondary:#6b7280;--shadow-md:0 8px 32px rgba(79,70,229,0.12);}
+[data-theme="dark"]{--bg-primary:#0a0a1a;--bg-surface:#13132b;--bg-glass:rgba(255,255,255,0.04);--border-color:rgba(99,102,241,0.2);--text-primary:#e8e8f8;--text-secondary:#a5b4fc;--shadow-md:0 8px 32px rgba(0,0,0,0.4);}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg-primary);color:var(--text-primary);direction:rtl;min-height:100vh;padding:40px 20px;}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse 80% 80% at 20% 10%,rgba(79,70,229,0.08) 0%,transparent 50%);pointer-events:none;z-index:0;}
+.container{position:relative;z-index:1;max-width:900px;margin:auto;}
+.hero{text-align:center;padding:40px 20px;margin-bottom:40px;}
+.hero .logo{width:70px;height:70px;background:var(--gradient-primary);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:auto;font-size:2rem;color:white;box-shadow:0 8px 24px rgba(79,70,229,0.4);margin-bottom:20px;}
+.hero h1{font-size:2rem;font-weight:900;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.page-card{background:var(--bg-glass);backdrop-filter:blur(20px);border:1px solid var(--border-color);border-radius:16px;padding:20px;transition:all 0.3s;text-decoration:none;color:inherit;display:block;box-shadow:var(--shadow-md);}
+.page-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(79,70,229,0.15);}
+.page-num{width:40px;height:40px;border-radius:10px;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.9rem;color:white;flex-shrink:0;}
+.page-title{font-weight:700;font-size:0.95rem;}
+.page-desc{font-size:0.78rem;color:var(--text-secondary);margin-top:3px;}
+.page-path{font-size:0.7rem;color:var(--accent);margin-top:4px;font-family:monospace;}
+.theme-btn{position:fixed;top:20px;left:20px;width:44px;height:44px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-glass);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;backdrop-filter:blur(10px);}
+</style>
+</head>
+<body>
+<button class="theme-btn" onclick="toggleTheme()"><i class="bi bi-moon-stars" id="ti"></i></button>
+<div class="container">
+  <div class="hero">
+    <div class="logo"><i class="bi bi-mortarboard-fill"></i></div>
+    <h1>داشبورد مصحح — آزمون‌یار</h1>
+    <p style="color:var(--text-secondary);font-size:0.9rem;">قالب فرانت‌اند حرفه‌ای فارسی RTL — تمام ۱۱ صفحه</p>
+    <div style="display:inline-flex;gap:6px;padding:8px 16px;border-radius:20px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);margin-top:12px;">
+      <i class="bi bi-check-circle-fill" style="color:#10b981;"></i>
+      <span style="font-size:0.82rem;color:#059669;font-weight:700;">Bootstrap 5 • RTL • دارک‌مود • ریسپانسیو • گلاسمورفیسم</span>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-4"><a href="01-dashboard.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۱</div>
+        <div><div class="page-title">صفحه اصلی مصحح</div><div class="page-desc">داشبورد اصلی با آمار، نمودار و فعالیت‌ها</div><div class="page-path">01-dashboard.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="02-account.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۲</div>
+        <div><div class="page-title">اطلاعات حساب مصحح</div><div class="page-desc">پروفایل، امنیت، تخصص‌ها و تنظیمات</div><div class="page-path">02-account.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="03-tickets-list.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۳</div>
+        <div><div class="page-title">لیست تیکت‌ها</div><div class="page-desc">مدیریت تیکت‌های پشتیبانی با فیلتر</div><div class="page-path">03-tickets-list.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="04-send-ticket.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۴</div>
+        <div><div class="page-title">ارسال تیکت</div><div class="page-desc">فرم ارسال تیکت با دسته‌بندی و آپلود</div><div class="page-path">04-send-ticket.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="05-ticket-conversation.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۵</div>
+        <div><div class="page-title">مکالمه تیکت</div><div class="page-desc">چت پشتیبانی با ارسال پیام و فایل</div><div class="page-path">05-ticket-conversation.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="07-exam-history.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۶</div>
+        <div><div class="page-title">تاریخچه آزمون‌های تصحیح‌شده</div><div class="page-desc">جدول کامل آزمون‌های تصحیح شده</div><div class="page-path">07-exam-history.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="07b-exam-history-detail.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۷</div>
+        <div><div class="page-title">جزئیات آزمون تصحیح‌شده</div><div class="page-desc">آمار، توزیع نمرات و لیست دانش‌آموزان</div><div class="page-path">07b-exam-history-detail.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="08-pending-exams.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۸</div>
+        <div><div class="page-title">لیست آزمون‌های منتظر تصحیح</div><div class="page-desc">آزمون‌های در انتظار با تایمر مهلت</div><div class="page-path">08-pending-exams.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="09-students-list.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۹</div>
+        <div><div class="page-title">لیست دانش‌آموزان آزمون</div><div class="page-desc">دانش‌آموزان آزمون انتخابی با وضعیت</div><div class="page-path">09-students-list.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="10-exam-questions.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num">۱۰</div>
+        <div><div class="page-title">لیست سوالات آزمون</div><div class="page-desc">سوالات یک دانش‌آموز برای تصحیح</div><div class="page-path">10-exam-questions.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4"><a href="11-question-detail.html" class="page-card">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div class="page-num" style="background:linear-gradient(135deg,#dc2626,#ef4444);">۱۱</div>
+        <div><div class="page-title">جزئیات سوال جهت تصحیح</div><div class="page-desc">PDF پاسخنامه، نمره‌گذاری، بازخورد</div><div class="page-path">11-question-detail.html</div></div>
+      </div>
+    </a></div>
+    <div class="col-md-6 col-lg-4">
+      <div class="page-card" style="background:linear-gradient(135deg,rgba(79,70,229,0.1),rgba(124,58,237,0.1));border-color:rgba(79,70,229,0.3);">
+        <div style="text-align:center;padding:8px 0;">
+          <div style="font-size:1.5rem;margin-bottom:8px;">✨</div>
+          <div style="font-weight:700;font-size:0.9rem;margin-bottom:4px;">ویژگی‌های طراحی</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary);line-height:1.6;">گلاسمورفیسم • دارک‌مود بدون رفرش • RTL کامل • ریسپانسیو موبایل • انیمیشن • تایمر زنده • آپلود فایل • چت</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:40px;padding:20px;border-radius:14px;background:var(--bg-glass);border:1px solid var(--border-color);">
+    <div style="font-size:0.82rem;color:var(--text-secondary);">ساخته شده با Bootstrap 5 + Vazirmatn Font + Bootstrap Icons | آزمون‌یار © ۱۴۰۳</div>
+  </div>
+</div>
+<script>
+function toggleTheme(){const h=document.documentElement,i=document.getElementById('ti');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';}}
+</script>
+</body>
+</html>

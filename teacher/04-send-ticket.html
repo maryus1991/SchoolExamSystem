@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ارسال تیکت - مصحح</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+:root{--bg-primary:#f0f4ff;--bg-surface:#ffffff;--bg-surface2:#f8faff;--bg-glass:rgba(255,255,255,0.7);--bg-glass-border:rgba(255,255,255,0.9);--sidebar-bg:rgba(255,255,255,0.85);--text-primary:#1e1b4b;--text-secondary:#6b7280;--text-muted:#9ca3af;--border-color:rgba(79,70,229,0.12);--shadow-sm:0 2px 8px rgba(79,70,229,0.08);--shadow-md:0 8px 32px rgba(79,70,229,0.12);--shadow-lg:0 20px 60px rgba(79,70,229,0.15);--gradient-primary:linear-gradient(135deg,#4f46e5,#7c3aed);--gradient-success:linear-gradient(135deg,#059669,#10b981);--gradient-hero:linear-gradient(135deg,#0891b2,#06b6d4,#38bdf8);--accent:#4f46e5;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);}
+[data-theme="dark"]{--bg-primary:#0a0a1a;--bg-surface:#13132b;--bg-surface2:#1a1a35;--bg-glass:rgba(255,255,255,0.04);--bg-glass-border:rgba(255,255,255,0.08);--sidebar-bg:rgba(19,19,43,0.95);--text-primary:#e8e8f8;--text-secondary:#a5b4fc;--text-muted:#6366f1;--border-color:rgba(99,102,241,0.2);--shadow-sm:0 2px 8px rgba(0,0,0,0.3);--shadow-md:0 8px 32px rgba(0,0,0,0.4);--shadow-lg:0 20px 60px rgba(0,0,0,0.5);}
+*,*::before,*::after{box-sizing:border-box;}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg-primary);color:var(--text-primary);direction:rtl;transition:var(--transition);min-height:100vh;}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse 80% 80% at 20% 10%,rgba(8,145,178,0.07) 0%,transparent 50%);pointer-events:none;z-index:0;}
+.topbar{position:fixed;top:0;right:0;left:0;height:64px;background:var(--bg-glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-color);z-index:1030;display:flex;align-items:center;padding:0 24px;gap:16px;}
+.topbar-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;color:var(--accent);text-decoration:none;}
+.brand-icon{width:38px;height:38px;background:var(--gradient-primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem;box-shadow:0 4px 12px rgba(79,70,229,0.4);}
+.topbar-spacer{flex:1;}
+.topbar-actions{display:flex;align-items:center;gap:8px;}
+.topbar-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-glass);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);font-size:1rem;text-decoration:none;}
+.topbar-btn:hover{background:var(--accent);color:white;border-color:var(--accent);}
+.theme-toggle{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-glass);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);}
+.theme-toggle:hover{background:var(--accent);color:white;}
+.user-avatar{width:38px;height:38px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;border:2px solid var(--border-color);}
+.sidebar-toggle{display:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-glass);color:var(--text-secondary);align-items:center;justify-content:center;cursor:pointer;}
+.sidebar{position:fixed;top:64px;right:0;bottom:0;width:260px;background:var(--sidebar-bg);backdrop-filter:blur(20px);border-left:1px solid var(--border-color);overflow-y:auto;z-index:1020;padding:20px 0;transition:var(--transition);}
+.sidebar-section-title{font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;padding:12px 20px 6px;}
+.sidebar-item{display:flex;align-items:center;gap:12px;padding:10px 20px;color:var(--text-secondary);text-decoration:none;font-size:0.88rem;font-weight:500;transition:var(--transition);margin:1px 12px;border-radius:10px;}
+.sidebar-item:hover{background:rgba(79,70,229,0.08);color:var(--accent);}
+.sidebar-item.active{background:var(--gradient-primary);color:white;box-shadow:0 4px 16px rgba(79,70,229,0.35);}
+.si-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(79,70,229,0.1);font-size:1rem;flex-shrink:0;}
+.sidebar-item.active .si-icon{background:rgba(255,255,255,0.2);}
+.sidebar-badge{margin-right:auto;background:#ef4444;color:white;font-size:0.65rem;padding:2px 7px;border-radius:20px;font-weight:700;}
+.sidebar-item.active .sidebar-badge{background:rgba(255,255,255,0.3);}
+.sidebar-divider{height:1px;background:var(--border-color);margin:12px 20px;}
+.main-content{margin-right:260px;margin-top:64px;padding:28px;min-height:calc(100vh - 64px);position:relative;z-index:1;}
+.glass-card{background:var(--bg-glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--bg-glass-border);border-radius:16px;box-shadow:var(--shadow-md);}
+[data-theme="dark"] .glass-card{background:var(--bg-glass);border-color:var(--border-color);}
+.btn-gradient{background:var(--gradient-primary);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'Vazirmatn',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(79,70,229,0.35);display:inline-flex;align-items:center;gap:8px;}
+.btn-gradient:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(79,70,229,0.45);color:white;}
+.btn-glass{background:var(--bg-glass);border:1px solid var(--border-color);color:var(--text-primary);border-radius:10px;padding:10px 20px;font-family:'Vazirmatn',sans-serif;font-weight:500;font-size:0.88rem;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+.btn-glass:hover{border-color:var(--accent);color:var(--accent);}
+.section-title{font-size:1rem;font-weight:800;color:var(--text-primary);display:flex;align-items:center;gap:10px;}
+.section-title::before{content:'';width:4px;height:18px;background:var(--gradient-primary);border-radius:4px;display:block;}
+.dashboard-footer{background:var(--bg-glass);backdrop-filter:blur(20px);border-top:1px solid var(--border-color);padding:16px 28px;margin-right:260px;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--text-muted);}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fade-in-up{animation:fadeInUp 0.5s ease forwards;}
+.delay-1{animation-delay:0.1s;opacity:0;}.delay-2{animation-delay:0.2s;opacity:0;}
+@media(max-width:991px){.sidebar{transform:translateX(100%);}.sidebar.open{transform:translateX(0);}.main-content{margin-right:0;padding:20px 16px;}.dashboard-footer{margin-right:0;}.sidebar-toggle{display:flex!important;}.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1015;}.sidebar-overlay.show{display:block;}}
+::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:6px;}
+
+/* Page specific */
+.form-label-custom{font-size:0.82rem;font-weight:700;color:var(--text-secondary);margin-bottom:6px;display:block;}
+.form-control-custom{background:var(--bg-surface);border:1.5px solid var(--border-color);border-radius:10px;padding:12px 16px;font-family:'Vazirmatn',sans-serif;font-size:0.88rem;color:var(--text-primary);width:100%;transition:var(--transition);outline:none;}
+.form-control-custom:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,0.12);}
+[data-theme="dark"] .form-control-custom{background:var(--bg-surface2);}
+.category-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+.cat-item{padding:14px;border-radius:12px;border:2px solid var(--border-color);background:var(--bg-surface);text-align:center;cursor:pointer;transition:var(--transition);}
+.cat-item:hover,.cat-item.active{border-color:var(--accent);background:rgba(79,70,229,0.05);}
+.cat-item.active{border-color:var(--accent);background:rgba(79,70,229,0.08);}
+.cat-icon{font-size:1.6rem;margin-bottom:6px;}
+.cat-label{font-size:0.78rem;font-weight:700;color:var(--text-primary);}
+.priority-selector{display:flex;gap:8px;flex-wrap:wrap;}
+.priority-btn{padding:8px 16px;border-radius:20px;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-family:'Vazirmatn',sans-serif;font-size:0.8rem;font-weight:700;transition:var(--transition);}
+.priority-btn:hover{transform:scale(1.03);}
+.priority-btn[data-p="low"].active{border-color:#10b981;background:rgba(16,185,129,0.1);color:#059669;}
+.priority-btn[data-p="med"].active{border-color:#f59e0b;background:rgba(245,158,11,0.1);color:#d97706;}
+.priority-btn[data-p="high"].active{border-color:#ef4444;background:rgba(239,68,68,0.1);color:#dc2626;}
+.upload-area{border:2px dashed var(--border-color);border-radius:14px;padding:32px;text-align:center;cursor:pointer;transition:var(--transition);background:var(--bg-surface2);}
+.upload-area:hover,.upload-area.drag{border-color:var(--accent);background:rgba(79,70,229,0.04);}
+.attached-file{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:var(--bg-surface);border:1px solid var(--border-color);margin-top:8px;}
+.faq-item{border-radius:12px;border:1px solid var(--border-color);overflow:hidden;margin-bottom:8px;}
+.faq-q{padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:0.85rem;background:var(--bg-surface);transition:var(--transition);}
+.faq-q:hover{background:var(--bg-surface2);}
+.faq-a{padding:0 16px;max-height:0;overflow:hidden;font-size:0.82rem;color:var(--text-secondary);transition:max-height 0.3s ease,padding 0.3s;}
+.faq-a.show{max-height:100px;padding:12px 16px;}
+.step-indicator{display:flex;gap:0;margin-bottom:28px;}
+.step{flex:1;text-align:center;position:relative;}
+.step::after{content:'';position:absolute;top:14px;left:0;width:100%;height:2px;background:var(--border-color);}
+.step:last-child::after{display:none;}
+.step.done::after,.step.active::after{background:var(--gradient-primary);}
+.step-num{width:28px;height:28px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;border:2px solid var(--border-color);background:var(--bg-surface);color:var(--text-muted);position:relative;z-index:1;}
+.step.done .step-num{background:var(--gradient-primary);border-color:transparent;color:white;}
+.step.active .step-num{background:white;border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,0.2);}
+.step-label{font-size:0.7rem;color:var(--text-muted);margin-top:4px;}
+.step.active .step-label{color:var(--accent);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="bi bi-list fs-5"></i></button>
+  <a href="01-dashboard.html" class="topbar-brand"><div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>آزمون‌یار</a>
+  <div class="topbar-spacer"></div>
+  <div class="topbar-actions">
+    <a href="#" class="topbar-btn"><i class="bi bi-search"></i></a>
+    <a href="#" class="topbar-btn"><i class="bi bi-bell"></i></a>
+    <button class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-moon-stars" id="themeIcon"></i></button>
+    <div class="user-avatar">مص</div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-section-title">داشبورد</div>
+  <a href="01-dashboard.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-speedometer2"></i></div>صفحه اصلی</a>
+  <a href="02-account.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-person-badge"></i></div>اطلاعات حساب</a>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-title">آزمون‌ها</div>
+  <a href="08-pending-exams.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-clipboard2-check"></i></div>آزمون‌های منتظر<span class="sidebar-badge">۵</span></a>
+  <a href="07-exam-history.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-archive"></i></div>تاریخچه تصحیح‌شده</a>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-title">پشتیبانی</div>
+  <a href="03-tickets-list.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-ticket-perforated"></i></div>لیست تیکت‌ها<span class="sidebar-badge">۲</span></a>
+  <a href="04-send-ticket.html" class="sidebar-item active"><div class="si-icon"><i class="bi bi-send-plus"></i></div>ارسال تیکت</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3 fade-in-up">
+    <div>
+      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">ارسال تیکت جدید</h1>
+      <div style="font-size:0.83rem;color:var(--text-secondary);margin-top:4px;"><a href="01-dashboard.html" style="color:var(--accent);text-decoration:none;">داشبورد</a> / <a href="03-tickets-list.html" style="color:var(--accent);text-decoration:none;">تیکت‌ها</a> / ارسال تیکت</div>
+    </div>
+    <a href="03-tickets-list.html" class="btn-glass"><i class="bi bi-arrow-right"></i>بازگشت</a>
+  </div>
+
+  <!-- Step indicator -->
+  <div class="step-indicator fade-in-up delay-1">
+    <div class="step done"><div class="step-num"><i class="bi bi-check2"></i></div><div class="step-label">دسته‌بندی</div></div>
+    <div class="step active"><div class="step-num">۲</div><div class="step-label">جزئیات</div></div>
+    <div class="step"><div class="step-num">۳</div><div class="step-label">پیوست‌ها</div></div>
+    <div class="step"><div class="step-num">۴</div><div class="step-label">ارسال</div></div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Form -->
+    <div class="col-lg-8 fade-in-up delay-1">
+      <div class="glass-card p-4">
+        <!-- Category -->
+        <div class="section-title mb-3">دسته‌بندی موضوع</div>
+        <div class="category-grid mb-4">
+          <div class="cat-item active" onclick="selectCat(this)">
+            <div class="cat-icon">🔧</div>
+            <div class="cat-label">مشکل فنی</div>
+          </div>
+          <div class="cat-item" onclick="selectCat(this)">
+            <div class="cat-icon">📋</div>
+            <div class="cat-label">راهنمایی</div>
+          </div>
+          <div class="cat-item" onclick="selectCat(this)">
+            <div class="cat-icon">📝</div>
+            <div class="cat-label">اداری</div>
+          </div>
+          <div class="cat-item" onclick="selectCat(this)">
+            <div class="cat-icon">💰</div>
+            <div class="cat-label">مالی</div>
+          </div>
+          <div class="cat-item" onclick="selectCat(this)">
+            <div class="cat-icon">🐛</div>
+            <div class="cat-label">گزارش باگ</div>
+          </div>
+          <div class="cat-item" onclick="selectCat(this)">
+            <div class="cat-icon">💡</div>
+            <div class="cat-label">پیشنهاد</div>
+          </div>
+        </div>
+
+        <!-- Subject -->
+        <div class="mb-3">
+          <label class="form-label-custom">موضوع تیکت <span style="color:#ef4444;">*</span></label>
+          <input class="form-control-custom" type="text" placeholder="موضوع مشکل یا سوال خود را بنویسید..." id="ticketSubject">
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;" id="subjectCount">۰/۱۰۰ کاراکتر</div>
+        </div>
+
+        <!-- Priority -->
+        <div class="mb-3">
+          <label class="form-label-custom">اولویت</label>
+          <div class="priority-selector">
+            <button class="priority-btn active" data-p="low" onclick="selectPriority(this)"><i class="bi bi-circle-fill me-1" style="font-size:0.5rem;color:#10b981;"></i>پایین</button>
+            <button class="priority-btn" data-p="med" onclick="selectPriority(this)"><i class="bi bi-circle-fill me-1" style="font-size:0.5rem;color:#f59e0b;"></i>متوسط</button>
+            <button class="priority-btn" data-p="high" onclick="selectPriority(this)"><i class="bi bi-circle-fill me-1" style="font-size:0.5rem;color:#ef4444;"></i>بالا</button>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="mb-3">
+          <label class="form-label-custom">توضیحات کامل <span style="color:#ef4444;">*</span></label>
+          <textarea class="form-control-custom" rows="7" placeholder="مشکل یا سوال خود را به تفصیل شرح دهید. هر چه جزئیات بیشتری ارائه دهید، پاسخ سریع‌تر و دقیق‌تری دریافت خواهید کرد..." id="ticketMsg" oninput="countChars()" style="resize:vertical;"></textarea>
+          <div class="d-flex justify-content-between" style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">
+            <span>حداقل ۳۰ کاراکتر</span>
+            <span id="msgCount">۰ کاراکتر</span>
+          </div>
+        </div>
+
+        <!-- Attachments -->
+        <div class="mb-4">
+          <label class="form-label-custom">پیوست فایل (اختیاری)</label>
+          <div class="upload-area" id="uploadArea" onclick="document.getElementById('ticketFile').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+            <div style="font-size:2rem;color:var(--text-muted);">📎</div>
+            <div style="font-weight:700;font-size:0.88rem;margin-top:8px;">فایل را اینجا رها کنید</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">یا کلیک کنید — PNG، JPG، PDF، ZIP — حداکثر ۱۰ مگابایت</div>
+          </div>
+          <input type="file" id="ticketFile" multiple style="display:none;" onchange="addFiles(event)">
+          <div id="fileList"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex gap-2 justify-content-end flex-wrap">
+          <button class="btn-glass" onclick="saveDraft()"><i class="bi bi-floppy"></i>ذخیره پیش‌نویس</button>
+          <button class="btn-gradient" onclick="submitTicket()"><i class="bi bi-send-fill"></i>ارسال تیکت</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Help -->
+    <div class="col-lg-4 fade-in-up delay-2">
+      <!-- Tips Card -->
+      <div class="glass-card p-4 mb-3">
+        <div class="section-title mb-3">💡 راهنمای ارسال تیکت</div>
+        <div style="font-size:0.82rem;color:var(--text-secondary);line-height:1.8;">
+          <div style="display:flex;gap:8px;margin-bottom:10px;"><span style="color:var(--accent);font-weight:700;flex-shrink:0;">۱.</span>موضوع تیکت را واضح و مختصر بنویسید</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px;"><span style="color:var(--accent);font-weight:700;flex-shrink:0;">۲.</span>مراحل رسیدن به مشکل را توضیح دهید</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px;"><span style="color:var(--accent);font-weight:700;flex-shrink:0;">۳.</span>در صورت امکان اسکرین‌شات پیوست کنید</div>
+          <div style="display:flex;gap:8px;"><span style="color:var(--accent);font-weight:700;flex-shrink:0;">۴.</span>اولویت را متناسب با اهمیت انتخاب کنید</div>
+        </div>
+      </div>
+
+      <!-- Response Time -->
+      <div class="glass-card p-4 mb-3">
+        <div class="section-title mb-3">⏱ زمان پاسخگویی</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:rgba(239,68,68,0.08);">
+            <div style="font-size:0.82rem;font-weight:700;"><i class="bi bi-circle-fill me-1" style="color:#ef4444;font-size:0.5rem;"></i>اولویت بالا</div>
+            <div style="font-size:0.78rem;font-weight:800;color:#dc2626;">۲-۴ ساعت</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:rgba(245,158,11,0.08);">
+            <div style="font-size:0.82rem;font-weight:700;"><i class="bi bi-circle-fill me-1" style="color:#f59e0b;font-size:0.5rem;"></i>اولویت متوسط</div>
+            <div style="font-size:0.78rem;font-weight:800;color:#d97706;">۸-۱۲ ساعت</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:rgba(16,185,129,0.08);">
+            <div style="font-size:0.82rem;font-weight:700;"><i class="bi bi-circle-fill me-1" style="color:#10b981;font-size:0.5rem;"></i>اولویت پایین</div>
+            <div style="font-size:0.78rem;font-weight:800;color:#059669;">۱-۲ روز کاری</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="glass-card p-4">
+        <div class="section-title mb-3">❓ سوالات متداول</div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            چرا پاسخنامه آپلود نمی‌شود؟
+            <i class="bi bi-chevron-down"></i>
+          </div>
+          <div class="faq-a">حجم فایل باید کمتر از ۱۰ مگابایت باشد. فرمت‌های قابل قبول PDF و JPG هستند.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            مهلت تصحیح قابل تمدید است؟
+            <i class="bi bi-chevron-down"></i>
+          </div>
+          <div class="faq-a">بله، در موارد ضروری با ارسال تیکت اداری می‌توانید تمدید مهلت درخواست دهید.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            چطور امتیاز درست کار می‌کند؟
+            <i class="bi bi-chevron-down"></i>
+          </div>
+          <div class="faq-a">امتیاز بر اساس سرعت، دقت تصحیح و بازخورد دانش‌آموزان محاسبه می‌شود.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Success Modal -->
+<div id="successModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;">
+  <div style="background:var(--bg-surface);border-radius:20px;padding:40px;text-align:center;max-width:380px;width:90%;box-shadow:var(--shadow-lg);animation:fadeInUp 0.4s ease;">
+    <div style="font-size:3.5rem;margin-bottom:16px;">✅</div>
+    <div style="font-size:1.2rem;font-weight:800;margin-bottom:8px;">تیکت با موفقیت ارسال شد!</div>
+    <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:6px;">شماره تیکت شما:</div>
+    <div style="font-size:1.4rem;font-weight:900;color:var(--accent);margin-bottom:16px;">TK-۱۲۴۶</div>
+    <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:24px;">در اسرع وقت پاسخ خواهید گرفت. می‌توانید وضعیت تیکت را در لیست تیکت‌ها پیگیری کنید.</div>
+    <div class="d-flex gap-2 justify-content-center">
+      <button onclick="closeModal()" class="btn-glass">بستن</button>
+      <a href="05-ticket-conversation.html" class="btn-gradient"><i class="bi bi-eye"></i>مشاهده تیکت</a>
+    </div>
+  </div>
+</div>
+
+<footer class="dashboard-footer"><div>© ۱۴۰۳ آزمون‌یار</div><div>نسخه ۲.۴.۱</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';localStorage.setItem('theme','light');}}
+(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
+function selectCat(el){document.querySelectorAll('.cat-item').forEach(c=>c.classList.remove('active'));el.classList.add('active');}
+function selectPriority(el){document.querySelectorAll('.priority-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+document.getElementById('ticketSubject').addEventListener('input',function(){document.getElementById('subjectCount').textContent=this.value.length+'/۱۰۰ کاراکتر';});
+function countChars(){document.getElementById('msgCount').textContent=document.getElementById('ticketMsg').value.length+' کاراکتر';}
+function addFiles(e){const fl=document.getElementById('fileList');Array.from(e.target.files).forEach(f=>{const d=document.createElement('div');d.className='attached-file';d.innerHTML=`<i class="bi bi-paperclip" style="color:var(--accent);"></i><span style="flex:1;font-size:0.82rem;">${f.name}</span><span style="font-size:0.72rem;color:var(--text-muted);">${(f.size/1024).toFixed(1)} KB</span><button onclick="this.closest('.attached-file').remove()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;"><i class="bi bi-x-circle"></i></button>`;fl.appendChild(d);});}
+function handleDrop(e){e.preventDefault();document.getElementById('uploadArea').classList.remove('drag');const fake={target:{files:e.dataTransfer.files}};addFiles(fake);}
+function toggleFaq(q){const a=q.nextElementSibling;a.classList.toggle('show');q.querySelector('i').style.transform=a.classList.contains('show')?'rotate(180deg)':'';}
+function submitTicket(){
+  const s=document.getElementById('ticketSubject').value;
+  const m=document.getElementById('ticketMsg').value;
+  if(!s||!m||m.length<30){alert('لطفاً موضوع و توضیحات کافی وارد کنید.');return;}
+  document.getElementById('successModal').style.display='flex';
+}
+function closeModal(){document.getElementById('successModal').style.display='none';}
+function saveDraft(){
+  const a=document.createElement('div');
+  a.innerHTML='<div style="position:fixed;bottom:20px;left:20px;background:var(--bg-surface);color:var(--text-primary);padding:14px 20px;border-radius:12px;font-family:Vazirmatn,sans-serif;font-size:0.85rem;font-weight:600;z-index:9999;display:flex;gap:8px;align-items:center;box-shadow:var(--shadow-lg);border:1px solid var(--border-color);"><i class="bi bi-floppy-fill" style="color:var(--accent);"></i> پیش‌نویس ذخیره شد</div>';
+  document.body.appendChild(a);setTimeout(()=>a.remove(),2500);
+}
+</script>
+</body>
+</html>

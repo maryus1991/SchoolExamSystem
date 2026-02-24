@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جزئیات آزمون | آزمون‌یار</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);--gradient-2:linear-gradient(135deg,#00CEC9 0%,#81ecec 100%);--gradient-3:linear-gradient(135deg,#fd79a8 0%,#fab1d3 100%);}
+    [data-theme="dark"]{--bg:#0f0e1a;--bg-2:#1a1830;--sidebar-bg:#1a1830;--card-bg:rgba(26,24,48,0.85);--card-border:rgba(162,155,254,0.15);--text-main:#e8e6ff;--text-muted:#a29bfe;--text-light:#6c6a8a;--shadow:0 8px 32px rgba(0,0,0,0.4);--topbar-bg:rgba(26,24,48,0.92);--border:rgba(162,155,254,0.12);}
+    *{font-family:'Vazirmatn',sans-serif;}body{background:var(--bg);color:var(--text-main);transition:all 0.3s;}
+    .sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);box-shadow:var(--shadow);position:fixed;right:0;top:0;z-index:1000;display:flex;flex-direction:column;border-left:1px solid var(--border);}
+    .sidebar-logo{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;}
+    .logo-icon{width:42px;height:42px;background:var(--gradient-1);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;}
+    .sidebar-nav{padding:1rem 0;flex:1;overflow-y:auto;}
+    .nav-section-title{padding:0.5rem 1.5rem;font-size:0.7rem;font-weight:700;color:var(--text-light);margin-top:0.5rem;}
+    .sidebar-link{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.5rem;color:var(--text-muted);text-decoration:none;border-radius:12px;margin:0.15rem 0.75rem;transition:all 0.2s;font-size:0.88rem;font-weight:500;}
+    .sidebar-link:hover,.sidebar-link.active{background:var(--gradient-1);color:white;box-shadow:0 4px 15px rgba(108,92,231,0.35);}
+    .badge-count{margin-right:auto;background:var(--accent);color:white;border-radius:50px;padding:1px 8px;font-size:0.7rem;font-weight:700;}
+    .sidebar-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);}
+    .topbar{position:fixed;top:0;right:260px;left:0;height:64px;background:var(--topbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:999;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;transition:all 0.3s;}
+    .topbar-actions{display:flex;align-items:center;gap:0.75rem;margin-right:auto;}
+    .topbar-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;position:relative;}
+    .topbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
+    .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--bg-2);}
+    .avatar-placeholder{width:38px;height:38px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;}
+    .main-content{margin-right:260px;padding-top:64px;}
+    .page-body{padding:2rem;}
+    .glass-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;box-shadow:var(--shadow);backdrop-filter:blur(20px);transition:all 0.3s;}
+    .glass-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);}
+    .section-title{font-size:1rem;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:0.5rem;}
+    .section-title::before{content:'';width:4px;height:20px;background:var(--gradient-1);border-radius:50px;display:inline-block;}
+    .badge-status{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.75rem;font-weight:600;}
+    .badge-success{background:rgba(0,184,148,0.15);color:var(--success);}
+    .badge-warning{background:rgba(253,203,110,0.2);color:#d9a010;}
+    .badge-danger{background:rgba(225,112,85,0.15);color:var(--danger);}
+    .badge-info{background:rgba(108,92,231,0.12);color:var(--primary);}
+    .theme-toggle{width:52px;height:28px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background 0.3s;}
+    [data-theme="dark"] .theme-toggle{background:var(--primary);}
+    .theme-toggle-thumb{position:absolute;top:3px;right:3px;width:22px;height:22px;background:white;border-radius:50%;transition:transform 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}
+    [data-theme="dark"] .theme-toggle-thumb{transform:translateX(-24px);}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate-in{animation:fadeInUp 0.5s ease forwards;}
+    .delay-1{animation-delay:0.1s;opacity:0}.delay-2{animation-delay:0.2s;opacity:0}
+    /* Timer component */
+    .timer-widget{background:var(--gradient-1);border-radius:20px;padding:1.5rem;color:white;text-align:center;}
+    .timer-display{font-size:3rem;font-weight:900;letter-spacing:2px;font-variant-numeric:tabular-nums;}
+    .timer-label{font-size:0.78rem;opacity:0.75;margin-top:0.25rem;}
+    .timer-controls{display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;}
+    .timer-btn{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:white;border-radius:10px;padding:0.4rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(10px);}
+    .timer-btn:hover{background:rgba(255,255,255,0.35);}
+    /* PDF viewer mock */
+    .pdf-viewer{background:var(--bg-2);border:2px solid var(--border);border-radius:16px;overflow:hidden;}
+    .pdf-toolbar{background:var(--card-bg);border-bottom:1px solid var(--border);padding:0.75rem 1rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;}
+    .pdf-toolbar-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.3rem 0.75rem;font-family:Vazirmatn,sans-serif;font-size:0.78rem;cursor:pointer;color:var(--text-main);transition:all 0.2s;}
+    .pdf-toolbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
+    .pdf-page{min-height:400px;padding:2rem;display:flex;flex-direction:column;gap:1rem;}
+    .pdf-question{border-right:4px solid var(--primary);padding:1rem;border-radius:0 12px 12px 0;background:var(--bg);}
+    .pdf-option{padding:0.5rem 0.75rem;border-radius:8px;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border);font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+    .pdf-option.selected{background:rgba(0,184,148,0.12);border-color:var(--success);color:var(--success);}
+    .pdf-option.wrong{background:rgba(225,112,85,0.12);border-color:var(--danger);color:var(--danger);}
+    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
+  </style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon"><i class="bi bi-mortarboard-fill"></i></div><div><div style="font-weight:800;font-size:1.1rem;color:var(--text-main);">آزمون‌یار</div><div style="font-size:0.72rem;color:var(--text-muted);">پلتفرم هوشمند آزمون</div></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">منو اصلی</div>
+    <a href="01-profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> پروفایل من</a>
+    <a href="11-account.html" class="sidebar-link"><i class="bi bi-gear"></i> اطلاعات حساب</a>
+    <div class="nav-section-title">کارنامه‌ها</div>
+    <a href="02-karnameye-sales.html" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> کارنامه ثالث</a>
+    <a href="03-karnameye-sanavilist.html" class="sidebar-link"><i class="bi bi-collection"></i> لیست کارنامه ثانویه</a>
+    <a href="05-karnameye-avalilist.html" class="sidebar-link"><i class="bi bi-list-columns"></i> لیست کارنامه اولیه</a>
+    <div class="nav-section-title">آزمون‌ها</div>
+    <a href="07-exam-list.html" class="sidebar-link active"><i class="bi bi-journal-check"></i> آزمون‌های شرکت‌کرده</a>
+    <a href="09-question-list.html" class="sidebar-link"><i class="bi bi-bank"></i> بانک سوالات <span class="badge-count">۱۲۴</span></a>
+    <div class="nav-section-title">پشتیبانی</div>
+    <a href="12-ticket-list.html" class="sidebar-link"><i class="bi bi-ticket-perforated"></i> تیکت‌ها <span class="badge-count">۳</span></a>
+    <a href="13-ticket-send.html" class="sidebar-link"><i class="bi bi-plus-circle"></i> ارسال تیکت</a>
+  </nav>
+  <div class="sidebar-footer"><a href="#" class="sidebar-link" style="margin:0;"><i class="bi bi-box-arrow-right"></i> خروج</a></div>
+</aside>
+<header class="topbar">
+  <button class="topbar-btn d-lg-none" onclick="document.getElementById('sidebar').classList.toggle('show')"><i class="bi bi-list"></i></button>
+  <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0" style="font-size:0.85rem;"><li class="breadcrumb-item"><a href="07-exam-list.html" style="color:var(--primary);text-decoration:none;">آزمون‌ها</a></li><li class="breadcrumb-item active" style="color:var(--text-muted);">آزمون جامع ریاضی</li></ol></nav>
+  <div class="topbar-actions">
+    <div class="topbar-btn" style="position:relative;"><i class="bi bi-bell"></i><span class="notif-dot"></span></div>
+    <div class="theme-toggle" onclick="toggleTheme()"><div class="theme-toggle-thumb" id="themeIcon">☀️</div></div>
+    <div class="avatar-placeholder">ع</div>
+  </div>
+</header>
+<main class="main-content"><div class="page-body">
+
+  <!-- Header -->
+  <div class="d-flex align-items-center gap-3 mb-4 animate-in">
+    <a href="07-exam-list.html" style="width:40px;height:40px;border-radius:12px;background:var(--card-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-main);text-decoration:none;flex-shrink:0;transition:all 0.2s;" onmouseover="this.style.background='var(--gradient-1)';this.style.color='white'" onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text-main)'"><i class="bi bi-arrow-right"></i></a>
+    <div class="flex-grow-1">
+      <h5 style="font-weight:800;margin:0;">آزمون جامع ریاضی پایه دوازدهم</h5>
+      <div style="font-size:0.82rem;color:var(--text-muted);">برگزار شده: ۱۴۰۳/۰۹/۱۵ • مدت: ۹۰ دقیقه • ۴۵ سوال</div>
+    </div>
+    <span class="badge-status badge-success" style="font-size:0.85rem;padding:0.4rem 1rem;">عالی ۸۵٪</span>
+  </div>
+
+  <div class="row g-4">
+    <!-- PDF Viewer -->
+    <div class="col-lg-8 animate-in">
+      <div class="glass-card p-0 overflow-hidden">
+        <div class="pdf-toolbar">
+          <div style="font-weight:700;font-size:0.88rem;flex:1;">سوالات آزمون</div>
+          <button class="pdf-toolbar-btn" onclick="showPage(-1)"><i class="bi bi-chevron-right"></i></button>
+          <span style="font-size:0.82rem;color:var(--text-muted);" id="pageNum">صفحه ۱ از ۵</span>
+          <button class="pdf-toolbar-btn" onclick="showPage(1)"><i class="bi bi-chevron-left"></i></button>
+          <button class="pdf-toolbar-btn"><i class="bi bi-zoom-in"></i></button>
+          <button class="pdf-toolbar-btn"><i class="bi bi-download"></i> دانلود</button>
+        </div>
+        <div class="pdf-page">
+          <div class="pdf-question">
+            <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.5rem;">سوال ۱: اگر <span style="font-family:monospace;">f(x) = 2x² + 3x - 5</span> باشد، مقدار <span style="font-family:monospace;">f(2)</span> کدام است؟</div>
+            <div class="pdf-option selected">الف) ۹ ✓</div>
+            <div class="pdf-option">ب) ۱۱</div>
+            <div class="pdf-option">ج) ۷</div>
+            <div class="pdf-option">د) ۱۳</div>
+          </div>
+          <div class="pdf-question">
+            <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.5rem;">سوال ۲: معادله <span style="font-family:monospace;">x² - 5x + 6 = 0</span> را حل کنید:</div>
+            <div class="pdf-option">الف) x = 1, 6</div>
+            <div class="pdf-option selected">ب) x = 2, 3 ✓</div>
+            <div class="pdf-option wrong">ج) x = -2, -3 ✗</div>
+            <div class="pdf-option">د) x = 1, 5</div>
+          </div>
+          <div class="pdf-question">
+            <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.5rem;">سوال ۳: مشتق تابع <span style="font-family:monospace;">f(x) = x³ - 2x + 1</span> در نقطه x = 2 برابر است با:</div>
+            <div class="pdf-option selected">الف) ۱۰ ✓</div>
+            <div class="pdf-option">ب) ۸</div>
+            <div class="pdf-option">ج) ۱۲</div>
+            <div class="pdf-option">د) ۶</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar info -->
+    <div class="col-lg-4">
+      <!-- Timer Demo -->
+      <div class="timer-widget mb-4 animate-in">
+        <div style="font-size:0.82rem;opacity:0.8;margin-bottom:0.5rem;"><i class="bi bi-clock"></i> زمان مصرف‌شده در آزمون</div>
+        <div class="timer-display" id="timerDisplay">۰۱:۲۴:۳۸</div>
+        <div class="timer-label">از ۹۰ دقیقه مجاز</div>
+        <div style="margin-top:0.75rem;background:rgba(255,255,255,0.2);border-radius:50px;height:8px;overflow:hidden;">
+          <div style="width:95%;height:100%;background:white;border-radius:50px;"></div>
+        </div>
+        <div class="timer-controls">
+          <button class="timer-btn" onclick="startTimer()"><i class="bi bi-play-fill"></i> شروع</button>
+          <button class="timer-btn" onclick="pauseTimer()"><i class="bi bi-pause-fill"></i> مکث</button>
+          <button class="timer-btn" onclick="resetTimer()"><i class="bi bi-arrow-counterclockwise"></i> ریست</button>
+        </div>
+      </div>
+
+      <!-- Exam info -->
+      <div class="glass-card p-4 animate-in delay-1">
+        <div class="section-title mb-3">اطلاعات آزمون</div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:0.83rem;color:var(--text-muted);">نمره کل</span>
+            <span style="font-weight:800;color:var(--primary);">۱۷.۵ از ۲۰</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:0.83rem;color:var(--text-muted);">درصد</span>
+            <span style="font-weight:800;color:var(--success);">۸۵٪</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:0.83rem;color:var(--text-muted);">رتبه</span>
+            <span style="font-weight:800;color:var(--primary);">۱۲ از ۳۰۰</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:0.83rem;color:var(--text-muted);">پاسخ صحیح</span>
+            <span style="font-weight:700;color:var(--success);">۳۸ سوال</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+            <span style="font-size:0.83rem;color:var(--text-muted);">پاسخ غلط</span>
+            <span style="font-weight:700;color:var(--danger);">۵ سوال</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;">
+            <span style="font-size:0.83rem;color:var(--text-muted);">بدون پاسخ</span>
+            <span style="font-weight:700;color:var(--text-muted);">۲ سوال</span>
+          </div>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+          <a href="04-karnameye-sanavi-detail.html" style="background:var(--gradient-1);color:white;border-radius:10px;padding:0.5rem 1rem;font-size:0.82rem;font-weight:600;text-decoration:none;flex:1;text-align:center;"><i class="bi bi-file-earmark-bar-graph"></i> کارنامه</a>
+          <button style="background:var(--card-bg);border:1px solid var(--border);color:var(--text-main);border-radius:10px;padding:0.5rem 1rem;font-size:0.82rem;cursor:pointer;flex:1;font-family:Vazirmatn,sans-serif;"><i class="bi bi-download"></i> دانلود</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div></main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
+  const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
+
+  let t=5078, interval=null;
+  const d=document.getElementById('timerDisplay');
+  function fmt(n){const h=Math.floor(n/3600);const m=Math.floor((n%3600)/60);const s=n%60;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+  function startTimer(){if(!interval)interval=setInterval(()=>{t++;d.textContent=fmt(t);},1000);}
+  function pauseTimer(){clearInterval(interval);interval=null;}
+  function resetTimer(){pauseTimer();t=0;d.textContent=fmt(t);}
+  let page=1;
+  function showPage(dir){page=Math.max(1,Math.min(5,page+dir));document.getElementById('pageNum').textContent=`صفحه ${page} از ۵`;}
+</script>
+</body></html>

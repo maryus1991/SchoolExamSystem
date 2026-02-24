@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اطلاعات حساب | آزمون‌یار</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);--gradient-2:linear-gradient(135deg,#00CEC9 0%,#81ecec 100%);}
+    [data-theme="dark"]{--bg:#0f0e1a;--bg-2:#1a1830;--sidebar-bg:#1a1830;--card-bg:rgba(26,24,48,0.85);--card-border:rgba(162,155,254,0.15);--text-main:#e8e6ff;--text-muted:#a29bfe;--text-light:#6c6a8a;--shadow:0 8px 32px rgba(0,0,0,0.4);--topbar-bg:rgba(26,24,48,0.92);--border:rgba(162,155,254,0.12);}
+    *{font-family:'Vazirmatn',sans-serif;}body{background:var(--bg);color:var(--text-main);transition:all 0.3s;}
+    .sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);box-shadow:var(--shadow);position:fixed;right:0;top:0;z-index:1000;display:flex;flex-direction:column;border-left:1px solid var(--border);}
+    .sidebar-logo{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;}
+    .logo-icon{width:42px;height:42px;background:var(--gradient-1);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;}
+    .sidebar-nav{padding:1rem 0;flex:1;overflow-y:auto;}
+    .nav-section-title{padding:0.5rem 1.5rem;font-size:0.7rem;font-weight:700;color:var(--text-light);margin-top:0.5rem;}
+    .sidebar-link{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.5rem;color:var(--text-muted);text-decoration:none;border-radius:12px;margin:0.15rem 0.75rem;transition:all 0.2s;font-size:0.88rem;font-weight:500;}
+    .sidebar-link:hover,.sidebar-link.active{background:var(--gradient-1);color:white;box-shadow:0 4px 15px rgba(108,92,231,0.35);}
+    .badge-count{margin-right:auto;background:var(--accent);color:white;border-radius:50px;padding:1px 8px;font-size:0.7rem;font-weight:700;}
+    .sidebar-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);}
+    .topbar{position:fixed;top:0;right:260px;left:0;height:64px;background:var(--topbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:999;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;transition:all 0.3s;}
+    .topbar-actions{display:flex;align-items:center;gap:0.75rem;margin-right:auto;}
+    .topbar-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;position:relative;}
+    .topbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
+    .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--bg-2);}
+    .avatar-placeholder{width:38px;height:38px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;}
+    .main-content{margin-right:260px;padding-top:64px;}
+    .page-body{padding:2rem;}
+    .glass-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;box-shadow:var(--shadow);backdrop-filter:blur(20px);transition:all 0.3s;}
+    .section-title{font-size:1rem;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:0.5rem;}
+    .section-title::before{content:'';width:4px;height:20px;background:var(--gradient-1);border-radius:50px;display:inline-block;}
+    .badge-status{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.75rem;font-weight:600;}
+    .badge-success{background:rgba(0,184,148,0.15);color:var(--success);}
+    .theme-toggle{width:52px;height:28px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background 0.3s;}
+    [data-theme="dark"] .theme-toggle{background:var(--primary);}
+    .theme-toggle-thumb{position:absolute;top:3px;right:3px;width:22px;height:22px;background:white;border-radius:50%;transition:transform 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}
+    [data-theme="dark"] .theme-toggle-thumb{transform:translateX(-24px);}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate-in{animation:fadeInUp 0.5s ease forwards;}
+    .delay-1{animation-delay:0.1s;opacity:0}
+    /* Form */
+    .form-label{font-size:0.85rem;font-weight:600;margin-bottom:0.4rem;color:var(--text-muted);}
+    .form-control-custom{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:0.65rem 1rem;color:var(--text-main);font-family:Vazirmatn,sans-serif;font-size:0.88rem;outline:none;width:100%;transition:all 0.2s;}
+    .form-control-custom:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(108,92,231,0.1);}
+    /* Avatar upload */
+    .avatar-upload-area{width:120px;height:120px;border-radius:50%;border:3px dashed var(--primary-2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;background:rgba(108,92,231,0.05);position:relative;}
+    .avatar-upload-area:hover{border-color:var(--primary);background:rgba(108,92,231,0.1);}
+    .avatar-upload-area img{width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;}
+    /* Upload box */
+    .upload-box{border:2px dashed var(--primary-2);border-radius:16px;padding:2rem;text-align:center;cursor:pointer;transition:all 0.3s;background:rgba(108,92,231,0.03);}
+    .upload-box:hover,.upload-box.dragover{border-color:var(--primary);background:rgba(108,92,231,0.08);transform:scale(1.01);}
+    .upload-icon{width:56px;height:56px;border-radius:50%;background:rgba(108,92,231,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.5rem;color:var(--primary);}
+    /* Settings tabs */
+    .settings-tab{padding:0.65rem 1.25rem;border-radius:10px;cursor:pointer;font-size:0.88rem;font-weight:600;color:var(--text-muted);transition:all 0.2s;border:none;background:transparent;font-family:Vazirmatn,sans-serif;display:flex;align-items:center;gap:0.5rem;width:100%;text-align:right;}
+    .settings-tab:hover{background:rgba(108,92,231,0.06);color:var(--primary);}
+    .settings-tab.active{background:rgba(108,92,231,0.1);color:var(--primary);}
+    /* Toast */
+    .toast-success{position:fixed;bottom:2rem;left:2rem;z-index:9999;background:var(--success);color:white;border-radius:14px;padding:0.75rem 1.5rem;font-size:0.88rem;font-weight:600;box-shadow:0 8px 32px rgba(0,184,148,0.4);animation:fadeInUp 0.3s;display:none;}
+    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
+  </style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon"><i class="bi bi-mortarboard-fill"></i></div><div><div style="font-weight:800;font-size:1.1rem;color:var(--text-main);">آزمون‌یار</div><div style="font-size:0.72rem;color:var(--text-muted);">پلتفرم هوشمند آزمون</div></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">منو اصلی</div>
+    <a href="01-profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> پروفایل من</a>
+    <a href="11-account.html" class="sidebar-link active"><i class="bi bi-gear"></i> اطلاعات حساب</a>
+    <div class="nav-section-title">کارنامه‌ها</div>
+    <a href="02-karnameye-sales.html" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> کارنامه ثالث</a>
+    <a href="03-karnameye-sanavilist.html" class="sidebar-link"><i class="bi bi-collection"></i> لیست کارنامه ثانویه</a>
+    <a href="05-karnameye-avalilist.html" class="sidebar-link"><i class="bi bi-list-columns"></i> لیست کارنامه اولیه</a>
+    <div class="nav-section-title">آزمون‌ها</div>
+    <a href="07-exam-list.html" class="sidebar-link"><i class="bi bi-journal-check"></i> آزمون‌های شرکت‌کرده</a>
+    <a href="09-question-list.html" class="sidebar-link"><i class="bi bi-bank"></i> بانک سوالات <span class="badge-count">۱۲۴</span></a>
+    <div class="nav-section-title">پشتیبانی</div>
+    <a href="12-ticket-list.html" class="sidebar-link"><i class="bi bi-ticket-perforated"></i> تیکت‌ها <span class="badge-count">۳</span></a>
+    <a href="13-ticket-send.html" class="sidebar-link"><i class="bi bi-plus-circle"></i> ارسال تیکت</a>
+  </nav>
+  <div class="sidebar-footer"><a href="#" class="sidebar-link" style="margin:0;"><i class="bi bi-box-arrow-right"></i> خروج</a></div>
+</aside>
+<header class="topbar">
+  <button class="topbar-btn d-lg-none" onclick="document.getElementById('sidebar').classList.toggle('show')"><i class="bi bi-list"></i></button>
+  <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0" style="font-size:0.85rem;"><li class="breadcrumb-item"><a href="01-profile.html" style="color:var(--primary);text-decoration:none;">داشبورد</a></li><li class="breadcrumb-item active" style="color:var(--text-muted);">اطلاعات حساب</li></ol></nav>
+  <div class="topbar-actions">
+    <div class="topbar-btn" style="position:relative;"><i class="bi bi-bell"></i><span class="notif-dot"></span></div>
+    <div class="theme-toggle" onclick="toggleTheme()"><div class="theme-toggle-thumb" id="themeIcon">☀️</div></div>
+    <div class="avatar-placeholder">ع</div>
+  </div>
+</header>
+<main class="main-content"><div class="page-body">
+
+  <div class="row g-4">
+    <!-- Sidebar nav -->
+    <div class="col-lg-3">
+      <div class="glass-card p-3 animate-in">
+        <div style="padding:0.5rem 0.5rem 1rem;border-bottom:1px solid var(--border);margin-bottom:0.75rem;">
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+            <div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-size:1.75rem;font-weight:800;margin-bottom:0.75rem;" id="mainAvatar">ع</div>
+            <div style="font-weight:700;">علی محمدی</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);">دانش‌آموز</div>
+          </div>
+        </div>
+        <button class="settings-tab active" onclick="showTab('profile',this)"><i class="bi bi-person"></i> اطلاعات شخصی</button>
+        <button class="settings-tab" onclick="showTab('security',this)"><i class="bi bi-shield-lock"></i> امنیت و رمز عبور</button>
+        <button class="settings-tab" onclick="showTab('notif',this)"><i class="bi bi-bell"></i> اعلان‌ها</button>
+        <button class="settings-tab" onclick="showTab('docs',this)"><i class="bi bi-file-earmark-arrow-up"></i> مدارک</button>
+        <button class="settings-tab" onclick="showTab('privacy',this)"><i class="bi bi-eye-slash"></i> حریم خصوصی</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="col-lg-9">
+      <!-- Profile tab -->
+      <div id="tab-profile" class="animate-in">
+        <div class="glass-card p-4 mb-4">
+          <div class="section-title mb-4">اطلاعات شخصی</div>
+          <div class="d-flex align-items-center gap-4 mb-4 flex-wrap">
+            <div class="avatar-upload-area" onclick="document.getElementById('avatarInput').click()" title="تغییر تصویر پروفایل">
+              <div id="avatarPreview" style="font-size:2.5rem;color:var(--primary);">ع</div>
+            </div>
+            <div>
+              <div style="font-weight:700;margin-bottom:0.25rem;">تصویر پروفایل</div>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.75rem;">فرمت‌های مجاز: JPG, PNG تا ۵ مگابایت</div>
+              <button onclick="document.getElementById('avatarInput').click()" style="background:var(--gradient-1);border:none;color:white;border-radius:10px;padding:0.4rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;"><i class="bi bi-upload"></i> آپلود تصویر</button>
+              <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">نام</label>
+              <input type="text" class="form-control-custom" value="علی">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">نام خانوادگی</label>
+              <input type="text" class="form-control-custom" value="محمدی">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">شماره موبایل</label>
+              <input type="tel" class="form-control-custom" value="09123456789" dir="ltr">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ایمیل</label>
+              <input type="email" class="form-control-custom" value="ali@example.com" dir="ltr">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">پایه تحصیلی</label>
+              <select class="form-control-custom">
+                <option>دهم</option><option>یازدهم</option><option selected>دوازدهم</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">رشته تحصیلی</label>
+              <select class="form-control-custom">
+                <option selected>ریاضی-فیزیک</option><option>تجربی</option><option>انسانی</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">بیو / معرفی کوتاه</label>
+              <textarea class="form-control-custom" rows="3" style="resize:vertical;">دانش‌آموز پایه دوازدهم رشته ریاضی فیزیک، علاقه‌مند به ریاضیات و فیزیک.</textarea>
+            </div>
+          </div>
+          <div class="d-flex gap-2 mt-4">
+            <button onclick="saveProfile()" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><i class="bi bi-check2"></i> ذخیره تغییرات</button>
+            <button style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.65rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;cursor:pointer;">لغو</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security tab (hidden) -->
+      <div id="tab-security" style="display:none;">
+        <div class="glass-card p-4 mb-4">
+          <div class="section-title mb-4">تغییر رمز عبور</div>
+          <div class="row g-3">
+            <div class="col-12"><label class="form-label">رمز عبور فعلی</label><input type="password" class="form-control-custom" placeholder="••••••••" dir="ltr"></div>
+            <div class="col-md-6"><label class="form-label">رمز عبور جدید</label><input type="password" class="form-control-custom" placeholder="••••••••" dir="ltr"></div>
+            <div class="col-md-6"><label class="form-label">تکرار رمز عبور جدید</label><input type="password" class="form-control-custom" placeholder="••••••••" dir="ltr"></div>
+          </div>
+          <button onclick="saveProfile()" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
+        </div>
+        <div class="glass-card p-4">
+          <div class="section-title mb-3">تأیید دو‌مرحله‌ای</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-weight:600;font-size:0.9rem;">فعال‌سازی ۲FA</div><div style="font-size:0.8rem;color:var(--text-muted);">برای امنیت بیشتر، تأیید دومرحله‌ای را فعال کنید</div></div>
+            <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" style="cursor:pointer;width:3rem;height:1.5rem;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents tab (hidden) -->
+      <div id="tab-docs" style="display:none;">
+        <div class="glass-card p-4">
+          <div class="section-title mb-4">آپلود مدارک</div>
+          <div class="upload-box mb-3" id="uploadBox" 
+            ondragover="this.classList.add('dragover');event.preventDefault()"
+            ondragleave="this.classList.remove('dragover')"
+            ondrop="handleDrop(event)"
+            onclick="document.getElementById('docInput').click()">
+            <div class="upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+            <div style="font-weight:700;margin-bottom:0.25rem;">فایل را اینجا رها کنید</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);">یا کلیک کنید تا انتخاب کنید</div>
+            <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.5rem;">PDF, JPG, PNG — حداکثر ۱۰MB</div>
+            <input type="file" id="docInput" accept=".pdf,.jpg,.png" style="display:none" onchange="handleFileSelect(this)">
+          </div>
+          <div id="uploadedFiles"></div>
+          <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:1rem;">
+            <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.75rem;">مدارک آپلود شده</div>
+            <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border-radius:12px;background:var(--bg);border:1px solid var(--border);margin-bottom:0.5rem;">
+              <div style="width:40px;height:40px;border-radius:10px;background:rgba(225,112,85,0.15);display:flex;align-items:center;justify-content:center;color:var(--danger);flex-shrink:0;"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+              <div><div style="font-size:0.85rem;font-weight:600;">کارنامه-تحصیلی.pdf</div><div style="font-size:0.75rem;color:var(--text-muted);">۲.۴ MB • ۱۴۰۳/۰۹/۱۰</div></div>
+              <button style="margin-right:auto;background:none;border:none;color:var(--danger);cursor:pointer;"><i class="bi bi-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification and privacy tabs (hidden) -->
+      <div id="tab-notif" style="display:none;"><div class="glass-card p-4"><div class="section-title mb-4">تنظیمات اعلان‌ها</div>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;border-bottom:1px solid var(--border);">
+            <div><div style="font-weight:600;font-size:0.9rem;">نتایج آزمون</div><div style="font-size:0.78rem;color:var(--text-muted);">وقتی نتایج آزمون صادر شد</div></div>
+            <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" checked style="cursor:pointer;width:3rem;height:1.5rem;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;border-bottom:1px solid var(--border);">
+            <div><div style="font-weight:600;font-size:0.9rem;">پاسخ تیکت</div><div style="font-size:0.78rem;color:var(--text-muted);">وقتی پشتیبانی پاسخ می‌دهد</div></div>
+            <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" checked style="cursor:pointer;width:3rem;height:1.5rem;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;">
+            <div><div style="font-weight:600;font-size:0.9rem;">خبرنامه</div><div style="font-size:0.78rem;color:var(--text-muted);">اخبار و آپدیت‌های پلتفرم</div></div>
+            <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" style="cursor:pointer;width:3rem;height:1.5rem;"></div>
+          </div>
+        </div>
+        <button onclick="saveProfile()" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.5rem;">ذخیره تنظیمات</button>
+      </div></div>
+      <div id="tab-privacy" style="display:none;"><div class="glass-card p-4"><div class="section-title mb-3">حریم خصوصی</div><div style="font-size:0.9rem;color:var(--text-muted);">تنظیمات مربوط به حریم خصوصی و نمایش اطلاعات شما.</div></div></div>
+    </div>
+  </div>
+
+</div></main>
+
+<div class="toast-success" id="toast"><i class="bi bi-check-circle-fill"></i> تغییرات با موفقیت ذخیره شد!</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
+  const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
+  function showTab(tab,el){
+    document.querySelectorAll('[id^="tab-"]').forEach(t=>t.style.display='none');
+    document.getElementById('tab-'+tab).style.display='block';
+    document.querySelectorAll('.settings-tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function previewAvatar(input){
+    if(input.files&&input.files[0]){
+      const r=new FileReader();
+      r.onload=e=>{
+        const p=document.getElementById('avatarPreview');
+        p.style.display='none';
+        const existing=document.querySelector('.avatar-upload-area img');
+        if(existing)existing.remove();
+        const img=document.createElement('img');
+        img.src=e.target.result;
+        document.querySelector('.avatar-upload-area').appendChild(img);
+      };
+      r.readAsDataURL(input.files[0]);
+    }
+  }
+  function handleFileSelect(input){
+    if(input.files&&input.files[0])addFileToList(input.files[0]);
+  }
+  function handleDrop(e){
+    e.preventDefault();
+    document.getElementById('uploadBox').classList.remove('dragover');
+    if(e.dataTransfer.files[0])addFileToList(e.dataTransfer.files[0]);
+  }
+  function addFileToList(file){
+    const c=document.getElementById('uploadedFiles');
+    const d=document.createElement('div');
+    d.style.cssText='display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border-radius:12px;background:rgba(108,92,231,0.06);border:1px solid rgba(108,92,231,0.15);margin-top:0.5rem;';
+    const isPdf=file.type.includes('pdf');
+    const size=(file.size/1024/1024).toFixed(2);
+    d.innerHTML=`<div style="width:40px;height:40px;border-radius:10px;background:${isPdf?'rgba(225,112,85,0.15)':'rgba(108,92,231,0.12)'};display:flex;align-items:center;justify-content:center;color:${isPdf?'#e17055':'#6C5CE7'};flex-shrink:0;"><i class="bi bi-file-earmark-${isPdf?'pdf':'image'}-fill"></i></div><div><div style="font-size:0.85rem;font-weight:600;">${file.name}</div><div style="font-size:0.75rem;color:var(--text-muted);">${size} MB • در حال آپلود...</div></div><div style="margin-right:auto;"><div style="width:16px;height:16px;border-radius:50%;border:2px solid var(--primary);border-top-color:transparent;animation:spin 0.8s linear infinite;"></div></div>`;
+    c.appendChild(d);
+    setTimeout(()=>{d.querySelector('div:last-child').innerHTML='<i class="bi bi-check-circle-fill" style="color:var(--success);"></i>';},1500);
+  }
+  function saveProfile(){
+    const t=document.getElementById('toast');
+    t.style.display='flex';
+    t.style.alignItems='center';
+    t.style.gap='0.5rem';
+    setTimeout(()=>t.style.display='none',3000);
+  }
+</script>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+</body></html>

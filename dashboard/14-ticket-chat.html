@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مکالمه تیکت #۴۵ | آزمون‌یار</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);}
+    [data-theme="dark"]{--bg:#0f0e1a;--bg-2:#1a1830;--sidebar-bg:#1a1830;--card-bg:rgba(26,24,48,0.85);--card-border:rgba(162,155,254,0.15);--text-main:#e8e6ff;--text-muted:#a29bfe;--text-light:#6c6a8a;--shadow:0 8px 32px rgba(0,0,0,0.4);--topbar-bg:rgba(26,24,48,0.92);--border:rgba(162,155,254,0.12);}
+    *{font-family:'Vazirmatn',sans-serif;}body{background:var(--bg);color:var(--text-main);transition:all 0.3s;}
+    .sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);box-shadow:var(--shadow);position:fixed;right:0;top:0;z-index:1000;display:flex;flex-direction:column;border-left:1px solid var(--border);}
+    .sidebar-logo{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;}
+    .logo-icon{width:42px;height:42px;background:var(--gradient-1);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;}
+    .sidebar-nav{padding:1rem 0;flex:1;overflow-y:auto;}
+    .nav-section-title{padding:0.5rem 1.5rem;font-size:0.7rem;font-weight:700;color:var(--text-light);margin-top:0.5rem;}
+    .sidebar-link{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.5rem;color:var(--text-muted);text-decoration:none;border-radius:12px;margin:0.15rem 0.75rem;transition:all 0.2s;font-size:0.88rem;font-weight:500;}
+    .sidebar-link:hover,.sidebar-link.active{background:var(--gradient-1);color:white;box-shadow:0 4px 15px rgba(108,92,231,0.35);}
+    .badge-count{margin-right:auto;background:var(--accent);color:white;border-radius:50px;padding:1px 8px;font-size:0.7rem;font-weight:700;}
+    .sidebar-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);}
+    .topbar{position:fixed;top:0;right:260px;left:0;height:64px;background:var(--topbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:999;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;transition:all 0.3s;}
+    .topbar-actions{display:flex;align-items:center;gap:0.75rem;margin-right:auto;}
+    .topbar-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;position:relative;}
+    .topbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
+    .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--bg-2);}
+    .avatar-placeholder{width:38px;height:38px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;}
+    .main-content{margin-right:260px;padding-top:64px;height:100vh;display:flex;flex-direction:column;}
+    .glass-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;box-shadow:var(--shadow);backdrop-filter:blur(20px);transition:all 0.3s;}
+    .badge-status{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.75rem;font-weight:600;}
+    .badge-warning{background:rgba(253,203,110,0.2);color:#d9a010;}
+    .badge-success{background:rgba(0,184,148,0.15);color:var(--success);}
+    .theme-toggle{width:52px;height:28px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background 0.3s;}
+    [data-theme="dark"] .theme-toggle{background:var(--primary);}
+    .theme-toggle-thumb{position:absolute;top:3px;right:3px;width:22px;height:22px;background:white;border-radius:50%;transition:transform 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}
+    [data-theme="dark"] .theme-toggle-thumb{transform:translateX(-24px);}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate-in{animation:fadeInUp 0.5s ease forwards;}
+    /* Chat layout */
+    .chat-layout{display:flex;height:calc(100vh - 64px);overflow:hidden;}
+    .chat-sidebar{width:320px;flex-shrink:0;border-left:1px solid var(--border);background:var(--sidebar-bg);display:flex;flex-direction:column;}
+    .chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+    /* Ticket header */
+    .ticket-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);background:var(--topbar-bg);backdrop-filter:blur(20px);display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+    /* Messages */
+    .messages-area{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem;}
+    .message{display:flex;gap:0.75rem;align-items:flex-end;animation:fadeInUp 0.3s;}
+    .message.user{flex-direction:row-reverse;}
+    .msg-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;}
+    .msg-bubble{max-width:65%;border-radius:18px;padding:0.875rem 1.125rem;line-height:1.6;}
+    .msg-bubble.user{background:var(--gradient-1);color:white;border-bottom-left-radius:6px;}
+    .msg-bubble.support{background:var(--card-bg);color:var(--text-main);border:1px solid var(--border);border-bottom-right-radius:6px;}
+    .msg-meta{font-size:0.7rem;margin-top:0.4rem;opacity:0.65;}
+    /* Input area */
+    .input-area{padding:1rem 1.5rem;border-top:1px solid var(--border);background:var(--topbar-bg);backdrop-filter:blur(20px);}
+    .msg-input-box{display:flex;gap:0.75rem;align-items:flex-end;background:var(--bg);border:1.5px solid var(--border);border-radius:16px;padding:0.75rem 1rem;transition:all 0.2s;}
+    .msg-input-box:focus-within{border-color:var(--primary);box-shadow:0 0 0 4px rgba(108,92,231,0.1);}
+    .msg-input-box textarea{border:none;background:transparent;flex:1;resize:none;font-family:Vazirmatn,sans-serif;font-size:0.9rem;color:var(--text-main);outline:none;max-height:120px;min-height:36px;}
+    .send-btn{width:44px;height:44px;border-radius:12px;background:var(--gradient-1);border:none;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;transition:all 0.2s;box-shadow:0 4px 15px rgba(108,92,231,0.35);}
+    .send-btn:hover{transform:scale(1.05);}
+    /* Info sidebar */
+    .info-panel{padding:1.25rem;}
+    .info-row{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);font-size:0.83rem;}
+    .info-row:last-child{border-bottom:none;}
+    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}.chat-sidebar{display:none;}}
+  </style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon"><i class="bi bi-mortarboard-fill"></i></div><div><div style="font-weight:800;font-size:1.1rem;color:var(--text-main);">آزمون‌یار</div><div style="font-size:0.72rem;color:var(--text-muted);">پلتفرم هوشمند آزمون</div></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">منو اصلی</div>
+    <a href="01-profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> پروفایل من</a>
+    <a href="11-account.html" class="sidebar-link"><i class="bi bi-gear"></i> اطلاعات حساب</a>
+    <div class="nav-section-title">کارنامه‌ها</div>
+    <a href="02-karnameye-sales.html" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> کارنامه ثالث</a>
+    <a href="03-karnameye-sanavilist.html" class="sidebar-link"><i class="bi bi-collection"></i> لیست کارنامه ثانویه</a>
+    <a href="05-karnameye-avalilist.html" class="sidebar-link"><i class="bi bi-list-columns"></i> لیست کارنامه اولیه</a>
+    <div class="nav-section-title">آزمون‌ها</div>
+    <a href="07-exam-list.html" class="sidebar-link"><i class="bi bi-journal-check"></i> آزمون‌های شرکت‌کرده</a>
+    <a href="09-question-list.html" class="sidebar-link"><i class="bi bi-bank"></i> بانک سوالات <span class="badge-count">۱۲۴</span></a>
+    <div class="nav-section-title">پشتیبانی</div>
+    <a href="12-ticket-list.html" class="sidebar-link active"><i class="bi bi-ticket-perforated"></i> تیکت‌ها <span class="badge-count">۳</span></a>
+    <a href="13-ticket-send.html" class="sidebar-link"><i class="bi bi-plus-circle"></i> ارسال تیکت</a>
+  </nav>
+  <div class="sidebar-footer"><a href="#" class="sidebar-link" style="margin:0;"><i class="bi bi-box-arrow-right"></i> خروج</a></div>
+</aside>
+<header class="topbar">
+  <button class="topbar-btn d-lg-none" onclick="document.getElementById('sidebar').classList.toggle('show')"><i class="bi bi-list"></i></button>
+  <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0" style="font-size:0.85rem;"><li class="breadcrumb-item"><a href="12-ticket-list.html" style="color:var(--primary);text-decoration:none;">تیکت‌ها</a></li><li class="breadcrumb-item active" style="color:var(--text-muted);">تیکت #۴۵</li></ol></nav>
+  <div class="topbar-actions">
+    <div class="topbar-btn" style="position:relative;"><i class="bi bi-bell"></i><span class="notif-dot"></span></div>
+    <div class="theme-toggle" onclick="toggleTheme()"><div class="theme-toggle-thumb" id="themeIcon">☀️</div></div>
+    <div class="avatar-placeholder">ع</div>
+  </div>
+</header>
+
+<main class="main-content">
+  <div class="chat-layout">
+    <!-- Chat main -->
+    <div class="chat-main">
+      <!-- Ticket header -->
+      <div class="ticket-header">
+        <a href="12-ticket-list.html" style="width:36px;height:36px;border-radius:10px;background:var(--card-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-main);text-decoration:none;flex-shrink:0;transition:all 0.2s;" onmouseover="this.style.background='var(--gradient-1)';this.style.color='white'" onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text-main)'"><i class="bi bi-arrow-right"></i></a>
+        <div class="flex-grow-1 min-width-0">
+          <div style="font-weight:700;font-size:0.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">مشکل در نمایش کارنامه ثانویه آزمون ۱۲</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">#۴۵ • فنی • ۲ ساعت پیش</div>
+        </div>
+        <span class="badge-status badge-warning" style="flex-shrink:0;">در انتظار پاسخ</span>
+        <button onclick="closeTicket()" style="background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted);border-radius:10px;padding:0.4rem 0.875rem;font-family:Vazirmatn,sans-serif;font-size:0.8rem;cursor:pointer;flex-shrink:0;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--success)';this.style.color='var(--success)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">
+          <i class="bi bi-check2-circle"></i> بستن تیکت
+        </button>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages-area" id="messagesArea">
+        <!-- Date divider -->
+        <div style="text-align:center;"><span style="background:var(--border);color:var(--text-muted);font-size:0.72rem;padding:0.3rem 0.75rem;border-radius:50px;">امروز ۱۲:۰۵</span></div>
+
+        <!-- User message -->
+        <div class="message user">
+          <div>
+            <div class="msg-bubble user" style="font-size:0.88rem;">
+              سلام، وقتی روی کارنامه ثانویه آزمون شماره ۱۲ کلیک می‌کنم، صفحه سفید نمایش داده می‌شه و هیچ محتوایی نشون نمی‌ده. مرورگر کروم نسخه ۱۱۸ هستم.
+            </div>
+            <div class="msg-meta" style="text-align:left;">۱۲:۰۵ • علی محمدی ✓✓</div>
+          </div>
+          <div class="msg-avatar" style="background:var(--gradient-1);color:white;">ع</div>
+        </div>
+
+        <!-- Support message -->
+        <div class="message">
+          <div class="msg-avatar" style="background:var(--gradient-2);color:white;"><i class="bi bi-headset" style="font-size:0.9rem;"></i></div>
+          <div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.25rem;">تیم پشتیبانی • سارا احمدی</div>
+            <div class="msg-bubble support" style="font-size:0.88rem;">
+              سلام علی جان 👋<br><br>
+              ممنون که با ما تماس گرفتید. مشکل شما را بررسی می‌کنیم. لطفاً می‌توانید مراحل زیر را امتحان کنید:<br><br>
+              ۱. کش مرورگر را پاک کنید (Ctrl+Shift+Delete)<br>
+              ۲. مرورگر را ببندید و دوباره باز کنید<br>
+              ۳. آیا در مرورگر دیگری هم این مشکل وجود دارد؟
+            </div>
+            <div class="msg-meta">۱۲:۱۸</div>
+          </div>
+        </div>
+
+        <!-- User response -->
+        <div class="message user">
+          <div>
+            <div class="msg-bubble user" style="font-size:0.88rem;">
+              مراحل رو انجام دادم ولی هنوزم مشکل وجود داره. در فایرفاکس هم مشکل همینه.
+            </div>
+            <div class="msg-meta" style="text-align:left;">۱۲:۳۵ ✓✓</div>
+          </div>
+          <div class="msg-avatar" style="background:var(--gradient-1);color:white;">ع</div>
+        </div>
+
+        <!-- Support -->
+        <div class="message">
+          <div class="msg-avatar" style="background:var(--gradient-2);color:white;"><i class="bi bi-headset" style="font-size:0.9rem;"></i></div>
+          <div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.25rem;">تیم پشتیبانی • سارا احمدی</div>
+            <div class="msg-bubble support" style="font-size:0.88rem;">
+              متوجه شدم. یک باگ در سیستم ما شناسایی کردیم که روی کارنامه‌های آزمون‌های ۱۰ تا ۱۵ تأثیر می‌گذارد. تیم فنی در حال رفع مشکل هستند. در عرض ۲-۴ ساعت آینده مشکل برطرف خواهد شد. 🛠️
+            </div>
+            <div class="msg-meta">۱۳:۱۰</div>
+          </div>
+        </div>
+
+        <!-- System message -->
+        <div style="text-align:center;margin:0.5rem 0;">
+          <span style="background:rgba(108,92,231,0.1);color:var(--primary);font-size:0.72rem;padding:0.3rem 0.75rem;border-radius:50px;border:1px solid rgba(108,92,231,0.2);">در انتظار پاسخ شما</span>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <div class="msg-input-box">
+          <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;padding:0;flex-shrink:0;" title="پیوست"><i class="bi bi-paperclip"></i></button>
+          <textarea id="msgInput" placeholder="پیام خود را بنویسید..." rows="1"
+            oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+          <button class="send-btn" onclick="sendMessage()" title="ارسال"><i class="bi bi-send-fill"></i></button>
+        </div>
+        <div style="font-size:0.72rem;color:var(--text-light);margin-top:0.4rem;text-align:center;">Enter برای ارسال • Shift+Enter برای خط جدید</div>
+      </div>
+    </div>
+
+    <!-- Info sidebar -->
+    <div class="chat-sidebar">
+      <div class="info-panel">
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border);">اطلاعات تیکت</div>
+        <div class="info-row"><span style="color:var(--text-muted);">شماره</span><span style="font-weight:700;">#۴۵</span></div>
+        <div class="info-row"><span style="color:var(--text-muted);">وضعیت</span><span class="badge-status badge-warning">در انتظار</span></div>
+        <div class="info-row"><span style="color:var(--text-muted);">اولویت</span><span style="font-weight:600;color:var(--danger);">بالا</span></div>
+        <div class="info-row"><span style="color:var(--text-muted);">دسته‌بندی</span><span style="font-weight:600;">فنی</span></div>
+        <div class="info-row"><span style="color:var(--text-muted);">تاریخ ایجاد</span><span style="font-size:0.78rem;">۱۴۰۳/۰۹/۱۵</span></div>
+        <div class="info-row"><span style="color:var(--text-muted);">آخرین فعالیت</span><span style="font-size:0.78rem;">۲ ساعت پیش</span></div>
+        <div class="info-row"><span style="color:var(--text-muted);">پشتیبان</span><span style="font-size:0.82rem;font-weight:600;">سارا احمدی</span></div>
+      </div>
+      <div style="padding:0 1.25rem 1.25rem;border-top:1px solid var(--border);padding-top:1rem;">
+        <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.75rem;">عملیات سریع</div>
+        <button onclick="closeTicket()" style="width:100%;background:rgba(0,184,148,0.1);border:1px solid rgba(0,184,148,0.3);color:var(--success);border-radius:10px;padding:0.55rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;margin-bottom:0.5rem;transition:all 0.2s;"><i class="bi bi-check2-circle"></i> بستن تیکت (حل شد)</button>
+        <button style="width:100%;background:rgba(225,112,85,0.1);border:1px solid rgba(225,112,85,0.3);color:var(--danger);border-radius:10px;padding:0.55rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;transition:all 0.2s;"><i class="bi bi-x-circle"></i> بستن تیکت (لغو)</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
+  const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
+
+  function sendMessage(){
+    const input=document.getElementById('msgInput');
+    const text=input.value.trim();
+    if(!text)return;
+    const area=document.getElementById('messagesArea');
+    const time=new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
+    const msg=document.createElement('div');
+    msg.className='message user';
+    msg.innerHTML=`<div><div class="msg-bubble user" style="font-size:0.88rem;">${text.replace(/\n/g,'<br>')}</div><div class="msg-meta" style="text-align:left;">${time} • ارسال شد ✓</div></div><div class="msg-avatar" style="background:var(--gradient-1);color:white;">ع</div>`;
+    area.appendChild(msg);
+    input.value='';
+    input.style.height='auto';
+    area.scrollTop=area.scrollHeight;
+    // Simulate typing indicator
+    setTimeout(()=>{
+      const typing=document.createElement('div');
+      typing.className='message';
+      typing.id='typing-indicator';
+      typing.innerHTML=`<div class="msg-avatar" style="background:var(--gradient-2);color:white;"><i class="bi bi-headset" style="font-size:0.9rem;"></i></div><div class="msg-bubble support" style="font-size:0.88rem;"><span>...</span></div>`;
+      area.appendChild(typing);
+      area.scrollTop=area.scrollHeight;
+    },800);
+    setTimeout(()=>{
+      const t=document.getElementById('typing-indicator');
+      if(t)t.remove();
+      const resp=document.createElement('div');
+      resp.className='message';
+      resp.innerHTML=`<div class="msg-avatar" style="background:var(--gradient-2);color:white;"><i class="bi bi-headset" style="font-size:0.9rem;"></i></div><div><div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.25rem;">تیم پشتیبانی • سارا احمدی</div><div class="msg-bubble support" style="font-size:0.88rem;">ممنون از پیام شما. تیم ما در حال بررسی مشکل هستند و به زودی پاسخ خواهیم داد. 🙏</div><div class="msg-meta">${time}</div></div>`;
+      area.appendChild(resp);
+      area.scrollTop=area.scrollHeight;
+    },2500);
+  }
+
+  function closeTicket(){
+    if(confirm('آیا از بستن این تیکت مطمئن هستید؟')){
+      window.location.href='12-ticket-list.html';
+    }
+  }
+
+  // Scroll to bottom on load
+  document.addEventListener('DOMContentLoaded',()=>{
+    const a=document.getElementById('messagesArea');
+    a.scrollTop=a.scrollHeight;
+  });
+</script>
+</body></html>

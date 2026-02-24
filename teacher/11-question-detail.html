@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تصحیح سوال ۴ — علی رضایی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+:root{--bg-primary:#f0f4ff;--bg-surface:#ffffff;--bg-surface2:#f8faff;--bg-glass:rgba(255,255,255,0.7);--bg-glass-border:rgba(255,255,255,0.9);--sidebar-bg:rgba(255,255,255,0.85);--text-primary:#1e1b4b;--text-secondary:#6b7280;--text-muted:#9ca3af;--border-color:rgba(79,70,229,0.12);--shadow-sm:0 2px 8px rgba(79,70,229,0.08);--shadow-md:0 8px 32px rgba(79,70,229,0.12);--shadow-lg:0 20px 60px rgba(79,70,229,0.15);--gradient-primary:linear-gradient(135deg,#4f46e5,#7c3aed);--gradient-success:linear-gradient(135deg,#059669,#10b981);--gradient-warning:linear-gradient(135deg,#d97706,#f59e0b);--accent:#4f46e5;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);}
+[data-theme="dark"]{--bg-primary:#0a0a1a;--bg-surface:#13132b;--bg-surface2:#1a1a35;--bg-glass:rgba(255,255,255,0.04);--bg-glass-border:rgba(255,255,255,0.08);--sidebar-bg:rgba(19,19,43,0.95);--text-primary:#e8e8f8;--text-secondary:#a5b4fc;--text-muted:#6366f1;--border-color:rgba(99,102,241,0.2);--shadow-sm:0 2px 8px rgba(0,0,0,0.3);--shadow-md:0 8px 32px rgba(0,0,0,0.4);--shadow-lg:0 20px 60px rgba(0,0,0,0.5);}
+*,*::before,*::after{box-sizing:border-box;}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg-primary);color:var(--text-primary);direction:rtl;transition:var(--transition);min-height:100vh;}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse 80% 80% at 20% 10%,rgba(79,70,229,0.08) 0%,transparent 50%);pointer-events:none;z-index:0;}
+.topbar{position:fixed;top:0;right:0;left:0;height:64px;background:var(--bg-glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-color);z-index:1030;display:flex;align-items:center;padding:0 24px;gap:16px;}
+.topbar-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;color:var(--accent);text-decoration:none;}
+.brand-icon{width:38px;height:38px;background:var(--gradient-primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem;box-shadow:0 4px 12px rgba(79,70,229,0.4);}
+.topbar-spacer{flex:1;}.topbar-actions{display:flex;align-items:center;gap:8px;}
+.topbar-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-glass);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);text-decoration:none;}
+.topbar-btn:hover{background:var(--accent);color:white;}
+.theme-toggle{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-glass);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);}
+.theme-toggle:hover{background:var(--accent);color:white;}
+.user-avatar{width:38px;height:38px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;border:2px solid var(--border-color);}
+.sidebar-toggle{display:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-glass);color:var(--text-secondary);align-items:center;justify-content:center;cursor:pointer;}
+.sidebar{position:fixed;top:64px;right:0;bottom:0;width:260px;background:var(--sidebar-bg);backdrop-filter:blur(20px);border-left:1px solid var(--border-color);overflow-y:auto;z-index:1020;padding:20px 0;transition:var(--transition);}
+.sidebar-section-title{font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;padding:12px 20px 6px;}
+.sidebar-item{display:flex;align-items:center;gap:12px;padding:10px 20px;color:var(--text-secondary);text-decoration:none;font-size:0.88rem;font-weight:500;transition:var(--transition);margin:1px 12px;border-radius:10px;}
+.sidebar-item:hover{background:rgba(79,70,229,0.08);color:var(--accent);}
+.sidebar-item.active{background:var(--gradient-primary);color:white;box-shadow:0 4px 16px rgba(79,70,229,0.35);}
+.si-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(79,70,229,0.1);font-size:1rem;flex-shrink:0;}
+.sidebar-item.active .si-icon{background:rgba(255,255,255,0.2);}
+.sidebar-badge{margin-right:auto;background:#ef4444;color:white;font-size:0.65rem;padding:2px 7px;border-radius:20px;font-weight:700;}
+.sidebar-item.active .sidebar-badge{background:rgba(255,255,255,0.3);}
+.sidebar-divider{height:1px;background:var(--border-color);margin:12px 20px;}
+.main-content{margin-right:260px;margin-top:64px;padding:28px;min-height:calc(100vh - 64px);position:relative;z-index:1;}
+.glass-card{background:var(--bg-glass);backdrop-filter:blur(20px);border:1px solid var(--bg-glass-border);border-radius:16px;box-shadow:var(--shadow-md);}
+[data-theme="dark"] .glass-card{background:var(--bg-glass);border-color:var(--border-color);}
+.btn-gradient{background:var(--gradient-primary);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'Vazirmatn',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(79,70,229,0.35);display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+.btn-gradient:hover{transform:translateY(-2px);color:white;}
+.btn-glass{background:var(--bg-glass);border:1px solid var(--border-color);color:var(--text-primary);border-radius:10px;padding:8px 16px;font-family:'Vazirmatn',sans-serif;font-weight:500;font-size:0.82rem;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;text-decoration:none;}
+.btn-glass:hover{border-color:var(--accent);color:var(--accent);}
+.section-title{font-size:1rem;font-weight:800;color:var(--text-primary);display:flex;align-items:center;gap:10px;}
+.section-title::before{content:'';width:4px;height:18px;background:var(--gradient-primary);border-radius:4px;display:block;}
+.dashboard-footer{background:var(--bg-glass);backdrop-filter:blur(20px);border-top:1px solid var(--border-color);padding:16px 28px;margin-right:260px;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--text-muted);}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fade-in-up{animation:fadeInUp 0.5s ease forwards;}
+.delay-1{animation-delay:0.1s;opacity:0;}.delay-2{animation-delay:0.2s;opacity:0;}
+@media(max-width:991px){.sidebar{transform:translateX(100%);}.sidebar.open{transform:translateX(0);}.main-content{margin-right:0;padding:20px 16px;}.dashboard-footer{margin-right:0;}.sidebar-toggle{display:flex!important;}.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1015;}.sidebar-overlay.show{display:block;}}
+::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:6px;}
+
+/* Correction specific */
+.pdf-viewer{background:var(--bg-surface2);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;position:relative;}
+.pdf-toolbar{background:var(--bg-surface);border-bottom:1px solid var(--border-color);padding:8px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.pdf-page{padding:24px;min-height:340px;display:flex;flex-direction:column;align-items:flex-start;}
+.handwritten-sim{font-style:italic;color:var(--text-primary);font-size:0.88rem;line-height:2;border-right:3px solid var(--accent);padding-right:12px;background:rgba(79,70,229,0.03);border-radius:4px;padding:12px;width:100%;}
+.score-input-box{display:flex;flex-direction:column;gap:8px;}
+.score-slider-row{display:flex;align-items:center;gap:12px;}
+.score-slider{width:100%;height:6px;border-radius:6px;accent-color:var(--accent);cursor:pointer;}
+.score-display{width:60px;height:48px;border:2px solid var(--border-color);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:var(--accent);background:var(--bg-surface);}
+.quick-score-btn{padding:8px 14px;border-radius:10px;border:2px solid var(--border-color);background:var(--bg-surface);font-family:'Vazirmatn',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;transition:var(--transition);color:var(--text-primary);}
+.quick-score-btn:hover,.quick-score-btn.active{background:var(--gradient-primary);border-color:transparent;color:white;transform:scale(1.05);}
+.criteria-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-color);}
+.criteria-row:last-child{border-bottom:none;}
+.criteria-name{font-size:0.85rem;font-weight:600;}
+.criteria-score{display:flex;align-items:center;gap:6px;}
+.criteria-input{width:48px;padding:5px 8px;border-radius:8px;border:1.5px solid var(--border-color);background:var(--bg-surface);font-family:'Vazirmatn',sans-serif;font-weight:700;font-size:0.88rem;color:var(--text-primary);text-align:center;outline:none;transition:var(--transition);}
+.criteria-input:focus{border-color:var(--accent);}
+.criteria-max{font-size:0.75rem;color:var(--text-muted);}
+.nav-q-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-surface);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);font-size:0.78rem;font-weight:700;color:var(--text-secondary);}
+.nav-q-btn:hover{background:var(--accent);color:white;border-color:var(--accent);}
+.nav-q-btn.active{background:var(--gradient-primary);color:white;border-color:transparent;}
+.nav-q-btn.done{background:rgba(16,185,129,0.1);color:#059669;border-color:#10b981;}
+.rubric-tag{padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;cursor:pointer;transition:var(--transition);}
+.rubric-tag.deduct{background:rgba(239,68,68,0.1);color:#dc2626;}
+.rubric-tag.bonus{background:rgba(16,185,129,0.1);color:#059669;}
+.rubric-tag:hover{filter:brightness(1.1);transform:scale(1.05);}
+.feedback-area{background:var(--bg-surface);border:1.5px solid var(--border-color);border-radius:10px;padding:12px;font-family:'Vazirmatn',sans-serif;font-size:0.85rem;color:var(--text-primary);resize:vertical;width:100%;outline:none;transition:var(--transition);}
+.feedback-area:focus{border-color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="topbar">
+  <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="bi bi-list fs-5"></i></button>
+  <a href="01-dashboard.html" class="topbar-brand"><div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>آزمون‌یار</a>
+  <div class="topbar-spacer"></div>
+  <!-- Quick nav in topbar -->
+  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+    <span style="font-size:0.78rem;color:var(--text-muted);">سوال:</span>
+    <div style="display:flex;gap:3px;">
+      <div class="nav-q-btn done">۱</div>
+      <div class="nav-q-btn done">۲</div>
+      <div class="nav-q-btn done">۳</div>
+      <div class="nav-q-btn active">۴</div>
+      <div class="nav-q-btn">۵</div>
+      <div class="nav-q-btn">۶</div>
+      <div class="nav-q-btn" style="opacity:0.5;">...</div>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-moon-stars" id="themeIcon"></i></button>
+    <div class="user-avatar">مص</div>
+  </div>
+</div>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-section-title">داشبورد</div>
+  <a href="01-dashboard.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-speedometer2"></i></div>صفحه اصلی</a>
+  <a href="02-account.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-person-badge"></i></div>اطلاعات حساب</a>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-title">آزمون‌ها</div>
+  <a href="08-pending-exams.html" class="sidebar-item active"><div class="si-icon"><i class="bi bi-clipboard2-check"></i></div>آزمون‌های منتظر<span class="sidebar-badge">۵</span></a>
+  <a href="07-exam-history.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-archive"></i></div>تاریخچه تصحیح‌شده</a>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-title">پشتیبانی</div>
+  <a href="03-tickets-list.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-ticket-perforated"></i></div>لیست تیکت‌ها</a>
+  <a href="04-send-ticket.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-send-plus"></i></div>ارسال تیکت</a>
+  <!-- Sidebar student context -->
+  <div style="margin:16px 12px 0;padding:14px;border-radius:12px;background:var(--bg-surface2);border:1px solid var(--border-color);">
+    <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:6px;">در حال تصحیح</div>
+    <div style="font-weight:700;font-size:0.88rem;">علی رضایی</div>
+    <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:2px;">سوال ۴ از ۳۵</div>
+    <div style="margin-top:8px;height:4px;background:var(--border-color);border-radius:4px;">
+      <div style="width:11%;height:100%;background:var(--gradient-primary);border-radius:4px;"></div>
+    </div>
+  </div>
+</nav>
+<main class="main-content">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3 fade-in-up">
+    <div>
+      <h1 style="font-size:1.3rem;font-weight:800;margin:0;">تصحیح سوال ۴</h1>
+      <div style="font-size:0.83rem;color:var(--text-secondary);margin-top:4px;"><a href="10-exam-questions.html" style="color:var(--accent);text-decoration:none;">لیست سوالات</a> / سوال ۴ — تشریحی</div>
+    </div>
+    <div class="d-flex gap-2 align-items-center flex-wrap">
+      <a href="10-exam-questions.html" class="btn-glass"><i class="bi bi-arrow-right"></i>سوال قبلی</a>
+      <a href="10-exam-questions.html" class="btn-glass"><i class="bi bi-arrow-left"></i>سوال بعدی</a>
+      <button class="btn-gradient" onclick="saveScore()"><i class="bi bi-check2-all"></i>ثبت نمره</button>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Question + Answer (left 60%) -->
+    <div class="col-lg-7 fade-in-up delay-1">
+
+      <!-- Question Text -->
+      <div class="glass-card p-4 mb-3">
+        <div class="section-title mb-3">متن سوال</div>
+        <div style="background:var(--bg-surface2);border-radius:10px;padding:16px;border-right:4px solid var(--accent);">
+          <div style="font-weight:700;margin-bottom:8px;font-size:0.88rem;">سوال ۴ — تشریحی | ۸ نمره</div>
+          <div style="font-size:0.9rem;line-height:2;">
+            معادله مثلثاتی زیر را در بازه [0, 2π] حل کنید:
+            <div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
+              2 sin(x) = √3
+            </div>
+            <span style="font-size:0.82rem;color:var(--text-muted);">راه‌حل را کامل بنویسید. نمره‌گذاری شامل مراحل میانی است.</span>
+          </div>
+        </div>
+        <!-- Tags -->
+        <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(79,70,229,0.1);color:#4f46e5;">مثلثات</span>
+          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(8,145,178,0.1);color:#0891b2;">معادله</span>
+          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(245,158,11,0.1);color:#d97706;">سطح متوسط</span>
+        </div>
+      </div>
+
+      <!-- Answer Sheet (PDF Viewer mock) -->
+      <div class="glass-card mb-3">
+        <div style="padding:16px 20px 8px;display:flex;justify-content:space-between;align-items:center;">
+          <div class="section-title">پاسخنامه دانش‌آموز</div>
+          <span style="font-size:0.75rem;color:var(--text-muted);">علی رضایی | کد: ۱۰۰۱</span>
+        </div>
+        <div class="pdf-viewer" style="margin:0 16px 16px;">
+          <div class="pdf-toolbar">
+            <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
+            <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
+            <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
+            <span style="margin-right:auto;font-size:0.72rem;color:var(--text-muted);">صفحه ۳ از ۱۰</span>
+            <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>دانلود</button>
+          </div>
+          <div class="pdf-page">
+            <!-- Simulated handwritten answer -->
+            <div style="width:100%;">
+              <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:8px;border-bottom:1px solid var(--border-color);padding-bottom:8px;"><i class="bi bi-person me-1"></i>علی رضایی — کد ملی: ۰۰۱... — کلاس ۱۰/الف</div>
+              <div style="font-weight:700;font-size:0.82rem;margin-bottom:10px;">حل سوال ۴:</div>
+              <div class="handwritten-sim">
+                داریم:  2 sin(x) = √3<br>
+                پس:     sin(x) = √3 / 2<br>
+                <br>
+                می‌دانیم sin(x) = √3/2 وقتی x = π/3<br>
+                <br>
+                چون sin تابع مثبت است در ربع اول و دوم:<br>
+                x₁ = π/3<br>
+                x₂ = π - π/3 = 2π/3<br>
+                <br>
+                جواب: x = π/3  یا  x = 2π/3
+              </div>
+              <!-- Annotation toolbar (mock) -->
+              <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:var(--bg-surface2);border-radius:8px;font-size:0.75rem;">
+                <span style="color:var(--text-muted);">حاشیه‌نویسی:</span>
+                <button onclick="addAnnotation('✓')" style="padding:3px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:0.75rem;color:#10b981;">✓ درست</button>
+                <button onclick="addAnnotation('✗')" style="padding:3px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:0.75rem;color:#dc2626;">✗ اشتباه</button>
+                <button onclick="addAnnotation('?')" style="padding:3px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:0.75rem;color:#d97706;">? بررسی</button>
+                <button onclick="addAnnotation('★')" style="padding:3px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:0.75rem;color:#4f46e5;">★ عالی</button>
+              </div>
+              <div id="annotations" style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;min-height:24px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Model Answer -->
+      <div class="glass-card p-4">
+        <div class="section-title mb-3">پاسخ نمونه</div>
+        <div style="background:rgba(16,185,129,0.05);border-radius:10px;padding:14px;border:1px solid rgba(16,185,129,0.2);">
+          <div style="font-size:0.82rem;line-height:2.2;color:var(--text-secondary);">
+            <strong style="color:var(--text-primary);">۱.</strong> تبدیل: 2sin(x) = √3  →  sin(x) = √3/2 &nbsp; <span style="color:#059669;">(۱ نمره)</span><br>
+            <strong style="color:var(--text-primary);">۲.</strong> شناسایی زاویه پایه: x = π/3 &nbsp; <span style="color:#059669;">(۲ نمره)</span><br>
+            <strong style="color:var(--text-primary);">۳.</strong> جواب ربع اول: x₁ = π/3 &nbsp; <span style="color:#059669;">(۲ نمره)</span><br>
+            <strong style="color:var(--text-primary);">۴.</strong> جواب ربع دوم: x₂ = π - π/3 = 2π/3 &nbsp; <span style="color:#059669;">(۲ نمره)</span><br>
+            <strong style="color:var(--text-primary);">۵.</strong> تأیید در بازه [0, 2π] &nbsp; <span style="color:#059669;">(۱ نمره)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scoring Panel (right 40%) -->
+    <div class="col-lg-5 fade-in-up delay-2">
+
+      <!-- Score Input -->
+      <div class="glass-card p-4 mb-3">
+        <div class="section-title mb-4">ثبت نمره</div>
+
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">نمره کل</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+            <button onclick="adjustScore(-0.5)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:1.1rem;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">−</button>
+            <div class="score-display" id="scoreDisplay">۰</div>
+            <button onclick="adjustScore(0.5)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:var(--gradient-primary);color:white;cursor:pointer;font-size:1.1rem;">+</button>
+          </div>
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">از ۸ نمره</div>
+        </div>
+
+        <input type="range" class="score-slider" id="scoreSlider" min="0" max="8" step="0.5" value="0" oninput="updateScoreFromSlider(this.value)">
+
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;">
+          <div style="font-size:0.75rem;color:var(--text-muted);width:100%;margin-bottom:4px;">انتخاب سریع:</div>
+          <button class="quick-score-btn" onclick="setScore(0)">۰</button>
+          <button class="quick-score-btn" onclick="setScore(2)">۲</button>
+          <button class="quick-score-btn" onclick="setScore(4)">۴</button>
+          <button class="quick-score-btn" onclick="setScore(5)">۵</button>
+          <button class="quick-score-btn" onclick="setScore(6)">۶</button>
+          <button class="quick-score-btn" onclick="setScore(7)">۷</button>
+          <button class="quick-score-btn" onclick="setScore(8)">۸</button>
+        </div>
+      </div>
+
+      <!-- Criteria Scoring -->
+      <div class="glass-card p-4 mb-3">
+        <div class="section-title mb-3">امتیازدهی مرحله‌ای</div>
+        <div class="criteria-row">
+          <div>
+            <div class="criteria-name">تبدیل معادله</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">sin(x) = √3/2</div>
+          </div>
+          <div class="criteria-score">
+            <input class="criteria-input" type="number" min="0" max="1" step="0.5" value="0" oninput="recalcTotal()">
+            <div class="criteria-max">/ ۱</div>
+          </div>
+        </div>
+        <div class="criteria-row">
+          <div>
+            <div class="criteria-name">شناسایی زاویه پایه</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">x = π/3</div>
+          </div>
+          <div class="criteria-score">
+            <input class="criteria-input" type="number" min="0" max="2" step="0.5" value="0" oninput="recalcTotal()">
+            <div class="criteria-max">/ ۲</div>
+          </div>
+        </div>
+        <div class="criteria-row">
+          <div>
+            <div class="criteria-name">جواب ربع اول</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">x₁ = π/3</div>
+          </div>
+          <div class="criteria-score">
+            <input class="criteria-input" type="number" min="0" max="2" step="0.5" value="0" oninput="recalcTotal()">
+            <div class="criteria-max">/ ۲</div>
+          </div>
+        </div>
+        <div class="criteria-row">
+          <div>
+            <div class="criteria-name">جواب ربع دوم</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">x₂ = 2π/3</div>
+          </div>
+          <div class="criteria-score">
+            <input class="criteria-input" type="number" min="0" max="2" step="0.5" value="0" oninput="recalcTotal()">
+            <div class="criteria-max">/ ۲</div>
+          </div>
+        </div>
+        <div class="criteria-row">
+          <div>
+            <div class="criteria-name">تأیید در بازه</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">[0, 2π]</div>
+          </div>
+          <div class="criteria-score">
+            <input class="criteria-input" type="number" min="0" max="1" step="0.5" value="0" oninput="recalcTotal()">
+            <div class="criteria-max">/ ۱</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;border-radius:10px;background:var(--bg-surface2);border:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-weight:700;font-size:0.88rem;">جمع نمره مرحله‌ای:</span>
+          <span id="criteriaTotal" style="font-size:1.1rem;font-weight:900;color:var(--accent);">۰ / ۸</span>
+        </div>
+      </div>
+
+      <!-- Rubric Tags -->
+      <div class="glass-card p-4 mb-3">
+        <div class="section-title mb-3">برچسب‌های ارزیابی</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="rubric-tag deduct" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'#dc2626':'';this.style.color=this.classList.contains('active')?'white':'';">−۱ محاسبه اشتباه</span>
+          <span class="rubric-tag deduct" onclick="this.classList.toggle('active');">−۰.۵ علامت‌گذاری ناقص</span>
+          <span class="rubric-tag bonus" onclick="this.classList.toggle('active');">+۰.۵ رویکرد خلاقانه</span>
+          <span class="rubric-tag bonus" onclick="this.classList.toggle('active');">+۰.۵ نظم و ترتیب عالی</span>
+          <span class="rubric-tag deduct" onclick="this.classList.toggle('active');">−۱ مرحله‌ای حذف شده</span>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="glass-card p-4 mb-3">
+        <div class="section-title mb-3">بازخورد برای دانش‌آموز</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;">
+          <button onclick="addFeedback('پاسخ کامل و صحیح است.')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);font-size:0.72rem;cursor:pointer;font-family:Vazirmatn,sans-serif;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">پاسخ کامل ✓</button>
+          <button onclick="addFeedback('زاویه را اشتباه محاسبه کرده‌اید.')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);font-size:0.72rem;cursor:pointer;font-family:Vazirmatn,sans-serif;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">زاویه اشتباه</button>
+          <button onclick="addFeedback('نمودار نیاز به دقت بیشتری دارد.')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);font-size:0.72rem;cursor:pointer;font-family:Vazirmatn,sans-serif;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">نمودار ناقص</button>
+        </div>
+        <textarea class="feedback-area" id="feedbackText" rows="3" placeholder="بازخورد خود را برای این دانش‌آموز بنویسید..."></textarea>
+      </div>
+
+      <!-- Save button -->
+      <div class="d-flex gap-2">
+        <button class="btn-glass" style="flex:1;justify-content:center;" onclick="saveAndNext()"><i class="bi bi-skip-end"></i>ذخیره و بعدی</button>
+        <button class="btn-gradient" style="flex:1;justify-content:center;" onclick="saveScore()"><i class="bi bi-check2-circle"></i>ثبت نمره</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+<footer class="dashboard-footer"><div>© ۱۴۰۳ آزمون‌یار</div><div>نسخه ۲.۴.۱</div></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';localStorage.setItem('theme','light');}}
+(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
+
+let currentScore = 0;
+function setScore(v){
+  currentScore=v;
+  document.getElementById('scoreDisplay').textContent=toPersian(v);
+  document.getElementById('scoreSlider').value=v;
+  document.querySelectorAll('.quick-score-btn').forEach(b=>{b.classList.remove('active');if(parseFloat(b.textContent)==v)b.classList.add('active');});
+}
+function adjustScore(d){setScore(Math.max(0,Math.min(8,currentScore+d)));}
+function updateScoreFromSlider(v){setScore(parseFloat(v));}
+function toPersian(n){return String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);}
+function recalcTotal(){
+  const inputs=document.querySelectorAll('.criteria-input');
+  let total=0;inputs.forEach(i=>{total+=parseFloat(i.value)||0;});
+  document.getElementById('criteriaTotal').textContent=toPersian(total)+' / ۸';
+  setScore(total);
+}
+function addFeedback(t){
+  const fb=document.getElementById('feedbackText');
+  fb.value=(fb.value?fb.value+' ':'')+t;
+}
+function addAnnotation(sym){
+  const d=document.getElementById('annotations');
+  const s=document.createElement('span');
+  s.style.cssText='padding:2px 10px;border-radius:4px;font-size:0.8rem;background:var(--bg-surface2);border:1px solid var(--border-color);cursor:pointer;';
+  s.textContent=sym;
+  s.onclick=()=>s.remove();
+  d.appendChild(s);
+}
+function saveScore(){
+  const score=currentScore;
+  const a=document.createElement('div');
+  a.innerHTML=`<div style="position:fixed;bottom:20px;left:20px;background:linear-gradient(135deg,#059669,#10b981);color:white;padding:16px 22px;border-radius:14px;font-family:Vazirmatn,sans-serif;font-size:0.88rem;font-weight:700;z-index:9999;display:flex;gap:10px;align-items:center;box-shadow:0 8px 24px rgba(5,150,105,0.4);"><i class="bi bi-check-circle-fill"></i> نمره ${toPersian(score)} از ۸ ثبت شد</div>`;
+  document.body.appendChild(a);
+  setTimeout(()=>a.remove(),2500);
+}
+function saveAndNext(){saveScore();setTimeout(()=>window.location.href='10-exam-questions.html',500);}
+</script>
+</body>
+</html>

@@ -1,0 +1,2958 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>آزمون‌آنلاین | پلتفرم هوشمند آزمون و بانک سوال</title>
+
+<!-- Bootstrap 5 RTL -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<!-- Vazirmatn Font -->
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN SYSTEM - CSS VARIABLES & BASE
+   ============================================================ */
+:root {
+  /* Primary Palette */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
+
+  /* Secondary - Violet */
+  --secondary-500: #8b5cf6;
+  --secondary-600: #7c3aed;
+
+  /* Accent - Emerald */
+  --accent-400: #34d399;
+  --accent-500: #10b981;
+
+  /* Warm - Amber */
+  --warm-400: #fbbf24;
+  --warm-500: #f59e0b;
+
+  /* Danger */
+  --danger-500: #ef4444;
+  --danger-600: #dc2626;
+
+  /* Light Mode Colors */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-sidebar: #ffffff;
+  --bg-navbar: rgba(255,255,255,0.85);
+  --bg-glass: rgba(255,255,255,0.7);
+  --bg-glass-dark: rgba(255,255,255,0.15);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-inverse: #ffffff;
+
+  --border-color: #e2e8f0;
+  --border-light: #f1f5f9;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.07), 0 4px 10px rgba(0,0,0,0.04);
+  --shadow-xl: 0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04);
+  --shadow-glow: 0 0 30px rgba(59,130,246,0.15);
+  --shadow-glow-purple: 0 0 30px rgba(139,92,246,0.2);
+
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  --gradient-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --gradient-warm: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  --bg-primary: #0a0f1e;
+  --bg-secondary: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #263348;
+  --bg-sidebar: #111827;
+  --bg-navbar: rgba(10,15,30,0.9);
+  --bg-glass: rgba(30,41,59,0.7);
+  --bg-glass-dark: rgba(255,255,255,0.05);
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --border-color: #1e293b;
+  --border-light: #0f172a;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.2);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.3), 0 4px 10px rgba(0,0,0,0.2);
+  --shadow-xl: 0 20px 40px rgba(0,0,0,0.4), 0 8px 16px rgba(0,0,0,0.3);
+  --shadow-glow: 0 0 30px rgba(59,130,246,0.25);
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
+}
+
+/* Numbers in Persian context */
+.ltr-nums { direction: ltr; display: inline-block; }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--primary-300); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-500); }
+
+/* ============================================================
+   PAGE NAVIGATION SYSTEM (Demo Navigation)
+   ============================================================ */
+.page-nav {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 12px;
+  box-shadow: var(--shadow-xl);
+  max-height: 80vh;
+  overflow-y: auto;
+  width: 220px;
+  transition: var(--transition);
+}
+.page-nav.collapsed { width: 50px; overflow: hidden; }
+.page-nav-toggle {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-blue);
+  border: none;
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: var(--transition);
+}
+.page-nav-content { display: flex; flex-direction: column; gap: 4px; }
+.page-nav-group { font-size: 10px; color: var(--text-muted); font-weight: 700; padding: 4px 0 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+.page-link-btn {
+  display: block; padding: 5px 8px; border-radius: var(--radius-sm);
+  font-size: 11px; color: var(--text-secondary); text-decoration: none;
+  transition: var(--transition-fast); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; cursor: pointer; background: none; border: none;
+  text-align: right; width: 100%;
+}
+.page-link-btn:hover, .page-link-btn.active {
+  background: var(--primary-50); color: var(--primary-600);
+  [data-theme="dark"] & { background: rgba(59,130,246,0.1); }
+}
+[data-theme="dark"] .page-link-btn:hover,
+[data-theme="dark"] .page-link-btn.active { background: rgba(59,130,246,0.15); color: var(--primary-300); }
+
+/* ============================================================
+   PAGE SECTIONS
+   ============================================================ */
+.page-section {
+  display: none;
+  min-height: 100vh;
+  animation: fadeInUp 0.4s ease;
+}
+.page-section.active { display: block; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.main-navbar {
+  background: var(--bg-navbar);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.navbar-brand-text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: var(--gradient-blue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar-brand-logo {
+  width: 38px; height: 38px;
+  background: var(--gradient-blue);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.1rem;
+}
+
+.nav-link-custom {
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+  padding: 6px 14px !important;
+  border-radius: var(--radius-full);
+  transition: var(--transition-fast);
+  font-size: 0.9rem;
+}
+.nav-link-custom:hover { color: var(--primary-600) !important; background: var(--primary-50); }
+[data-theme="dark"] .nav-link-custom:hover { background: rgba(59,130,246,0.1); color: var(--primary-300) !important; }
+
+/* Dark Mode Toggle */
+.theme-toggle {
+  width: 52px; height: 28px;
+  background: var(--bg-secondary);
+  border-radius: 14px;
+  position: relative;
+  cursor: pointer;
+  border: 2px solid var(--border-color);
+  transition: var(--transition);
+}
+.theme-toggle::after {
+  content: '';
+  width: 20px; height: 20px;
+  background: var(--gradient-blue);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px; right: 2px;
+  transition: var(--transition);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+[data-theme="dark"] .theme-toggle::after {
+  right: auto; left: 2px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.sun-icon, .moon-icon { font-size: 13px; position: absolute; top: 50%; transform: translateY(-50%); transition: var(--transition); }
+.sun-icon { left: 6px; color: #f59e0b; opacity: 0; }
+.moon-icon { right: 6px; color: #6366f1; }
+[data-theme="dark"] .sun-icon { opacity: 1; }
+[data-theme="dark"] .moon-icon { opacity: 0; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary-gradient {
+  background: var(--gradient-blue);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: var(--radius-full);
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(59,130,246,0.35);
+  font-family: inherit;
+}
+.btn-primary-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59,130,246,0.45);
+  color: white;
+}
+
+.btn-outline-custom {
+  background: transparent;
+  border: 2px solid var(--primary-500);
+  color: var(--primary-600);
+  font-weight: 600;
+  padding: 9px 24px;
+  border-radius: var(--radius-full);
+  transition: var(--transition);
+  font-family: inherit;
+}
+.btn-outline-custom:hover {
+  background: var(--gradient-blue);
+  border-color: transparent;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 9px 20px;
+  border-radius: var(--radius-full);
+  transition: var(--transition);
+  font-family: inherit;
+}
+.btn-glass:hover {
+  background: rgba(255,255,255,0.9);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-purple-gradient {
+  background: var(--gradient-purple);
+  border: none; color: white; font-weight: 600;
+  padding: 10px 24px; border-radius: var(--radius-full);
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(139,92,246,0.35);
+  font-family: inherit;
+}
+.btn-purple-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139,92,246,0.45);
+  color: white;
+}
+
+.btn-success-gradient {
+  background: var(--gradient-green);
+  border: none; color: white; font-weight: 600;
+  padding: 10px 24px; border-radius: var(--radius-full);
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(16,185,129,0.35);
+  font-family: inherit;
+}
+.btn-success-gradient:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16,185,129,0.45); color: white; }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card-custom {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  padding: 28px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+.card-custom:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
+  border-color: var(--primary-200);
+}
+[data-theme="dark"] .card-custom:hover { border-color: rgba(59,130,246,0.3); }
+
+.card-glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-2xl);
+  padding: 28px;
+  transition: var(--transition);
+}
+[data-theme="dark"] .card-glass {
+  background: rgba(30,41,59,0.6);
+  border-color: rgba(255,255,255,0.08);
+}
+
+.card-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+.card-stat::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 80px; height: 80px;
+  border-radius: 0 0 0 80px;
+  opacity: 0.08;
+}
+.card-stat.stat-blue::before { background: var(--primary-500); }
+.card-stat.stat-purple::before { background: var(--secondary-500); }
+.card-stat.stat-green::before { background: var(--accent-500); }
+.card-stat.stat-warm::before { background: var(--warm-500); }
+
+.stat-icon {
+  width: 50px; height: 50px;
+  border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+}
+.stat-blue .stat-icon { background: rgba(59,130,246,0.1); color: var(--primary-600); }
+.stat-purple .stat-icon { background: rgba(139,92,246,0.1); color: var(--secondary-500); }
+.stat-green .stat-icon { background: rgba(16,185,129,0.1); color: var(--accent-500); }
+.stat-warm .stat-icon { background: rgba(245,158,11,0.1); color: var(--warm-500); }
+
+/* ============================================================
+   STATUS BADGES
+   ============================================================ */
+.badge-custom {
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-family: inherit;
+}
+.badge-success { background: rgba(16,185,129,0.1); color: #059669; }
+.badge-warning { background: rgba(245,158,11,0.1); color: #d97706; }
+.badge-danger { background: rgba(239,68,68,0.1); color: #dc2626; }
+.badge-info { background: rgba(59,130,246,0.1); color: #2563eb; }
+.badge-purple { background: rgba(139,92,246,0.1); color: #7c3aed; }
+.badge-muted { background: var(--bg-secondary); color: var(--text-muted); }
+
+[data-theme="dark"] .badge-success { background: rgba(16,185,129,0.15); color: #34d399; }
+[data-theme="dark"] .badge-warning { background: rgba(245,158,11,0.15); color: #fbbf24; }
+[data-theme="dark"] .badge-danger { background: rgba(239,68,68,0.15); color: #f87171; }
+[data-theme="dark"] .badge-info { background: rgba(59,130,246,0.15); color: #60a5fa; }
+[data-theme="dark"] .badge-purple { background: rgba(139,92,246,0.15); color: #a78bfa; }
+
+/* ============================================================
+   FORM INPUTS
+   ============================================================ */
+.form-control-custom {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  width: 100%;
+}
+.form-control-custom:focus {
+  outline: none;
+  border-color: var(--primary-400);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.08);
+}
+.form-control-custom::placeholder { color: var(--text-muted); }
+
+.form-label-custom {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input-group-custom {
+  position: relative;
+  width: 100%;
+}
+.input-group-custom .input-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+  pointer-events: none;
+}
+.input-group-custom .form-control-custom { padding-right: 44px; }
+
+/* ============================================================
+   UPLOAD BOX
+   ============================================================ */
+.upload-box {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 48px 24px;
+  text-align: center;
+  transition: var(--transition);
+  cursor: pointer;
+  background: var(--bg-secondary);
+  position: relative;
+}
+.upload-box:hover, .upload-box.drag-over {
+  border-color: var(--primary-400);
+  background: rgba(59,130,246,0.03);
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.08);
+}
+.upload-icon {
+  width: 64px; height: 64px;
+  background: var(--gradient-blue);
+  border-radius: var(--radius-xl);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 1.8rem;
+  color: white;
+}
+
+/* ============================================================
+   SIDEBAR DASHBOARD LAYOUT
+   ============================================================ */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: var(--bg-sidebar);
+  border-left: 1px solid var(--border-color);
+  padding: 24px 16px;
+  position: fixed;
+  top: 0; right: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+  transition: var(--transition);
+  box-shadow: 2px 0 20px rgba(0,0,0,0.04);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px 24px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.sidebar-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 16px 12px 8px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: var(--transition-fast);
+  margin-bottom: 2px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: right;
+}
+.sidebar-link:hover {
+  background: var(--primary-50);
+  color: var(--primary-700);
+}
+.sidebar-link.active {
+  background: var(--gradient-blue);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+}
+.sidebar-link .si-icon { font-size: 1.1rem; width: 20px; flex-shrink: 0; }
+[data-theme="dark"] .sidebar-link:hover { background: rgba(59,130,246,0.1); color: var(--primary-300); }
+
+.dashboard-content {
+  flex: 1;
+  margin-right: 260px;
+  min-height: 100vh;
+  transition: var(--transition);
+}
+
+.dashboard-topbar {
+  background: var(--bg-navbar);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.dashboard-main {
+  padding: 28px;
+  max-width: 1200px;
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 60%, #f093fb 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.hero-blob-1 {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  top: -200px; right: -200px;
+  animation: blob-float 8s ease-in-out infinite;
+}
+.hero-blob-2 {
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  bottom: -150px; left: -100px;
+  animation: blob-float 10s ease-in-out infinite reverse;
+}
+.hero-blob-3 {
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  top: 50%; left: 30%;
+  animation: blob-float 12s ease-in-out infinite;
+}
+
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -20px) scale(1.05); }
+  66% { transform: translate(-10px, 15px) scale(0.95); }
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1.2;
+  color: white;
+}
+
+.hero-subtitle { color: rgba(255,255,255,0.85); font-size: 1.15rem; line-height: 1.8; }
+
+.hero-card-float {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-2xl);
+  padding: 20px 24px;
+  animation: card-float 6s ease-in-out infinite;
+  color: white;
+}
+.hero-card-float:nth-child(2) { animation-delay: 2s; }
+.hero-card-float:nth-child(3) { animation-delay: 4s; }
+
+@keyframes card-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ============================================================
+   SECTION STYLES
+   ============================================================ */
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(59,130,246,0.1);
+  color: var(--primary-600);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+[data-theme="dark"] .section-badge { background: rgba(59,130,246,0.15); color: var(--primary-300); }
+
+/* ============================================================
+   FEATURE ICONS
+   ============================================================ */
+.feature-icon {
+  width: 60px; height: 60px;
+  border-radius: var(--radius-xl);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  transition: var(--transition);
+}
+.fi-blue { background: rgba(59,130,246,0.1); color: var(--primary-600); }
+.fi-purple { background: rgba(139,92,246,0.1); color: var(--secondary-500); }
+.fi-green { background: rgba(16,185,129,0.1); color: var(--accent-500); }
+.fi-warm { background: rgba(245,158,11,0.1); color: var(--warm-500); }
+.fi-red { background: rgba(239,68,68,0.1); color: var(--danger-500); }
+
+.card-custom:hover .feature-icon { transform: scale(1.1) rotate(5deg); }
+
+/* ============================================================
+   TABLE STYLES
+   ============================================================ */
+.table-custom {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+}
+.table-custom thead th {
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+.table-custom thead th:first-child { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+.table-custom thead th:last-child { border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+.table-custom tbody tr { transition: var(--transition-fast); }
+.table-custom tbody tr:hover { background: var(--bg-card-hover); }
+.table-custom tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+.progress-custom {
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--gradient-blue);
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.progress-fill.green { background: var(--gradient-green); }
+.progress-fill.purple { background: var(--gradient-purple); }
+.progress-fill.warm { background: var(--gradient-warm); }
+
+/* ============================================================
+   TIMER COMPONENT
+   ============================================================ */
+.timer-display {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-radius: var(--radius-2xl);
+  padding: 20px 28px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 0 30px rgba(99,102,241,0.2);
+}
+.timer-numbers {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+}
+.timer-dot { color: #6366f1; animation: blink 1s ease-in-out infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.timer-urgent .timer-numbers { color: #ef4444; }
+.timer-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; }
+
+/* ============================================================
+   QUESTION NAVIGATOR
+   ============================================================ */
+.q-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.q-nav-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex; align-items: center; justify-content: center;
+  font-family: inherit;
+}
+.q-nav-btn:hover { border-color: var(--primary-400); color: var(--primary-600); }
+.q-nav-btn.answered { background: var(--gradient-green); border-color: transparent; color: white; }
+.q-nav-btn.current { background: var(--gradient-blue); border-color: transparent; color: white; box-shadow: 0 0 12px rgba(59,130,246,0.4); }
+.q-nav-btn.skipped { background: rgba(245,158,11,0.1); border-color: var(--warm-400); color: var(--warm-500); }
+
+/* ============================================================
+   CHART CONTAINER
+   ============================================================ */
+.chart-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-bar-group { display: flex; align-items: flex-end; gap: 6px; height: 160px; }
+.chart-bar {
+  flex: 1;
+  border-radius: 6px 6px 0 0;
+  transition: height 1s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+}
+.chart-bar:hover { opacity: 0.85; }
+.chart-bar::before {
+  content: attr(data-value);
+  position: absolute;
+  top: -22px;
+  left: 50%; transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   AVATAR
+   ============================================================ */
+.avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--gradient-blue);
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+.avatar-lg { width: 56px; height: 56px; font-size: 1.1rem; }
+.avatar-xl { width: 80px; height: 80px; font-size: 1.5rem; }
+
+/* ============================================================
+   PDF VIEWER MOCK
+   ============================================================ */
+.pdf-viewer-mock {
+  background: #525659;
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+.pdf-page {
+  background: white;
+  border-radius: 4px;
+  margin: 0 auto;
+  max-width: 500px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  min-height: 350px;
+}
+.pdf-toolbar {
+  background: rgba(0,0,0,0.4);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: -20px -20px 16px;
+}
+.pdf-toolbar-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  font-family: inherit;
+}
+.pdf-toolbar-btn:hover { background: rgba(255,255,255,0.2); }
+
+/* ============================================================
+   TOAST NOTIFICATIONS
+   ============================================================ */
+.toast-container {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast-custom {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 14px 20px;
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 300px;
+  animation: toast-slide 0.3s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+@keyframes toast-slide {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.toast-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+.toast-success .toast-icon { background: rgba(16,185,129,0.1); color: var(--accent-500); }
+.toast-error .toast-icon { background: rgba(239,68,68,0.1); color: var(--danger-500); }
+.toast-info .toast-icon { background: rgba(59,130,246,0.1); color: var(--primary-500); }
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state {
+  padding: 60px 20px;
+  text-align: center;
+}
+.empty-icon {
+  width: 80px; height: 80px;
+  border-radius: var(--radius-2xl);
+  background: var(--bg-secondary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  color: var(--text-muted);
+  margin: 0 auto 20px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.main-footer {
+  background: #0f172a;
+  color: #94a3b8;
+  padding: 60px 0 30px;
+}
+[data-theme="dark"] .main-footer { background: #050a14; }
+.footer-brand { color: white; font-size: 1.4rem; font-weight: 800; }
+.footer-link { color: #64748b; text-decoration: none; font-size: 0.875rem; transition: var(--transition-fast); display: block; margin-bottom: 8px; }
+.footer-link:hover { color: var(--primary-400); }
+.footer-social { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #94a3b8; transition: var(--transition-fast); }
+.footer-social:hover { background: var(--primary-600); border-color: var(--primary-600); color: white; }
+.footer-divider { border-color: rgba(255,255,255,0.08); margin: 40px 0 20px; }
+
+/* ============================================================
+   MODAL STYLES
+   ============================================================ */
+.modal-custom .modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+}
+.modal-custom .modal-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 20px 24px;
+}
+.modal-custom .modal-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 16px 24px;
+}
+
+/* ============================================================
+   AUTH PAGES
+   ============================================================ */
+.auth-split {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 768px) { .auth-split { grid-template-columns: 1fr; } }
+
+.auth-left {
+  background: var(--gradient-primary);
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.auth-left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.auth-right {
+  background: var(--bg-primary);
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-card {
+  max-width: 440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   EXAM PAGE
+   ============================================================ */
+.exam-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+  min-height: calc(100vh - 70px);
+}
+@media (max-width: 992px) { .exam-layout { grid-template-columns: 1fr; } }
+
+.exam-question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.question-option {
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+.question-option:hover {
+  border-color: var(--primary-400);
+  background: rgba(59,130,246,0.03);
+}
+.question-option.selected {
+  border-color: var(--primary-500);
+  background: rgba(59,130,246,0.06);
+  color: var(--primary-700);
+}
+[data-theme="dark"] .question-option.selected { color: var(--primary-300); }
+
+.option-dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+  position: relative;
+}
+.question-option.selected .option-dot {
+  border-color: var(--primary-500);
+  background: var(--primary-500);
+}
+.question-option.selected .option-dot::after {
+  content: '';
+  width: 8px; height: 8px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ============================================================
+   TICKET CHAT
+   ============================================================ */
+.chat-bubble {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: var(--radius-xl);
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.chat-bubble.sent {
+  background: var(--gradient-blue);
+  color: white;
+  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-sm) var(--radius-xl);
+  margin-right: auto;
+}
+.chat-bubble.received {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-xl) var(--radius-sm);
+  margin-left: auto;
+}
+.chat-time { font-size: 0.7rem; opacity: 0.6; margin-top: 4px; }
+
+/* ============================================================
+   REPORT CARD STYLES
+   ============================================================ */
+.score-ring {
+  width: 140px; height: 140px;
+  position: relative;
+  margin: 0 auto;
+}
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.score-num { font-size: 2rem; font-weight: 900; color: var(--text-primary); line-height: 1; }
+.score-denom { font-size: 0.75rem; color: var(--text-muted); }
+
+/* ============================================================
+   MISC UTILITIES
+   ============================================================ */
+.text-gradient {
+  background: var(--gradient-blue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-purple {
+  background: var(--gradient-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.divider-gradient {
+  height: 3px;
+  background: var(--gradient-blue);
+  border-radius: var(--radius-full);
+  width: 60px;
+  margin: 12px 0;
+}
+
+.number-tag {
+  width: 28px; height: 28px;
+  background: var(--gradient-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 0.75rem; font-weight: 700;
+  flex-shrink: 0;
+}
+
+.section-light { background: var(--bg-primary); }
+.section-alt { background: var(--bg-secondary); }
+
+.sticky-top-sm { position: sticky; top: 20px; }
+
+/* Hover lift */
+.hover-lift { transition: var(--transition); }
+.hover-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
+
+/* Pulse animation */
+.pulse-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent-500);
+  position: relative;
+}
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: var(--accent-500);
+  opacity: 0.3;
+  animation: pulse-ring 1.5s ease-in-out infinite;
+}
+@keyframes pulse-ring { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.5); opacity: 0; } }
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-card) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* Selection color */
+::selection { background: rgba(59,130,246,0.2); color: var(--primary-800); }
+
+/* Page header pattern */
+.page-header-pattern {
+  background: var(--gradient-blue);
+  padding: 60px 0 40px;
+  position: relative;
+  overflow: hidden;
+}
+.page-header-pattern::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+  .dashboard-content { margin-right: 0; }
+  .sidebar { transform: translateX(100%); }
+  .sidebar.open { transform: translateX(0); }
+  .dashboard-main { padding: 16px; }
+  .auth-split { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+  .hero-title { font-size: 2.2rem; }
+  .card-custom { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE NAVIGATION DEMO PANEL
+     ============================================================ -->
+<!-- <div class="page-nav" id="pageNav">
+  <button class="page-nav-toggle" onclick="togglePageNav()">
+    <i class="bi bi-grid-3x3-gap-fill"></i>
+  </button>
+  <div class="page-nav-content" id="pageNavContent">
+    <div class="page-nav-group">صفحات عمومی</div>
+    <button class="page-link-btn active" onclick="showPage('landing')">🏠 صفحه اصلی</button>
+    <button class="page-link-btn" onclick="showPage('login')">🔐 ورود</button>
+    <button class="page-link-btn" onclick="showPage('register')">📝 ثبت نام</button>
+    <button class="page-link-btn" onclick="showPage('forgot')">🔑 فراموشی رمز</button>
+    <button class="page-link-btn" onclick="showPage('otp')">📱 تأیید OTP</button>
+    <button class="page-link-btn" onclick="showPage('activate')">✅ فعال‌سازی</button>
+    <button class="page-link-btn" onclick="showPage('exam-list')">📋 لیست آزمون‌ها</button>
+    <button class="page-link-btn" onclick="showPage('exam-detail')">📄 جزئیات آزمون</button>
+    <button class="page-link-btn" onclick="showPage('exam-take')">✍️ شرکت در آزمون</button>
+    <button class="page-link-btn" onclick="showPage('question-bank')">🗂 بانک سوال</button>
+    <button class="page-link-btn" onclick="showPage('question-detail')">❓ جزئیات سوال</button>
+    <button class="page-link-btn" onclick="showPage('articles')">📰 مقالات</button>
+    <button class="page-link-btn" onclick="showPage('article-detail')">📖 جزئیات مقاله</button>
+    <button class="page-link-btn" onclick="showPage('about')">ℹ️ درباره ما</button>
+    <button class="page-link-btn" onclick="showPage('contact')">📞 تماس با ما</button>
+    
+  </div>
+</div> -->
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ============================================================
+     PAGE 1: LANDING / صفحه اصلی
+     ============================================================ -->
+<div class="page-section active" id="page-landing">
+  <!-- Navbar -->
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <div class="navbar-brand-logo"><i class="bi bi-lightning-fill"></i></div>
+          <span class="navbar-brand-text">آزمون‌آنلاین</span>
+        </div>
+        <div class="d-flex align-items-center gap-2 d-none d-md-flex">
+          <a class="nav-link-custom" href="#" onclick="showPage('exam-list')">آزمون‌ها</a>
+          <a class="nav-link-custom" href="#" onclick="showPage('question-bank')">بانک سوال</a>
+          <a class="nav-link-custom" href="#" onclick="showPage('articles')">مقالات</a>
+          <a class="nav-link-custom" href="#" onclick="showPage('about')">درباره ما</a>
+          <a class="nav-link-custom" href="#" onclick="showPage('contact')">تماس</a>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="theme-toggle" onclick="toggleTheme()">
+            <i class="bi bi-sun-fill sun-icon"></i>
+            <i class="bi bi-moon-fill moon-icon"></i>
+          </div>
+          <button class="btn-outline-custom btn btn-sm" onclick="showPage('login')">ورود</button>
+          <button class="btn-primary-gradient btn btn-sm" onclick="showPage('register')">ثبت نام</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Hero Section -->
+ 
+  <section class="hero-section">
+    <div class="hero-blob-1"></div>
+    <div class="hero-blob-2"></div>
+    <div class="hero-blob-3"></div>
+    <div class="container" style="position:relative;z-index:2;">
+      <div class="row align-items-center min-vh-100 py-5">
+        <div class="col-lg-6">
+          <div class="section-badge" style="background:rgba(255,255,255,0.15);color:white;">
+            <i class="bi bi-stars"></i>
+            هوشمندترین پلتفرم آزمون آنلاین ایران
+          </div>
+          <h1 class="hero-title mb-4">
+            آینده یادگیری<br>
+            <span style="color:rgba(255,255,255,0.75);">با هوش مصنوعی</span>
+          </h1>
+          <p class="hero-subtitle mb-5">
+            بانک سوال هوشمند، آزمون‌های آنلاین تعاملی و تصحیح خودکار توسط هوش مصنوعی.<br>
+            یادگیری را به سطح جدیدی ببرید.
+          </p>
+          <div class="d-flex gap-3 flex-wrap">
+            <button class="btn btn-light btn-lg fw-700 rounded-pill px-4" onclick="showPage('register')"
+              style="font-family:inherit;font-weight:700;">
+              <i class="bi bi-play-fill me-2"></i> شروع رایگان
+            </button>
+            <button class="btn-glass btn btn-lg" onclick="showPage('exam-list')">
+              <i class="bi bi-collection-fill me-2"></i> مشاهده آزمون‌ها
+            </button>
+          </div>
+       
+          <div class="d-flex gap-4 mt-5">
+            <div>
+              <div style="font-size:1.8rem;font-weight:900;color:white;">۵۰,۰۰۰+</div>
+              <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;">دانش‌آموز فعال</div>
+            </div>
+            <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+            <div>
+              <div style="font-size:1.8rem;font-weight:900;color:white;">۱۰,۰۰۰+</div>
+              <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;">سوال در بانک</div>
+            </div>
+            <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+            <div>
+              <div style="font-size:1.8rem;font-weight:900;color:white;">۹۸٪</div>
+              <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;">رضایت کاربران</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 d-none d-lg-block">
+          <div class="position-relative" style="height:500px;">
+        
+            <div class="hero-card-float position-absolute" style="top:40px;right:20px;width:200px;">
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="avatar" style="background:rgba(255,255,255,0.2);font-size:1rem;">📊</div>
+                <div>
+                  <div style="font-size:0.75rem;opacity:0.7;">نمره آزمون</div>
+                  <div style="font-weight:800;font-size:1.1rem;">۱۸.۵ از ۲۰</div>
+                </div>
+              </div>
+              <div class="progress-custom" style="height:6px;">
+                <div class="progress-fill" style="width:92%;background:rgba(255,255,255,0.8);"></div>
+              </div>
+            </div>
+
+            <div class="hero-card-float position-absolute" style="top:170px;left:0;width:220px;animation-delay:2s;">
+              <div style="font-size:0.75rem;opacity:0.7;margin-bottom:8px;">سوالات حل شده</div>
+              <div class="q-nav-grid" style="gap:4px;">
+                <div class="q-nav-btn answered" style="background:rgba(255,255,255,0.9);border-color:transparent;color:#667eea;width:28px;height:28px;font-size:10px;">۱</div>
+                <div class="q-nav-btn answered" style="background:rgba(255,255,255,0.9);border-color:transparent;color:#667eea;width:28px;height:28px;font-size:10px;">۲</div>
+                <div class="q-nav-btn current" style="background:rgba(255,255,255,0.3);border:2px solid white;color:white;width:28px;height:28px;font-size:10px;">۳</div>
+                <div style="width:28px;height:28px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.3);"></div>
+                <div style="width:28px;height:28px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.3);"></div>
+              </div>
+            </div>
+
+            <div class="hero-card-float position-absolute" style="bottom:60px;right:40px;width:200px;animation-delay:4s;">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div style="background:rgba(16,185,129,0.3);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;">✓</div>
+                <div>
+                  <div style="font-size:0.7rem;opacity:0.7;">تصحیح شد</div>
+                  <div style="font-weight:700;">آزمون ریاضی ۱</div>
+                </div>
+              </div>
+              <div style="font-size:0.75rem;opacity:0.6;">چند ثانیه پیش</div>
+            </div>
+
+            
+            <div class="position-absolute" style="top:50%;right:50%;transform:translate(50%,-50%);">
+              <div style="width:160px;height:160px;background:rgba(255,255,255,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.2);backdrop-filter:blur(10px);">
+                <div style="font-size:4rem;">🎯</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div style="position:absolute;bottom:0;left:0;right:0;">
+      <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <path d="M0 60L60 50C120 40 240 20 360 15C480 10 600 20 720 25C840 30 960 30 1080 25C1200 20 1320 10 1380 5L1440 0V60H0Z" fill="var(--bg-primary)"/>
+      </svg>
+    </div>
+  </section>
+ 
+  <!-- Features Section -->
+  <section class="py-6 section-light" style="padding:80px 0;">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="section-badge mx-auto" style="width:fit-content;">
+          <i class="bi bi-gem"></i> ویژگی‌های منحصربه‌فرد
+        </div>
+        <h2 class="section-title">چرا آزمون‌آنلاین؟</h2>
+        <p class="text-secondary mt-3 mx-auto" style="max-width:550px;">
+          ما با ترکیب تکنولوژی هوش مصنوعی و تجربه آموزشی، یک اکوسیستم یادگیری کامل ساخته‌ایم.
+        </p>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-blue"><i class="bi bi-cpu-fill"></i></div>
+            <h5 class="fw-700 mb-2">تصحیح هوشمند با AI</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">تصحیح خودکار پاسخ‌های تشریحی و چندگزینه‌ای با دقت بالا توسط هوش مصنوعی.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-purple"><i class="bi bi-camera-fill"></i></div>
+            <h5 class="fw-700 mb-2">آپلود عکس پاسخ</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">دانش‌آموزان می‌توانند پاسخ خود را عکاسی کنند و سیستم آن را به PDF تبدیل می‌کند.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-green"><i class="bi bi-bar-chart-fill"></i></div>
+            <h5 class="fw-700 mb-2">کارنامه جامع</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">تحلیل عملکرد در سه سطح: کارنامه اولیه، ثانویه و ثالث با نمودارهای تعاملی.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-warm"><i class="bi bi-lightning-fill"></i></div>
+            <h5 class="fw-700 mb-2">بانک سوال هوشمند</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">بیش از ۱۰,۰۰۰ سوال طبقه‌بندی شده با فیلترهای پیشرفته و زمان پیشنهادی.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-red"><i class="bi bi-stopwatch-fill"></i></div>
+            <h5 class="fw-700 mb-2">آزمون با تایمر</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">کنترل دقیق زمان آزمون با هشدارهای صوتی و بصری جهت مدیریت بهتر وقت.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-blue"><i class="bi bi-shield-check-fill"></i></div>
+            <h5 class="fw-700 mb-2">امنیت و تقلب‌ناپذیر</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">سیستم ضد تقلب پیشرفته با نظارت تصویری و قفل مرورگر برای آزمون‌های حساس.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exams Preview Section -->
+  <section class="py-6 section-alt" style="padding:80px 0;">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-end mb-5">
+        <div>
+          <div class="section-badge" style="width:fit-content;">
+            <i class="bi bi-calendar-check"></i> آزمون‌های پیش‌رو
+          </div>
+          <h2 class="section-title mt-2">آخرین آزمون‌ها</h2>
+        </div>
+        <button class="btn-outline-custom btn" onclick="showPage('exam-list')">مشاهده همه</button>
+      </div>
+      <div class="row g-4">
+        <!-- Exam Card 1 -->
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom hover-lift">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge-custom badge-info">ریاضی</span>
+              <span class="badge-custom badge-success">ثبت نام باز</span>
+            </div>
+            <h5 class="fw-700 mb-2">آزمون جامع ریاضی سوم دبیرستان</h5>
+            <p class="text-secondary" style="font-size:0.85rem;">شامل تمام مباحث ریاضی ۳ با سوالات چندگزینه‌ای و تشریحی</p>
+            <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
+              <span><i class="bi bi-clock me-1"></i>۹۰ دقیقه</span>
+              <span><i class="bi bi-question-circle me-1"></i>۴۰ سوال</span>
+              <span><i class="bi bi-people me-1"></i>۳۲۵ نفر</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>۱۵ اسفند ۱۴۰۳</div>
+              <button class="btn-primary-gradient btn btn-sm" onclick="showPage('exam-detail')">جزئیات</button>
+            </div>
+          </div>
+        </div>
+        <!-- Exam Card 2 -->
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom hover-lift">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge-custom badge-purple">فیزیک</span>
+              <span class="badge-custom badge-warning">در حال برگزاری</span>
+            </div>
+            <h5 class="fw-700 mb-2">آزمون فیزیک پیش‌دانشگاهی</h5>
+            <p class="text-secondary" style="font-size:0.85rem;">آزمون جامع فصل‌های الکتریسیته و مغناطیس با تأکید بر محاسبات</p>
+            <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
+              <span><i class="bi bi-clock me-1"></i>۱۲۰ دقیقه</span>
+              <span><i class="bi bi-question-circle me-1"></i>۵۵ سوال</span>
+              <span><i class="bi bi-people me-1"></i>۴۷۸ نفر</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>۱۰ اسفند ۱۴۰۳</div>
+              <button class="btn-primary-gradient btn btn-sm" onclick="showPage('exam-detail')">جزئیات</button>
+            </div>
+          </div>
+        </div>
+        <!-- Exam Card 3 -->
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom hover-lift">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge-custom badge-info">شیمی</span>
+              <span class="badge-custom badge-muted">به زودی</span>
+            </div>
+            <h5 class="fw-700 mb-2">آزمون شیمی دوم دبیرستان</h5>
+            <p class="text-secondary" style="font-size:0.85rem;">آزمون فصل اول تا سوم شامل پیوندهای شیمیایی و ترمودینامیک</p>
+            <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
+              <span><i class="bi bi-clock me-1"></i>۶۰ دقیقه</span>
+              <span><i class="bi bi-question-circle me-1"></i>۳۰ سوال</span>
+              <span><i class="bi bi-people me-1"></i>۲۱۲ نفر</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>۲۵ اسفند ۱۴۰۳</div>
+              <button class="btn-outline-custom btn btn-sm">اطلاع‌رسانی</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section style="padding:80px 0;background:var(--bg-primary);">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="section-badge mx-auto" style="width:fit-content;"><i class="bi bi-map"></i> نحوه کار</div>
+        <h2 class="section-title mt-2">سه گام تا یادگیری</h2>
+      </div>
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-4">
+          <div class="d-flex gap-4 align-items-start mb-4">
+            <div class="number-tag" style="width:40px;height:40px;font-size:1rem;flex-shrink:0;">۱</div>
+            <div>
+              <h5 class="fw-700 mb-2">ثبت نام کنید</h5>
+              <p class="text-secondary mb-0" style="font-size:0.9rem;">در چند ثانیه حساب رایگان بسازید و به هزاران آزمون و سوال دسترسی داشته باشید.</p>
+            </div>
+          </div>
+          <div class="d-flex gap-4 align-items-start mb-4">
+            <div class="number-tag" style="width:40px;height:40px;font-size:1rem;flex-shrink:0;">۲</div>
+            <div>
+              <h5 class="fw-700 mb-2">آزمون انتخاب کنید</h5>
+              <p class="text-secondary mb-0" style="font-size:0.9rem;">از بین صدها آزمون در درس‌های مختلف، آزمون مناسب خود را انتخاب کنید.</p>
+            </div>
+          </div>
+          <div class="d-flex gap-4 align-items-start">
+            <div class="number-tag" style="width:40px;height:40px;font-size:1rem;flex-shrink:0;">۳</div>
+            <div>
+              <h5 class="fw-700 mb-2">نتیجه را ببینید</h5>
+              <p class="text-secondary mb-0" style="font-size:0.9rem;">بلافاصله پس از آزمون، کارنامه دقیق و تحلیل عملکردتان را دریافت کنید.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card-glass p-0 overflow-hidden" style="border-radius:var(--radius-2xl);">
+            <!-- Mini Dashboard Preview -->
+            <div style="background:var(--gradient-blue);padding:16px 24px;display:flex;align-items:center;gap:8px;">
+              <div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);"></div>
+              <div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);"></div>
+              <div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);"></div>
+              <span style="color:rgba(255,255,255,0.8);font-size:0.8rem;margin-right:8px;">داشبورد دانش‌آموز | رضا احمدی</span>
+            </div>
+            <div class="p-4" style="background:var(--bg-card);">
+              <div class="row g-3 mb-3">
+                <div class="col-6"><div class="card-stat stat-blue"><div class="d-flex justify-content-between"><div><div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div><div class="mt-2" style="font-size:1.5rem;font-weight:800;">۱۲</div><div style="font-size:0.75rem;color:var(--text-muted);">آزمون شرکت کرده</div></div></div></div></div>
+                <div class="col-6"><div class="card-stat stat-green"><div class="d-flex justify-content-between"><div><div class="stat-icon"><i class="bi bi-star-fill"></i></div><div class="mt-2" style="font-size:1.5rem;font-weight:800;">۱۷.۸</div><div style="font-size:0.75rem;color:var(--text-muted);">میانگین نمرات</div></div></div></div></div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-2" style="font-size:0.85rem;">
+                  <span class="fw-600">ریاضی</span><span class="text-secondary">۸۵٪</span>
+                </div>
+                <div class="progress-custom"><div class="progress-fill" style="width:85%;"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-2" style="font-size:0.85rem;">
+                  <span class="fw-600">فیزیک</span><span class="text-secondary">۷۲٪</span>
+                </div>
+                <div class="progress-custom"><div class="progress-fill green" style="width:72%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section style="padding:80px 0;background:var(--gradient-primary);position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,0.05);"></div>
+    <div class="container text-center" style="position:relative;z-index:1;">
+      <h2 style="font-size:2.5rem;font-weight:900;color:white;margin-bottom:16px;">آماده‌اید شروع کنید؟</h2>
+      <p style="color:rgba(255,255,255,0.8);font-size:1.1rem;margin-bottom:32px;">امروز ثبت‌نام کنید و اولین آزمون رایگانتان را بگیرید.</p>
+      <button class="btn btn-light btn-lg rounded-pill px-5 fw-700" style="font-family:inherit;" onclick="showPage('register')">
+        شروع رایگان <i class="bi bi-arrow-left ms-2"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="navbar-brand-logo"><i class="bi bi-lightning-fill"></i></div>
+            <span class="footer-brand">آزمون‌آنلاین</span>
+          </div>
+          <p style="color:#64748b;font-size:0.9rem;line-height:1.8;">هوشمندترین پلتفرم آزمون آنلاین ایران با بانک سوال جامع و تصحیح هوشمند.</p>
+          <div class="d-flex gap-2 mt-3">
+            <a class="footer-social" href="#"><i class="bi bi-instagram"></i></a>
+            <a class="footer-social" href="#"><i class="bi bi-telegram"></i></a>
+            <a class="footer-social" href="#"><i class="bi bi-twitter-x"></i></a>
+            <a class="footer-social" href="#"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-6">
+          <div style="color:white;font-weight:700;margin-bottom:16px;">دسترسی سریع</div>
+          <a class="footer-link" href="#" onclick="showPage('exam-list')">لیست آزمون‌ها</a>
+          <a class="footer-link" href="#" onclick="showPage('question-bank')">بانک سوال</a>
+          <a class="footer-link" href="#" onclick="showPage('articles')">مقالات</a>
+          <a class="footer-link" href="#" onclick="showPage('about')">درباره ما</a>
+        </div>
+        <div class="col-lg-2 col-6">
+          <div style="color:white;font-weight:700;margin-bottom:16px;">حساب کاربری</div>
+          <a class="footer-link" href="#" onclick="showPage('login')">ورود</a>
+          <a class="footer-link" href="#" onclick="showPage('register')">ثبت نام</a>
+          <a class="footer-link" href="#" onclick="showPage('student-dashboard')">داشبورد</a>
+          <a class="footer-link" href="#" onclick="showPage('contact')">پشتیبانی</a>
+        </div>
+        <div class="col-lg-4">
+          <div style="color:white;font-weight:700;margin-bottom:16px;">خبرنامه</div>
+          <p style="color:#64748b;font-size:0.85rem;margin-bottom:12px;">برای دریافت آخرین آزمون‌ها و مقالات در خبرنامه ما عضو شوید.</p>
+          <div class="d-flex gap-2">
+            <input type="email" class="form-control-custom" style="flex:1;" placeholder="ایمیل شما">
+            <button class="btn-primary-gradient btn" style="white-space:nowrap;">عضویت</button>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="d-flex justify-content-between align-items-center" style="font-size:0.8rem;color:#475569;">
+        <span>© ۱۴۰۳ آزمون‌آنلاین. تمام حقوق محفوظ است.</span>
+        <div class="d-flex gap-3">
+          <a href="#" style="color:#475569;text-decoration:none;">حریم خصوصی</a>
+          <a href="#" style="color:#475569;text-decoration:none;">قوانین استفاده</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     PAGE 2: LOGIN / صفحه ورود
+     ============================================================ -->
+<div class="page-section  " id="page-login">
+  <div class="auth-split">
+    <!-- Left decorative panel -->
+    <div class="auth-left d-none d-lg-flex" style="order:2;">
+      <div style="position:relative;z-index:1;">
+        <div class="mb-4">
+          <div class="navbar-brand-logo mb-3"><i class="bi bi-lightning-fill"></i></div>
+          <h2 style="color:white;font-weight:900;font-size:2rem;">به آزمون‌آنلاین<br>خوش آمدید</h2>
+          <p style="color:rgba(255,255,255,0.75);margin-top:12px;">هوشمندترین پلتفرم آزمون آنلاین ایران</p>
+        </div>
+        <!-- Features list -->
+        <div class="d-flex flex-column gap-3 mt-5">
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-check-lg" style="color:white;"></i></div>
+            <span style="color:rgba(255,255,255,0.85);font-size:0.9rem;">بیش از ۱۰,۰۰۰ سوال در بانک سوال</span>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-check-lg" style="color:white;"></i></div>
+            <span style="color:rgba(255,255,255,0.85);font-size:0.9rem;">تصحیح هوشمند با هوش مصنوعی</span>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-check-lg" style="color:white;"></i></div>
+            <span style="color:rgba(255,255,255,0.85);font-size:0.9rem;">کارنامه جامع و تحلیل عملکرد</span>
+          </div>
+        </div>
+        <!-- Floating testimonial -->
+        <div class="hero-card-float mt-5" style="animation-delay:0s;">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="avatar" style="background:rgba(255,255,255,0.2);">ر</div>
+            <div>
+              <div style="font-weight:700;font-size:0.85rem;">رضا احمدی</div>
+              <div style="opacity:0.6;font-size:0.75rem;">دانش‌آموز پایه دوازدهم</div>
+            </div>
+          </div>
+          <p style="font-size:0.8rem;opacity:0.85;margin:0;">با این پلتفرم نمره‌ام ۴ نمره بهتر شد!</p>
+        </div>
+      </div>
+    </div>
+    <!-- Right form panel -->
+    <div class="auth-right" style="order:1;">
+      <div class="auth-card">
+        <!-- Back to home -->
+        <button class="btn p-0 mb-4" style="color:var(--text-muted);font-family:inherit;" onclick="showPage('landing')">
+          <i class="bi bi-arrow-right me-1"></i> بازگشت به خانه
+        </button>
+        <h3 class="fw-800 mb-2">ورود به حساب</h3>
+        <p class="text-secondary mb-5" style="font-size:0.9rem;">با شماره موبایل یا ایمیل وارد شوید</p>
+
+        <form>
+          <div class="mb-4">
+            <label class="form-label-custom">شماره موبایل یا ایمیل</label>
+            <div class="input-group-custom">
+              <i class="bi bi-person input-icon"></i>
+              <input type="text" class="form-control-custom" placeholder="09123456789">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-custom">رمز عبور</label>
+            <div class="input-group-custom">
+              <i class="bi bi-lock input-icon"></i>
+              <input type="password" class="form-control-custom" placeholder="رمز عبور خود را وارد کنید">
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;color:var(--text-secondary);">
+              <input type="checkbox" class="form-check-input m-0"> مرا به خاطر بسپار
+            </label>
+            <a href="#" style="font-size:0.875rem;color:var(--primary-600);text-decoration:none;font-weight:600;" onclick="showPage('forgot')">فراموشی رمز</a>
+          </div>
+          <button class="btn-primary-gradient btn w-100 btn-lg mb-3" style="font-size:1rem;" onclick="handleLogin(event)">
+            ورود <i class="bi bi-arrow-left ms-2"></i>
+          </button>
+          <div class="text-center" style="font-size:0.875rem;color:var(--text-muted);">
+            ─────── یا ورود با ─────────
+          </div>
+          <button class="btn w-100 mt-3 mb-4" style="border:2px solid var(--border-color);border-radius:var(--radius-lg);padding:12px;font-family:inherit;background:var(--bg-card);color:var(--text-primary);font-weight:500;">
+            <i class="bi bi-google me-2" style="color:#ea4335;"></i> ورود با گوگل
+          </button>
+          <div class="text-center" style="font-size:0.9rem;color:var(--text-secondary);">
+            حساب ندارید؟ <a href="#" style="color:var(--primary-600);font-weight:700;text-decoration:none;" onclick="showPage('register')">ثبت نام کنید</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 3: REGISTER / ثبت نام
+     ============================================================ -->
+<div class="page-section  " id="page-register">
+  <div class="auth-split">
+    <div class="auth-left d-none d-lg-flex" style="order:2;">
+      <div style="position:relative;z-index:1;">
+        <div class="navbar-brand-logo mb-4"><i class="bi bi-lightning-fill"></i></div>
+        <h2 style="color:white;font-weight:900;font-size:2rem;">یادگیری هوشمند<br>با ما شروع کنید</h2>
+        <p style="color:rgba(255,255,255,0.75);margin-top:12px;">ساخت حساب رایگان در ۳۰ ثانیه</p>
+        <!-- Stats -->
+        <div class="d-flex gap-4 mt-5">
+          <div style="text-align:center;">
+            <div style="font-size:2rem;font-weight:900;color:white;">۵۰K</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:0.75rem;">کاربر فعال</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+          <div style="text-align:center;">
+            <div style="font-size:2rem;font-weight:900;color:white;">۱۰K</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:0.75rem;">سوال</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+          <div style="text-align:center;">
+            <div style="font-size:2rem;font-weight:900;color:white;">۹۸٪</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:0.75rem;">رضایت</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="auth-right" style="order:1;">
+      <div class="auth-card">
+        <button class="btn p-0 mb-4" style="color:var(--text-muted);font-family:inherit;" onclick="showPage('landing')">
+          <i class="bi bi-arrow-right me-1"></i> بازگشت به خانه
+        </button>
+        <h3 class="fw-800 mb-2">ایجاد حساب کاربری</h3>
+        <p class="text-secondary mb-4" style="font-size:0.9rem;">فرم زیر را تکمیل کنید</p>
+        <form>
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <label class="form-label-custom">نام</label>
+              <input type="text" class="form-control-custom" placeholder="نام">
+            </div>
+            <div class="col-6">
+              <label class="form-label-custom">نام خانوادگی</label>
+              <input type="text" class="form-control-custom" placeholder="نام خانوادگی">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-custom">شماره موبایل</label>
+            <div class="input-group-custom">
+              <i class="bi bi-phone input-icon"></i>
+              <input type="tel" class="form-control-custom" placeholder="09123456789">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-custom">آدرس ایمیل</label>
+            <div class="input-group-custom">
+              <i class="bi bi-envelope input-icon"></i>
+              <input type="email" class="form-control-custom" placeholder="example@email.com">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-custom">رمز عبور</label>
+            <div class="input-group-custom">
+              <i class="bi bi-lock input-icon"></i>
+              <input type="password" class="form-control-custom" placeholder="حداقل ۸ کاراکتر">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">نقش</label>
+            <select class="form-control-custom" style="cursor:pointer;">
+              <option>دانش‌آموز</option>
+              <option>معلم / مصحح</option>
+            </select>
+          </div>
+          <label class="d-flex align-items-start gap-2 mb-4" style="cursor:pointer;font-size:0.85rem;color:var(--text-secondary);">
+            <input type="checkbox" class="form-check-input mt-1 flex-shrink-0">
+            با <a href="#" style="color:var(--primary-600);">قوانین و مقررات</a> و <a href="#" style="color:var(--primary-600);">حریم خصوصی</a> موافقم
+          </label>
+          <button class="btn-primary-gradient btn w-100 btn-lg mb-3" onclick="handleRegister(event)">
+            ثبت نام <i class="bi bi-arrow-left ms-2"></i>
+          </button>
+          <div class="text-center" style="font-size:0.9rem;color:var(--text-secondary);">
+            حساب دارید؟ <a href="#" style="color:var(--primary-600);font-weight:700;text-decoration:none;" onclick="showPage('login')">وارد شوید</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 4: FORGOT PASSWORD
+     ============================================================ -->
+<div class="page-section  " id="page-forgot">
+  <div class="d-flex align-items-center justify-content-center min-vh-100" style="background:var(--bg-primary);">
+    <div style="max-width:420px;width:100%;padding:24px;">
+      <div class="text-center mb-5">
+        <div style="width:72px;height:72px;background:rgba(245,158,11,0.1);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem;">🔑</div>
+        <h3 class="fw-800 mb-2">فراموشی رمز عبور</h3>
+        <p class="text-secondary" style="font-size:0.9rem;">شماره موبایل یا ایمیل خود را وارد کنید تا لینک بازنشانی برایتان ارسال شود.</p>
+      </div>
+      <div class="card-custom">
+        <div class="mb-4">
+          <label class="form-label-custom">شماره موبایل یا ایمیل</label>
+          <div class="input-group-custom">
+            <i class="bi bi-person input-icon"></i>
+            <input type="text" class="form-control-custom" placeholder="09123456789">
+          </div>
+        </div>
+        <button class="btn-primary-gradient btn w-100 btn-lg mb-3" onclick="showPage('otp')">ارسال کد تأیید</button>
+        <div class="text-center" style="font-size:0.875rem;color:var(--text-secondary);">
+          <a href="#" style="color:var(--primary-600);text-decoration:none;" onclick="showPage('login')">
+            <i class="bi bi-arrow-right me-1"></i> بازگشت به ورود
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 5: OTP VERIFICATION
+     ============================================================ -->
+<div class="page-section  " id="page-otp">
+  <div class="d-flex align-items-center justify-content-center min-vh-100" style="background:var(--bg-primary);">
+    <div style="max-width:420px;width:100%;padding:24px;">
+      <div class="text-center mb-5">
+        <div style="width:72px;height:72px;background:rgba(59,130,246,0.1);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem;">📱</div>
+        <h3 class="fw-800 mb-2">کد تأیید</h3>
+        <p class="text-secondary" style="font-size:0.9rem;">کد ۶ رقمی ارسال شده به شماره <strong>09123456789</strong> را وارد کنید.</p>
+      </div>
+      <div class="card-custom">
+        <!-- OTP Boxes -->
+        <div class="d-flex gap-2 justify-content-center mb-4" dir="ltr">
+          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,0)">
+          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,1)">
+          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,2)">
+          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,3)">
+          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,4)">
+          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;">
+        </div>
+        <!-- Countdown -->
+        <div class="text-center mb-4" style="font-size:0.875rem;color:var(--text-muted);">
+          کد منقضی می‌شود در: <span id="otpCountdown" style="color:var(--primary-600);font-weight:700;">01:59</span>
+        </div>
+        <button class="btn-primary-gradient btn w-100 btn-lg mb-3" onclick="showPage('student-dashboard')">تأیید کد</button>
+        <div class="text-center" style="font-size:0.875rem;color:var(--text-secondary);">
+          کد دریافت نشد? <a href="#" style="color:var(--primary-600);font-weight:700;text-decoration:none;">ارسال مجدد</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 6: ACCOUNT ACTIVATION
+     ============================================================ -->
+<div class="page-section  " id="page-activate">
+  <div class="d-flex align-items-center justify-content-center min-vh-100" style="background:var(--bg-primary);">
+    <div style="max-width:480px;width:100%;padding:24px;">
+      <div class="card-custom text-center">
+        <div style="width:80px;height:80px;background:rgba(16,185,129,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:2.5rem;">✅</div>
+        <h3 class="fw-800 mb-3">حساب شما فعال شد!</h3>
+        <p class="text-secondary mb-4">ایمیل تأیید به آدرس <strong>user@example.com</strong> ارسال شد. لطفاً روی لینک کلیک کنید.</p>
+        <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;margin-bottom:24px;">
+          <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+            <div class="pulse-dot"></div>
+            <span style="font-size:0.85rem;font-weight:600;color:var(--accent-500);">منتظر تأیید ایمیل</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin:0;">اگر ایمیل دریافت نکردید، پوشه اسپم را بررسی کنید.</p>
+        </div>
+        <button class="btn-success-gradient btn w-100 btn-lg mb-3" onclick="showPage('student-dashboard')">ورود به داشبورد</button>
+        <button class="btn" style="color:var(--text-muted);font-family:inherit;" onclick="showPage('login')">بازگشت به ورود</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 7: EXAM LIST / لیست آزمون‌ها
+     ============================================================ -->
+<div class="page-section  " id="page-exam-list">
+  <!-- Navbar -->
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <div class="navbar-brand-logo"><i class="bi bi-lightning-fill"></i></div>
+          <span class="navbar-brand-text">آزمون‌آنلاین</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="theme-toggle" onclick="toggleTheme()">
+            <i class="bi bi-sun-fill sun-icon"></i>
+            <i class="bi bi-moon-fill moon-icon"></i>
+          </div>
+          <button class="btn-primary-gradient btn btn-sm" onclick="showPage('student-dashboard')">داشبورد</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Page Header -->
+  <div class="page-header-pattern">
+    <div class="container" style="position:relative;z-index:1;">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-3" style="font-size:0.8rem;">
+          <li class="breadcrumb-item"><a href="#" style="color:rgba(255,255,255,0.6);text-decoration:none;" onclick="showPage('landing')">خانه</a></li>
+          <li class="breadcrumb-item active" style="color:rgba(255,255,255,0.9);">لیست آزمون‌ها</li>
+        </ol>
+      </nav>
+      <h1 style="color:white;font-weight:900;font-size:2rem;margin-bottom:8px;">لیست آزمون‌ها</h1>
+      <p style="color:rgba(255,255,255,0.75);">از بین صدها آزمون درس‌های مختلف انتخاب کنید</p>
+    </div>
+  </div>
+  <!-- Content -->
+  <div class="container py-5">
+    <div class="row g-4">
+      <!-- Filters sidebar -->
+      <div class="col-lg-3">
+        <div class="card-custom sticky-top-sm">
+          <h6 class="fw-700 mb-4"><i class="bi bi-funnel me-2"></i>فیلترها</h6>
+          <div class="mb-4">
+            <label class="form-label-custom">جستجو</label>
+            <div class="input-group-custom">
+              <i class="bi bi-search input-icon"></i>
+              <input type="text" class="form-control-custom" placeholder="نام آزمون...">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">درس</label>
+            <select class="form-control-custom" style="cursor:pointer;">
+              <option>همه دروس</option>
+              <option>ریاضی</option>
+              <option>فیزیک</option>
+              <option>شیمی</option>
+              <option>زبان انگلیسی</option>
+              <option>ادبیات فارسی</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">پایه تحصیلی</label>
+            <div class="d-flex flex-column gap-2">
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> دهم</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> یازدهم</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> دوازدهم</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> پیش‌دانشگاهی</label>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">وضعیت</label>
+            <div class="d-flex flex-column gap-2">
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="radio" name="status" class="form-check-input m-0"> همه</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="radio" name="status" class="form-check-input m-0"> ثبت نام باز</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="radio" name="status" class="form-check-input m-0"> در حال برگزاری</label>
+            </div>
+          </div>
+          <button class="btn-primary-gradient btn w-100">اعمال فیلتر</button>
+        </div>
+      </div>
+      <!-- Exam cards -->
+      <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <p class="text-secondary mb-0" style="font-size:0.875rem;">۲۴ آزمون یافت شد</p>
+          <select class="form-control-custom" style="width:auto;padding:8px 12px;font-size:0.875rem;cursor:pointer;">
+            <option>جدیدترین</option>
+            <option>محبوب‌ترین</option>
+            <option>قدیمی‌ترین</option>
+          </select>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
+            <div class="card-custom hover-lift h-100">
+              <div class="d-flex justify-content-between mb-3">
+                <span class="badge-custom badge-info">ریاضی</span>
+                <span class="badge-custom badge-success">ثبت نام باز</span>
+              </div>
+              <h6 class="fw-700 mb-2">آزمون جامع ریاضی سوم</h6>
+              <p class="text-secondary mb-3" style="font-size:0.8rem;">شامل تمام مباحث با سوالات متنوع</p>
+              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                <span><i class="bi bi-clock me-1"></i>۹۰ دقیقه</span>
+                <span><i class="bi bi-question-circle me-1"></i>۴۰ سوال</span>
+                <span><i class="bi bi-people me-1"></i>۳۲۵</span>
+              </div>
+              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
+                <i class="bi bi-calendar3 me-1"></i>۱۵ اسفند ۱۴۰۳
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
+            <div class="card-custom hover-lift h-100">
+              <div class="d-flex justify-content-between mb-3">
+                <span class="badge-custom badge-purple">فیزیک</span>
+                <span class="badge-custom badge-warning">در حال برگزاری</span>
+              </div>
+              <h6 class="fw-700 mb-2">آزمون فیزیک پیش‌دانشگاهی</h6>
+              <p class="text-secondary mb-3" style="font-size:0.8rem;">الکتریسیته و مغناطیس</p>
+              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                <span><i class="bi bi-clock me-1"></i>۱۲۰ دقیقه</span>
+                <span><i class="bi bi-question-circle me-1"></i>۵۵ سوال</span>
+                <span><i class="bi bi-people me-1"></i>۴۷۸</span>
+              </div>
+              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
+                <i class="bi bi-calendar3 me-1"></i>۱۰ اسفند ۱۴۰۳
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
+            <div class="card-custom hover-lift h-100">
+              <div class="d-flex justify-content-between mb-3">
+                <span class="badge-custom badge-info">شیمی</span>
+                <span class="badge-custom badge-muted">به زودی</span>
+              </div>
+              <h6 class="fw-700 mb-2">آزمون شیمی دوم</h6>
+              <p class="text-secondary mb-3" style="font-size:0.8rem;">پیوندهای شیمیایی</p>
+              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                <span><i class="bi bi-clock me-1"></i>۶۰ دقیقه</span>
+                <span><i class="bi bi-question-circle me-1"></i>۳۰ سوال</span>
+                <span><i class="bi bi-people me-1"></i>۲۱۲</span>
+              </div>
+              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
+                <i class="bi bi-calendar3 me-1"></i>۲۵ اسفند ۱۴۰۳
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
+            <div class="card-custom hover-lift h-100">
+              <div class="d-flex justify-content-between mb-3">
+                <span class="badge-custom badge-success" style="background:rgba(99,102,241,0.1);color:#6366f1;">زبان</span>
+                <span class="badge-custom badge-success">ثبت نام باز</span>
+              </div>
+              <h6 class="fw-700 mb-2">آزمون زبان انگلیسی جامع</h6>
+              <p class="text-secondary mb-3" style="font-size:0.8rem;">گرامر، واژگان و درک مطلب</p>
+              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                <span><i class="bi bi-clock me-1"></i>۷۵ دقیقه</span>
+                <span><i class="bi bi-question-circle me-1"></i>۴۵ سوال</span>
+                <span><i class="bi bi-people me-1"></i>۵۶۲</span>
+              </div>
+              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
+                <i class="bi bi-calendar3 me-1"></i>۲۰ اسفند ۱۴۰۳
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-5">
+          <nav>
+            <ul class="pagination gap-1 mb-0">
+              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">قبلی</a></li>
+              <li class="page-item active"><a class="page-link" href="#" style="border-radius:var(--radius-md);background:var(--gradient-blue);border:none;">۱</a></li>
+              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">۲</a></li>
+              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">۳</a></li>
+              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">بعدی</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 8: EXAM DETAIL / جزئیات آزمون
+     ============================================================ -->
+<div class="page-section  " id="page-exam-detail">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn p-0" style="color:var(--text-secondary);font-family:inherit;" onclick="showPage('exam-list')"><i class="bi bi-arrow-right fs-5"></i></button>
+          <span class="navbar-brand-text">آزمون‌آنلاین</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <!-- Exam Header -->
+        <div class="card-custom mb-4">
+          <div class="d-flex gap-2 mb-3">
+            <span class="badge-custom badge-info">ریاضی</span>
+            <span class="badge-custom badge-success">ثبت نام باز</span>
+            <span class="badge-custom badge-purple">چندگزینه‌ای + تشریحی</span>
+          </div>
+          <h2 class="fw-800 mb-3">آزمون جامع ریاضی سوم دبیرستان</h2>
+          <p class="text-secondary mb-4">این آزمون شامل تمام مباحث ریاضی پایه دوازدهم است و برای آمادگی کنکور طراحی شده است. سوالات این آزمون توسط اساتید مجرب تنظیم شده‌اند.</p>
+          <div class="row g-3">
+            <div class="col-4">
+              <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;text-align:center;">
+                <div style="font-size:1.5rem;font-weight:800;color:var(--primary-600);">۹۰</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">دقیقه</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;text-align:center;">
+                <div style="font-size:1.5rem;font-weight:800;color:var(--secondary-500);">۴۰</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">سوال</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;text-align:center;">
+                <div style="font-size:1.5rem;font-weight:800;color:var(--accent-500);">۲۰</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">نمره کل</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Topics -->
+        <div class="card-custom mb-4">
+          <h5 class="fw-700 mb-4"><i class="bi bi-book me-2" style="color:var(--primary-500);"></i>مباحث آزمون</h5>
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2" style="font-size:0.875rem;"><div style="width:8px;height:8px;border-radius:50%;background:var(--primary-500);flex-shrink:0;"></div>حد و پیوستگی (۸ سوال)</div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2" style="font-size:0.875rem;"><div style="width:8px;height:8px;border-radius:50%;background:var(--secondary-500);flex-shrink:0;"></div>مشتق (۱۰ سوال)</div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2" style="font-size:0.875rem;"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent-500);flex-shrink:0;"></div>انتگرال (۱۲ سوال)</div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2" style="font-size:0.875rem;"><div style="width:8px;height:8px;border-radius:50%;background:var(--warm-500);flex-shrink:0;"></div>آمار و احتمال (۱۰ سوال)</div>
+            </div>
+          </div>
+        </div>
+        <!-- Rules -->
+        <div class="card-custom">
+          <h5 class="fw-700 mb-4"><i class="bi bi-shield-check me-2" style="color:var(--accent-500);"></i>قوانین آزمون</h5>
+          <div class="d-flex flex-column gap-3">
+            <div class="d-flex align-items-start gap-3">
+              <div style="width:28px;height:28px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--danger-500);font-size:0.75rem;">!</div>
+              <p style="font-size:0.875rem;margin:0;color:var(--text-secondary);">پس از شروع آزمون امکان توقف وجود ندارد. مطمئن شوید اینترنت پایدار دارید.</p>
+            </div>
+            <div class="d-flex align-items-start gap-3">
+              <div style="width:28px;height:28px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--danger-500);font-size:0.75rem;">!</div>
+              <p style="font-size:0.875rem;margin:0;color:var(--text-secondary);">سوالات تشریحی باید به صورت دست‌نویس روی کاغذ حل شده و عکس آن آپلود شود.</p>
+            </div>
+            <div class="d-flex align-items-start gap-3">
+              <div style="width:28px;height:28px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--danger-500);font-size:0.75rem;">!</div>
+              <p style="font-size:0.875rem;margin:0;color:var(--text-secondary);">نمره منفی وجود دارد، پاسخ نداده بهتر از پاسخ اشتباه است.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="card-custom sticky-top-sm">
+          <div style="text-align:center;padding:20px 0 24px;border-bottom:1px solid var(--border-color);margin-bottom:24px;">
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;">شروع آزمون</div>
+            <div style="font-size:1.8rem;font-weight:900;color:var(--primary-600);">۱۵ اسفند ۱۴۰۳</div>
+            <div style="font-size:0.9rem;color:var(--text-secondary);">ساعت ۱۰:۰۰</div>
+          </div>
+          <div class="d-flex justify-content-between mb-3" style="font-size:0.875rem;">
+            <span class="text-secondary">هزینه ثبت نام:</span>
+            <span class="fw-700" style="color:var(--accent-500);">رایگان</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3" style="font-size:0.875rem;">
+            <span class="text-secondary">ظرفیت:</span>
+            <span class="fw-700">۵۰۰ نفر</span>
+          </div>
+          <div class="d-flex justify-content-between mb-4" style="font-size:0.875rem;">
+            <span class="text-secondary">ثبت نام شده:</span>
+            <span class="fw-700" style="color:var(--warm-500);">۳۲۵ نفر</span>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:0.8rem;">
+              <span>ظرفیت باقی‌مانده</span>
+              <span>۳۵٪</span>
+            </div>
+            <div class="progress-custom"><div class="progress-fill warm" style="width:65%;"></div></div>
+          </div>
+          <button class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" onclick="showPage('exam-take')">
+            <i class="bi bi-play-fill me-2"></i> ثبت نام و شروع
+          </button>
+          <div class="d-flex gap-2">
+            <button class="btn-outline-custom btn flex-1" style="font-size:0.8rem;"><i class="bi bi-heart me-1"></i> ذخیره</button>
+            <button class="btn w-100" style="border:2px solid var(--border-color);border-radius:var(--radius-full);font-family:inherit;font-size:0.8rem;background:var(--bg-card);color:var(--text-secondary);"><i class="bi bi-share me-1"></i> اشتراک</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 9: TAKE EXAM / شرکت در آزمون
+     ============================================================ -->
+<div class="page-section  " id="page-exam-take">
+  <div style="background:var(--bg-primary);min-height:100vh;">
+    <!-- Exam Navbar -->
+    <div style="background:var(--bg-card);border-bottom:1px solid var(--border-color);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;">
+      <div class="d-flex align-items-center gap-3">
+        <div class="navbar-brand-logo" style="width:32px;height:32px;"><i class="bi bi-lightning-fill" style="font-size:0.9rem;"></i></div>
+        <div>
+          <div style="font-weight:700;font-size:0.9rem;">آزمون جامع ریاضی سوم</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">سوال ۳ از ۴۰</div>
+        </div>
+      </div>
+      <div class="timer-display" style="padding:10px 20px;">
+        <div class="timer-numbers" style="font-size:1.5rem;" id="examTimer">۰۱<span class="timer-dot">:</span>۲۵<span class="timer-dot">:</span>۴۲</div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+        <button class="btn btn-sm" style="background:rgba(239,68,68,0.1);color:var(--danger-500);border:none;border-radius:var(--radius-lg);font-family:inherit;padding:8px 16px;font-weight:600;" onclick="showSubmitModal()">
+          <i class="bi bi-check-circle me-1"></i> پایان آزمون
+        </button>
+      </div>
+    </div>
+    <!-- Progress bar -->
+    <div class="progress-custom" style="height:4px;border-radius:0;">
+      <div class="progress-fill" style="width:7.5%;border-radius:0;transition:none;"></div>
+    </div>
+    <!-- Exam content -->
+    <div class="container py-4">
+      <div class="exam-layout">
+        <!-- Question area -->
+        <div>
+          <div class="exam-question-card mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge-custom badge-info">چندگزینه‌ای</span>
+                <span class="badge-custom badge-muted">ریاضی | حد و پیوستگی</span>
+              </div>
+              <div style="font-size:0.8rem;color:var(--text-muted);">نمره: ۰.۵</div>
+            </div>
+            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;">
+              <p class="mb-0 fw-500" style="font-size:1.05rem;line-height:2;">
+                حد تابع f(x) = (x² - ۴) / (x - ۲) وقتی x به ۲ نزدیک می‌شود کدام است؟
+              </p>
+            </div>
+            <!-- Options -->
+            <div class="d-flex flex-column gap-2">
+              <div class="question-option" onclick="selectOption(this)">
+                <div class="option-dot"></div>
+                <span>الف) ۴</span>
+              </div>
+              <div class="question-option selected" onclick="selectOption(this)">
+                <div class="option-dot"></div>
+                <span>ب) صفر</span>
+              </div>
+              <div class="question-option" onclick="selectOption(this)">
+                <div class="option-dot"></div>
+                <span>ج) تعریف نشده</span>
+              </div>
+              <div class="question-option" onclick="selectOption(this)">
+                <div class="option-dot"></div>
+                <span>د) ۲</span>
+              </div>
+            </div>
+          </div>
+          <!-- Descriptive question -->
+          <div class="exam-question-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge-custom badge-purple">تشریحی</span>
+                <span class="badge-custom badge-muted">آپلود عکس</span>
+              </div>
+              <div style="font-size:0.8rem;color:var(--text-muted);">نمره: ۴</div>
+            </div>
+            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;">
+              <p class="mb-0 fw-500" style="font-size:1.05rem;line-height:2;">
+                مشتق تابع f(x) = x³ - ۵x² + ۶x + ۲ را محاسبه کرده و نقاط بحرانی آن را بیابید.
+              </p>
+            </div>
+            <!-- Upload area -->
+            <div class="upload-box" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+              <input type="file" id="fileInput" hidden accept="image/*" onchange="handleFileUpload(this)">
+              <div class="upload-icon"><i class="bi bi-camera-fill"></i></div>
+              <h6 class="fw-700 mb-2">عکس پاسخ را آپلود کنید</h6>
+              <p class="text-secondary mb-3" style="font-size:0.85rem;">فایل را اینجا بکشید یا کلیک کنید</p>
+              <span class="badge-custom badge-info">JPG, PNG, PDF</span>
+            </div>
+            <!-- Preview (hidden by default) -->
+            <div id="uploadPreview" class="d-none mt-3">
+              <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;display:flex;align-items:center;justify-content:between;gap:12px;">
+                <div style="width:48px;height:48px;background:var(--gradient-green);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;flex-shrink:0;"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+                <div style="flex:1;">
+                  <div class="fw-600" style="font-size:0.875rem;">پاسخ_سوال_۳.jpg</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">در حال تبدیل به PDF... <span class="badge-custom badge-success" style="font-size:10px;">کامل شد</span></div>
+                </div>
+                <button class="btn p-0" style="color:var(--danger-500);" onclick="document.getElementById('uploadPreview').classList.add('d-none')"><i class="bi bi-x-circle-fill fs-5"></i></button>
+              </div>
+            </div>
+          </div>
+          <!-- Navigation buttons -->
+          <div class="d-flex justify-content-between mt-4">
+            <button class="btn-outline-custom btn" disabled>
+              <i class="bi bi-arrow-right me-2"></i> سوال قبلی
+            </button>
+            <button class="btn-primary-gradient btn">
+              سوال بعدی <i class="bi bi-arrow-left ms-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sidebar: Timer + Navigator -->
+        <div class="d-none d-lg-block">
+          <!-- Timer -->
+          <div class="timer-display mb-4">
+            <div class="timer-label mb-1">زمان باقی‌مانده</div>
+            <div class="timer-numbers">۰۱<span class="timer-dot">:</span>۲۵<span class="timer-dot">:</span>۴۲</div>
+          </div>
+          <!-- Question navigator -->
+          <div class="card-custom mb-4">
+            <h6 class="fw-700 mb-3" style="font-size:0.85rem;">ناوبری سوالات</h6>
+            <div class="q-nav-grid mb-3">
+              <div class="q-nav-btn answered">۱</div>
+              <div class="q-nav-btn answered">۲</div>
+              <div class="q-nav-btn current">۳</div>
+              <div class="q-nav-btn">۴</div>
+              <div class="q-nav-btn">۵</div>
+              <div class="q-nav-btn skipped">۶</div>
+              <div class="q-nav-btn">۷</div>
+              <div class="q-nav-btn">۸</div>
+              <div class="q-nav-btn">۹</div>
+              <div class="q-nav-btn">۱۰</div>
+              <div class="q-nav-btn">۱۱</div>
+              <div class="q-nav-btn">۱۲</div>
+              <div class="q-nav-btn">۱۳</div>
+              <div class="q-nav-btn">۱۴</div>
+              <div class="q-nav-btn">۱۵</div>
+            </div>
+            <div class="d-flex flex-column gap-1" style="font-size:0.75rem;">
+              <div class="d-flex align-items-center gap-2"><div style="width:12px;height:12px;border-radius:3px;background:var(--gradient-green);"></div> پاسخ داده شده (۲)</div>
+              <div class="d-flex align-items-center gap-2"><div style="width:12px;height:12px;border-radius:3px;background:var(--gradient-blue);"></div> سوال جاری</div>
+              <div class="d-flex align-items-center gap-2"><div style="width:12px;height:12px;border-radius:3px;background:rgba(245,158,11,0.2);border:1.5px solid var(--warm-400);"></div> رد شده (۱)</div>
+              <div class="d-flex align-items-center gap-2"><div style="width:12px;height:12px;border-radius:3px;border:2px solid var(--border-color);background:var(--bg-card);"></div> پاسخ نشده</div>
+            </div>
+          </div>
+          <!-- Exam info -->
+          <div class="card-custom">
+            <div class="d-flex justify-content-between mb-2" style="font-size:0.8rem;">
+              <span class="text-secondary">پیشرفت</span>
+              <span class="fw-700">۲ از ۴۰</span>
+            </div>
+            <div class="progress-custom mb-3"><div class="progress-fill" style="width:5%;"></div></div>
+            <button class="btn w-100" style="background:rgba(239,68,68,0.1);color:var(--danger-500);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-lg);font-family:inherit;font-weight:600;padding:10px;" onclick="showSubmitModal()">
+              <i class="bi bi-check-circle me-1"></i> اتمام آزمون
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Submit Confirmation Modal -->
+  <div class="modal fade" id="submitModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-custom">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0 pb-0">
+          <h5 class="modal-title fw-700">تأیید ارسال آزمون</h5>
+        </div>
+        <div class="modal-body py-4">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="font-size:3rem;margin-bottom:12px;">⚠️</div>
+            <p class="mb-0" style="font-size:0.9rem;color:var(--text-secondary);">آیا مطمئن هستید که می‌خواهید آزمون را به پایان برسانید؟</p>
+          </div>
+          <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;margin-bottom:4px;">
+            <div class="d-flex justify-content-between mb-2" style="font-size:0.875rem;">
+              <span class="text-secondary">سوالات پاسخ داده:</span><span class="fw-700 text-success">۲ سوال</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2" style="font-size:0.875rem;">
+              <span class="text-secondary">سوالات رد شده:</span><span class="fw-700" style="color:var(--warm-500);">۱ سوال</span>
+            </div>
+            <div class="d-flex justify-content-between" style="font-size:0.875rem;">
+              <span class="text-secondary">سوالات پاسخ نشده:</span><span class="fw-700 text-danger">۳۷ سوال</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" style="border:2px solid var(--border-color);border-radius:var(--radius-full);font-family:inherit;padding:9px 20px;background:var(--bg-card);color:var(--text-secondary);" data-bs-dismiss="modal">بازگشت به آزمون</button>
+          <button class="btn-danger btn" style="background:var(--gradient-warm);border:none;border-radius:var(--radius-full);font-family:inherit;font-weight:700;padding:9px 20px;" onclick="showPage('student-dashboard')">ارسال نهایی</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 10: QUESTION BANK / بانک سوال
+     ============================================================ -->
+<div class="page-section  " id="page-question-bank">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn p-0" style="color:var(--text-secondary);" onclick="showPage('landing')"><i class="bi bi-arrow-right fs-5"></i></button>
+          <span class="navbar-brand-text">بانک سوال</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+          <button class="btn-primary-gradient btn btn-sm" onclick="showPage('student-dashboard')">داشبورد</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="page-header-pattern">
+    <div class="container" style="position:relative;z-index:1;">
+      <h1 style="color:white;font-weight:900;font-size:2rem;margin-bottom:8px;"><i class="bi bi-archive-fill me-2"></i>بانک سوال هوشمند</h1>
+      <p style="color:rgba(255,255,255,0.75);">بیش از ۱۰,۰۰۰ سوال طبقه‌بندی شده در تمام دروس</p>
+    </div>
+  </div>
+  <div class="container py-5">
+    <!-- Quick filters -->
+    <div class="d-flex gap-2 flex-wrap mb-4">
+      <button class="btn-primary-gradient btn btn-sm">همه دروس</button>
+      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">ریاضی</button>
+      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">فیزیک</button>
+      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">شیمی</button>
+      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">زبان</button>
+      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">ادبیات</button>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-3">
+        <div class="card-custom sticky-top-sm">
+          <h6 class="fw-700 mb-4">فیلتر پیشرفته</h6>
+          <div class="mb-4">
+            <label class="form-label-custom">جستجو در متن سوال</label>
+            <div class="input-group-custom">
+              <i class="bi bi-search input-icon"></i>
+              <input type="text" class="form-control-custom" placeholder="کلمه کلیدی...">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">نوع سوال</label>
+            <div class="d-flex flex-column gap-2">
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0" checked> چندگزینه‌ای</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0" checked> تشریحی</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> PDF محور</label>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">سطح دشواری</label>
+            <div class="d-flex flex-column gap-2">
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> آسان</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> متوسط</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> سخت</label>
+            </div>
+          </div>
+          <button class="btn-primary-gradient btn w-100">جستجو</button>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="d-flex flex-column gap-3">
+          <!-- Question row -->
+          <div class="card-custom" style="padding:20px;">
+            <div class="d-flex justify-content-between align-items-start">
+              <div style="flex:1;">
+                <div class="d-flex gap-2 mb-2">
+                  <span class="badge-custom badge-info">ریاضی</span>
+                  <span class="badge-custom badge-warning">متوسط</span>
+                  <span class="badge-custom badge-muted">چندگزینه‌ای</span>
+                </div>
+                <p class="mb-2 fw-500">حد تابع f(x) = sin(x)/x وقتی x→0 برابر است با:</p>
+                <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                  <span><i class="bi bi-clock me-1"></i>۳ دقیقه</span>
+                  <span><i class="bi bi-eye me-1"></i>۱,۲۴۵ بازدید</span>
+                  <span><i class="bi bi-check-circle me-1"></i>۷۸٪ پاسخ صحیح</span>
+                </div>
+              </div>
+              <button class="btn-primary-gradient btn btn-sm" style="white-space:nowrap;margin-right:12px;" onclick="showPage('question-detail')">مشاهده</button>
+            </div>
+          </div>
+          <div class="card-custom" style="padding:20px;">
+            <div class="d-flex justify-content-between align-items-start">
+              <div style="flex:1;">
+                <div class="d-flex gap-2 mb-2">
+                  <span class="badge-custom badge-purple">فیزیک</span>
+                  <span class="badge-custom badge-danger">سخت</span>
+                  <span class="badge-custom badge-muted">تشریحی</span>
+                </div>
+                <p class="mb-2 fw-500">جرم اتم مس با عدد اتمی ۲۹ چقدر است؟ نیروی لورنتز را در میدان ۲ تسلا محاسبه کنید.</p>
+                <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                  <span><i class="bi bi-clock me-1"></i>۸ دقیقه</span>
+                  <span><i class="bi bi-eye me-1"></i>۸۹۲ بازدید</span>
+                  <span><i class="bi bi-check-circle me-1"></i>۴۵٪ پاسخ صحیح</span>
+                </div>
+              </div>
+              <button class="btn-primary-gradient btn btn-sm" style="white-space:nowrap;margin-right:12px;" onclick="showPage('question-detail')">مشاهده</button>
+            </div>
+          </div>
+          <div class="card-custom" style="padding:20px;">
+            <div class="d-flex justify-content-between align-items-start">
+              <div style="flex:1;">
+                <div class="d-flex gap-2 mb-2">
+                  <span class="badge-custom badge-success" style="background:rgba(16,185,129,0.1);color:var(--accent-500);">شیمی</span>
+                  <span class="badge-custom badge-success">آسان</span>
+                  <span class="badge-custom badge-muted">PDF محور</span>
+                </div>
+                <p class="mb-2 fw-500">با توجه به جدول تناوبی ارائه شده در فایل PDF، عناصر گروه اول را نام ببرید.</p>
+                <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                  <span><i class="bi bi-clock me-1"></i>۵ دقیقه</span>
+                  <span><i class="bi bi-file-pdf me-1" style="color:var(--danger-500);"></i>دارای PDF</span>
+                  <span><i class="bi bi-check-circle me-1"></i>۹۲٪ پاسخ صحیح</span>
+                </div>
+              </div>
+              <button class="btn-primary-gradient btn btn-sm" style="white-space:nowrap;margin-right:12px;" onclick="showPage('question-detail')">مشاهده</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 11: QUESTION DETAIL / جزئیات سوال
+     ============================================================ -->
+<div class="page-section  " id="page-question-detail">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn p-0" style="color:var(--text-secondary);" onclick="showPage('question-bank')"><i class="bi bi-arrow-right fs-5"></i></button>
+          <span class="navbar-brand-text">جزئیات سوال</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <!-- Question Card -->
+        <div class="card-custom mb-4">
+          <div class="d-flex gap-2 mb-4">
+            <span class="badge-custom badge-info">ریاضی</span>
+            <span class="badge-custom badge-warning">متوسط</span>
+            <span class="badge-custom badge-muted">چندگزینه‌ای</span>
+          </div>
+          <h5 class="fw-700 mb-3">متن سوال</h5>
+          <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;line-height:2.2;font-size:1rem;">
+            حد تابع f(x) = (x² - ۴) / (x - ۲) وقتی x به ۲ نزدیک می‌شود کدام است؟
+          </div>
+          <!-- Options with correct answer -->
+          <div class="d-flex flex-column gap-2 mb-4">
+            <div class="question-option" style="border-color:var(--accent-500);background:rgba(16,185,129,0.06);">
+              <div class="option-dot" style="border-color:var(--accent-500);background:var(--accent-500);"></div>
+              <span class="fw-600" style="color:var(--accent-500);">الف) ۴ ✓</span>
+            </div>
+            <div class="question-option">
+              <div class="option-dot"></div>
+              <span>ب) صفر</span>
+            </div>
+            <div class="question-option">
+              <div class="option-dot"></div>
+              <span>ج) تعریف نشده</span>
+            </div>
+            <div class="question-option">
+              <div class="option-dot"></div>
+              <span>د) ۲</span>
+            </div>
+          </div>
+        </div>
+        <!-- Solution -->
+        <div class="card-custom" style="border-right:4px solid var(--accent-500);">
+          <h5 class="fw-700 mb-4"><i class="bi bi-lightbulb-fill me-2" style="color:var(--warm-500);"></i>پاسخنامه</h5>
+          <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;line-height:2.2;margin-bottom:16px;">
+            <p>برای محاسبه این حد، ابتدا صورت را فاکتورگیری می‌کنیم:</p>
+            <p style="font-family:monospace;font-size:0.95rem;background:var(--bg-card);padding:12px;border-radius:8px;margin:12px 0;">
+              f(x) = (x² - ۴) / (x - ۲) = (x + ۲)(x - ۲) / (x - ۲) = x + ۲
+            </p>
+            <p>حالا با جایگذاری x = ۲:</p>
+            <p style="font-family:monospace;font-size:0.95rem;background:var(--bg-card);padding:12px;border-radius:8px;margin:12px 0;">
+              lim(x→۲) f(x) = ۲ + ۲ = ۴
+            </p>
+            <p class="mb-0">پس جواب صحیح گزینه الف) ۴ می‌باشد.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="card-custom mb-4">
+          <h6 class="fw-700 mb-4">اطلاعات سوال</h6>
+          <div class="timer-display mb-4" style="background:linear-gradient(135deg,#0f172a,#1e293b);">
+            <div class="timer-label mb-1">زمان پیشنهادی حل</div>
+            <div class="timer-numbers">۰۳<span class="timer-dot">:</span>۰۰</div>
+          </div>
+          <div class="d-flex flex-column gap-3" style="font-size:0.875rem;">
+            <div class="d-flex justify-content-between"><span class="text-secondary">درس:</span><span class="fw-600">ریاضی</span></div>
+            <div class="d-flex justify-content-between"><span class="text-secondary">مبحث:</span><span class="fw-600">حد و پیوستگی</span></div>
+            <div class="d-flex justify-content-between"><span class="text-secondary">سطح:</span><span class="fw-600 badge-custom badge-warning">متوسط</span></div>
+            <div class="d-flex justify-content-between"><span class="text-secondary">درصد پاسخ صحیح:</span><span class="fw-600 text-success">۷۸٪</span></div>
+            <div class="d-flex justify-content-between"><span class="text-secondary">بازدید:</span><span class="fw-600">۱,۲۴۵</span></div>
+          </div>
+        </div>
+        <div class="card-custom">
+          <h6 class="fw-700 mb-3">سوالات مرتبط</h6>
+          <div class="d-flex flex-column gap-2">
+            <a href="#" style="color:var(--text-secondary);text-decoration:none;font-size:0.85rem;padding:10px;border-radius:var(--radius-lg);background:var(--bg-secondary);">حد تابع sin(x)/x در صفر</a>
+            <a href="#" style="color:var(--text-secondary);text-decoration:none;font-size:0.85rem;padding:10px;border-radius:var(--radius-lg);background:var(--bg-secondary);">قضیه فشردگی برای حد</a>
+            <a href="#" style="color:var(--text-secondary);text-decoration:none;font-size:0.85rem;padding:10px;border-radius:var(--radius-lg);background:var(--bg-secondary);">پیوستگی تابع در نقطه</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 12: ARTICLES
+     ============================================================ -->
+<div class="page-section  " id="page-articles">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn p-0" style="color:var(--text-secondary);" onclick="showPage('landing')"><i class="bi bi-arrow-right fs-5"></i></button>
+          <span class="navbar-brand-text">مقالات آموزشی</span>
+        </div>
+        <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+      </div>
+    </div>
+  </nav>
+  <div class="page-header-pattern">
+    <div class="container" style="position:relative;z-index:1;">
+      <h1 style="color:white;font-weight:900;font-size:2rem;margin-bottom:8px;">مقالات آموزشی</h1>
+      <p style="color:rgba(255,255,255,0.75);">راهنمایی‌های تخصصی برای پیشرفت تحصیلی</p>
+    </div>
+  </div>
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="card-custom hover-lift h-100 p-0 overflow-hidden">
+          <div style="height:160px;background:var(--gradient-blue);display:flex;align-items:center;justify-content:center;font-size:3rem;">📐</div>
+          <div style="padding:20px;">
+            <span class="badge-custom badge-info mb-2">ریاضی</span>
+            <h6 class="fw-700 mb-2" onclick="showPage('article-detail')" style="cursor:pointer;">راهنمای جامع حل مسائل انتگرال</h6>
+            <p class="text-secondary" style="font-size:0.8rem;">روش‌های حل انتگرال از پایه تا پیشرفته با مثال‌های کاربردی</p>
+            <div class="d-flex justify-content-between align-items-center" style="font-size:0.75rem;color:var(--text-muted);">
+              <span><i class="bi bi-clock me-1"></i>۸ دقیقه مطالعه</span>
+              <button class="btn p-0" style="color:var(--primary-600);font-size:0.75rem;font-family:inherit;" onclick="showPage('article-detail')">ادامه مطلب <i class="bi bi-arrow-left"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="card-custom hover-lift h-100 p-0 overflow-hidden">
+          <div style="height:160px;background:var(--gradient-purple);display:flex;align-items:center;justify-content:center;font-size:3rem;">⚡</div>
+          <div style="padding:20px;">
+            <span class="badge-custom badge-purple mb-2">فیزیک</span>
+            <h6 class="fw-700 mb-2" onclick="showPage('article-detail')" style="cursor:pointer;">قوانین الکترومغناطیس به زبان ساده</h6>
+            <p class="text-secondary" style="font-size:0.8rem;">درک عمیق قوانین فارادی و آمپر برای قبولی در کنکور</p>
+            <div class="d-flex justify-content-between align-items-center" style="font-size:0.75rem;color:var(--text-muted);">
+              <span><i class="bi bi-clock me-1"></i>۱۲ دقیقه مطالعه</span>
+              <button class="btn p-0" style="color:var(--primary-600);font-size:0.75rem;font-family:inherit;" onclick="showPage('article-detail')">ادامه مطلب <i class="bi bi-arrow-left"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="card-custom hover-lift h-100 p-0 overflow-hidden">
+          <div style="height:160px;background:var(--gradient-green);display:flex;align-items:center;justify-content:center;font-size:3rem;">🧪</div>
+          <div style="padding:20px;">
+            <span class="badge-custom badge-success mb-2">شیمی</span>
+            <h6 class="fw-700 mb-2" onclick="showPage('article-detail')" style="cursor:pointer;">پیوندهای شیمیایی: ایونی در مقابل کووالانسی</h6>
+            <p class="text-secondary" style="font-size:0.8rem;">تفاوت‌ها و شباهت‌های پیوندهای اصلی شیمی</p>
+            <div class="d-flex justify-content-between align-items-center" style="font-size:0.75rem;color:var(--text-muted);">
+              <span><i class="bi bi-clock me-1"></i>۶ دقیقه مطالعه</span>
+              <button class="btn p-0" style="color:var(--primary-600);font-size:0.75rem;font-family:inherit;" onclick="showPage('article-detail')">ادامه مطلب <i class="bi bi-arrow-left"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 13: ARTICLE DETAIL
+     ============================================================ -->
+<div class="page-section  " id="page-article-detail">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <button class="btn p-0" style="color:var(--text-secondary);" onclick="showPage('articles')"><i class="bi bi-arrow-right fs-5"></i></button>
+        <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+      </div>
+    </div>
+  </nav>
+  <div class="container py-5" style="max-width:800px;">
+    <div class="card-custom">
+      <div class="d-flex gap-2 mb-4">
+        <span class="badge-custom badge-info">ریاضی</span>
+        <span class="badge-custom badge-muted"><i class="bi bi-clock me-1"></i>۸ دقیقه مطالعه</span>
+      </div>
+      <h1 class="fw-900 mb-4" style="font-size:1.8rem;line-height:1.4;">راهنمای جامع حل مسائل انتگرال</h1>
+      <div class="d-flex align-items-center gap-3 mb-5" style="padding-bottom:24px;border-bottom:1px solid var(--border-color);">
+        <div class="avatar">م</div>
+        <div>
+          <div class="fw-600" style="font-size:0.9rem;">محمد رضایی</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">۵ اسفند ۱۴۰۳</div>
+        </div>
+      </div>
+      <div style="line-height:2.2;color:var(--text-secondary);">
+        <h4 class="fw-700 mb-3" style="color:var(--text-primary);">مقدمه</h4>
+        <p>انتگرال یکی از مهم‌ترین مباحث ریاضی است که در کنکور سراسری سهم بالایی دارد. در این مقاله، تمام روش‌های حل انتگرال را از ابتدا تا انتها توضیح می‌دهیم.</p>
+        <h4 class="fw-700 mb-3 mt-4" style="color:var(--text-primary);">روش‌های اصلی</h4>
+        <p>۱. <strong>انتگرال مستقیم:</strong> ساده‌ترین روش که با استفاده از فرمول‌های پایه انجام می‌شود.</p>
+        <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin:16px 0;font-family:monospace;">∫ xⁿ dx = xⁿ⁺¹/(n+1) + C</div>
+        <p>۲. <strong>تغییر متغیر (جانشانی):</strong> برای انتگرال‌های پیچیده‌تر استفاده می‌شود.</p>
+        <p>۳. <strong>انتگرال جزء به جزء:</strong> برای حاصل‌ضرب توابع.</p>
+        <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin:16px 0;font-family:monospace;">∫ u dv = uv - ∫ v du</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 14: ABOUT
+     ============================================================ -->
+<div class="page-section  " id="page-about">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn p-0" style="color:var(--text-secondary);" onclick="showPage('landing')"><i class="bi bi-arrow-right fs-5"></i></button>
+          <span class="navbar-brand-text">آزمون‌آنلاین</span>
+        </div>
+        <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+      </div>
+    </div>
+  </nav>
+  <div class="page-header-pattern">
+    <div class="container" style="position:relative;z-index:1;">
+      <h1 style="color:white;font-weight:900;font-size:2.2rem;margin-bottom:8px;">درباره ما</h1>
+      <p style="color:rgba(255,255,255,0.75);">تیمی از متخصصین آموزش و فناوری</p>
+    </div>
+  </div>
+  <div class="container py-5">
+    <div class="row g-5 align-items-center mb-6">
+      <div class="col-lg-6">
+        <div class="section-badge" style="width:fit-content;"><i class="bi bi-info-circle"></i> داستان ما</div>
+        <h2 class="section-title mt-2 mb-4">ما برای تحول آموزش اینجاییم</h2>
+        <p class="text-secondary mb-4" style="line-height:1.9;">آزمون‌آنلاین در سال ۱۴۰۰ با هدف ایجاد پلتفرمی هوشمند و جامع برای آموزش و ارزیابی دانش‌آموزان ایرانی تأسیس شد. ما باور داریم که هر دانش‌آموزی حق دارد از بهترین ابزارهای آموزشی استفاده کند.</p>
+        <p class="text-secondary" style="line-height:1.9;">با ترکیب فناوری هوش مصنوعی و تجربه اساتید مجرب، ما توانسته‌ایم بستری ایجاد کنیم که یادگیری را مؤثرتر، جذاب‌تر و دقیق‌تر کند.</p>
+      </div>
+      <div class="col-lg-6">
+        <div class="row g-3">
+          <div class="col-6"><div class="card-stat stat-blue text-center"><div style="font-size:2rem;font-weight:900;color:var(--primary-600);">۵۰K+</div><div style="font-size:0.85rem;color:var(--text-muted);">کاربر فعال</div></div></div>
+          <div class="col-6"><div class="card-stat stat-purple text-center"><div style="font-size:2rem;font-weight:900;color:var(--secondary-500);">۱۰K+</div><div style="font-size:0.85rem;color:var(--text-muted);">سوال</div></div></div>
+          <div class="col-6"><div class="card-stat stat-green text-center"><div style="font-size:2rem;font-weight:900;color:var(--accent-500);">۲,۵K+</div><div style="font-size:0.85rem;color:var(--text-muted);">آزمون برگزار شده</div></div></div>
+          <div class="col-6"><div class="card-stat stat-warm text-center"><div style="font-size:2rem;font-weight:900;color:var(--warm-500);">۹۸٪</div><div style="font-size:0.85rem;color:var(--text-muted);">رضایت کاربران</div></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Team -->
+    <h2 class="section-title text-center mb-5">تیم ما</h2>
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-3 col-md-6">
+        <div class="card-custom text-center">
+          <div class="avatar-xl mx-auto mb-3" style="background:var(--gradient-blue);">ع</div>
+          <h6 class="fw-700 mb-1">علی محمدی</h6>
+          <p class="text-secondary mb-2" style="font-size:0.8rem;">مدیرعامل و هم‌بنیانگذار</p>
+          <div class="d-flex justify-content-center gap-2">
+            <a class="footer-social" href="#" style="width:32px;height:32px;color:var(--text-muted);"><i class="bi bi-linkedin" style="font-size:0.8rem;"></i></a>
+            <a class="footer-social" href="#" style="width:32px;height:32px;color:var(--text-muted);"><i class="bi bi-twitter-x" style="font-size:0.8rem;"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="card-custom text-center">
+          <div class="avatar-xl mx-auto mb-3" style="background:var(--gradient-purple);">س</div>
+          <h6 class="fw-700 mb-1">سارا رضایی</h6>
+          <p class="text-secondary mb-2" style="font-size:0.8rem;">مدیر فنی</p>
+          <div class="d-flex justify-content-center gap-2">
+            <a class="footer-social" href="#" style="width:32px;height:32px;color:var(--text-muted);"><i class="bi bi-linkedin" style="font-size:0.8rem;"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="card-custom text-center">
+          <div class="avatar-xl mx-auto mb-3" style="background:var(--gradient-green);">ح</div>
+          <h6 class="fw-700 mb-1">حسن کریمی</h6>
+          <p class="text-secondary mb-2" style="font-size:0.8rem;">مدیر محتوا</p>
+          <div class="d-flex justify-content-center gap-2">
+            <a class="footer-social" href="#" style="width:32px;height:32px;color:var(--text-muted);"><i class="bi bi-linkedin" style="font-size:0.8rem;"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 15: CONTACT
+     ============================================================ -->
+<div class="page-section  " id="page-contact">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn p-0" style="color:var(--text-secondary);" onclick="showPage('landing')"><i class="bi bi-arrow-right fs-5"></i></button>
+          <span class="navbar-brand-text">آزمون‌آنلاین</span>
+        </div>
+        <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+      </div>
+    </div>
+  </nav>
+  <div class="page-header-pattern">
+    <div class="container" style="position:relative;z-index:1;">
+      <h1 style="color:white;font-weight:900;font-size:2rem;">تماس با ما</h1>
+      <p style="color:rgba(255,255,255,0.75);">در خدمت شما هستیم</p>
+    </div>
+  </div>
+  <div class="container py-5">
+    <div class="row g-5">
+      <div class="col-lg-5">
+        <div class="d-flex flex-column gap-4">
+          <div class="card-custom">
+            <div class="feature-icon fi-blue mb-3"><i class="bi bi-telephone-fill"></i></div>
+            <h6 class="fw-700 mb-1">تلفن پشتیبانی</h6>
+            <p class="text-secondary mb-0">۰۲۱-۸۸۸۸۱۲۳۴</p>
+          </div>
+          <div class="card-custom">
+            <div class="feature-icon fi-purple mb-3"><i class="bi bi-envelope-fill"></i></div>
+            <h6 class="fw-700 mb-1">ایمیل</h6>
+            <p class="text-secondary mb-0">support@azmoon-online.ir</p>
+          </div>
+          <div class="card-custom">
+            <div class="feature-icon fi-green mb-3"><i class="bi bi-clock-fill"></i></div>
+            <h6 class="fw-700 mb-1">ساعات پشتیبانی</h6>
+            <p class="text-secondary mb-0">شنبه تا چهارشنبه | ۸ تا ۱۸</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="card-custom">
+          <h5 class="fw-700 mb-4">ارسال پیام</h5>
+          <div class="row g-3 mb-3">
+            <div class="col-6"><label class="form-label-custom">نام و نام خانوادگی</label><input type="text" class="form-control-custom" placeholder="نام شما"></div>
+            <div class="col-6"><label class="form-label-custom">ایمیل</label><input type="email" class="form-control-custom" placeholder="ایمیل شما"></div>
+          </div>
+          <div class="mb-3"><label class="form-label-custom">موضوع</label><input type="text" class="form-control-custom" placeholder="موضوع پیام"></div>
+          <div class="mb-4"><label class="form-label-custom">متن پیام</label><textarea class="form-control-custom" rows="5" placeholder="پیام خود را بنویسید..." style="resize:vertical;"></textarea></div>
+          <button class="btn-primary-gradient btn" onclick="showToast('success','پیام شما با موفقیت ارسال شد')">ارسال پیام <i class="bi bi-send ms-2"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+
+<script>
+    function showPage(id) {
+        let elements = document.querySelectorAll('.page-section');
+
+        elements.forEach(element => {
+            element.classList.remove('active');
+        });
+
+        document.getElementById('page-'+String(id)).classList.add('active');
+    }
+</script>
+
+
+<script>
+  // هنگام لود صفحه، تم ذخیره‌شده اعمال شود
+  (function () {
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  })();
+
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+
+    if (currentTheme === "dark") {
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.setItem("theme", "light");
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+    }
+  }
+</script>
+
+</body>
+</html>
+
