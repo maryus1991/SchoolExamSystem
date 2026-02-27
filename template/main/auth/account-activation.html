@@ -1,0 +1,32 @@
+{% extends "main/base/base.html" %}
+
+
+{% block content %}
+
+
+
+<!-- ============================================================
+     PAGE 6: ACCOUNT ACTIVATION
+     ============================================================ -->
+<div class="page-section active " id="page-activate">
+  <div class="d-flex align-items-center justify-content-center min-vh-100" style="background:var(--bg-primary);">
+    <div style="max-width:480px;width:100%;padding:24px;">
+      <div class="card-custom text-center">
+        <div style="width:80px;height:80px;background:rgba(16,185,129,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:2.5rem;">✅</div>
+        <h3 class="fw-800 mb-3">حساب شما فعال شد!</h3>
+        <p class="text-secondary mb-4">ایمیل تأیید به آدرس <strong>user@example.com</strong> ارسال شد. لطفاً روی لینک کلیک کنید.</p>
+        <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;margin-bottom:24px;">
+          <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+            <div class="pulse-dot"></div>
+            <span style="font-size:0.85rem;font-weight:600;color:var(--accent-500);">منتظر تأیید ایمیل</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin:0;">اگر ایمیل دریافت نکردید، پوشه اسپم را بررسی کنید.</p>
+        </div>
+        <button class="btn-success-gradient btn w-100 btn-lg mb-3" onclick="showPage('student-dashboard')">ورود به داشبورد</button>
+        <button class="btn" style="color:var(--text-muted);font-family:inherit;" onclick="showPage('login')">بازگشت به ورود</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

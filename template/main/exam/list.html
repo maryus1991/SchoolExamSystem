@@ -1,0 +1,188 @@
+{% extends "main/base/base.html" %}
+
+
+{% block content %}
+
+
+<!-- ============================================================
+     PAGE 7: EXAM LIST / لیست آزمون‌ها
+     ============================================================ -->
+<div class="page-section  " id="page-exam-list">
+  <!-- Navbar -->
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <div class="navbar-brand-logo"><i class="bi bi-lightning-fill"></i></div>
+          <span class="navbar-brand-text">آزمون‌آنلاین</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="theme-toggle" onclick="toggleTheme()">
+            <i class="bi bi-sun-fill sun-icon"></i>
+            <i class="bi bi-moon-fill moon-icon"></i>
+          </div>
+          <button class="btn-primary-gradient btn btn-sm" onclick="showPage('student-dashboard')">داشبورد</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Page Header -->
+  <div class="page-header-pattern">
+    <div class="container" style="position:relative;z-index:1;">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-3" style="font-size:0.8rem;">
+          <li class="breadcrumb-item"><a href="#" style="color:rgba(255,255,255,0.6);text-decoration:none;" onclick="showPage('landing')">خانه</a></li>
+          <li class="breadcrumb-item active" style="color:rgba(255,255,255,0.9);">لیست آزمون‌ها</li>
+        </ol>
+      </nav>
+      <h1 style="color:white;font-weight:900;font-size:2rem;margin-bottom:8px;">لیست آزمون‌ها</h1>
+      <p style="color:rgba(255,255,255,0.75);">از بین صدها آزمون درس‌های مختلف انتخاب کنید</p>
+    </div>
+  </div>
+  <!-- Content -->
+  <div class="container py-5">
+    <div class="row g-4">
+      <!-- Filters sidebar -->
+      <div class="col-lg-3">
+        <div class="card-custom sticky-top-sm">
+          <h6 class="fw-700 mb-4"><i class="bi bi-funnel me-2"></i>فیلترها</h6>
+          <div class="mb-4">
+            <label class="form-label-custom">جستجو</label>
+            <div class="input-group-custom">
+              <i class="bi bi-search input-icon"></i>
+              <input type="text" class="form-control-custom" placeholder="نام آزمون...">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">درس</label>
+            <select class="form-control-custom" style="cursor:pointer;">
+              <option>همه دروس</option>
+              <option>ریاضی</option>
+              <option>فیزیک</option>
+              <option>شیمی</option>
+              <option>زبان انگلیسی</option>
+              <option>ادبیات فارسی</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">پایه تحصیلی</label>
+            <div class="d-flex flex-column gap-2">
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> دهم</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> یازدهم</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> دوازدهم</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> پیش‌دانشگاهی</label>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">وضعیت</label>
+            <div class="d-flex flex-column gap-2">
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="radio" name="status" class="form-check-input m-0"> همه</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="radio" name="status" class="form-check-input m-0"> ثبت نام باز</label>
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="radio" name="status" class="form-check-input m-0"> در حال برگزاری</label>
+            </div>
+          </div>
+          <button class="btn-primary-gradient btn w-100">اعمال فیلتر</button>
+        </div>
+      </div>
+      <!-- Exam cards -->
+      <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <p class="text-secondary mb-0" style="font-size:0.875rem;">۲۴ آزمون یافت شد</p>
+          <select class="form-control-custom" style="width:auto;padding:8px 12px;font-size:0.875rem;cursor:pointer;">
+            <option>جدیدترین</option>
+            <option>محبوب‌ترین</option>
+            <option>قدیمی‌ترین</option>
+          </select>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
+            <div class="card-custom hover-lift h-100">
+              <div class="d-flex justify-content-between mb-3">
+                <span class="badge-custom badge-info">ریاضی</span>
+                <span class="badge-custom badge-success">ثبت نام باز</span>
+              </div>
+              <h6 class="fw-700 mb-2">آزمون جامع ریاضی سوم</h6>
+              <p class="text-secondary mb-3" style="font-size:0.8rem;">شامل تمام مباحث با سوالات متنوع</p>
+              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                <span><i class="bi bi-clock me-1"></i>۹۰ دقیقه</span>
+                <span><i class="bi bi-question-circle me-1"></i>۴۰ سوال</span>
+                <span><i class="bi bi-people me-1"></i>۳۲۵</span>
+              </div>
+              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
+                <i class="bi bi-calendar3 me-1"></i>۱۵ اسفند ۱۴۰۳
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
+            <div class="card-custom hover-lift h-100">
+              <div class="d-flex justify-content-between mb-3">
+                <span class="badge-custom badge-purple">فیزیک</span>
+                <span class="badge-custom badge-warning">در حال برگزاری</span>
+              </div>
+              <h6 class="fw-700 mb-2">آزمون فیزیک پیش‌دانشگاهی</h6>
+              <p class="text-secondary mb-3" style="font-size:0.8rem;">الکتریسیته و مغناطیس</p>
+              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                <span><i class="bi bi-clock me-1"></i>۱۲۰ دقیقه</span>
+                <span><i class="bi bi-question-circle me-1"></i>۵۵ سوال</span>
+                <span><i class="bi bi-people me-1"></i>۴۷۸</span>
+              </div>
+              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
+                <i class="bi bi-calendar3 me-1"></i>۱۰ اسفند ۱۴۰۳
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
+            <div class="card-custom hover-lift h-100">
+              <div class="d-flex justify-content-between mb-3">
+                <span class="badge-custom badge-info">شیمی</span>
+                <span class="badge-custom badge-muted">به زودی</span>
+              </div>
+              <h6 class="fw-700 mb-2">آزمون شیمی دوم</h6>
+              <p class="text-secondary mb-3" style="font-size:0.8rem;">پیوندهای شیمیایی</p>
+              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                <span><i class="bi bi-clock me-1"></i>۶۰ دقیقه</span>
+                <span><i class="bi bi-question-circle me-1"></i>۳۰ سوال</span>
+                <span><i class="bi bi-people me-1"></i>۲۱۲</span>
+              </div>
+              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
+                <i class="bi bi-calendar3 me-1"></i>۲۵ اسفند ۱۴۰۳
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
+            <div class="card-custom hover-lift h-100">
+              <div class="d-flex justify-content-between mb-3">
+                <span class="badge-custom badge-success" style="background:rgba(99,102,241,0.1);color:#6366f1;">زبان</span>
+                <span class="badge-custom badge-success">ثبت نام باز</span>
+              </div>
+              <h6 class="fw-700 mb-2">آزمون زبان انگلیسی جامع</h6>
+              <p class="text-secondary mb-3" style="font-size:0.8rem;">گرامر، واژگان و درک مطلب</p>
+              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                <span><i class="bi bi-clock me-1"></i>۷۵ دقیقه</span>
+                <span><i class="bi bi-question-circle me-1"></i>۴۵ سوال</span>
+                <span><i class="bi bi-people me-1"></i>۵۶۲</span>
+              </div>
+              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
+                <i class="bi bi-calendar3 me-1"></i>۲۰ اسفند ۱۴۰۳
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-5">
+          <nav>
+            <ul class="pagination gap-1 mb-0">
+              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">قبلی</a></li>
+              <li class="page-item active"><a class="page-link" href="#" style="border-radius:var(--radius-md);background:var(--gradient-blue);border:none;">۱</a></li>
+              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">۲</a></li>
+              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">۳</a></li>
+              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">بعدی</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,404 @@
+{% extends "main/base/base.html" %}
+
+
+{% block content %}
+
+
+<!-- ============================================================
+     PAGE 1: LANDING / صفحه اصلی
+     ============================================================ -->
+<div class="page-section active" id="page-landing">
+  <!-- Navbar -->
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <div class="navbar-brand-logo"><i class="bi bi-lightning-fill"></i></div>
+          <span class="navbar-brand-text">آزمون‌آنلاین</span>
+        </div>
+        <div class="d-flex align-items-center gap-2 d-none d-md-flex">
+          <a class="nav-link-custom" href="#" onclick="showPage('exam-list')">آزمون‌ها</a>
+          <a class="nav-link-custom" href="#" onclick="showPage('question-bank')">بانک سوال</a>
+          <a class="nav-link-custom" href="#" onclick="showPage('articles')">مقالات</a>
+          <a class="nav-link-custom" href="#" onclick="showPage('about')">درباره ما</a>
+          <a class="nav-link-custom" href="#" onclick="showPage('contact')">تماس</a>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="theme-toggle" onclick="toggleTheme()">
+            <i class="bi bi-sun-fill sun-icon"></i>
+            <i class="bi bi-moon-fill moon-icon"></i>
+          </div>
+          <button class="btn-outline-custom btn btn-sm" onclick="showPage('login')">ورود</button>
+          <button class="btn-primary-gradient btn btn-sm" onclick="showPage('register')">ثبت نام</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Hero Section -->
+ 
+  <section class="hero-section">
+    <div class="hero-blob-1"></div>
+    <div class="hero-blob-2"></div>
+    <div class="hero-blob-3"></div>
+    <div class="container" style="position:relative;z-index:2;">
+      <div class="row align-items-center min-vh-100 py-5">
+        <div class="col-lg-6">
+          <div class="section-badge" style="background:rgba(255,255,255,0.15);color:white;">
+            <i class="bi bi-stars"></i>
+            هوشمندترین پلتفرم آزمون آنلاین ایران
+          </div>
+          <h1 class="hero-title mb-4">
+            آینده یادگیری<br>
+            <span style="color:rgba(255,255,255,0.75);">با هوش مصنوعی</span>
+          </h1>
+          <p class="hero-subtitle mb-5">
+            بانک سوال هوشمند، آزمون‌های آنلاین تعاملی و تصحیح خودکار توسط هوش مصنوعی.<br>
+            یادگیری را به سطح جدیدی ببرید.
+          </p>
+          <div class="d-flex gap-3 flex-wrap">
+            <button class="btn btn-light btn-lg fw-700 rounded-pill px-4" onclick="showPage('register')"
+              style="font-family:inherit;font-weight:700;">
+              <i class="bi bi-play-fill me-2"></i> شروع رایگان
+            </button>
+            <button class="btn-glass btn btn-lg" onclick="showPage('exam-list')">
+              <i class="bi bi-collection-fill me-2"></i> مشاهده آزمون‌ها
+            </button>
+          </div>
+       
+          <div class="d-flex gap-4 mt-5">
+            <div>
+              <div style="font-size:1.8rem;font-weight:900;color:white;">۵۰,۰۰۰+</div>
+              <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;">دانش‌آموز فعال</div>
+            </div>
+            <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+            <div>
+              <div style="font-size:1.8rem;font-weight:900;color:white;">۱۰,۰۰۰+</div>
+              <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;">سوال در بانک</div>
+            </div>
+            <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+            <div>
+              <div style="font-size:1.8rem;font-weight:900;color:white;">۹۸٪</div>
+              <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;">رضایت کاربران</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 d-none d-lg-block">
+          <div class="position-relative" style="height:500px;">
+        
+            <div class="hero-card-float position-absolute" style="top:40px;right:20px;width:200px;">
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="avatar" style="background:rgba(255,255,255,0.2);font-size:1rem;">📊</div>
+                <div>
+                  <div style="font-size:0.75rem;opacity:0.7;">نمره آزمون</div>
+                  <div style="font-weight:800;font-size:1.1rem;">۱۸.۵ از ۲۰</div>
+                </div>
+              </div>
+              <div class="progress-custom" style="height:6px;">
+                <div class="progress-fill" style="width:92%;background:rgba(255,255,255,0.8);"></div>
+              </div>
+            </div>
+
+            <div class="hero-card-float position-absolute" style="top:170px;left:0;width:220px;animation-delay:2s;">
+              <div style="font-size:0.75rem;opacity:0.7;margin-bottom:8px;">سوالات حل شده</div>
+              <div class="q-nav-grid" style="gap:4px;">
+                <div class="q-nav-btn answered" style="background:rgba(255,255,255,0.9);border-color:transparent;color:#667eea;width:28px;height:28px;font-size:10px;">۱</div>
+                <div class="q-nav-btn answered" style="background:rgba(255,255,255,0.9);border-color:transparent;color:#667eea;width:28px;height:28px;font-size:10px;">۲</div>
+                <div class="q-nav-btn current" style="background:rgba(255,255,255,0.3);border:2px solid white;color:white;width:28px;height:28px;font-size:10px;">۳</div>
+                <div style="width:28px;height:28px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.3);"></div>
+                <div style="width:28px;height:28px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.3);"></div>
+              </div>
+            </div>
+
+            <div class="hero-card-float position-absolute" style="bottom:60px;right:40px;width:200px;animation-delay:4s;">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div style="background:rgba(16,185,129,0.3);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;">✓</div>
+                <div>
+                  <div style="font-size:0.7rem;opacity:0.7;">تصحیح شد</div>
+                  <div style="font-weight:700;">آزمون ریاضی ۱</div>
+                </div>
+              </div>
+              <div style="font-size:0.75rem;opacity:0.6;">چند ثانیه پیش</div>
+            </div>
+
+            
+            <div class="position-absolute" style="top:50%;right:50%;transform:translate(50%,-50%);">
+              <div style="width:160px;height:160px;background:rgba(255,255,255,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.2);backdrop-filter:blur(10px);">
+                <div style="font-size:4rem;">🎯</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div style="position:absolute;bottom:0;left:0;right:0;">
+      <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <path d="M0 60L60 50C120 40 240 20 360 15C480 10 600 20 720 25C840 30 960 30 1080 25C1200 20 1320 10 1380 5L1440 0V60H0Z" fill="var(--bg-primary)"/>
+      </svg>
+    </div>
+  </section>
+ 
+  <!-- Features Section -->
+  <section class="py-6 section-light" style="padding:80px 0;">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="section-badge mx-auto" style="width:fit-content;">
+          <i class="bi bi-gem"></i> ویژگی‌های منحصربه‌فرد
+        </div>
+        <h2 class="section-title">چرا آزمون‌آنلاین؟</h2>
+        <p class="text-secondary mt-3 mx-auto" style="max-width:550px;">
+          ما با ترکیب تکنولوژی هوش مصنوعی و تجربه آموزشی، یک اکوسیستم یادگیری کامل ساخته‌ایم.
+        </p>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-blue"><i class="bi bi-cpu-fill"></i></div>
+            <h5 class="fw-700 mb-2">تصحیح هوشمند با AI</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">تصحیح خودکار پاسخ‌های تشریحی و چندگزینه‌ای با دقت بالا توسط هوش مصنوعی.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-purple"><i class="bi bi-camera-fill"></i></div>
+            <h5 class="fw-700 mb-2">آپلود عکس پاسخ</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">دانش‌آموزان می‌توانند پاسخ خود را عکاسی کنند و سیستم آن را به PDF تبدیل می‌کند.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-green"><i class="bi bi-bar-chart-fill"></i></div>
+            <h5 class="fw-700 mb-2">کارنامه جامع</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">تحلیل عملکرد در سه سطح: کارنامه اولیه، ثانویه و ثالث با نمودارهای تعاملی.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-warm"><i class="bi bi-lightning-fill"></i></div>
+            <h5 class="fw-700 mb-2">بانک سوال هوشمند</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">بیش از ۱۰,۰۰۰ سوال طبقه‌بندی شده با فیلترهای پیشرفته و زمان پیشنهادی.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-red"><i class="bi bi-stopwatch-fill"></i></div>
+            <h5 class="fw-700 mb-2">آزمون با تایمر</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">کنترل دقیق زمان آزمون با هشدارهای صوتی و بصری جهت مدیریت بهتر وقت.</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom h-100">
+            <div class="feature-icon fi-blue"><i class="bi bi-shield-check-fill"></i></div>
+            <h5 class="fw-700 mb-2">امنیت و تقلب‌ناپذیر</h5>
+            <p class="text-secondary mb-0" style="font-size:0.9rem;">سیستم ضد تقلب پیشرفته با نظارت تصویری و قفل مرورگر برای آزمون‌های حساس.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exams Preview Section -->
+  <section class="py-6 section-alt" style="padding:80px 0;">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-end mb-5">
+        <div>
+          <div class="section-badge" style="width:fit-content;">
+            <i class="bi bi-calendar-check"></i> آزمون‌های پیش‌رو
+          </div>
+          <h2 class="section-title mt-2">آخرین آزمون‌ها</h2>
+        </div>
+        <button class="btn-outline-custom btn" onclick="showPage('exam-list')">مشاهده همه</button>
+      </div>
+      <div class="row g-4">
+        <!-- Exam Card 1 -->
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom hover-lift">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge-custom badge-info">ریاضی</span>
+              <span class="badge-custom badge-success">ثبت نام باز</span>
+            </div>
+            <h5 class="fw-700 mb-2">آزمون جامع ریاضی سوم دبیرستان</h5>
+            <p class="text-secondary" style="font-size:0.85rem;">شامل تمام مباحث ریاضی ۳ با سوالات چندگزینه‌ای و تشریحی</p>
+            <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
+              <span><i class="bi bi-clock me-1"></i>۹۰ دقیقه</span>
+              <span><i class="bi bi-question-circle me-1"></i>۴۰ سوال</span>
+              <span><i class="bi bi-people me-1"></i>۳۲۵ نفر</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>۱۵ اسفند ۱۴۰۳</div>
+              <button class="btn-primary-gradient btn btn-sm" onclick="showPage('exam-detail')">جزئیات</button>
+            </div>
+          </div>
+        </div>
+        <!-- Exam Card 2 -->
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom hover-lift">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge-custom badge-purple">فیزیک</span>
+              <span class="badge-custom badge-warning">در حال برگزاری</span>
+            </div>
+            <h5 class="fw-700 mb-2">آزمون فیزیک پیش‌دانشگاهی</h5>
+            <p class="text-secondary" style="font-size:0.85rem;">آزمون جامع فصل‌های الکتریسیته و مغناطیس با تأکید بر محاسبات</p>
+            <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
+              <span><i class="bi bi-clock me-1"></i>۱۲۰ دقیقه</span>
+              <span><i class="bi bi-question-circle me-1"></i>۵۵ سوال</span>
+              <span><i class="bi bi-people me-1"></i>۴۷۸ نفر</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>۱۰ اسفند ۱۴۰۳</div>
+              <button class="btn-primary-gradient btn btn-sm" onclick="showPage('exam-detail')">جزئیات</button>
+            </div>
+          </div>
+        </div>
+        <!-- Exam Card 3 -->
+        <div class="col-lg-4 col-md-6">
+          <div class="card-custom hover-lift">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge-custom badge-info">شیمی</span>
+              <span class="badge-custom badge-muted">به زودی</span>
+            </div>
+            <h5 class="fw-700 mb-2">آزمون شیمی دوم دبیرستان</h5>
+            <p class="text-secondary" style="font-size:0.85rem;">آزمون فصل اول تا سوم شامل پیوندهای شیمیایی و ترمودینامیک</p>
+            <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
+              <span><i class="bi bi-clock me-1"></i>۶۰ دقیقه</span>
+              <span><i class="bi bi-question-circle me-1"></i>۳۰ سوال</span>
+              <span><i class="bi bi-people me-1"></i>۲۱۲ نفر</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>۲۵ اسفند ۱۴۰۳</div>
+              <button class="btn-outline-custom btn btn-sm">اطلاع‌رسانی</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section style="padding:80px 0;background:var(--bg-primary);">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="section-badge mx-auto" style="width:fit-content;"><i class="bi bi-map"></i> نحوه کار</div>
+        <h2 class="section-title mt-2">سه گام تا یادگیری</h2>
+      </div>
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-4">
+          <div class="d-flex gap-4 align-items-start mb-4">
+            <div class="number-tag" style="width:40px;height:40px;font-size:1rem;flex-shrink:0;">۱</div>
+            <div>
+              <h5 class="fw-700 mb-2">ثبت نام کنید</h5>
+              <p class="text-secondary mb-0" style="font-size:0.9rem;">در چند ثانیه حساب رایگان بسازید و به هزاران آزمون و سوال دسترسی داشته باشید.</p>
+            </div>
+          </div>
+          <div class="d-flex gap-4 align-items-start mb-4">
+            <div class="number-tag" style="width:40px;height:40px;font-size:1rem;flex-shrink:0;">۲</div>
+            <div>
+              <h5 class="fw-700 mb-2">آزمون انتخاب کنید</h5>
+              <p class="text-secondary mb-0" style="font-size:0.9rem;">از بین صدها آزمون در درس‌های مختلف، آزمون مناسب خود را انتخاب کنید.</p>
+            </div>
+          </div>
+          <div class="d-flex gap-4 align-items-start">
+            <div class="number-tag" style="width:40px;height:40px;font-size:1rem;flex-shrink:0;">۳</div>
+            <div>
+              <h5 class="fw-700 mb-2">نتیجه را ببینید</h5>
+              <p class="text-secondary mb-0" style="font-size:0.9rem;">بلافاصله پس از آزمون، کارنامه دقیق و تحلیل عملکردتان را دریافت کنید.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card-glass p-0 overflow-hidden" style="border-radius:var(--radius-2xl);">
+            <!-- Mini Dashboard Preview -->
+            <div style="background:var(--gradient-blue);padding:16px 24px;display:flex;align-items:center;gap:8px;">
+              <div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);"></div>
+              <div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);"></div>
+              <div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);"></div>
+              <span style="color:rgba(255,255,255,0.8);font-size:0.8rem;margin-right:8px;">داشبورد دانش‌آموز | رضا احمدی</span>
+            </div>
+            <div class="p-4" style="background:var(--bg-card);">
+              <div class="row g-3 mb-3">
+                <div class="col-6"><div class="card-stat stat-blue"><div class="d-flex justify-content-between"><div><div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div><div class="mt-2" style="font-size:1.5rem;font-weight:800;">۱۲</div><div style="font-size:0.75rem;color:var(--text-muted);">آزمون شرکت کرده</div></div></div></div></div>
+                <div class="col-6"><div class="card-stat stat-green"><div class="d-flex justify-content-between"><div><div class="stat-icon"><i class="bi bi-star-fill"></i></div><div class="mt-2" style="font-size:1.5rem;font-weight:800;">۱۷.۸</div><div style="font-size:0.75rem;color:var(--text-muted);">میانگین نمرات</div></div></div></div></div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-2" style="font-size:0.85rem;">
+                  <span class="fw-600">ریاضی</span><span class="text-secondary">۸۵٪</span>
+                </div>
+                <div class="progress-custom"><div class="progress-fill" style="width:85%;"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between mb-2" style="font-size:0.85rem;">
+                  <span class="fw-600">فیزیک</span><span class="text-secondary">۷۲٪</span>
+                </div>
+                <div class="progress-custom"><div class="progress-fill green" style="width:72%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section style="padding:80px 0;background:var(--gradient-primary);position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,0.05);"></div>
+    <div class="container text-center" style="position:relative;z-index:1;">
+      <h2 style="font-size:2.5rem;font-weight:900;color:white;margin-bottom:16px;">آماده‌اید شروع کنید؟</h2>
+      <p style="color:rgba(255,255,255,0.8);font-size:1.1rem;margin-bottom:32px;">امروز ثبت‌نام کنید و اولین آزمون رایگانتان را بگیرید.</p>
+      <button class="btn btn-light btn-lg rounded-pill px-5 fw-700" style="font-family:inherit;" onclick="showPage('register')">
+        شروع رایگان <i class="bi bi-arrow-left ms-2"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="navbar-brand-logo"><i class="bi bi-lightning-fill"></i></div>
+            <span class="footer-brand">آزمون‌آنلاین</span>
+          </div>
+          <p style="color:#64748b;font-size:0.9rem;line-height:1.8;">هوشمندترین پلتفرم آزمون آنلاین ایران با بانک سوال جامع و تصحیح هوشمند.</p>
+          <div class="d-flex gap-2 mt-3">
+            <a class="footer-social" href="#"><i class="bi bi-instagram"></i></a>
+            <a class="footer-social" href="#"><i class="bi bi-telegram"></i></a>
+            <a class="footer-social" href="#"><i class="bi bi-twitter-x"></i></a>
+            <a class="footer-social" href="#"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-6">
+          <div style="color:white;font-weight:700;margin-bottom:16px;">دسترسی سریع</div>
+          <a class="footer-link" href="#" onclick="showPage('exam-list')">لیست آزمون‌ها</a>
+          <a class="footer-link" href="#" onclick="showPage('question-bank')">بانک سوال</a>
+          <a class="footer-link" href="#" onclick="showPage('articles')">مقالات</a>
+          <a class="footer-link" href="#" onclick="showPage('about')">درباره ما</a>
+        </div>
+        <div class="col-lg-2 col-6">
+          <div style="color:white;font-weight:700;margin-bottom:16px;">حساب کاربری</div>
+          <a class="footer-link" href="#" onclick="showPage('login')">ورود</a>
+          <a class="footer-link" href="#" onclick="showPage('register')">ثبت نام</a>
+          <a class="footer-link" href="#" onclick="showPage('student-dashboard')">داشبورد</a>
+          <a class="footer-link" href="#" onclick="showPage('contact')">پشتیبانی</a>
+        </div>
+        <div class="col-lg-4">
+          <div style="color:white;font-weight:700;margin-bottom:16px;">خبرنامه</div>
+          <p style="color:#64748b;font-size:0.85rem;margin-bottom:12px;">برای دریافت آخرین آزمون‌ها و مقالات در خبرنامه ما عضو شوید.</p>
+          <div class="d-flex gap-2">
+            <input type="email" class="form-control-custom" style="flex:1;" placeholder="ایمیل شما">
+            <button class="btn-primary-gradient btn" style="white-space:nowrap;">عضویت</button>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="d-flex justify-content-between align-items-center" style="font-size:0.8rem;color:#475569;">
+        <span>© ۱۴۰۳ آزمون‌آنلاین. تمام حقوق محفوظ است.</span>
+        <div class="d-flex gap-3">
+          <a href="#" style="color:#475569;text-decoration:none;">حریم خصوصی</a>
+          <a href="#" style="color:#475569;text-decoration:none;">قوانین استفاده</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+{% endblock content %}

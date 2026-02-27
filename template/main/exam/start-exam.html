@@ -1,0 +1,203 @@
+{% extends "main/base/base.html" %}
+
+
+{% block content %}
+
+
+
+
+<!-- ============================================================
+     PAGE 9: TAKE EXAM / شرکت در آزمون
+     ============================================================ -->
+<div class="page-section  " id="page-exam-take">
+  <div style="background:var(--bg-primary);min-height:100vh;">
+    <!-- Exam Navbar -->
+    <div style="background:var(--bg-card);border-bottom:1px solid var(--border-color);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;">
+      <div class="d-flex align-items-center gap-3">
+        <div class="navbar-brand-logo" style="width:32px;height:32px;"><i class="bi bi-lightning-fill" style="font-size:0.9rem;"></i></div>
+        <div>
+          <div style="font-weight:700;font-size:0.9rem;">آزمون جامع ریاضی سوم</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">سوال ۳ از ۴۰</div>
+        </div>
+      </div>
+      <div class="timer-display" style="padding:10px 20px;">
+        <div class="timer-numbers" style="font-size:1.5rem;" id="examTimer">۰۱<span class="timer-dot">:</span>۲۵<span class="timer-dot">:</span>۴۲</div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+        <button class="btn btn-sm" style="background:rgba(239,68,68,0.1);color:var(--danger-500);border:none;border-radius:var(--radius-lg);font-family:inherit;padding:8px 16px;font-weight:600;" onclick="showSubmitModal()">
+          <i class="bi bi-check-circle me-1"></i> پایان آزمون
+        </button>
+      </div>
+    </div>
+    <!-- Progress bar -->
+    <div class="progress-custom" style="height:4px;border-radius:0;">
+      <div class="progress-fill" style="width:7.5%;border-radius:0;transition:none;"></div>
+    </div>
+    <!-- Exam content -->
+    <div class="container py-4">
+      <div class="exam-layout">
+        <!-- Question area -->
+        <div>
+          <div class="exam-question-card mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge-custom badge-info">چندگزینه‌ای</span>
+                <span class="badge-custom badge-muted">ریاضی | حد و پیوستگی</span>
+              </div>
+              <div style="font-size:0.8rem;color:var(--text-muted);">نمره: ۰.۵</div>
+            </div>
+            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;">
+              <p class="mb-0 fw-500" style="font-size:1.05rem;line-height:2;">
+                حد تابع f(x) = (x² - ۴) / (x - ۲) وقتی x به ۲ نزدیک می‌شود کدام است؟
+              </p>
+            </div>
+            <!-- Options -->
+            <div class="d-flex flex-column gap-2">
+              <div class="question-option" onclick="selectOption(this)">
+                <div class="option-dot"></div>
+                <span>الف) ۴</span>
+              </div>
+              <div class="question-option selected" onclick="selectOption(this)">
+                <div class="option-dot"></div>
+                <span>ب) صفر</span>
+              </div>
+              <div class="question-option" onclick="selectOption(this)">
+                <div class="option-dot"></div>
+                <span>ج) تعریف نشده</span>
+              </div>
+              <div class="question-option" onclick="selectOption(this)">
+                <div class="option-dot"></div>
+                <span>د) ۲</span>
+              </div>
+            </div>
+          </div>
+          <!-- Descriptive question -->
+          <div class="exam-question-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge-custom badge-purple">تشریحی</span>
+                <span class="badge-custom badge-muted">آپلود عکس</span>
+              </div>
+              <div style="font-size:0.8rem;color:var(--text-muted);">نمره: ۴</div>
+            </div>
+            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;">
+              <p class="mb-0 fw-500" style="font-size:1.05rem;line-height:2;">
+                مشتق تابع f(x) = x³ - ۵x² + ۶x + ۲ را محاسبه کرده و نقاط بحرانی آن را بیابید.
+              </p>
+            </div>
+            <!-- Upload area -->
+            <div class="upload-box" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+              <input type="file" id="fileInput" hidden accept="image/*" onchange="handleFileUpload(this)">
+              <div class="upload-icon"><i class="bi bi-camera-fill"></i></div>
+              <h6 class="fw-700 mb-2">عکس پاسخ را آپلود کنید</h6>
+              <p class="text-secondary mb-3" style="font-size:0.85rem;">فایل را اینجا بکشید یا کلیک کنید</p>
+              <span class="badge-custom badge-info">JPG, PNG, PDF</span>
+            </div>
+            <!-- Preview (hidden by default) -->
+            <div id="uploadPreview" class="d-none mt-3">
+              <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;display:flex;align-items:center;justify-content:between;gap:12px;">
+                <div style="width:48px;height:48px;background:var(--gradient-green);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;flex-shrink:0;"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+                <div style="flex:1;">
+                  <div class="fw-600" style="font-size:0.875rem;">پاسخ_سوال_۳.jpg</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">در حال تبدیل به PDF... <span class="badge-custom badge-success" style="font-size:10px;">کامل شد</span></div>
+                </div>
+                <button class="btn p-0" style="color:var(--danger-500);" onclick="document.getElementById('uploadPreview').classList.add('d-none')"><i class="bi bi-x-circle-fill fs-5"></i></button>
+              </div>
+            </div>
+          </div>
+          <!-- Navigation buttons -->
+          <div class="d-flex justify-content-between mt-4">
+            <button class="btn-outline-custom btn" disabled>
+              <i class="bi bi-arrow-right me-2"></i> سوال قبلی
+            </button>
+            <button class="btn-primary-gradient btn">
+              سوال بعدی <i class="bi bi-arrow-left ms-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sidebar: Timer + Navigator -->
+        <div class="d-none d-lg-block">
+          <!-- Timer -->
+          <div class="timer-display mb-4">
+            <div class="timer-label mb-1">زمان باقی‌مانده</div>
+            <div class="timer-numbers">۰۱<span class="timer-dot">:</span>۲۵<span class="timer-dot">:</span>۴۲</div>
+          </div>
+          <!-- Question navigator -->
+          <div class="card-custom mb-4">
+            <h6 class="fw-700 mb-3" style="font-size:0.85rem;">ناوبری سوالات</h6>
+            <div class="q-nav-grid mb-3">
+              <div class="q-nav-btn answered">۱</div>
+              <div class="q-nav-btn answered">۲</div>
+              <div class="q-nav-btn current">۳</div>
+              <div class="q-nav-btn">۴</div>
+              <div class="q-nav-btn">۵</div>
+              <div class="q-nav-btn skipped">۶</div>
+              <div class="q-nav-btn">۷</div>
+              <div class="q-nav-btn">۸</div>
+              <div class="q-nav-btn">۹</div>
+              <div class="q-nav-btn">۱۰</div>
+              <div class="q-nav-btn">۱۱</div>
+              <div class="q-nav-btn">۱۲</div>
+              <div class="q-nav-btn">۱۳</div>
+              <div class="q-nav-btn">۱۴</div>
+              <div class="q-nav-btn">۱۵</div>
+            </div>
+            <div class="d-flex flex-column gap-1" style="font-size:0.75rem;">
+              <div class="d-flex align-items-center gap-2"><div style="width:12px;height:12px;border-radius:3px;background:var(--gradient-green);"></div> پاسخ داده شده (۲)</div>
+              <div class="d-flex align-items-center gap-2"><div style="width:12px;height:12px;border-radius:3px;background:var(--gradient-blue);"></div> سوال جاری</div>
+              <div class="d-flex align-items-center gap-2"><div style="width:12px;height:12px;border-radius:3px;background:rgba(245,158,11,0.2);border:1.5px solid var(--warm-400);"></div> رد شده (۱)</div>
+              <div class="d-flex align-items-center gap-2"><div style="width:12px;height:12px;border-radius:3px;border:2px solid var(--border-color);background:var(--bg-card);"></div> پاسخ نشده</div>
+            </div>
+          </div>
+          <!-- Exam info -->
+          <div class="card-custom">
+            <div class="d-flex justify-content-between mb-2" style="font-size:0.8rem;">
+              <span class="text-secondary">پیشرفت</span>
+              <span class="fw-700">۲ از ۴۰</span>
+            </div>
+            <div class="progress-custom mb-3"><div class="progress-fill" style="width:5%;"></div></div>
+            <button class="btn w-100" style="background:rgba(239,68,68,0.1);color:var(--danger-500);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-lg);font-family:inherit;font-weight:600;padding:10px;" onclick="showSubmitModal()">
+              <i class="bi bi-check-circle me-1"></i> اتمام آزمون
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Submit Confirmation Modal -->
+  <div class="modal fade" id="submitModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-custom">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0 pb-0">
+          <h5 class="modal-title fw-700">تأیید ارسال آزمون</h5>
+        </div>
+        <div class="modal-body py-4">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="font-size:3rem;margin-bottom:12px;">⚠️</div>
+            <p class="mb-0" style="font-size:0.9rem;color:var(--text-secondary);">آیا مطمئن هستید که می‌خواهید آزمون را به پایان برسانید؟</p>
+          </div>
+          <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;margin-bottom:4px;">
+            <div class="d-flex justify-content-between mb-2" style="font-size:0.875rem;">
+              <span class="text-secondary">سوالات پاسخ داده:</span><span class="fw-700 text-success">۲ سوال</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2" style="font-size:0.875rem;">
+              <span class="text-secondary">سوالات رد شده:</span><span class="fw-700" style="color:var(--warm-500);">۱ سوال</span>
+            </div>
+            <div class="d-flex justify-content-between" style="font-size:0.875rem;">
+              <span class="text-secondary">سوالات پاسخ نشده:</span><span class="fw-700 text-danger">۳۷ سوال</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" style="border:2px solid var(--border-color);border-radius:var(--radius-full);font-family:inherit;padding:9px 20px;background:var(--bg-card);color:var(--text-secondary);" data-bs-dismiss="modal">بازگشت به آزمون</button>
+          <button class="btn-danger btn" style="background:var(--gradient-warm);border:none;border-radius:var(--radius-full);font-family:inherit;font-weight:700;padding:9px 20px;" onclick="showPage('student-dashboard')">ارسال نهایی</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

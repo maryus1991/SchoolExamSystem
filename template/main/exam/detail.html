@@ -1,0 +1,134 @@
+{% extends "main/base/base.html" %}
+
+
+{% block content %}
+
+
+<!-- ============================================================
+     PAGE 8: EXAM DETAIL / جزئیات آزمون
+     ============================================================ -->
+<div class="page-section  " id="page-exam-detail">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn p-0" style="color:var(--text-secondary);font-family:inherit;" onclick="showPage('exam-list')"><i class="bi bi-arrow-right fs-5"></i></button>
+          <span class="navbar-brand-text">آزمون‌آنلاین</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <!-- Exam Header -->
+        <div class="card-custom mb-4">
+          <div class="d-flex gap-2 mb-3">
+            <span class="badge-custom badge-info">ریاضی</span>
+            <span class="badge-custom badge-success">ثبت نام باز</span>
+            <span class="badge-custom badge-purple">چندگزینه‌ای + تشریحی</span>
+          </div>
+          <h2 class="fw-800 mb-3">آزمون جامع ریاضی سوم دبیرستان</h2>
+          <p class="text-secondary mb-4">این آزمون شامل تمام مباحث ریاضی پایه دوازدهم است و برای آمادگی کنکور طراحی شده است. سوالات این آزمون توسط اساتید مجرب تنظیم شده‌اند.</p>
+          <div class="row g-3">
+            <div class="col-4">
+              <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;text-align:center;">
+                <div style="font-size:1.5rem;font-weight:800;color:var(--primary-600);">۹۰</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">دقیقه</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;text-align:center;">
+                <div style="font-size:1.5rem;font-weight:800;color:var(--secondary-500);">۴۰</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">سوال</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;text-align:center;">
+                <div style="font-size:1.5rem;font-weight:800;color:var(--accent-500);">۲۰</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">نمره کل</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Topics -->
+        <div class="card-custom mb-4">
+          <h5 class="fw-700 mb-4"><i class="bi bi-book me-2" style="color:var(--primary-500);"></i>مباحث آزمون</h5>
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2" style="font-size:0.875rem;"><div style="width:8px;height:8px;border-radius:50%;background:var(--primary-500);flex-shrink:0;"></div>حد و پیوستگی (۸ سوال)</div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2" style="font-size:0.875rem;"><div style="width:8px;height:8px;border-radius:50%;background:var(--secondary-500);flex-shrink:0;"></div>مشتق (۱۰ سوال)</div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2" style="font-size:0.875rem;"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent-500);flex-shrink:0;"></div>انتگرال (۱۲ سوال)</div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2" style="font-size:0.875rem;"><div style="width:8px;height:8px;border-radius:50%;background:var(--warm-500);flex-shrink:0;"></div>آمار و احتمال (۱۰ سوال)</div>
+            </div>
+          </div>
+        </div>
+        <!-- Rules -->
+        <div class="card-custom">
+          <h5 class="fw-700 mb-4"><i class="bi bi-shield-check me-2" style="color:var(--accent-500);"></i>قوانین آزمون</h5>
+          <div class="d-flex flex-column gap-3">
+            <div class="d-flex align-items-start gap-3">
+              <div style="width:28px;height:28px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--danger-500);font-size:0.75rem;">!</div>
+              <p style="font-size:0.875rem;margin:0;color:var(--text-secondary);">پس از شروع آزمون امکان توقف وجود ندارد. مطمئن شوید اینترنت پایدار دارید.</p>
+            </div>
+            <div class="d-flex align-items-start gap-3">
+              <div style="width:28px;height:28px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--danger-500);font-size:0.75rem;">!</div>
+              <p style="font-size:0.875rem;margin:0;color:var(--text-secondary);">سوالات تشریحی باید به صورت دست‌نویس روی کاغذ حل شده و عکس آن آپلود شود.</p>
+            </div>
+            <div class="d-flex align-items-start gap-3">
+              <div style="width:28px;height:28px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--danger-500);font-size:0.75rem;">!</div>
+              <p style="font-size:0.875rem;margin:0;color:var(--text-secondary);">نمره منفی وجود دارد، پاسخ نداده بهتر از پاسخ اشتباه است.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="card-custom sticky-top-sm">
+          <div style="text-align:center;padding:20px 0 24px;border-bottom:1px solid var(--border-color);margin-bottom:24px;">
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;">شروع آزمون</div>
+            <div style="font-size:1.8rem;font-weight:900;color:var(--primary-600);">۱۵ اسفند ۱۴۰۳</div>
+            <div style="font-size:0.9rem;color:var(--text-secondary);">ساعت ۱۰:۰۰</div>
+          </div>
+          <div class="d-flex justify-content-between mb-3" style="font-size:0.875rem;">
+            <span class="text-secondary">هزینه ثبت نام:</span>
+            <span class="fw-700" style="color:var(--accent-500);">رایگان</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3" style="font-size:0.875rem;">
+            <span class="text-secondary">ظرفیت:</span>
+            <span class="fw-700">۵۰۰ نفر</span>
+          </div>
+          <div class="d-flex justify-content-between mb-4" style="font-size:0.875rem;">
+            <span class="text-secondary">ثبت نام شده:</span>
+            <span class="fw-700" style="color:var(--warm-500);">۳۲۵ نفر</span>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1" style="font-size:0.8rem;">
+              <span>ظرفیت باقی‌مانده</span>
+              <span>۳۵٪</span>
+            </div>
+            <div class="progress-custom"><div class="progress-fill warm" style="width:65%;"></div></div>
+          </div>
+          <button class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" onclick="showPage('exam-take')">
+            <i class="bi bi-play-fill me-2"></i> ثبت نام و شروع
+          </button>
+          <div class="d-flex gap-2">
+            <button class="btn-outline-custom btn flex-1" style="font-size:0.8rem;"><i class="bi bi-heart me-1"></i> ذخیره</button>
+            <button class="btn w-100" style="border:2px solid var(--border-color);border-radius:var(--radius-full);font-family:inherit;font-size:0.8rem;background:var(--bg-card);color:var(--text-secondary);"><i class="bi bi-share me-1"></i> اشتراک</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

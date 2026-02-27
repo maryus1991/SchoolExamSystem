@@ -1,0 +1,106 @@
+{% extends "main/base/base.html" %}
+
+
+{% block content %}
+
+
+
+
+
+<!-- ============================================================
+     PAGE 11: QUESTION DETAIL / جزئیات سوال
+     ============================================================ -->
+<div class="page-section  " id="page-question-detail">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn p-0" style="color:var(--text-secondary);" onclick="showPage('question-bank')"><i class="bi bi-arrow-right fs-5"></i></button>
+          <span class="navbar-brand-text">جزئیات سوال</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <!-- Question Card -->
+        <div class="card-custom mb-4">
+          <div class="d-flex gap-2 mb-4">
+            <span class="badge-custom badge-info">ریاضی</span>
+            <span class="badge-custom badge-warning">متوسط</span>
+            <span class="badge-custom badge-muted">چندگزینه‌ای</span>
+          </div>
+          <h5 class="fw-700 mb-3">متن سوال</h5>
+          <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;line-height:2.2;font-size:1rem;">
+            حد تابع f(x) = (x² - ۴) / (x - ۲) وقتی x به ۲ نزدیک می‌شود کدام است؟
+          </div>
+          <!-- Options with correct answer -->
+          <div class="d-flex flex-column gap-2 mb-4">
+            <div class="question-option" style="border-color:var(--accent-500);background:rgba(16,185,129,0.06);">
+              <div class="option-dot" style="border-color:var(--accent-500);background:var(--accent-500);"></div>
+              <span class="fw-600" style="color:var(--accent-500);">الف) ۴ ✓</span>
+            </div>
+            <div class="question-option">
+              <div class="option-dot"></div>
+              <span>ب) صفر</span>
+            </div>
+            <div class="question-option">
+              <div class="option-dot"></div>
+              <span>ج) تعریف نشده</span>
+            </div>
+            <div class="question-option">
+              <div class="option-dot"></div>
+              <span>د) ۲</span>
+            </div>
+          </div>
+        </div>
+        <!-- Solution -->
+        <div class="card-custom" style="border-right:4px solid var(--accent-500);">
+          <h5 class="fw-700 mb-4"><i class="bi bi-lightbulb-fill me-2" style="color:var(--warm-500);"></i>پاسخنامه</h5>
+          <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;line-height:2.2;margin-bottom:16px;">
+            <p>برای محاسبه این حد، ابتدا صورت را فاکتورگیری می‌کنیم:</p>
+            <p style="font-family:monospace;font-size:0.95rem;background:var(--bg-card);padding:12px;border-radius:8px;margin:12px 0;">
+              f(x) = (x² - ۴) / (x - ۲) = (x + ۲)(x - ۲) / (x - ۲) = x + ۲
+            </p>
+            <p>حالا با جایگذاری x = ۲:</p>
+            <p style="font-family:monospace;font-size:0.95rem;background:var(--bg-card);padding:12px;border-radius:8px;margin:12px 0;">
+              lim(x→۲) f(x) = ۲ + ۲ = ۴
+            </p>
+            <p class="mb-0">پس جواب صحیح گزینه الف) ۴ می‌باشد.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="card-custom mb-4">
+          <h6 class="fw-700 mb-4">اطلاعات سوال</h6>
+          <div class="timer-display mb-4" style="background:linear-gradient(135deg,#0f172a,#1e293b);">
+            <div class="timer-label mb-1">زمان پیشنهادی حل</div>
+            <div class="timer-numbers">۰۳<span class="timer-dot">:</span>۰۰</div>
+          </div>
+          <div class="d-flex flex-column gap-3" style="font-size:0.875rem;">
+            <div class="d-flex justify-content-between"><span class="text-secondary">درس:</span><span class="fw-600">ریاضی</span></div>
+            <div class="d-flex justify-content-between"><span class="text-secondary">مبحث:</span><span class="fw-600">حد و پیوستگی</span></div>
+            <div class="d-flex justify-content-between"><span class="text-secondary">سطح:</span><span class="fw-600 badge-custom badge-warning">متوسط</span></div>
+            <div class="d-flex justify-content-between"><span class="text-secondary">درصد پاسخ صحیح:</span><span class="fw-600 text-success">۷۸٪</span></div>
+            <div class="d-flex justify-content-between"><span class="text-secondary">بازدید:</span><span class="fw-600">۱,۲۴۵</span></div>
+          </div>
+        </div>
+        <div class="card-custom">
+          <h6 class="fw-700 mb-3">سوالات مرتبط</h6>
+          <div class="d-flex flex-column gap-2">
+            <a href="#" style="color:var(--text-secondary);text-decoration:none;font-size:0.85rem;padding:10px;border-radius:var(--radius-lg);background:var(--bg-secondary);">حد تابع sin(x)/x در صفر</a>
+            <a href="#" style="color:var(--text-secondary);text-decoration:none;font-size:0.85rem;padding:10px;border-radius:var(--radius-lg);background:var(--bg-secondary);">قضیه فشردگی برای حد</a>
+            <a href="#" style="color:var(--text-secondary);text-decoration:none;font-size:0.85rem;padding:10px;border-radius:var(--radius-lg);background:var(--bg-secondary);">پیوستگی تابع در نقطه</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

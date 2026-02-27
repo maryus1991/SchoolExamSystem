@@ -1,0 +1,97 @@
+{% extends "main/base/base.html" %}
+
+
+{% block content %}
+
+<!-- ============================================================
+     PAGE 3: REGISTER / ثبت نام
+     ============================================================ -->
+<div class="page-section active " id="page-register">
+  <div class="auth-split">
+    <div class="auth-left d-none d-lg-flex" style="order:2;">
+      <div style="position:relative;z-index:1;">
+        <div class="navbar-brand-logo mb-4"><i class="bi bi-lightning-fill"></i></div>
+        <h2 style="color:white;font-weight:900;font-size:2rem;">یادگیری هوشمند<br>با ما شروع کنید</h2>
+        <p style="color:rgba(255,255,255,0.75);margin-top:12px;">ساخت حساب رایگان در ۳۰ ثانیه</p>
+        <!-- Stats -->
+        <div class="d-flex gap-4 mt-5">
+          <div style="text-align:center;">
+            <div style="font-size:2rem;font-weight:900;color:white;">۵۰K</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:0.75rem;">کاربر فعال</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+          <div style="text-align:center;">
+            <div style="font-size:2rem;font-weight:900;color:white;">۱۰K</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:0.75rem;">سوال</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
+          <div style="text-align:center;">
+            <div style="font-size:2rem;font-weight:900;color:white;">۹۸٪</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:0.75rem;">رضایت</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="auth-right" style="order:1;">
+      <div class="auth-card">
+        <button class="btn p-0 mb-4" style="color:var(--text-muted);font-family:inherit;" onclick="showPage('landing')">
+          <i class="bi bi-arrow-right me-1"></i> بازگشت به خانه
+        </button>
+        <h3 class="fw-800 mb-2">ایجاد حساب کاربری</h3>
+        <p class="text-secondary mb-4" style="font-size:0.9rem;">فرم زیر را تکمیل کنید</p>
+        <form>
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <label class="form-label-custom">نام</label>
+              <input type="text" class="form-control-custom" placeholder="نام">
+            </div>
+            <div class="col-6">
+              <label class="form-label-custom">نام خانوادگی</label>
+              <input type="text" class="form-control-custom" placeholder="نام خانوادگی">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-custom">شماره موبایل</label>
+            <div class="input-group-custom">
+              <i class="bi bi-phone input-icon"></i>
+              <input type="tel" class="form-control-custom" placeholder="09123456789">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-custom">آدرس ایمیل</label>
+            <div class="input-group-custom">
+              <i class="bi bi-envelope input-icon"></i>
+              <input type="email" class="form-control-custom" placeholder="example@email.com">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-custom">رمز عبور</label>
+            <div class="input-group-custom">
+              <i class="bi bi-lock input-icon"></i>
+              <input type="password" class="form-control-custom" placeholder="حداقل ۸ کاراکتر">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-custom">نقش</label>
+            <select class="form-control-custom" style="cursor:pointer;">
+              <option>دانش‌آموز</option>
+              <option>معلم / مصحح</option>
+            </select>
+          </div>
+          <label class="d-flex align-items-start gap-2 mb-4" style="cursor:pointer;font-size:0.85rem;color:var(--text-secondary);">
+            <input type="checkbox" class="form-check-input mt-1 flex-shrink-0">
+            با <a href="#" style="color:var(--primary-600);">قوانین و مقررات</a> و <a href="#" style="color:var(--primary-600);">حریم خصوصی</a> موافقم
+          </label>
+          <button class="btn-primary-gradient btn w-100 btn-lg mb-3" onclick="handleRegister(event)">
+            ثبت نام <i class="bi bi-arrow-left ms-2"></i>
+          </button>
+          <div class="text-center" style="font-size:0.9rem;color:var(--text-secondary);">
+            حساب دارید؟ <a href="#" style="color:var(--primary-600);font-weight:700;text-decoration:none;" onclick="showPage('login')">وارد شوید</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

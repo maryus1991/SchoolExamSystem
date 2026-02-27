@@ -1,0 +1,47 @@
+{% extends "main/base/base.html" %}
+
+
+{% block content %}
+
+
+
+<!-- ============================================================
+     PAGE 13: ARTICLE DETAIL
+     ============================================================ -->
+<div class="page-section  " id="page-article-detail">
+  <nav class="main-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between w-100">
+        <button class="btn p-0" style="color:var(--text-secondary);" onclick="showPage('articles')"><i class="bi bi-arrow-right fs-5"></i></button>
+        <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
+      </div>
+    </div>
+  </nav>
+  <div class="container py-5" style="max-width:800px;">
+    <div class="card-custom">
+      <div class="d-flex gap-2 mb-4">
+        <span class="badge-custom badge-info">ریاضی</span>
+        <span class="badge-custom badge-muted"><i class="bi bi-clock me-1"></i>۸ دقیقه مطالعه</span>
+      </div>
+      <h1 class="fw-900 mb-4" style="font-size:1.8rem;line-height:1.4;">راهنمای جامع حل مسائل انتگرال</h1>
+      <div class="d-flex align-items-center gap-3 mb-5" style="padding-bottom:24px;border-bottom:1px solid var(--border-color);">
+        <div class="avatar">م</div>
+        <div>
+          <div class="fw-600" style="font-size:0.9rem;">محمد رضایی</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">۵ اسفند ۱۴۰۳</div>
+        </div>
+      </div>
+      <div style="line-height:2.2;color:var(--text-secondary);">
+        <h4 class="fw-700 mb-3" style="color:var(--text-primary);">مقدمه</h4>
+        <p>انتگرال یکی از مهم‌ترین مباحث ریاضی است که در کنکور سراسری سهم بالایی دارد. در این مقاله، تمام روش‌های حل انتگرال را از ابتدا تا انتها توضیح می‌دهیم.</p>
+        <h4 class="fw-700 mb-3 mt-4" style="color:var(--text-primary);">روش‌های اصلی</h4>
+        <p>۱. <strong>انتگرال مستقیم:</strong> ساده‌ترین روش که با استفاده از فرمول‌های پایه انجام می‌شود.</p>
+        <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin:16px 0;font-family:monospace;">∫ xⁿ dx = xⁿ⁺¹/(n+1) + C</div>
+        <p>۲. <strong>تغییر متغیر (جانشانی):</strong> برای انتگرال‌های پیچیده‌تر استفاده می‌شود.</p>
+        <p>۳. <strong>انتگرال جزء به جزء:</strong> برای حاصل‌ضرب توابع.</p>
+        <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin:16px 0;font-family:monospace;">∫ u dv = uv - ∫ v du</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
