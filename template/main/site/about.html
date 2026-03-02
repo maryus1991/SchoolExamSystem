@@ -30,53 +30,42 @@
     <div class="row g-5 align-items-center mb-6">
       <div class="col-lg-6">
         <div class="section-badge" style="width:fit-content;"><i class="bi bi-info-circle"></i> داستان ما</div>
-        <h2 class="section-title mt-2 mb-4">ما برای تحول آموزش اینجاییم</h2>
-        <p class="text-secondary mb-4" style="line-height:1.9;">آزمون‌آنلاین در سال ۱۴۰۰ با هدف ایجاد پلتفرمی هوشمند و جامع برای آموزش و ارزیابی دانش‌آموزان ایرانی تأسیس شد. ما باور داریم که هر دانش‌آموزی حق دارد از بهترین ابزارهای آموزشی استفاده کند.</p>
-        <p class="text-secondary" style="line-height:1.9;">با ترکیب فناوری هوش مصنوعی و تجربه اساتید مجرب، ما توانسته‌ایم بستری ایجاد کنیم که یادگیری را مؤثرتر، جذاب‌تر و دقیق‌تر کند.</p>
-      </div>
+        {{ site.description|safe }}
+       </div>
       <div class="col-lg-6">
         <div class="row g-3">
-          <div class="col-6"><div class="card-stat stat-blue text-center"><div style="font-size:2rem;font-weight:900;color:var(--primary-600);">۵۰K+</div><div style="font-size:0.85rem;color:var(--text-muted);">کاربر فعال</div></div></div>
-          <div class="col-6"><div class="card-stat stat-purple text-center"><div style="font-size:2rem;font-weight:900;color:var(--secondary-500);">۱۰K+</div><div style="font-size:0.85rem;color:var(--text-muted);">سوال</div></div></div>
-          <div class="col-6"><div class="card-stat stat-green text-center"><div style="font-size:2rem;font-weight:900;color:var(--accent-500);">۲,۵K+</div><div style="font-size:0.85rem;color:var(--text-muted);">آزمون برگزار شده</div></div></div>
-          <div class="col-6"><div class="card-stat stat-warm text-center"><div style="font-size:2rem;font-weight:900;color:var(--warm-500);">۹۸٪</div><div style="font-size:0.85rem;color:var(--text-muted);">رضایت کاربران</div></div></div>
+          <div class="col-6"><div class="card-stat stat-blue text-center"><div style="font-size:2rem;font-weight:900;color:var(--primary-600);">{{ site.active_user }}</div><div style="font-size:0.85rem;color:var(--text-muted);">کاربر فعال</div></div></div>
+          <div class="col-6"><div class="card-stat stat-purple text-center"><div style="font-size:2rem;font-weight:900;color:var(--secondary-500);">{{site.number_questions}}</div><div style="font-size:0.85rem;color:var(--text-muted);">سوال</div></div></div>
+          <div class="col-6"><div class="card-stat stat-green text-center"><div style="font-size:2rem;font-weight:900;color:var(--accent-500);">{{site.taken_exams}}</div><div style="font-size:0.85rem;color:var(--text-muted);">آزمون برگزار شده</div></div></div>
+          <div class="col-6"><div class="card-stat stat-warm text-center"><div style="font-size:2rem;font-weight:900;color:var(--warm-500);">{{site.user_happies}}</div><div style="font-size:0.85rem;color:var(--text-muted);">رضایت کاربران</div></div></div>
         </div>
       </div>
     </div>
     <!-- Team -->
     <h2 class="section-title text-center mb-5">تیم ما</h2>
     <div class="row g-4 justify-content-center">
+      {% for member in team %}
       <div class="col-lg-3 col-md-6">
         <div class="card-custom text-center">
-          <div class="avatar-xl mx-auto mb-3" style="background:var(--gradient-blue);">ع</div>
-          <h6 class="fw-700 mb-1">علی محمدی</h6>
-          <p class="text-secondary mb-2" style="font-size:0.8rem;">مدیرعامل و هم‌بنیانگذار</p>
+          <div class="avatar-xl mx-auto mb-3">
+            
+                            <picture>
+                  <source srcset="{{ member.avatar.url }}"
+                          type="image/webp">
+                  <img src="{{ member.avatar.url }}" alt="{{ member.name }}"  width="auto" height="60"
+                        loading="lazy">
+                </picture>
+          </div>
+          <h6 class="fw-700 mb-1">{{member.name}} </h6>
+          <p class="text-secondary mb-2" style="font-size:0.8rem;">
+            {{ member.work }}
+          </p>
           <div class="d-flex justify-content-center gap-2">
-            <a class="footer-social" href="#" style="width:32px;height:32px;color:var(--text-muted);"><i class="bi bi-linkedin" style="font-size:0.8rem;"></i></a>
-            <a class="footer-social" href="#" style="width:32px;height:32px;color:var(--text-muted);"><i class="bi bi-twitter-x" style="font-size:0.8rem;"></i></a>
+            <a class="footer-social" href="tel:{{member.phone_number}}" style="width:32px;height:32px;color:var(--text-muted);"><i class="fas fa-envelope" style="font-size:0.8rem;"></i></a>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6">
-        <div class="card-custom text-center">
-          <div class="avatar-xl mx-auto mb-3" style="background:var(--gradient-purple);">س</div>
-          <h6 class="fw-700 mb-1">سارا رضایی</h6>
-          <p class="text-secondary mb-2" style="font-size:0.8rem;">مدیر فنی</p>
-          <div class="d-flex justify-content-center gap-2">
-            <a class="footer-social" href="#" style="width:32px;height:32px;color:var(--text-muted);"><i class="bi bi-linkedin" style="font-size:0.8rem;"></i></a>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6">
-        <div class="card-custom text-center">
-          <div class="avatar-xl mx-auto mb-3" style="background:var(--gradient-green);">ح</div>
-          <h6 class="fw-700 mb-1">حسن کریمی</h6>
-          <p class="text-secondary mb-2" style="font-size:0.8rem;">مدیر محتوا</p>
-          <div class="d-flex justify-content-center gap-2">
-            <a class="footer-social" href="#" style="width:32px;height:32px;color:var(--text-muted);"><i class="bi bi-linkedin" style="font-size:0.8rem;"></i></a>
-          </div>
-        </div>
-      </div>
+{% endfor %}
     </div>
   </div>
 </div>

@@ -24,7 +24,7 @@ urlpatterns = [
     path("ckeditor5/", include('django_ckeditor_5.urls')),
 
     # apps 
-    path('blog/', include('blog.urls')),
+    path('blog/', include('blog.urls')), 
     path('order/', include('order.urls')),
     path('admin-panel/', include('admin_panel.urls')),
     path('dashboard/', include('dashboard.urls')),

@@ -1232,3 +1232,61 @@ body {
   .hero-title { font-size: 2.2rem; }
   .card-custom { padding: 20px; }
 }
+
+
+
+
+ /* =================== */
+.messages-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 350px;
+}
+
+.message-item {
+    margin-bottom: 10px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: none;
+}
+
+.btn-close {
+    margin-left: 0 !important;
+    margin-right: 10px !important;
+    order: -1;
+    
+    opacity: 0.4;
+    font-size: 0.7rem;
+}
+
+.btn-close:hover {
+    opacity: 1;
+}
+
+.alert i {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.alert span {
+    flex: 1;
+    word-break: break-word;
+}

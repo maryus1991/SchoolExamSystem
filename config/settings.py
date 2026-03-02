@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     # third pary
     'django_ckeditor_5',
+    'easy_thumbnails',
+    'jalali_date',
 
     # apps
     'user',
@@ -54,6 +56,14 @@ INSTALLED_APPS = [
     'blog',
 
 ]
+
+THUMBNAIL_DEFAULT_OPTIONS = {
+    'format': 'WEBP',      # همیشه WebP تولید کنه
+    'quality': 70,         # کیفیت پیش‌فرض (می‌تونی تغییر بدی)
+    'crop': 'center',      # همیشه از مرکز crop کنه (اگر crop فعال باشه)
+    'optimize': True,      # بهینه‌سازی lossless با Pillow
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -120,13 +130,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = "fa"
 USE_I18N = True
-
+TIME_ZONE = "Asia/Tehran"
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -153,3 +162,46 @@ OTP_EXPIRATIONS_MINUTES = 2
 
 # user 
 AUTH_USER_MODEL = 'user.User'
+LOGIN_URL = "user:login"
+LOGIN_REDIRECT_URL = "/"
+
+
+# jalali date config
+JALALI_DATE_DEFAULTS = {
+    # if change it to true then all dates of the list_display will convert to the Jalali.
+    "LIST_DISPLAY_AUTO_CONVERT": True,
+    "Strftime": {
+        "date": "%y/%m/%d",
+        "datetime": "%y/%m/%d - %H:%M:%S",
+    },
+    "Static": {
+        "js": [
+            "admin/js/django_jalali.min.js",
+        ],
+        "css": {
+            "all": [
+                "admin/css/django_jalali.min.css",
+            ]
+        },
+    },
+}
+
+# phone number config
+PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
+PHONENUMBER_DEFAULT_REGION = "IR"
+
+# cke config
+ 
+
+CKEDITOR_5_CONFIGS = {
+'default': {
+    'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+    'language': 'fa',
+},
+}
+
+
+
+# Define a constant in settings.py to specify file upload permissions
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"  # Possible values: "staff", "authenticated", "any"

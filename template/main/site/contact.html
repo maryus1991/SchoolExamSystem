@@ -32,30 +32,34 @@
           <div class="card-custom">
             <div class="feature-icon fi-blue mb-3"><i class="bi bi-telephone-fill"></i></div>
             <h6 class="fw-700 mb-1">تلفن پشتیبانی</h6>
-            <p class="text-secondary mb-0">۰۲۱-۸۸۸۸۱۲۳۴</p>
+            <p class="text-secondary mb-0" dir='ltr'>{{ site.phone_number }}</p>
           </div>
           <div class="card-custom">
             <div class="feature-icon fi-purple mb-3"><i class="bi bi-envelope-fill"></i></div>
             <h6 class="fw-700 mb-1">ایمیل</h6>
-            <p class="text-secondary mb-0">support@azmoon-online.ir</p>
+            <p class="text-secondary mb-0">{{ site.email }}</p>
           </div>
           <div class="card-custom">
             <div class="feature-icon fi-green mb-3"><i class="bi bi-clock-fill"></i></div>
             <h6 class="fw-700 mb-1">ساعات پشتیبانی</h6>
-            <p class="text-secondary mb-0">شنبه تا چهارشنبه | ۸ تا ۱۸</p>
+            <p class="text-secondary mb-0">{{site.work_hour}}</p>
           </div>
         </div>
       </div>
       <div class="col-lg-7">
         <div class="card-custom">
           <h5 class="fw-700 mb-4">ارسال پیام</h5>
-          <div class="row g-3 mb-3">
-            <div class="col-6"><label class="form-label-custom">نام و نام خانوادگی</label><input type="text" class="form-control-custom" placeholder="نام شما"></div>
-            <div class="col-6"><label class="form-label-custom">ایمیل</label><input type="email" class="form-control-custom" placeholder="ایمیل شما"></div>
+          <form action="" method="post">
+             {% csrf_token %} <div class="row g-3 mb-3">
+            <div class="col-6"><label class="form-label-custom">نام و نام خانوادگی</label>{{form.name}}</div>
+            <div class="col-6"><label class="form-label-custom">شماره</label>{{form.phone}}</div>
           </div>
-          <div class="mb-3"><label class="form-label-custom">موضوع</label><input type="text" class="form-control-custom" placeholder="موضوع پیام"></div>
-          <div class="mb-4"><label class="form-label-custom">متن پیام</label><textarea class="form-control-custom" rows="5" placeholder="پیام خود را بنویسید..." style="resize:vertical;"></textarea></div>
-          <button class="btn-primary-gradient btn" onclick="showToast('success','پیام شما با موفقیت ارسال شد')">ارسال پیام <i class="bi bi-send ms-2"></i></button>
+          <div class="mb-3"><label class="form-label-custom">موضوع</label>{{form.subject}}</div>
+          <div class="mb-4"><label class="form-label-custom">متن پیام</label>{{ form.message }}</div>  
+          <button class="btn-primary-gradient btn">ارسال پیام <i class="bi bi-send ms-2"></i></button>
+
+          </form>
+
         </div>
       </div>
     </div>

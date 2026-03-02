@@ -11,12 +11,31 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link href="/static/css/main/main.css" rel="stylesheet">
 <!-- Vazirmatn Font -->
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> -->
 
 {% block header %}{% endblock header %}
 
 </head>
 <body>
+
+<div class="messages-container" id="messagesContainer">
+    <!-- پیام‌های جنگو اینجا نمایش داده می‌شوند -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message-item">
+                <div class="col-span-12 row item-center alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}info{% endif %} alert-dismissible fade show d-flex align-items-center" role="alert" style="gap: 12px;">
+                    <button type="button" class="btn-close col-span-2" data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
+                    </button>
+                    <span class="col-span-10 ">
+                        {{ message }}
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
 
     {% block content %}{% endblock content %}
 
@@ -24,6 +43,27 @@
 </script>
 
 {% block footer %}{% endblock footer %}
+
+<script src="/static/js/main/bootstrap5.bundle.min.js"></script>
+
+<!-- اسکریپت اضافی برای مدیریت بهتر پیام‌ها -->
+<script>
+    // بستن خودکار پیام‌ها بعد از 5 ثانیه
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const messages = document.querySelectorAll('.message-item');
+    //     messages.forEach(function(message) {
+    //         setTimeout(function() {
+    //             const alert = message.querySelector('.alert');
+    //             if (alert) {
+    //                 const bsAlert = new bootstrap.Alert(alert);
+    //                 bsAlert.close();
+    //             }
+    //         }, 10000);
+    //     });
+    // });
+ 
+</script>
+
 
 </body>
 </html>

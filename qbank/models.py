@@ -1,6 +1,13 @@
 from django.db import models
 from django_ckeditor_5.fields import CKEditor5Field
+from django.utils.crypto import get_random_string
 
+class QuestionLessonCategory(models.Model):pass
+class QuestionPossible(models.Model):pass
+
+
+def photo_path_upload_to(*args, **kwargs):
+    return f"team/avatar/{get_random_string(72)}"
 
 class QuestionBank(models.Model):
 

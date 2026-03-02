@@ -1,0 +1,2 @@
+fix the CKEditor5Field in blog
+fix the icon on about page
