@@ -1,5 +1,5 @@
 {% extends "main/base/base.html" %}
-
+{% load list %}
 
 {% block content %}
 
@@ -7,7 +7,7 @@
 <!-- ============================================================
      PAGE 10: QUESTION BANK / بانک سوال
      ============================================================ -->
-<div class="page-section  " id="page-question-bank">
+<div class="page-section active " id="page-question-bank">
   <nav class="main-navbar">
     <div class="container">
       <div class="d-flex align-items-center justify-content-between w-100">
@@ -25,106 +25,73 @@
   <div class="page-header-pattern">
     <div class="container" style="position:relative;z-index:1;">
       <h1 style="color:white;font-weight:900;font-size:2rem;margin-bottom:8px;"><i class="bi bi-archive-fill me-2"></i>بانک سوال هوشمند</h1>
-      <p style="color:rgba(255,255,255,0.75);">بیش از ۱۰,۰۰۰ سوال طبقه‌بندی شده در تمام دروس</p>
+      <p style="color:rgba(255,255,255,0.75);">بانک سوالات ازمون ها به طبقه‌بندی شده در تمامی دروس </p>
     </div>
   </div>
   <div class="container py-5">
     <!-- Quick filters -->
     <div class="d-flex gap-2 flex-wrap mb-4">
-      <button class="btn-primary-gradient btn btn-sm">همه دروس</button>
-      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">ریاضی</button>
-      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">فیزیک</button>
-      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">شیمی</button>
-      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">زبان</button>
-      <button class="btn btn-sm" style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">ادبیات</button>
+      <a class="btn-primary-gradient btn btn-sm" href="{% url 'qbank:list' %}">همه دروس</a>
+      {% for item in categories %}
+        <a class="btn btn-sm" href='{{ item.get_absolute_url }}' style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">
+          {{ item.name }}
+        </a>
+      {% endfor %}
     </div>
     <div class="row g-4">
       <div class="col-lg-3">
         <div class="card-custom sticky-top-sm">
           <h6 class="fw-700 mb-4">فیلتر پیشرفته</h6>
+          <form action="" method="get">
           <div class="mb-4">
-            <label class="form-label-custom">جستجو در متن سوال</label>
+            <label class="form-label-custom">جستجو ...</label>
             <div class="input-group-custom">
               <i class="bi bi-search input-icon"></i>
-              <input type="text" class="form-control-custom" placeholder="کلمه کلیدی...">
+              <input type="text"  class="form-control-custom" placeholder="کلمه کلیدی...">
             </div>
           </div>
           <div class="mb-4">
             <label class="form-label-custom">نوع سوال</label>
             <div class="d-flex flex-column gap-2">
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0" checked> چندگزینه‌ای</label>
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0" checked> تشریحی</label>
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> PDF محور</label>
+              {% for item in questions_type  %}
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0" value='{{ item|list_index:0 }}' > {{ item|list_index:1 }} </label>
+{% endfor %}
             </div>
           </div>
           <div class="mb-4">
             <label class="form-label-custom">سطح دشواری</label>
             <div class="d-flex flex-column gap-2">
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> آسان</label>
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> متوسط</label>
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> سخت</label>
+              {% for item in possible %}
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0" value='{{item.id}}'> {{ item.name }}</label>
+{% endfor %}
             </div>
           </div>
-          <button class="btn-primary-gradient btn w-100">جستجو</button>
+          <button type="submit" class="btn-primary-gradient btn w-100">جستجو</button>
+          </form>
         </div>
       </div>
       <div class="col-lg-9">
         <div class="d-flex flex-column gap-3">
           <!-- Question row -->
-          <div class="card-custom" style="padding:20px;">
-            <div class="d-flex justify-content-between align-items-start">
-              <div style="flex:1;">
-                <div class="d-flex gap-2 mb-2">
-                  <span class="badge-custom badge-info">ریاضی</span>
-                  <span class="badge-custom badge-warning">متوسط</span>
-                  <span class="badge-custom badge-muted">چندگزینه‌ای</span>
+          {% for item in items %}
+            <div class="card-custom" style="padding:20px;">
+              <div class="d-flex justify-content-between align-items-start">
+                <div style="flex:1;">
+                  <div class="d-flex gap-2 mb-2">
+                    <span class="badge-custom badge-info">{{ item.category.name }}</span>
+                    <span class="badge-custom badge-warning">{{ item.possible.name }}</span>
+                    <span class="badge-custom badge-muted">{{ item.type_of_question }}</span>
+                  </div>
+                  <p class="mb-2 fw-500">{{ item.name }}</p>
+                  <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
+                    <span><i class="bi bi-clock me-1"></i>{{item.solving_time}} دقیقه</span>
+                    <span><i class="bi bi-clock me-1"></i>{{item.views_counts}} بازدید</span>
+                  </div>
                 </div>
-                <p class="mb-2 fw-500">حد تابع f(x) = sin(x)/x وقتی x→0 برابر است با:</p>
-                <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
-                  <span><i class="bi bi-clock me-1"></i>۳ دقیقه</span>
-                  <span><i class="bi bi-eye me-1"></i>۱,۲۴۵ بازدید</span>
-                  <span><i class="bi bi-check-circle me-1"></i>۷۸٪ پاسخ صحیح</span>
-                </div>
+                <a class="btn-primary-gradient btn btn-sm" style="white-space:nowrap;margin-right:12px;" href='{{ item.get_absolute_url }}'>مشاهده</a>
               </div>
-              <button class="btn-primary-gradient btn btn-sm" style="white-space:nowrap;margin-right:12px;" onclick="showPage('question-detail')">مشاهده</button>
             </div>
-          </div>
-          <div class="card-custom" style="padding:20px;">
-            <div class="d-flex justify-content-between align-items-start">
-              <div style="flex:1;">
-                <div class="d-flex gap-2 mb-2">
-                  <span class="badge-custom badge-purple">فیزیک</span>
-                  <span class="badge-custom badge-danger">سخت</span>
-                  <span class="badge-custom badge-muted">تشریحی</span>
-                </div>
-                <p class="mb-2 fw-500">جرم اتم مس با عدد اتمی ۲۹ چقدر است؟ نیروی لورنتز را در میدان ۲ تسلا محاسبه کنید.</p>
-                <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
-                  <span><i class="bi bi-clock me-1"></i>۸ دقیقه</span>
-                  <span><i class="bi bi-eye me-1"></i>۸۹۲ بازدید</span>
-                  <span><i class="bi bi-check-circle me-1"></i>۴۵٪ پاسخ صحیح</span>
-                </div>
-              </div>
-              <button class="btn-primary-gradient btn btn-sm" style="white-space:nowrap;margin-right:12px;" onclick="showPage('question-detail')">مشاهده</button>
-            </div>
-          </div>
-          <div class="card-custom" style="padding:20px;">
-            <div class="d-flex justify-content-between align-items-start">
-              <div style="flex:1;">
-                <div class="d-flex gap-2 mb-2">
-                  <span class="badge-custom badge-success" style="background:rgba(16,185,129,0.1);color:var(--accent-500);">شیمی</span>
-                  <span class="badge-custom badge-success">آسان</span>
-                  <span class="badge-custom badge-muted">PDF محور</span>
-                </div>
-                <p class="mb-2 fw-500">با توجه به جدول تناوبی ارائه شده در فایل PDF، عناصر گروه اول را نام ببرید.</p>
-                <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
-                  <span><i class="bi bi-clock me-1"></i>۵ دقیقه</span>
-                  <span><i class="bi bi-file-pdf me-1" style="color:var(--danger-500);"></i>دارای PDF</span>
-                  <span><i class="bi bi-check-circle me-1"></i>۹۲٪ پاسخ صحیح</span>
-                </div>
-              </div>
-              <button class="btn-primary-gradient btn btn-sm" style="white-space:nowrap;margin-right:12px;" onclick="showPage('question-detail')">مشاهده</button>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
