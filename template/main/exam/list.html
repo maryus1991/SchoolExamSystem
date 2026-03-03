@@ -1,5 +1,7 @@
 {% extends "main/base/base.html" %}
-
+{% load list %}
+{% load tdc %}
+{% load jalali_tags %}
 
 {% block content %}
 
@@ -7,7 +9,7 @@
 <!-- ============================================================
      PAGE 7: EXAM LIST / لیست آزمون‌ها
      ============================================================ -->
-<div class="page-section  " id="page-exam-list">
+<div class="page-section  active" id="page-exam-list">
   <!-- Navbar -->
   <nav class="main-navbar">
     <div class="container">
@@ -45,138 +47,124 @@
       <!-- Filters sidebar -->
       <div class="col-lg-3">
         <div class="card-custom sticky-top-sm">
+          <form action="" method="get">
           <h6 class="fw-700 mb-4"><i class="bi bi-funnel me-2"></i>فیلترها</h6>
           <div class="mb-4">
             <label class="form-label-custom">جستجو</label>
             <div class="input-group-custom">
               <i class="bi bi-search input-icon"></i>
-              <input type="text" class="form-control-custom" placeholder="نام آزمون...">
+              <input type="text" class="form-control-custom" name="search" placeholder="نام آزمون...">
             </div>
           </div>
           <div class="mb-4">
             <label class="form-label-custom">درس</label>
-            <select class="form-control-custom" style="cursor:pointer;">
-              <option>همه دروس</option>
-              <option>ریاضی</option>
-              <option>فیزیک</option>
-              <option>شیمی</option>
-              <option>زبان انگلیسی</option>
-              <option>ادبیات فارسی</option>
+            <select name="lesson" class="form-control-custom" style="cursor:pointer;">
+              <option value="0">همه دروس</option>
+{% for item in lession %}
+              <option value="{{item.id}}"> {{item.name}}</option>
+
+{% endfor %}
             </select>
           </div>
           <div class="mb-4">
+            <label class="form-label-custom">وضعیت</label>
+            <select name="lesson" class="form-control-custom" style="cursor:pointer;">
+              <option value="0">وضعیت </option>
+{% for item in status %}
+              <option value="{{ item|list_index:0 }}"> {{ item|list_index:1 }}</option>
+
+{% endfor %}
+            </select>
+          </div>
+          
+          <div class="mb-4">
             <label class="form-label-custom">پایه تحصیلی</label>
             <div class="d-flex flex-column gap-2">
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> دهم</label>
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> یازدهم</label>
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> دوازدهم</label>
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0"> پیش‌دانشگاهی</label>
+              {% for item in grade %}
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;">
+                <input type="checkbox" name='grade' value='{{item.id}}' class="form-check-input m-0"> {{item.name}}</label> 
+                {% endfor %}
             </div>
           </div>
           <div class="mb-4">
-            <label class="form-label-custom">وضعیت</label>
+            <label class="form-label-custom">رشته</label>
             <div class="d-flex flex-column gap-2">
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="radio" name="status" class="form-check-input m-0"> همه</label>
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="radio" name="status" class="form-check-input m-0"> ثبت نام باز</label>
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="radio" name="status" class="form-check-input m-0"> در حال برگزاری</label>
+              {% for item in major %}
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;">
+                <input type="checkbox" name='major' value='{{item.id}}' class="form-check-input m-0"> {{item.name}}</label> 
+                {% endfor %}
             </div>
           </div>
+          {% comment %} <div class="mb-4">
+            <label class="form-label-custom">وضعیت</label>
+            <div class="d-flex flex-column gap-2">
+              {% for item in status %}
+              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;">
+                <input type="radio" name="status" value="{{ item|list_index:0 }}" class="form-check-input m-0"> {{ item|list_index:1 }}</label>
+                {% endfor %}
+            </div>
+          </div> {% endcomment %}
           <button class="btn-primary-gradient btn w-100">اعمال فیلتر</button>
+        </form>
         </div>
       </div>
       <!-- Exam cards -->
       <div class="col-lg-9">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <p class="text-secondary mb-0" style="font-size:0.875rem;">۲۴ آزمون یافت شد</p>
-          <select class="form-control-custom" style="width:auto;padding:8px 12px;font-size:0.875rem;cursor:pointer;">
+          <p class="text-secondary mb-0" style="font-size:0.875rem;">{{ items.count }} آزمون یافت شد</p>
+          {% comment %} <select class="form-control-custom" style="width:auto;padding:8px 12px;font-size:0.875rem;cursor:pointer;">
             <option>جدیدترین</option>
             <option>محبوب‌ترین</option>
             <option>قدیمی‌ترین</option>
-          </select>
+          </select> {% endcomment %}
         </div>
         <div class="row g-3">
-          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
+  {% for item in items %}
+          <a class="col-md-6" href="{{item.get_absolute_url}}" style="cursor:pointer;">
             <div class="card-custom hover-lift h-100">
               <div class="d-flex justify-content-between mb-3">
-                <span class="badge-custom badge-info">ریاضی</span>
-                <span class="badge-custom badge-success">ثبت نام باز</span>
+                <span class="badge-custom badge-purple">{{ item.grade.name }}</span>
+                <span class="badge-custom badge-purple">{{ item.major.name }}</span>
+                <span class="badge-custom badge-purple">{{ item.lession.name }}</span>
+                <span class="badge-custom badge-warning">{{ item.status }}</span>
               </div>
-              <h6 class="fw-700 mb-2">آزمون جامع ریاضی سوم</h6>
-              <p class="text-secondary mb-3" style="font-size:0.8rem;">شامل تمام مباحث با سوالات متنوع</p>
+              <h6 class="fw-700 mb-2">{{ item.name }}</h6>
+              <p class="text-secondary mb-3" style="font-size:0.8rem;">{{ item.section }}</p>
               <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
-                <span><i class="bi bi-clock me-1"></i>۹۰ دقیقه</span>
-                <span><i class="bi bi-question-circle me-1"></i>۴۰ سوال</span>
-                <span><i class="bi bi-people me-1"></i>۳۲۵</span>
+                <span><i class="bi bi-clock me-1"></i>{{item.time_minutes}} دقیقه</span>
+                <span><i class="bi bi-question-circle me-1"></i>{{item.question_count}} سوال</span>
+                <span><i class="bi bi-people me-1"></i>{{ item.views_count }} بازدید</span>
               </div>
-              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
-                <i class="bi bi-calendar3 me-1"></i>۱۵ اسفند ۱۴۰۳
+              <div class="mt-3 pt-3 d-flex justify-content-between" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
+                
+                <span class="badge-custom badge-success"><i class="bi bi-calendar3 me-1"></i>{{ item.start_at|to_jalali:' %H:%M - %Y/%m/%d ' }}</span>
+                <span class="badge-custom badge-warning"><i class="bi bi-calendar3 me-1"></i>
+                {% if item.price > 0 %}
+                {{item.price|tdc}}  تومان
+                {% else %}
+                رایگان
+                {% endif %}
+                </span>
+
               </div>
             </div>
-          </div>
-          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
-            <div class="card-custom hover-lift h-100">
-              <div class="d-flex justify-content-between mb-3">
-                <span class="badge-custom badge-purple">فیزیک</span>
-                <span class="badge-custom badge-warning">در حال برگزاری</span>
-              </div>
-              <h6 class="fw-700 mb-2">آزمون فیزیک پیش‌دانشگاهی</h6>
-              <p class="text-secondary mb-3" style="font-size:0.8rem;">الکتریسیته و مغناطیس</p>
-              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
-                <span><i class="bi bi-clock me-1"></i>۱۲۰ دقیقه</span>
-                <span><i class="bi bi-question-circle me-1"></i>۵۵ سوال</span>
-                <span><i class="bi bi-people me-1"></i>۴۷۸</span>
-              </div>
-              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
-                <i class="bi bi-calendar3 me-1"></i>۱۰ اسفند ۱۴۰۳
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
-            <div class="card-custom hover-lift h-100">
-              <div class="d-flex justify-content-between mb-3">
-                <span class="badge-custom badge-info">شیمی</span>
-                <span class="badge-custom badge-muted">به زودی</span>
-              </div>
-              <h6 class="fw-700 mb-2">آزمون شیمی دوم</h6>
-              <p class="text-secondary mb-3" style="font-size:0.8rem;">پیوندهای شیمیایی</p>
-              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
-                <span><i class="bi bi-clock me-1"></i>۶۰ دقیقه</span>
-                <span><i class="bi bi-question-circle me-1"></i>۳۰ سوال</span>
-                <span><i class="bi bi-people me-1"></i>۲۱۲</span>
-              </div>
-              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
-                <i class="bi bi-calendar3 me-1"></i>۲۵ اسفند ۱۴۰۳
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6" onclick="showPage('exam-detail')" style="cursor:pointer;">
-            <div class="card-custom hover-lift h-100">
-              <div class="d-flex justify-content-between mb-3">
-                <span class="badge-custom badge-success" style="background:rgba(99,102,241,0.1);color:#6366f1;">زبان</span>
-                <span class="badge-custom badge-success">ثبت نام باز</span>
-              </div>
-              <h6 class="fw-700 mb-2">آزمون زبان انگلیسی جامع</h6>
-              <p class="text-secondary mb-3" style="font-size:0.8rem;">گرامر، واژگان و درک مطلب</p>
-              <div class="d-flex gap-3" style="font-size:0.75rem;color:var(--text-muted);">
-                <span><i class="bi bi-clock me-1"></i>۷۵ دقیقه</span>
-                <span><i class="bi bi-question-circle me-1"></i>۴۵ سوال</span>
-                <span><i class="bi bi-people me-1"></i>۵۶۲</span>
-              </div>
-              <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:0.8rem;color:var(--text-muted);">
-                <i class="bi bi-calendar3 me-1"></i>۲۰ اسفند ۱۴۰۳
-              </div>
-            </div>
-          </div>
+          </a>
+
+        {% empty %}
+        <p class='w-100 btn btn-primary-gradient text-lg'>
+          موردی یافت نشد
+        </p>
+ {% endfor %}
         </div>
         <!-- Pagination -->
         <div class="d-flex justify-content-center mt-5">
           <nav>
             <ul class="pagination gap-1 mb-0">
-              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">قبلی</a></li>
+              <li class="page-item"><a class="page-link" href="{{ page.previous }}" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">قبلی</a></li>
               <li class="page-item active"><a class="page-link" href="#" style="border-radius:var(--radius-md);background:var(--gradient-blue);border:none;">۱</a></li>
               <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">۲</a></li>
               <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">۳</a></li>
-              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">بعدی</a></li>
+              <li class="page-item"><a class="page-link" href="{{ page.next }}" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">بعدی</a></li>
             </ul>
           </nav>
         </div>

@@ -9,3 +9,4 @@ def list_index(list, id):
         return list[id]
     except Exception as E:
         return 0
+ 

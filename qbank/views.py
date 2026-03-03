@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from .models import QuestionAnswerKey, QuestionBank, QuestionOption, QuestionLessonCategory, QuestionPossible, QuestionView
+from django.views.generic import ListView
+from .models import QuestionAnswerKey, QuestionBank, QuestionLessonCategory, QuestionPossible, QuestionView
 from django.http import Http404
 from ipware import get_client_ip
 from django.db.models.aggregates import Count 
-
+from django.contrib import messages
 
 # Create your views here.
 
@@ -70,15 +70,18 @@ class QuestionsView(ListView):
             return 'item'
        
         return self.context_object_name 
-    
     def get_paginate_by(self, queryset):
-
         pk = self.kwargs.get('pk')
-
         if pk :
             return None
-
-        return self.paginate_by
+        if self.get_queryset() :
+            return self.paginate_by
+        
+        messages.warning(
+            self.request, 'موردی یافت نشد'
+        )
+        return None
+    
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)

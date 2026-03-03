@@ -91,6 +91,11 @@
                 <a class="btn-primary-gradient btn btn-sm" style="white-space:nowrap;margin-right:12px;" href='{{ item.get_absolute_url }}'>مشاهده</a>
               </div>
             </div>
+
+        {% empty %}
+        <p class='w-100 btn btn-primary-gradient text-lg'>
+          موردی یافت نشد
+        </p>
           {% endfor %}
         </div>
       </div>
