@@ -1,6 +1,30 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" data-theme="dark">
 <head>
+    <script>
+          (function () {
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }else{
+      document.documentElement.setAttribute("data-theme", "light");
+
+    }
+  })();
+
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+
+    if (currentTheme === "dark") {
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.setItem("theme", "light");
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+    }
+  }
+    </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>آزمون‌آنلاین | پلتفرم هوشمند آزمون و بانک سوال</title>
@@ -39,13 +63,13 @@
 
     {% block content %}{% endblock content %}
 
-<script src="/static/js/main/main.js">
-</script>
+
+    
+    <script src="/static/js/main/bootstrap5.bundle.min.js"></script>
+    <script src="/static/js/main/main.js">
+    </script>
 
 {% block footer %}{% endblock footer %}
-
-<script src="/static/js/main/bootstrap5.bundle.min.js"></script>
-
 <!-- اسکریپت اضافی برای مدیریت بهتر پیام‌ها -->
 <script>
     // بستن خودکار پیام‌ها بعد از 5 ثانیه

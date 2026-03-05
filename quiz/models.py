@@ -59,6 +59,9 @@ class Quiz(models.Model):
     status = models.CharField(verbose_name='وضعیت', choices=QuizStatus, default=QuizStatus.WAITING_START, max_length=55)
     is_active = models.BooleanField(default=True, verbose_name='فعال')
     is_online = models.BooleanField(default=True, verbose_name='انلاین')
+    allow_return_to_questions = models.BooleanField(default=True, verbose_name='برگشتن به عقب')
+    change_the_order = models.BooleanField(default=True, verbose_name=' عوض کردن ترتیب سوالات')
+    allow_to_edit_the_answered_questions = models.BooleanField(default=True, verbose_name='امکان ویرایش سوالات پاسخ داده شده')
 
     class Meta:
         verbose_name = 'ازمون'
@@ -97,12 +100,12 @@ class Question(models.Model):
     created_at = models.DateTimeField(auto_now_add=True )
 
     class Meta:
-        ordering = ['order']
+        ordering = ['id']
         verbose_name = 'سوال'
         verbose_name_plural = 'سوالات'
 
     def __str__(self):
-        return f"{self.quiz} - {self.title}"
+        return f"{self.quiz} - {self.name}"
 
 
 class QuestionOption(models.Model):
@@ -117,7 +120,7 @@ class QuestionOption(models.Model):
         verbose_name_plural = 'گزینه‌ها سوالات تستی'
 
     def __str__(self):
-        return f"{self.question.title} - {self.text}"
+        return f"{self.question.name} - {self.text}"
     
 
 def photo_path_upload_to(*args, **kwargs):
@@ -142,7 +145,7 @@ class QuestionAnswerKey(models.Model):
         verbose_name_plural = 'پاسخ‌های صحیح (ادمین)'
 
     def __str__(self):
-        return f"پاسخ صحیح - {self.question.title}"
+        return f"پاسخ صحیح - {self.question.name}"
     
 
 def photo_path_upload_to(*args, **kwargs):
@@ -158,15 +161,16 @@ class StudentAnswer(models.Model):
 
     quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='student_answers', verbose_name='آزمون')
     student = models.ForeignKey(User, on_delete=models.CASCADE,related_name='answers', verbose_name='دانش‌آموز')
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='student_answers', verbose_name='سوال')
+    question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name='student_answers', null=True, blank=True , verbose_name='سوال')
     type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ')
-    selected_option = models.ForeignKey(QuestionOption,on_delete=models.SET_NULL,null=True,blank=True,verbose_name='گزینه انتخاب‌شده')
+    selected_option = models.ForeignKey(QuestionOption,on_delete=models.PROTECT ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده')
     description = models.TextField(blank=True, null=True,verbose_name='متن پاسخ' )
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
     pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF پاسخ')
     score = models.FloatField(default=0, verbose_name='نمره داده شده')
     is_correct = models.BooleanField(default=False, verbose_name='صحیح است؟' )
-    corrected_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='corrected_answers', verbose_name='تصحیح‌کننده')
+    is_skipped = models.BooleanField(default=False, verbose_name='رد شده' )
+    corrected_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True, related_name='corrected_answers', verbose_name='تصحیح‌کننده')
     corrected_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

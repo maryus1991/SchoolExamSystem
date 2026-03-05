@@ -123,8 +123,8 @@
           <a class="col-md-6" href="{{item.get_absolute_url}}" style="cursor:pointer;">
             <div class="card-custom hover-lift h-100">
               <div class="d-flex justify-content-between mb-3">
-                <span class="badge-custom badge-purple">{{ item.grade.name }}</span>
-                <span class="badge-custom badge-purple">{{ item.major.name }}</span>
+                <span class="badge-custom badge-info">{{ item.grade.name }}</span>
+                <span class="badge-custom badge-success">{{ item.major.name }}</span>
                 <span class="badge-custom badge-purple">{{ item.lession.name }}</span>
                 <span class="badge-custom badge-warning">{{ item.status }}</span>
               </div>
@@ -157,17 +157,95 @@
  {% endfor %}
         </div>
         <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-5">
-          <nav>
-            <ul class="pagination gap-1 mb-0">
-              <li class="page-item"><a class="page-link" href="{{ page.previous }}" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">قبلی</a></li>
-              <li class="page-item active"><a class="page-link" href="#" style="border-radius:var(--radius-md);background:var(--gradient-blue);border:none;">۱</a></li>
-              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">۲</a></li>
-              <li class="page-item"><a class="page-link" href="#" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">۳</a></li>
-              <li class="page-item"><a class="page-link" href="{{ page.next }}" style="border-radius:var(--radius-md);border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);">بعدی</a></li>
-            </ul>
-          </nav>
-        </div>
+         <style>
+    .page-item.active .page-link {
+        background: var(--gradient-blue) !important;
+        border: none !important;
+        color: inherit !important; /* Ensure text color remains consistent */
+    }
+    
+    ul.pagination {
+        display: flex;
+    }
+</style>
+<div class="d-flex justify-content-center mt-5">
+    <nav>
+        <ul class="pagination gap-1 mb-0" id="myPagination">
+            <!-- Previous Button -->
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link"
+                    href="?page={{ page_obj.previous_page_number }}"
+                    style="border-radius:var(--radius-md);
+                           border:1px solid var(--border-color); 
+                           background:var(--bg-card); 
+                           color:var(--text-secondary);">
+                    قبلی
+                </a></li>
+            {% else %}
+                <li class="page-item disabled" aria-disabled="true">
+                    <a class="page-link"
+                       href="#"
+                       style="border-radius:var(--radius-md);
+                              border:none; 
+                              background:var(--bg-card); 
+                              color:inherit;"
+                       tabindex="-1"
+                       aria-hidden="true">
+                        قبلی
+                    </a>
+                </li>
+            {% endif %}
+
+            <!-- Page numbers -->
+            {% for page in page_obj.paginator.page_range %}
+                {% if page.number == page %}
+                    <li class="page-item active" style="border-radius:var(--radius-md);
+                                                      border:none; 
+                                                      background:var(--gradient-blue);"
+                        aria-current="page">
+                        <a class="page-link" href="?page={{page}}" style="color:inherit;">
+                            {{ forloop.counter }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item"><a class="page-link"
+                        href="?page={{ page }}"
+                        style="border-radius:var(--radius-md);
+                               border:1px solid var(--border-color); 
+                               background:var(--bg-card); 
+                               color:var(--text-secondary);">
+                            {{ forloop.counter }}
+                    </a></li>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Next Button -->
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link"
+                    href="?page={{ page_obj.next_page_number }}"
+                    style="border-radius:var(--radius-md);
+                           border:1px solid var(--border-color); 
+                           background:var(--bg-card); 
+                           color:inherit;">
+                        بعدی
+                    </a></li>
+            {% else %}
+                <li class="page-item disabled" aria-disabled="true">
+                    <a class="page-link"
+                       href="#"
+                       style="border-radius:var(--radius-md);
+                              border:none; 
+                              background:var(--bg-card); 
+                              color:inherit;"
+                       tabindex="-1"
+                       aria-hidden="true">
+                        بعدی
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
       </div>
     </div>
   </div>
