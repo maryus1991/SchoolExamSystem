@@ -8,7 +8,7 @@ class BlogListView(ListView):
     blog list view
     """
 
-    paginate_by = 25
+    paginate_by = 36
     queryset = Blog.objects.filter(is_active=True).all()
     template_name = 'main/blog/list.html'
     context_object_name = 'items'

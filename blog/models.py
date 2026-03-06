@@ -5,8 +5,8 @@ from easy_thumbnails.fields import ThumbnailerImageField
 from django.utils.crypto import get_random_string
 from django.urls import reverse
 
-def photo_path_upload_to(*args, **kwargs):
-    return f"blog/images/{get_random_string(72)}"
+def photo_path_upload_to(instance, filename):
+    return f"questions/{get_random_string(100)}-{filename}"
 
 
 class Blog(models.Model):
@@ -24,7 +24,7 @@ class Blog(models.Model):
     category = models.CharField(max_length=255, verbose_name="دسته")
     short_content = models.CharField(max_length=100, verbose_name="توضیحات کوتاه")
     content = CKEditor5Field(verbose_name="متن یا بدنه")
-    time_to_read_minutes = models.PositiveSmallIntegerField(default=10, verbose_name='زمان مطاعه بع دقیقه') 
+    time_to_read_minutes = models.PositiveSmallIntegerField(default=10, verbose_name='زمان مطالعه به دقیقه') 
     image = ThumbnailerImageField(verbose_name='عکس', upload_to=photo_path_upload_to)
     is_active = models.BooleanField(
         default=False, verbose_name="فعال / غیر فعال "
@@ -49,6 +49,10 @@ class BlogView(models.Model):
     ip = models.GenericIPAddressField()
     count = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'بازدید'
+        verbose_name_plural = 'بازدیدها'
 
     def __str__(self):
         return self.ip

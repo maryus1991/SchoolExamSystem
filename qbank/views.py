@@ -16,7 +16,7 @@ class QuestionsView(ListView):
 
     template_name = 'main/question-bank/list.html'
     context_object_name = 'items'
-    paginate_by = 50
+    paginate_by = 30
 
     def get_queryset(self):
         queryset = QuestionBank.objects.filter(is_active=True).prefetch_related('possible', 'category', 'options', 'answer_key')
@@ -46,7 +46,7 @@ class QuestionsView(ListView):
 
             if not queryset.exists() and queryset.count() != 1:
                 raise Http404('obj not found')
-        return  queryset.first()
+            return  queryset.first()
 
                     
         if category_id:
@@ -70,10 +70,13 @@ class QuestionsView(ListView):
             return 'item'
        
         return self.context_object_name 
+    
     def get_paginate_by(self, queryset):
         pk = self.kwargs.get('pk')
+
         if pk :
             return None
+        
         if self.get_queryset() :
             return self.paginate_by
         

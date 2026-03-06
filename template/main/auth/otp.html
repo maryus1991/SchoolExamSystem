@@ -12,25 +12,26 @@
       <div class="text-center mb-5">
         <div style="width:72px;height:72px;background:rgba(59,130,246,0.1);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem;">📱</div>
         <h3 class="fw-800 mb-2">کد تأیید</h3>
-        <p class="text-secondary" style="font-size:0.9rem;">کد ۶ رقمی ارسال شده به شماره <strong>09123456789</strong> را وارد کنید.</p>
+        <p class="text-secondary" style="font-size:0.9rem;">کد ۶ رقمی ارسال شده به شماره <strong dir="ltr">{{ PhoneNumber }}</strong> را وارد کنید.</p>
       </div>
       <div class="card-custom">
         <!-- OTP Boxes -->
-        <div class="d-flex gap-2 justify-content-center mb-4" dir="ltr">
-          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,0)">
-          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,1)">
-          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,2)">
-          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,3)">
-          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;" oninput="otpMove(this,4)">
-          <input type="text" maxlength="1" class="form-control-custom text-center fw-700" style="width:50px;font-size:1.4rem;padding:10px 5px;">
-        </div>
+        <form  dir="ltr" action="" method="post">
+            <div class="d-flex gap-2 justify-content-center mb-4">
+            {% csrf_token %}
+            <!-- <input type="text" name="input-1" maxlength="6" class="form-control-custom text-center fw-700 col-12" > -->
+             {{ form.otp }}
+            
+          </div>
+            <button type="submit" class="btn-primary-gradient btn w-100 btn-lg mb-3"  >تأیید کد</button>
+
+        </form>
         <!-- Countdown -->
         <div class="text-center mb-4" style="font-size:0.875rem;color:var(--text-muted);">
-          کد منقضی می‌شود در: <span id="otpCountdown" style="color:var(--primary-600);font-weight:700;">01:59</span>
+          کد منقضی می‌شود در: <span id="otpCountdown" style="color:var(--primary-600);font-weight:700;">{{ timer }} </span>ثانیه
         </div>
-        <button class="btn-primary-gradient btn w-100 btn-lg mb-3" onclick="showPage('student-dashboard')">تأیید کد</button>
         <div class="text-center" style="font-size:0.875rem;color:var(--text-secondary);">
-          کد دریافت نشد? <a href="#" style="color:var(--primary-600);font-weight:700;text-decoration:none;">ارسال مجدد</a>
+          کد دریافت نشد? <a href="{% url 'user:otp' private_code %}" style="color:var(--primary-600);font-weight:700;text-decoration:none;">ارسال مجدد</a>
         </div>
       </div>
     </div>

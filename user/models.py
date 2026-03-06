@@ -4,8 +4,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.timezone import timedelta, now
 from random import randint
 from .managers import UserManager
-from config.settings import OTP_EXPIRATIONS_MINUTES
+from config.settings import OTP_EXPIRATIONS_SECONDS, LOGIN_TEMP
 from django.urls import reverse
+from django.utils.crypto import get_random_string
 
 # Create your models here.
 
@@ -44,6 +45,7 @@ class MajorCategories(models.Model):
     def get_absolute_url(self):
         return reverse("quiz:category-major-list", kwargs={"major_category_id": self.pk})
 
+
 class User(AbstractUser):
     """
      User model
@@ -66,19 +68,23 @@ class User(AbstractUser):
         ADMIN = "A", "ادمین" 
 
 
-    gender = models.CharField(max_length=255, choices=GenderOfUser, verbose_name="جنسیت")
     PhoneNumber = PhoneNumberField(unique=True, db_index=True, verbose_name="شماره")
-    otp = models.CharField(max_length=6, blank=True, null=True, verbose_name="کد otp")
-    otp_expiry_date = models.DateTimeField(null=True, blank=True, verbose_name="تاریخ انقضای ")
-    type_of_user = models.CharField(max_length=255, choices=TypeOfUser, verbose_name='نوع کاربر', default=TypeOfUser.REGULAR)
-    national_id = models.CharField(max_length=255, verbose_name='کد ملی', null=True) 
+    gender = models.CharField(max_length=255, choices=GenderOfUser, verbose_name="جنسیت")
     province =  models.CharField(max_length=255, verbose_name='نام استان', null=True) 
+    national_id = models.CharField(max_length=255, verbose_name='کد ملی', null=True) 
     city =  models.CharField(max_length=255, verbose_name='نام شهر', null=True) 
     school =  models.CharField(max_length=255, verbose_name='نام مدرسه', null=True) 
     grade =  models.ForeignKey(GradeCategories, related_name='users', null=True, on_delete=models.PROTECT, verbose_name='پایه') 
     major =  models.ForeignKey(MajorCategories, related_name='users', null=True, on_delete=models.PROTECT, verbose_name='رشته تحصیلی') 
     father_name =  models.CharField(max_length=255, verbose_name='نام پدر', null=True) 
-    birth = models.DateTimeField(verbose_name='تاریخ تولد', null=True) 
+    private_code =  models.CharField(max_length=1000, verbose_name='کد مخفی کاربر', null=True, blank=True) 
+    birth = models.DateTimeField(verbose_name='تاریخ تولد', null=True)
+
+
+    otp = models.CharField(max_length=6, blank=True, null=True, verbose_name="کد otp")
+    login_temp = models.PositiveSmallIntegerField(default=0, verbose_name="دفعات ورود")
+    otp_expiry_date = models.DateTimeField(null=True, blank=True, verbose_name="تاریخ انقضای ")
+    type_of_user = models.CharField(max_length=255, choices=TypeOfUser, verbose_name='نوع کاربر', default=TypeOfUser.REGULAR)
 
     is_verified = models.BooleanField(default=True, verbose_name='تایید شماره همراه')
     
@@ -97,8 +103,14 @@ class User(AbstractUser):
     
     def set_otp(self) -> int:
  
-        self.otp_expiry_date = now() + timedelta(minutes=int(OTP_EXPIRATIONS_MINUTES))
+        self.otp_expiry_date = now() + timedelta(seconds=int(OTP_EXPIRATIONS_SECONDS))
         self.otp = randint(100000, 999999)
+  
+        if self.login_temp > LOGIN_TEMP:
+            self.is_verified=False
+            self.is_active=False
+        else:
+            self.login_temp+=1
 
         self.save()
 
@@ -109,9 +121,11 @@ class User(AbstractUser):
         if (int(self.otp) == int(otp)) and (self.otp_expiry_date >= now()):
             self.otp = ""
             self.otp_expiry_date = None
-
+            self.is_verified = True
+            self.login_temp = 0
+            self.private_code = None
             self.save()
  
             return [200, 'verified']
-        elif (int(self.otp) != int(otp)) and (self.otp_expiry_date >= now()): return [401, 'otp code is wrong']
-        elif (int(self.otp) == int(otp)) and (self.otp_expiry_date < now()): return [402, 'otp code has been expired']
+        elif (int(self.otp) != int(otp)) and (self.otp_expiry_date >= now()): return [401, 'کد اعتبار سنجی اشتباه است']
+        elif (int(self.otp) == int(otp)) and (self.otp_expiry_date < now()): return [402, 'زمان وارد کردن کد تمام شده است لطفا دوباره امتحان فرمایید']

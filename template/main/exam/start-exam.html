@@ -6,7 +6,6 @@
 
 
 
-
 <!-- ============================================================
      PAGE 9: TAKE EXAM / شرکت در آزمون
      ============================================================ -->
@@ -26,7 +25,7 @@
       </div>
       <div class="d-flex align-items-center gap-2">
         <div class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i></div>
-        <a class="btn btn-sm" style="background:rgba(239,68,68,0.1);color:var(--danger-500);border:none;border-radius:var(--radius-lg);font-family:inherit;padding:8px 16px;font-weight:600;" onclick="showSubmitModal()">
+        <a class="btn btn-sm" href='{% url "quiz:quiz-finished" quiz.id %}' style="background:rgba(239,68,68,0.1);color:var(--danger-500);border:none;border-radius:var(--radius-lg);font-family:inherit;padding:8px 16px;font-weight:600;"  >
           <i class="bi bi-check-circle me-1"></i> پایان آزمون
         </a>
       </div>
@@ -64,41 +63,98 @@
               </p>
             </div>
             {% endif %}
-            <!-- Options -->
+            
+            {% if question.image %}
+ 
+              <div style="height:360px;background:var(--gradient-blue);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+                  <picture>
+                    <source srcset="{{ question.image.url }}"
+                            type="image/webp">
+                    <img src="{{ question.image.url }}"   width="360" height="360"
+                          loading="lazy">
+                  </picture>
+              </div>  
 
-            {% if question.options %}
+            {% endif %}
+
+            {% if question.pdf_file %}
+ 
+
+<iframe  
+         src="{{ question.pdf_file.url }}"
+ 
+         scrolling="auto"
+width="360" height="360"
+ 
+         >
+</iframe>
+
+<style>
+
+          iframe {
+            width: 100%;
+            border: 2px solid #ddd;
+            margin-bottom: 25px;
+        }
+</style>
+
+ 
+
+            {% endif %}
+
+            {% if question.options.exists %}
             <div class="d-flex flex-column gap-2">
               {% for option in question.options.all %}
-                <div class="question-option selected" onclick="selectOption(this)">
-                  <div class="option-dot"></div>
-                  <span>{{ forloop.counter }}) {{option.text}}</span>
-                </div>
+                <a {% if answer.selected_option is None or quiz.allow_to_edit_the_answered_questions %} href="{% url 'quiz:quiz-set-option-answer-quesion' pk=quiz.id question_id=question.id option_id=option.id %}" {% endif %}>
+                  <div class="question-option {% if answer.selected_option == option %}selected{% endif %}"  >
+                    <div class="option-dot"></div>
+                    <span>{{ forloop.counter }}) {{option.text}}</span>
+                  </div>
+                </a>
               {% endfor %}
             </div>
  
             {% endif %}
           </div>
+
           <!-- Descriptive question -->
-          {% if question.options %}
+        {% if not question.options.exists %}
 
             
           <div class="exam-question-card">
             <div class="d-flex justify-content-between align-items-center mb-4">
               <div class="d-flex align-items-center gap-2">
                 <span class="badge-custom badge-purple">تشریحی</span>
-                <span class="badge-custom badge-muted">آپلود عکس</span>
+                <span class="badge-custom badge-muted">آپلود فایل</span>
               </div>
-              <div style="font-size:0.8rem;color:var(--text-muted);">نمره: ۴</div>
             </div>
- 
-            <!-- Upload area -->
-            <div class="upload-box" id="uploadArea" onclick="document.getElementById('fileInput').click()">
-              <input type="file" id="fileInput" hidden accept="image/*" onchange="handleFileUpload(this)">
-              <div class="upload-icon"><i class="bi bi-camera-fill"></i></div>
-              <h6 class="fw-700 mb-2">عکس یا pdf پاسخ را آپلود کنید</h6>
-              <p class="text-secondary mb-3" style="font-size:0.85rem;">فایل را اینجا بکشید یا کلیک کنید</p>
-              <span class="badge-custom badge-info">JPG, PNG, PDF</span>
-            </div>
+            
+            <form {% if quiz.allow_to_edit_the_answered_questions or answer.type_of_answer is None   %}
+              action="{% url 'quiz:quiz-set-text-file-answer-quesion' pk=quiz.id question_id=question.id %}"{% endif %} 
+               method="post" >
+              {% csrf_token %}
+              <div class="input-group-custom">
+                <i class="bi bi-search input-icon"></i>
+                <textarea class='form-control-custom' placeholder="پاسخ ..."   name="answer-text" id="" cols="30" rows="5">
+
+                  {% if answer.description %}{{ answer.description  }}{% endif %}
+                </textarea>
+              </div>
+
+              <!-- Upload area -->
+              <div class="upload-box" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <input type="file" id="fileInput" hidden accept=".pdf, .jpg, .jpeg, .png" >
+                <div class="upload-icon"><i class="bi bi-camera-fill"></i></div>
+                <h6 class="fw-700 mb-2">عکس یا pdf پاسخ را آپلود کنید</h6>
+                <p class="text-secondary mb-3" style="font-size:0.85rem;">فایل را اینجا بکشید یا کلیک کنید</p>
+                <span class="badge-custom badge-info">JPG, PNG, PDF</span>
+              </div>
+              {% if quiz.allow_to_edit_the_answered_questions or answer.type_of_answer is None   %}
+                <button type="submit" class="btn-success-gradient btn w-100 p-1 m-2"  >
+                    ارسال پاسخ
+                </button>
+              {% endif %} 
+            </form>
             <!-- Preview (hidden by default) -->
             <div id="uploadPreview" class="d-none mt-3">
               <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;display:flex;align-items:center;justify-content:between;gap:12px;">
@@ -111,13 +167,56 @@
               </div>
             </div>
           </div>
-      {% endif %}  
+        {% endif %}  
 
+        {% if answer.image %}
+          <p class='p-2'>
+            عکس اپلود شده
+          </p>
+          <div style="height:160px;background:var(--gradient-blue);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+              <picture>
+                <source srcset="{{ answer.image.url }}"
+                        type="image/webp">
+                <img src="{{ answer.image.url }}"   width="auto" height="160"
+                      loading="lazy">
+              </picture>
+          </div>  
+
+        {% endif %}
+            {% if answer.pdf_file %}
+ 
+          <p class='p-2'>
+            فایل اپلود شده
+          </p>
+<iframe  
+         src="{{ answer.pdf_file.url }}"
+ 
+         scrolling="auto"
+width="360" height="360"
+ 
+         >
+</iframe>
+
+<style>
+
+          iframe {
+            width: 100%;
+            border: 2px solid #ddd;
+            margin-bottom: 25px;
+        }
+</style>
+
+ 
+
+            {% endif %}
           <!-- Navigation buttons -->
           <div class="d-flex justify-content-between mt-4">
-            <button class="btn-outline-custom btn" disabled>
+            {% comment %} <button class="btn-outline-custom btn" disabled>
               <i class="bi bi-arrow-right me-2"></i> سوال قبلی
-            </button>
+            </button> {% endcomment %}
+            <a href='{% url "quiz:quiz-skipped-quesion-id" pk=quiz.id question_id=question.id %}' class="btn-purple-gradient  btn" >
+                  رد کردن سوال
+            </a>
             <button class="btn-primary-gradient btn">
               سوال بعدی <i class="bi bi-arrow-left ms-2"></i>
             </button>
@@ -137,8 +236,11 @@
             <h6 class="fw-700 mb-3" style="font-size:0.85rem;">ناوبری سوالات</h6>
             <div class="q-nav-grid mb-3">
               {% for item in all_question %}
-                <div class="q-nav-btn {% if item in solved_question %}answered{% elif item in skipped_question %}skipped{% elif item == question.id %}current{% endif %}">{{ forloop.counter }}</div>
-              
+                <a {% if quiz.allow_return_to_questions  %} href="{% url 'quiz:quiz-start-quesion-id' pk=quiz.id question_id=item  %}"  {% endif %}>
+                  <div class="q-nav-btn {% if item == question.id  %} current{% elif item in skipped_question %}skipped{% elif item in solved_question %}answered{% endif %}">
+                    {{ forloop.counter }}
+                  </div>
+                </a>
               {% endfor %}
  
             </div>
@@ -156,9 +258,9 @@
               <span class="fw-700">{{ solved_skipped_questions }} از {{all_question.count}}</span>
             </div>
             <div class="progress-custom mb-3"><div class="progress-fill" style="width:{{solved_skipped_questions|percent:all_question.count}}%;"></div></div>
-            <button class="btn w-100" style="background:rgba(239,68,68,0.1);color:var(--danger-500);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-lg);font-family:inherit;font-weight:600;padding:10px;" onclick="showSubmitModal()">
+            <a href='{% url "quiz:quiz-finished" quiz.id %}' class="btn w-100" style="background:rgba(239,68,68,0.1);color:var(--danger-500);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-lg);font-family:inherit;font-weight:600;padding:10px;" onclick="showSubmitModal()">
               <i class="bi bi-check-circle me-1"></i> اتمام آزمون
-            </button>
+            </a>
           </div>
         </div>
       </div>

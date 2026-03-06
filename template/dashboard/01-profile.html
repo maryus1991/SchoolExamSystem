@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>پروفایل | آزمون‌یار</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"> -->
+  <link rel="stylesheet" href="/static/css/bootstrap5.css">
+  <link rel="stylesheet" href="/static/css/bootstrap5-icons.css">
   <style>
     :root {
       --primary: #6C5CE7;
@@ -260,6 +260,33 @@
     .section-title { font-size: 1rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; }
     .section-title::before { content: ''; width: 4px; height: 20px; background: var(--gradient-1); border-radius: 50px; display: inline-block; }
   </style>
+
+<script>
+  // Theme toggle
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  }
+  // Load saved theme
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('themeIcon').textContent = '🌙';
+  }
+
+  // Toast helper
+  function showToast(msg, type='success') {
+    const t = document.createElement('div');
+    t.className = `alert alert-${type} d-flex align-items-center gap-2 shadow-lg`;
+    t.style.cssText = 'border-radius:14px;font-family:Vazirmatn,sans-serif;font-size:0.88rem;animation:fadeInUp 0.3s;min-width:280px;';
+    t.innerHTML = `<i class="bi bi-check-circle-fill"></i> ${msg}`;
+    document.getElementById('toast-container').appendChild(t);
+    setTimeout(() => t.remove(), 3500);
+  }
+</script>
 </head>
 <body>
 
@@ -539,32 +566,7 @@
 <!-- Toast -->
 <div id="toast-container" style="position:fixed;bottom:2rem;left:2rem;z-index:9999;"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // Theme toggle
-  function toggleTheme() {
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('theme', isDark ? 'light' : 'dark');
-  }
-  // Load saved theme
-  const saved = localStorage.getItem('theme');
-  if (saved === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    document.getElementById('themeIcon').textContent = '🌙';
-  }
+<script src="/static/js/main/bootstrap5.bundle.min.js"></script>
 
-  // Toast helper
-  function showToast(msg, type='success') {
-    const t = document.createElement('div');
-    t.className = `alert alert-${type} d-flex align-items-center gap-2 shadow-lg`;
-    t.style.cssText = 'border-radius:14px;font-family:Vazirmatn,sans-serif;font-size:0.88rem;animation:fadeInUp 0.3s;min-width:280px;';
-    t.innerHTML = `<i class="bi bi-check-circle-fill"></i> ${msg}`;
-    document.getElementById('toast-container').appendChild(t);
-    setTimeout(() => t.remove(), 3500);
-  }
-</script>
 </body>
 </html>

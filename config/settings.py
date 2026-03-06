@@ -158,7 +158,8 @@ MEDIA_ROOT =  BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # otp
-OTP_EXPIRATIONS_MINUTES = 2
+OTP_EXPIRATIONS_SECONDS = 120
+LOGIN_TEMP = 5
 
 # user 
 AUTH_USER_MODEL = 'user.User'

@@ -107,9 +107,9 @@
             </div>
             <div class="progress-custom"><div class="progress-fill warm" style="width: {{ item.filled_capacity|percent:item.capacity }}%;"></div></div>
           </div>
-          <button class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" onclick="showPage('exam-take')">
+          <a href="{% url 'quiz:quiz-start' pk=item.id %}" class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" onclick="showPage('exam-take')">
             <i class="bi bi-play-fill me-2"></i> ثبت نام و شروع
-          </button>
+          </a>
           <div class="d-flex gap-2">
             {% if item in user.favorate.quiz.all  %}
               <a href='{% url "quiz:remove-quiz-to-favorate" item.id  %}' class="btn-outline-custom btn flex-1" style="font-size:0.8rem;"><i class="bi bi-heart me-1"></i> حذف از ذخیره</a>

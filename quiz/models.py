@@ -73,9 +73,10 @@ class Quiz(models.Model):
     def get_absolute_url(self):
         return reverse("quiz:detail", kwargs={"pk": self.pk})
 
+def photo_path_upload_to(instance, filename):
+    return f"questions/{get_random_string(100)}-{filename}"
 
-def photo_path_upload_to(*args, **kwargs):
-    return f"questions/{get_random_string(100)}"
+
 
 
 class Question(models.Model):
@@ -123,8 +124,8 @@ class QuestionOption(models.Model):
         return f"{self.question.name} - {self.text}"
     
 
-def photo_path_upload_to(*args, **kwargs):
-    return f"answers/key/{get_random_string(100)}"
+def photo_path_upload_to(instance, filename):
+    return f"questions/{get_random_string(100)}-{filename}"
 
 
 class QuestionAnswerKey(models.Model):
@@ -145,11 +146,13 @@ class QuestionAnswerKey(models.Model):
         verbose_name_plural = 'پاسخ‌های صحیح (ادمین)'
 
     def __str__(self):
-        return f"پاسخ صحیح - {self.question.name}"
+        return f"پاسخ صحیح - {self.question.name}"  
     
 
-def photo_path_upload_to(*args, **kwargs):
-    return f"answers/student/{get_random_string(250)}"
+    
+def photo_path_upload_to(instance, filename):
+    return f"questions/{get_random_string(100)}-{filename}"
+
 
 
 class StudentAnswer(models.Model):
@@ -158,11 +161,12 @@ class StudentAnswer(models.Model):
         IMAGE_BASED = 'پاسخ تصویری', 'پاسخ تصویری'
         PDF_BASED = 'پاسخ PDF', 'پاسخ PDF'
         OPTION = 'انتخاب گزینه', 'انتخاب گزینه'
+        SKIPPED = 'رد شده', 'رد شده'
 
     quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='student_answers', verbose_name='آزمون')
     student = models.ForeignKey(User, on_delete=models.CASCADE,related_name='answers', verbose_name='دانش‌آموز')
     question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name='student_answers', null=True, blank=True , verbose_name='سوال')
-    type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ')
+    type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', null=True, blank=True)
     selected_option = models.ForeignKey(QuestionOption,on_delete=models.PROTECT ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده')
     description = models.TextField(blank=True, null=True,verbose_name='متن پاسخ' )
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')

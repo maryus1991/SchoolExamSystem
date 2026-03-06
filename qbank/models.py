@@ -36,9 +36,9 @@ class QuestionPossible(models.Model):
         verbose_name = 'سطح'
         verbose_name_plural = 'سطوح'
 
+def photo_path_upload_to(instance, filename):
+    return f"questions/{get_random_string(100)}-{filename}"
 
-def photo_path_upload_to(*args, **kwargs):
-    return f"questions-bank/{get_random_string(100)}"
 
 
 class QuestionBank(models.Model):
