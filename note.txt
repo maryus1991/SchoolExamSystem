@@ -1,3 +1,16 @@
-fix the CKEditor5Field in blog
-fix the icon on about page
-fix the search and filter of qbank
+phase 1 todo list
+    fix the search and filter of qbank quiz 
+    add active section for quiz blog qbank in site setting
+    fix the main page 
+    fix the exam started page
+    fix the pdf showing in qbank and exam start page
+    responsive the image and pdf showing qbank and exam start page
+    add site setting permmition 
+    add negetive score
+    add negetive score
+
+phase 2 todo list
+
+phase 3 todo list 
+
+phase 4 todo list 

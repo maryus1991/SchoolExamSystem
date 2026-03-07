@@ -26,9 +26,11 @@ class Quiz(models.Model):
     sanatorium = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='quiz_sanatorium', verbose_name='مصحح')
     name = models.CharField(verbose_name='عنوان', max_length=255 )
     section = models.CharField(verbose_name='مبحث', max_length=255 )
+
     grade =  models.ForeignKey(GradeCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='پایه') 
     major =  models.ForeignKey(MajorCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='رشته تحصیلی') 
     lession =  models.ForeignKey(LessionCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='درس') 
+
     province =  models.CharField(max_length=255, verbose_name=' نام استان محل برگذاری') 
     city =  models.CharField(max_length=255, verbose_name='نام شهر محل برگذاری') 
     type_of_quiz =  models.CharField(max_length=255, verbose_name='محل و نحوه برگذاری')
@@ -39,6 +41,7 @@ class Quiz(models.Model):
     start_at = models.DateTimeField(verbose_name='زمان برگذاری')
     stop_at = models.DateTimeField(verbose_name='زمان پایان')
     last_enter = models.DateTimeField(verbose_name='اخرین زمان ورود')
+    finished_at = models.DateTimeField(verbose_name='زمان تمام شدن توسط کاربر', null=True, blank=True)
     max_score = models.PositiveSmallIntegerField(verbose_name='حداکثر نمره', default=100)
     score = models.PositiveSmallIntegerField(verbose_name='ضریب', default=1)
     capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت', default=1)
@@ -62,6 +65,7 @@ class Quiz(models.Model):
     allow_return_to_questions = models.BooleanField(default=True, verbose_name='برگشتن به عقب')
     change_the_order = models.BooleanField(default=True, verbose_name=' عوض کردن ترتیب سوالات')
     allow_to_edit_the_answered_questions = models.BooleanField(default=True, verbose_name='امکان ویرایش سوالات پاسخ داده شده')
+    have_negetive_score = models.BooleanField(default=True, verbose_name='دارای نمره منفی')
 
     class Meta:
         verbose_name = 'ازمون'

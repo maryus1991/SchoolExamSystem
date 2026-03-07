@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پروفایل | آزمون‌یار</title>
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"> -->
+  <link rel="stylesheet" href="/static/css/bootstrap5.css">
+  <link rel="stylesheet" href="/static/css/bootstrap5-icons.css">
+  <link rel="stylesheet" href="/static/css/dashboard/message.css">
+
+<script>
+  // Theme toggle
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  }
+  // Load saved theme
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('themeIcon').textContent = '🌙';
+  }
+
+  // Toast helper
+  function showToast(msg, type='success') {
+    const t = document.createElement('div');
+    t.className = `alert alert-${type} d-flex align-items-center gap-2 shadow-lg`;
+    t.style.cssText = 'border-radius:14px;font-family:Vazirmatn,sans-serif;font-size:0.88rem;animation:fadeInUp 0.3s;min-width:280px;';
+    t.innerHTML = `<i class="bi bi-check-circle-fill"></i> ${msg}`;
+    document.getElementById('toast-container').appendChild(t);
+    setTimeout(() => t.remove(), 3500);
+  }
+</script>
+{% block header %}
+
+{% endblock header %}
+</head>
+<body>
+
+
+<div class="messages-container" id="messagesContainer">
+    <!-- پیام‌های جنگو اینجا نمایش داده می‌شوند -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message-item">
+                <div class="col-span-12 row item-center alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}info{% endif %} alert-dismissible fade show d-flex align-items-center" role="alert" style="gap: 12px;">
+                    <button type="button" class="btn-close col-span-2" data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
+                    </button>
+                    <span class="col-span-10 ">
+                        {{ message }}
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div>
+        <div class="logo-text">آزمون‌یار</div>
+        <div class="logo-sub">پلتفرم هوشمند آزمون</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">منو اصلی</div>
+ 
+ 
+      <a href="{% url 'dashboard:main' %}" class="sidebar-link"><i class="bi bi-person-circle"></i> پروفایل من</a>
+      <a href="{% url 'dashboard:profile' %}" class="sidebar-link"><i class="bi bi-gear"></i> اطلاعات حساب</a>
+      <div class="nav-section-title">کارنامه‌ها</div>
+
+      <a href="{% url 'dashboard:report-third' %}" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> کارنامه ثالث</a>
+      <a href="{% url 'dashboard:report-second-list' %}" class="sidebar-link"><i class="bi bi-collection"></i> لیست کارنامه ثانویه</a>
+      <a href="{% url 'dashboard:report-first-list' %}" class="sidebar-link"><i class="bi bi-list-columns"></i> لیست کارنامه اولیه</a>
+      <div class="nav-section-title">آزمون‌ها و سوالات </div>
+
+      <a href="{% url 'dashboard:quiz-list' %}" class="sidebar-link"><i class="bi bi-journal-check"></i> آزمون‌های شرکت‌کرده</a>
+      <a href="{% url 'dashboard:qbank-list' %}" class="sidebar-link"><i class="bi bi-bank"></i> بانک سوالات <span class="badge-count">۱۲۴</span></a>
+      <div class="nav-section-title">پشتیبانی</div>
+
+      <a href="{% url 'dashboard:ticket-list' %}" class="sidebar-link"><i class="bi bi-ticket-perforated"></i> تیکت‌ها <span class="badge-count">۳</span></a>
+      <a href="{% url 'dashboard:ticket-send' %}" class="sidebar-link"><i class="bi bi-plus-circle"></i> ارسال تیکت</a>
+
+    </nav>
+    <div class="sidebar-footer">
+      <a href="{% url 'user:logout' %}" class="sidebar-link" style="margin: 0;"><i class="bi bi-box-arrow-right"></i> خروج از حساب</a>
+    </div>
+    <script>
+        links = window.location.href;
+        elements = document.getElementsByClassName("sidebar-link");
+        for (elem of elements) {
+
+            if (elem.href === links) {
+                elem.classList.add("active");
+ 
+            }
+        }
+    </script>
+
+  </aside>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <button class="topbar-btn d-lg-none" onclick="document.getElementById('sidebar').classList.toggle('show')">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="search-box">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" placeholder="جستجو در داشبورد...">
+    </div>
+    <div class="topbar-actions">
+      <div class="topbar-btn" title="اعلان‌ها">
+        <i class="bi bi-bell"></i>
+        <span class="notif-dot"></span>
+      </div>
+      <div class="topbar-btn" title="پیام‌ها">
+        <i class="bi bi-chat-dots"></i>
+      </div>
+      <div class="theme-toggle" onclick="toggleTheme()" title="تغییر تم">
+        <div class="theme-toggle-thumb" id="themeIcon">☀️</div>
+      </div>
+      <div class="avatar-placeholder" title="علی محمدی">ع</div>
+    </div>
+  </header>
+ 
+{% block content %}
+
+  
+{% endblock   %}
+
+
+<script src="/static/js/main/bootstrap5.bundle.min.js"></script>
+
+{% block footer %}
+
+{% endblock footer %}
+
+</body>
+</html>

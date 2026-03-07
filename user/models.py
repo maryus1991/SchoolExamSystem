@@ -70,16 +70,18 @@ class User(AbstractUser):
 
     PhoneNumber = PhoneNumberField(unique=True, db_index=True, verbose_name="شماره")
     gender = models.CharField(max_length=255, choices=GenderOfUser, verbose_name="جنسیت")
-    province =  models.CharField(max_length=255, verbose_name='نام استان', null=True) 
     national_id = models.CharField(max_length=255, verbose_name='کد ملی', null=True) 
+    
+    province =  models.CharField(max_length=255, verbose_name='نام استان', null=True) 
     city =  models.CharField(max_length=255, verbose_name='نام شهر', null=True) 
     school =  models.CharField(max_length=255, verbose_name='نام مدرسه', null=True) 
+    
     grade =  models.ForeignKey(GradeCategories, related_name='users', null=True, on_delete=models.PROTECT, verbose_name='پایه') 
     major =  models.ForeignKey(MajorCategories, related_name='users', null=True, on_delete=models.PROTECT, verbose_name='رشته تحصیلی') 
+    
     father_name =  models.CharField(max_length=255, verbose_name='نام پدر', null=True) 
     private_code =  models.CharField(max_length=1000, verbose_name='کد مخفی کاربر', null=True, blank=True) 
     birth = models.DateTimeField(verbose_name='تاریخ تولد', null=True)
-
 
     otp = models.CharField(max_length=6, blank=True, null=True, verbose_name="کد otp")
     login_temp = models.PositiveSmallIntegerField(default=0, verbose_name="دفعات ورود")
@@ -109,10 +111,11 @@ class User(AbstractUser):
         if self.login_temp > LOGIN_TEMP:
             self.is_verified=False
             self.is_active=False
+            self.save()
+
         else:
             self.login_temp+=1
-
-        self.save()
+            self.save()
 
         return self.otp
 

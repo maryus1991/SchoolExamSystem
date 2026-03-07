@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
+ 
+
+{% extends "dashboard/base/base.html" %}
+
+ 
+  {% block header %}
+
+  
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>جزئیات سوال | آزمون‌یار</title>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"> -->
+  <link rel="stylesheet" href="/static/css/bootstrap5.css">
+  <link rel="stylesheet" href="/static/css/bootstrap5-icons.css">
   <style>
     :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);--gradient-2:linear-gradient(135deg,#00CEC9 0%,#81ecec 100%);}
     [data-theme="dark"]{--bg:#0f0e1a;--bg-2:#1a1830;--sidebar-bg:#1a1830;--card-bg:rgba(26,24,48,0.85);--card-border:rgba(162,155,254,0.15);--text-main:#e8e6ff;--text-muted:#a29bfe;--text-light:#6c6a8a;--shadow:0 8px 32px rgba(0,0,0,0.4);--topbar-bg:rgba(26,24,48,0.92);--border:rgba(162,155,254,0.12);}
@@ -52,36 +58,9 @@
     .step-num{width:28px;height:28px;border-radius:50%;background:var(--gradient-1);color:white;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;flex-shrink:0;}
     @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
   </style>
-</head>
-<body>
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo"><div class="logo-icon"><i class="bi bi-mortarboard-fill"></i></div><div><div style="font-weight:800;font-size:1.1rem;color:var(--text-main);">آزمون‌یار</div><div style="font-size:0.72rem;color:var(--text-muted);">پلتفرم هوشمند آزمون</div></div></div>
-  <nav class="sidebar-nav">
-    <div class="nav-section-title">منو اصلی</div>
-    <a href="01-profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> پروفایل من</a>
-    <a href="11-account.html" class="sidebar-link"><i class="bi bi-gear"></i> اطلاعات حساب</a>
-    <div class="nav-section-title">کارنامه‌ها</div>
-    <a href="02-karnameye-sales.html" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> کارنامه ثالث</a>
-    <a href="03-karnameye-sanavilist.html" class="sidebar-link"><i class="bi bi-collection"></i> لیست کارنامه ثانویه</a>
-    <a href="05-karnameye-avalilist.html" class="sidebar-link"><i class="bi bi-list-columns"></i> لیست کارنامه اولیه</a>
-    <div class="nav-section-title">آزمون‌ها</div>
-    <a href="07-exam-list.html" class="sidebar-link"><i class="bi bi-journal-check"></i> آزمون‌های شرکت‌کرده</a>
-    <a href="09-question-list.html" class="sidebar-link active"><i class="bi bi-bank"></i> بانک سوالات <span class="badge-count">۱۲۴</span></a>
-    <div class="nav-section-title">پشتیبانی</div>
-    <a href="12-ticket-list.html" class="sidebar-link"><i class="bi bi-ticket-perforated"></i> تیکت‌ها <span class="badge-count">۳</span></a>
-    <a href="13-ticket-send.html" class="sidebar-link"><i class="bi bi-plus-circle"></i> ارسال تیکت</a>
-  </nav>
-  <div class="sidebar-footer"><a href="#" class="sidebar-link" style="margin:0;"><i class="bi bi-box-arrow-right"></i> خروج</a></div>
-</aside>
-<header class="topbar">
-  <button class="topbar-btn d-lg-none" onclick="document.getElementById('sidebar').classList.toggle('show')"><i class="bi bi-list"></i></button>
-  <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0" style="font-size:0.85rem;"><li class="breadcrumb-item"><a href="09-question-list.html" style="color:var(--primary);text-decoration:none;">بانک سوالات</a></li><li class="breadcrumb-item active" style="color:var(--text-muted);">سوال #۱</li></ol></nav>
-  <div class="topbar-actions">
-    <div class="topbar-btn" style="position:relative;"><i class="bi bi-bell"></i><span class="notif-dot"></span></div>
-    <div class="theme-toggle" onclick="toggleTheme()"><div class="theme-toggle-thumb" id="themeIcon">☀️</div></div>
-    <div class="avatar-placeholder">ع</div>
-  </div>
-</header>
+{% endblock   %}
+ 
+{% block content %}
 <main class="main-content"><div class="page-body">
 
   <div class="d-flex align-items-center gap-3 mb-4 flex-wrap animate-in">
@@ -195,9 +174,15 @@
     </div>
   </div>
 </div></main>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock   %}
+
+
+{% block footer %}
+ 
+
 <script>
   function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
   const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
 </script>
-</body></html>
+{% endblock   %}
+ 

@@ -80,6 +80,8 @@ class QuizFinished(LoginRequiredMixin, RedirectView):
 
         pk = kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=pk, student=self.request.user)
+        quiz.finished_at = now()
+        quiz.save()
         for question in quiz.questions.all():
             StudentAnswer.objects.get_or_create(
                 student=self.request.user,
