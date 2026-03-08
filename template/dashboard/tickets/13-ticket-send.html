@@ -55,6 +55,7 @@
     .faq-item{padding:0.75rem 1rem;border-radius:12px;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);margin-bottom:0.5rem;}
     .faq-item:hover{border-color:var(--primary);background:rgba(108,92,231,0.04);}
     @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
+    .hidden{display: none;}
   </style>
 {% endblock   %}
  
@@ -65,72 +66,35 @@
   <div class="row g-4">
     <!-- Form -->
     <div class="col-lg-8">
+      <form action="" method="post"  enctype="multipart/form-data">
+      {% csrf_token %}
       <div class="glass-card p-4 animate-in">
         <div class="section-title mb-4">ارسال تیکت جدید</div>
-
-        <div class="mb-3">
-          <label class="form-label">موضوع تیکت *</label>
-          <input type="text" class="form-control-custom" placeholder="موضوع را به‌طور کوتاه بیان کنید">
+        <div class="mb-3 row">
+          <div class="col-md-6"> 
+            <label class="form-label">{{ form.name.label }}</label>
+            {{ form.name }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.priority.label }}</label>
+            {{ form.priority }}
+          </div>
         </div>
 
         <div class="row g-3 mb-3">
           <div class="col-md-6">
-            <label class="form-label">دسته‌بندی *</label>
-            <select class="form-control-custom">
-              <option value="">انتخاب دسته‌بندی</option>
-              <option>فنی و نرم‌افزار</option>
-              <option>آزمون و سوالات</option>
-              <option>پرداخت و اشتراک</option>
-              <option>اطلاعات حساب</option>
-              <option>عمومی</option>
-            </select>
+            <label class="form-label">{{ form.placement.label }}</label>
+ {{ form.placement }}
           </div>
           <div class="col-md-6">
-            <label class="form-label">بخش مرتبط</label>
-            <select class="form-control-custom">
-              <option>عمومی</option>
-              <option>داشبورد</option>
-              <option>بانک سوالات</option>
-              <option>کارنامه</option>
-              <option>پروفایل</option>
-            </select>
+            <label class="form-label">{{ form.problem.label }}</label>
+{{ form.problem }}
           </div>
         </div>
-
+ 
         <div class="mb-3">
-          <label class="form-label">اولویت</label>
-          <div class="row g-2">
-            <div class="col-6 col-md-3">
-              <div class="priority-option selected" onclick="selectPriority(this,'low')">
-                <i class="bi bi-arrow-down-circle" style="color:var(--success);"></i>
-                <span style="font-size:0.85rem;font-weight:600;">پایین</span>
-              </div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="priority-option" onclick="selectPriority(this,'medium')">
-                <i class="bi bi-dash-circle" style="color:var(--secondary);"></i>
-                <span style="font-size:0.85rem;font-weight:600;">متوسط</span>
-              </div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="priority-option" onclick="selectPriority(this,'high')">
-                <i class="bi bi-arrow-up-circle" style="color:var(--warning);"></i>
-                <span style="font-size:0.85rem;font-weight:600;">بالا</span>
-              </div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="priority-option" onclick="selectPriority(this,'urgent')">
-                <i class="bi bi-exclamation-circle" style="color:var(--danger);"></i>
-                <span style="font-size:0.85rem;font-weight:600;">فوری</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">توضیحات *</label>
-          <textarea class="form-control-custom" rows="6" placeholder="مشکل خود را با جزئیات بیشتر شرح دهید. هر چه اطلاعات دقیق‌تری ارائه دهید، تیم پشتیبانی سریع‌تر می‌تواند کمک کند..." id="msgBody" oninput="updateCharCount()"></textarea>
-          <div style="text-align:left;font-size:0.75rem;color:var(--text-light);margin-top:0.3rem;"><span id="charCount">0</span> / ۱۵۰۰ کاراکتر</div>
+          <label class="form-label">{{ form.description.label }}</label>
+          {{ form.description }}
         </div>
 
         <div class="mb-4">
@@ -139,15 +103,16 @@
             <i class="bi bi-paperclip" style="font-size:1.75rem;color:var(--primary);margin-bottom:0.5rem;display:block;"></i>
             <div style="font-weight:600;font-size:0.88rem;">فایل‌ها را اینجا رها کنید یا کلیک کنید</div>
             <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.25rem;">PDF, JPG, PNG, GIF — حداکثر ۵MB هر فایل</div>
-            <input type="file" id="attachInput" multiple style="display:none">
+            {{ form.file }}
           </div>
         </div>
 
         <div class="d-flex gap-2 flex-wrap">
-          <button onclick="submitTicket()" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.7rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><i class="bi bi-send"></i> ارسال تیکت</button>
-          <a href="12-ticket-list.html" style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.7rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;text-decoration:none;display:inline-flex;align-items:center;">لغو</a>
+          <button type="submit"  style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.7rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><i class="bi bi-send"></i> ارسال تیکت</button>
+          <a href="{% url 'dashboard:ticket-list' %}" style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.7rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;text-decoration:none;display:inline-flex;align-items:center;">لغو</a>
         </div>
       </div>
+      </form>
     </div>
 
     <!-- Tips & FAQ -->
@@ -165,21 +130,7 @@
         </div>
       </div>
 
-      <div class="glass-card p-4 animate-in" style="animation-delay:0.2s;opacity:0;">
-        <div class="section-title mb-3">سوالات متداول</div>
-        <div class="faq-item" onclick="this.querySelector('.faq-body').style.display=this.querySelector('.faq-body').style.display==='block'?'none':'block'">
-          <div style="font-size:0.85rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;">نمره منفی چطور محاسبه می‌شود؟<i class="bi bi-chevron-down"></i></div>
-          <div class="faq-body" style="display:none;font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;line-height:1.7;">به ازای هر پاسخ غلط، ۳/۱ نمره از مجموع سوالات صحیح کسر می‌شود.</div>
-        </div>
-        <div class="faq-item" onclick="this.querySelector('.faq-body').style.display=this.querySelector('.faq-body').style.display==='block'?'none':'block'">
-          <div style="font-size:0.85rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;">چطور رمز عبور را تغییر دهم؟<i class="bi bi-chevron-down"></i></div>
-          <div class="faq-body" style="display:none;font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;line-height:1.7;">از منوی اطلاعات حساب > امنیت > تغییر رمز عبور.</div>
-        </div>
-        <div class="faq-item" style="margin-bottom:0;" onclick="this.querySelector('.faq-body').style.display=this.querySelector('.faq-body').style.display==='block'?'none':'block'">
-          <div style="font-size:0.85rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;">آزمون‌ها کجا قابل دسترس هستند؟<i class="bi bi-chevron-down"></i></div>
-          <div class="faq-body" style="display:none;font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;line-height:1.7;">از منوی آزمون‌های شرکت‌کرده تمام آزمون‌ها قابل مشاهده است.</div>
-        </div>
-      </div>
+      
     </div>
   </div>
 
@@ -190,6 +141,7 @@
 <div class="toast-success" id="toast"><i class="bi bi-check-circle-fill"></i> تیکت با موفقیت ارسال شد! به زودی پاسخ دریافت خواهید کرد.</div>
  
 <script>
+ 
   function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
   const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
   function selectPriority(el){document.querySelectorAll('.priority-option').forEach(p=>p.classList.remove('selected'));el.classList.add('selected');}

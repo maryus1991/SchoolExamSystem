@@ -25,13 +25,21 @@ urlpatterns = [
     path('quiz/', views.quiz.QuizList.as_view(), name='quiz-list'), 
     path('quiz/<int:pk>', views.quiz.QuizDetail.as_view(), name='quiz-detail'), 
 
+
+    # order
+
+    path('order/', views.orders.OrdersList.as_view(), name='order-list'), 
+    path('order/<int:pk>/details/', views.orders.OrderDetailsList.as_view(), name='order-detail'), 
+
     # ticket
 
     path('ticket/', views.tickets.Ticketlist.as_view(), name='ticket-list'), 
     path('ticket/<int:pk>', views.tickets.TicketChat.as_view(), name='ticket-chat'), 
+    path('ticket/<int:pk>/cancel/', views.tickets.TicketCancelled.as_view(), name='ticket-chat-cancel'), 
+    path('ticket/<int:pk>/fixed/', views.tickets.TicketFixed.as_view(), name='ticket-chat-fixed'), 
     path('ticket/send/', views.tickets.TicketSend.as_view(), name='ticket-send'), 
 
-    # ticket
+    # report
 
     path('report/third/', views.report.ThirdReport.as_view(), name='report-third'), 
     path('report/second/', views.report.SecontReportList.as_view(), name='report-second-list'), 

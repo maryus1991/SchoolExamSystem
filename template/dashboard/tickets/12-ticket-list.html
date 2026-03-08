@@ -1,6 +1,6 @@
    
 {% extends "dashboard/base/base.html" %}
-
+{% load jalali_tags %}
 
  
  
@@ -33,12 +33,7 @@
     .glass-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);}
     .section-title{font-size:1rem;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:0.5rem;}
     .section-title::before{content:'';width:4px;height:20px;background:var(--gradient-1);border-radius:50px;display:inline-block;}
-    .badge-status{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.75rem;font-weight:600;}
-    .badge-success{background:rgba(0,184,148,0.15);color:var(--success);}
-    .badge-warning{background:rgba(253,203,110,0.2);color:#d9a010;}
-    .badge-danger{background:rgba(225,112,85,0.15);color:var(--danger);}
-    .badge-info{background:rgba(108,92,231,0.12);color:var(--primary);}
-    .badge-secondary{background:rgba(99,110,114,0.1);color:var(--text-muted);}
+
     .theme-toggle{width:52px;height:28px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background 0.3s;}
     [data-theme="dark"] .theme-toggle{background:var(--primary);}
     .theme-toggle-thumb{position:absolute;top:3px;right:3px;width:22px;height:22px;background:white;border-radius:50%;transition:transform 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}
@@ -64,92 +59,60 @@
       <h5 style="font-weight:800;margin:0;">تیکت‌های پشتیبانی</h5>
       <p style="font-size:0.85rem;color:var(--text-muted);margin:0;">مدیریت درخواست‌های پشتیبانی شما</p>
     </div>
-    <a href="13-ticket-send.html" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.6rem 1.5rem;font-family:Vazirmatn,sans-serif;font-weight:600;font-size:0.88rem;text-decoration:none;box-shadow:0 4px 15px rgba(108,92,231,0.35);display:inline-flex;align-items:center;gap:0.5rem;"><i class="bi bi-plus-circle"></i> تیکت جدید</a>
+    <a href="{% url 'dashboard:ticket-send' %}" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.6rem 1.5rem;font-family:Vazirmatn,sans-serif;font-weight:600;font-size:0.88rem;text-decoration:none;box-shadow:0 4px 15px rgba(108,92,231,0.35);display:inline-flex;align-items:center;gap:0.5rem;"><i class="bi bi-plus-circle"></i> تیکت جدید</a>
   </div>
 
   <!-- Stats -->
   <div class="row g-3 mb-4 animate-in">
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--primary);">۱۵</div><div style="font-size:0.78rem;color:var(--text-muted);">کل تیکت‌ها</div></div></div>
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--warning);">۳</div><div style="font-size:0.78rem;color:var(--text-muted);">در انتظار پاسخ</div></div></div>
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--success);">۱۱</div><div style="font-size:0.78rem;color:var(--text-muted);">بسته‌شده</div></div></div>
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--primary);">{{ items.count }}</div><div style="font-size:0.78rem;color:var(--text-muted);">کل تیکت‌ها</div></div></div>
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--warning);">{{ await_response }}</div><div style="font-size:0.78rem;color:var(--text-muted);">در انتظار پاسخ</div></div></div>
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--success);">{{ closed }}</div><div style="font-size:0.78rem;color:var(--text-muted);">بسته‌شده</div></div></div>
     <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--secondary);">۴ ساعت</div><div style="font-size:0.78rem;color:var(--text-muted);">میانگین پاسخ</div></div></div>
   </div>
 
-  <!-- Filter chips -->
-  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;" class="animate-in">
-    <button onclick="filterTickets(this,'all')" style="background:var(--gradient-1);border:none;color:white;border-radius:50px;padding:0.4rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">همه (۱۵)</button>
-    <button onclick="filterTickets(this,'open')" style="background:var(--card-bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:50px;padding:0.4rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;">در انتظار (۳)</button>
-    <button onclick="filterTickets(this,'replied')" style="background:var(--card-bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:50px;padding:0.4rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;">پاسخ‌داده (۱)</button>
-    <button onclick="filterTickets(this,'closed')" style="background:var(--card-bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:50px;padding:0.4rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;">بسته (۱۱)</button>
-  </div>
+ 
 
   <!-- Tickets list -->
   <div style="display:flex;flex-direction:column;gap:0.75rem;" class="animate-in delay-1">
-    <div class="ticket-item unread" onclick="location.href='14-ticket-chat.html'">
+    {% for item in items %}
+    <div class="ticket-item {% if item.status == status.awating_user %}unread{% endif %} " onclick="location.href='{{ item.get_absolute_url }}'">
       <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-        <span style="font-weight:800;color:var(--text-muted);font-size:0.78rem;">#۴۵</span>
-        <span class="badge-status badge-warning">در انتظار پاسخ</span>
-        <span class="ticket-category" style="background:rgba(108,92,231,0.1);color:var(--primary);">فنی</span>
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:auto;" title="خوانده‌نشده"></div>
+        <span style="font-weight:800;color:var(--text-muted);font-size:0.78rem;">#{{item.id}}</span>
+        <span class="badge-status badge-{% if item.status == status.awating_admin or item.status == status.awating_user %}warning{% elif item.status == status.fixed %}success{% else %}secondary{% endif %} ">{{ item.status }}</span>
+        <span class="badge-status badge-{% if item.priority == priority.huge or item.priority == priority.high %}danger{% elif item.priority == priority.mid %}warning{% else %}secondary{% endif %} ">{{ item.priority }}</span>
+        <span class="badge-status badge-warning" >{{ item.problem.name }}</span>
+       </div>
+      <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.25rem;">{{ item.name }}</div>
+      <div style="font-size:0.8rem;color:var(--text-muted);">
+        {% if item.chats.exists and  item.chats.first.is_admin_message %}
+          {{ item.chats.first.admin_message|safe|truncatechars:80 }}
+        {% elif item.chats.exists and not item.chats.first.is_admin_message %}
+          {{ item.chats.first.user_message|truncatechars:80 }}
+        {% else %}
+          {{ item.description|truncatechars:80 }}
+        {% endif %}
       </div>
-      <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.25rem;">مشکل در نمایش کارنامه ثانویه آزمون ۱۲</div>
-      <div style="font-size:0.8rem;color:var(--text-muted);">وقتی روی کارنامه کلیک می‌کنم صفحه سفید نمایش می‌دهد...</div>
-      <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.5rem;">۲ ساعت پیش</div>
-    </div>
-
-    <div class="ticket-item unread" onclick="location.href='14-ticket-chat.html'">
-      <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-        <span style="font-weight:800;color:var(--text-muted);font-size:0.78rem;">#۴۴</span>
-        <span class="badge-status" style="background:rgba(0,184,148,0.15);color:var(--success);">پاسخ داده شده</span>
-        <span class="ticket-category" style="background:rgba(0,206,201,0.1);color:var(--secondary);">آزمون</span>
+      <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.5rem;">
+        {% if item.chats.exists %}
+          {{item.chats.first.create_at|to_jalali:'%H:%M - %Y/%m/%d'}}
+        {% else %}
+          {{item.create_at|to_jalali:'%H:%M - %Y/%m/%d'}}
+        {% endif %}
       </div>
-      <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.25rem;">سوال در مورد نحوه محاسبه نمره منفی</div>
-      <div style="font-size:0.8rem;color:var(--text-muted);">پشتیبانی پاسخ داد: «نمره منفی ۳/۱ نمره از مجموع کسر می‌شود...»</div>
-      <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.5rem;">دیروز • ۱۶:۲۳</div>
     </div>
-
-    <div class="ticket-item unread" onclick="location.href='14-ticket-chat.html'">
-      <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-        <span style="font-weight:800;color:var(--text-muted);font-size:0.78rem;">#۴۳</span>
-        <span class="badge-status badge-warning">در انتظار پاسخ</span>
-        <span class="ticket-category" style="background:rgba(253,121,168,0.1);color:var(--accent);">پرداخت</span>
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:auto;" title="خوانده‌نشده"></div>
+    {% empty %}
+      <!-- Empty state (shown when no results) -->
+      <div id="emptyState" style=" text-align:center;padding:4rem 2rem;">
+        <div style="font-size:4rem;margin-bottom:1rem;">📭</div>
+        <div style="font-weight:700;font-size:1.1rem;margin-bottom:0.5rem;">تیکتی یافت نشد</div>
+        <div style="font-size:0.88rem;color:var(--text-muted);">هنوز تیکتی در این دسته‌بندی وجود ندارد</div>
+        <a href="{% url 'dashboard:ticket-send' %}" style="background:var(--gradient-1);color:white;border-radius:12px;padding:0.6rem 1.5rem;text-decoration:none;font-weight:600;font-size:0.88rem;display:inline-block;margin-top:1.25rem;">ارسال تیکت جدید</a>
       </div>
-      <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.25rem;">عدم اشتراک پس از پرداخت</div>
-      <div style="font-size:0.8rem;color:var(--text-muted);">مبلغ از حسابم کسر شد ولی اشتراک فعال نشده...</div>
-      <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.5rem;">۳ روز پیش</div>
-    </div>
-
-    <div class="ticket-item" onclick="location.href='14-ticket-chat.html'">
-      <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-        <span style="font-weight:800;color:var(--text-muted);font-size:0.78rem;">#۴۲</span>
-        <span class="badge-status badge-secondary">بسته شده</span>
-        <span class="ticket-category" style="background:rgba(99,110,114,0.1);color:var(--text-muted);">عمومی</span>
-      </div>
-      <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.25rem;">درخواست آموزش نحوه استفاده از بانک سوالات</div>
-      <div style="font-size:0.8rem;color:var(--text-muted);">رفع شد ✓ راهنمای کامل ارسال شد</div>
-      <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.5rem;">۱ هفته پیش</div>
-    </div>
-
-    <div class="ticket-item" onclick="location.href='14-ticket-chat.html'">
-      <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-        <span style="font-weight:800;color:var(--text-muted);font-size:0.78rem;">#۴۱</span>
-        <span class="badge-status badge-secondary">بسته شده</span>
-        <span class="ticket-category" style="background:rgba(253,203,110,0.2);color:#d9a010;">حساب</span>
-      </div>
-      <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.25rem;">درخواست تغییر ایمیل حساب</div>
-      <div style="font-size:0.8rem;color:var(--text-muted);">رفع شد ✓ ایمیل با موفقیت تغییر کرد</div>
-      <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.5rem;">۲ هفته پیش</div>
-    </div>
+    {% endfor %}
+ 
   </div>
 
-  <!-- Empty state (shown when no results) -->
-  <div id="emptyState" style="display:none;text-align:center;padding:4rem 2rem;">
-    <div style="font-size:4rem;margin-bottom:1rem;">📭</div>
-    <div style="font-weight:700;font-size:1.1rem;margin-bottom:0.5rem;">تیکتی یافت نشد</div>
-    <div style="font-size:0.88rem;color:var(--text-muted);">هنوز تیکتی در این دسته‌بندی وجود ندارد</div>
-    <a href="13-ticket-send.html" style="background:var(--gradient-1);color:white;border-radius:12px;padding:0.6rem 1.5rem;text-decoration:none;font-weight:600;font-size:0.88rem;display:inline-block;margin-top:1.25rem;">ارسال تیکت جدید</a>
-  </div>
+
 
 </div></main>
   
@@ -159,10 +122,7 @@
 <script>
   function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
   const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
-  function filterTickets(btn,type){
-    document.querySelectorAll('.animate-in button[onclick]').forEach(b=>{b.style.background='var(--card-bg)';b.style.color='var(--text-muted)';b.style.border='1.5px solid var(--border)';});
-    btn.style.background='var(--gradient-1)';btn.style.color='white';btn.style.border='none';
-  }
+ 
 </script>
  
 {% endblock   %}

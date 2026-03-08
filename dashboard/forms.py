@@ -5,6 +5,105 @@ from phonenumber_field.validators import validate_phonenumber
 from jalali_date.fields import JalaliDateField
 from jalali_date.widgets import AdminJalaliDateWidget
 from user.models import User, GradeCategories, MajorCategories
+from sitesetting.models import Ticket, TicketChat, TicketProblemCategory, TicketProblemPlacement
+from django.core.validators import FileExtensionValidator
+
+class TicketForm(forms.Form):
+
+
+    priority = forms.ChoiceField(
+        required=True,
+        label="اهمیت",
+        choices=Ticket.TicketPriority,
+        widget=forms.Select(
+            attrs={
+                'class':'form-control-custom',
+                'placeholder':'اهمیت'
+            }
+        )
+    )
+
+    problem = forms.ModelChoiceField(
+        required=True,
+        label='دسته‌بندی',
+        empty_label='دسته‌بندی',
+        queryset=TicketProblemCategory.objects.filter(is_active=True).all(),
+        widget=forms.Select(
+            attrs={
+                'class':'form-control-custom',
+                'placeholder':'دسته‌بندی'
+            }
+        )
+    )
+
+    placement = forms.ModelChoiceField(
+        required=True,
+        label=' بخش مرتبط ',
+        empty_label=' بخش مرتبط ',
+        queryset=TicketProblemPlacement.objects.filter(is_active=True).all(),
+        widget=forms.Select(
+            attrs={
+                'class':'form-control-custom',
+                'placeholder':' بخش مرتبط '
+            }
+        )
+    )
+
+    file = forms.FileField(
+        required=False,
+        label='پیوست',
+        widget=forms.FileInput(
+            attrs={
+                'class':'hidden',
+                'id':'attachInput'
+                
+            }
+        ),
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=["jpg", "jpeg", "png", "webp", "heic", 'pdf']
+            )
+        ],
+    )
+
+    description = forms.CharField(
+        required=True,
+        label="پیام ... ",
+        widget=forms.Textarea(
+            attrs={
+                'class':'form-control-custom',
+                'placeholder':'مشکل خود را با جزئیات بیشتر شرح دهید. هر چه اطلاعات دقیق‌تری ارائه دهید، تیم پشتیبانی سریع‌تر می‌تواند کمک کند',
+                'id':"msgBody",
+                'rows':"6"
+            }
+        )
+    )
+
+    name = forms.CharField(
+        required=True,
+        label="موضوع تیکت",
+        widget=forms.TextInput(
+            attrs={
+                'class':'form-control-custom',
+                'placeholder':'موضوع را به‌طور کوتاه بیان کنید',
+            }
+        )
+    )
+ 
+
+class TicketChatForm(forms.Form):
+    message = forms.CharField(
+        required=True,
+        label="پیام ... ",
+        widget=forms.Textarea(
+            attrs={
+                'class':'form-control-custom',
+                'placeholder':'پیام خود را بنویسید...',
+                'id':"msgInput",
+                'rows':"1"
+            }
+        )
+    )
 
 
 class ChangePhoneNumberNaitnalID(forms.Form):
@@ -162,8 +261,6 @@ class UpdateUserForm(forms.Form):
     )
 
 
-    
-    
 class ChangePassword(forms.Form):
 
     current_password = forms.CharField(
