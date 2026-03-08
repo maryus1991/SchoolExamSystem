@@ -1,0 +1,149 @@
+ 
+{% extends "dashboard/base/base.html" %}
+ {% load jalali_tags %}
+  {% block header %}
+
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بانک سوالات | آزمون‌یار</title>
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"> -->
+  <link rel="stylesheet" href="/static/css/bootstrap5.css">
+  <link rel="stylesheet" href="/static/css/bootstrap5-icons.css">
+  <style>
+    :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);--gradient-2:linear-gradient(135deg,#00CEC9 0%,#81ecec 100%);--gradient-3:linear-gradient(135deg,#fd79a8 0%,#fab1d3 100%);}
+    [data-theme="dark"]{--bg:#0f0e1a;--bg-2:#1a1830;--sidebar-bg:#1a1830;--card-bg:rgba(26,24,48,0.85);--card-border:rgba(162,155,254,0.15);--text-main:#e8e6ff;--text-muted:#a29bfe;--text-light:#6c6a8a;--shadow:0 8px 32px rgba(0,0,0,0.4);--topbar-bg:rgba(26,24,48,0.92);--border:rgba(162,155,254,0.12);}
+    *{font-family:'Vazirmatn',sans-serif;}body{background:var(--bg);color:var(--text-main);transition:all 0.3s;}
+    .sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);box-shadow:var(--shadow);position:fixed;right:0;top:0;z-index:1000;display:flex;flex-direction:column;border-left:1px solid var(--border);}
+    .sidebar-logo{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;}
+    .logo-icon{width:42px;height:42px;background:var(--gradient-1);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;}
+    .sidebar-nav{padding:1rem 0;flex:1;overflow-y:auto;}
+    .nav-section-title{padding:0.5rem 1.5rem;font-size:0.7rem;font-weight:700;color:var(--text-light);margin-top:0.5rem;}
+    .sidebar-link{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.5rem;color:var(--text-muted);text-decoration:none;border-radius:12px;margin:0.15rem 0.75rem;transition:all 0.2s;font-size:0.88rem;font-weight:500;}
+    .sidebar-link:hover,.sidebar-link.active{background:var(--gradient-1);color:white;box-shadow:0 4px 15px rgba(108,92,231,0.35);}
+    .badge-count{margin-right:auto;background:var(--accent);color:white;border-radius:50px;padding:1px 8px;font-size:0.7rem;font-weight:700;}
+    .sidebar-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);}
+    .topbar{position:fixed;top:0;right:260px;left:0;height:64px;background:var(--topbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:999;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;transition:all 0.3s;}
+    .topbar-actions{display:flex;align-items:center;gap:0.75rem;margin-right:auto;}
+    .topbar-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;position:relative;}
+    .topbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
+    .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--bg-2);}
+    .avatar-placeholder{width:38px;height:38px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;}
+    .main-content{margin-right:260px;padding-top:64px;}
+    .page-body{padding:2rem;}
+    .glass-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;box-shadow:var(--shadow);backdrop-filter:blur(20px);transition:all 0.3s;}
+    .glass-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);}
+    .section-title{font-size:1rem;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:0.5rem;}
+    .section-title::before{content:'';width:4px;height:20px;background:var(--gradient-1);border-radius:50px;display:inline-block;}
+    .badge-status{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.75rem;font-weight:600;}
+    .badge-success{background:rgba(0,184,148,0.15);color:var(--success);}
+    .badge-warning{background:rgba(253,203,110,0.2);color:#d9a010;}
+    .badge-danger{background:rgba(225,112,85,0.15);color:var(--danger);}
+    .badge-info{background:rgba(108,92,231,0.12);color:var(--primary);}
+    .theme-toggle{width:52px;height:28px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background 0.3s;}
+    [data-theme="dark"] .theme-toggle{background:var(--primary);}
+    .theme-toggle-thumb{position:absolute;top:3px;right:3px;width:22px;height:22px;background:white;border-radius:50%;transition:transform 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}
+    [data-theme="dark"] .theme-toggle-thumb{transform:translateX(-24px);}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate-in{animation:fadeInUp 0.5s ease forwards;}
+    .delay-1{animation-delay:0.1s;opacity:0}.delay-2{animation-delay:0.2s;opacity:0}
+    /* Category chips */
+    .chip{display:inline-flex;align-items:center;gap:0.4rem;padding:0.4rem 1rem;border-radius:50px;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;border:2px solid var(--border);color:var(--text-muted);}
+    .chip.active,.chip:hover{background:var(--gradient-1);color:white;border-color:transparent;box-shadow:0 4px 12px rgba(108,92,231,0.3);}
+    /* Question item */
+    .question-item{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1.25rem;transition:all 0.25s;cursor:pointer;}
+    .question-item:hover{transform:translateX(-4px);border-color:var(--primary);box-shadow:0 4px 20px rgba(108,92,231,0.12);}
+    .q-difficulty{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .diff-easy{background:#00b894;}
+    .diff-medium{background:#fdcb6e;}
+    .diff-hard{background:#e17055;}
+    .diff-vhard{background:#6C5CE7;}
+     
+    .search-box-lg{background:var(--card-bg);border:2px solid var(--card-border);border-radius:50px;padding:0.75rem 1.5rem;display:flex;align-items:center;gap:1rem;backdrop-filter:blur(20px);transition:all 0.2s;}
+    .search-box-lg:focus-within{border-color:var(--primary);box-shadow:0 0 0 4px rgba(108,92,231,0.1);}
+    .search-box-lg input{border:none;background:transparent;flex:1;color:var(--text-main);font-family:Vazirmatn,sans-serif;font-size:0.95rem;outline:none;}
+    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
+  </style>
+{% endblock  %}
+ 
+ 
+{% block content %}
+
+<main class="main-content"><div class="page-body">
+
+  <!-- Hero -->
+  <div style="background:var(--gradient-1);border-radius:24px;padding:2rem 2.5rem;color:white;margin-bottom:1.5rem;position:relative;overflow:hidden;" class="animate-in">
+    <div style="position:absolute;bottom:-50px;left:-30px;width:180px;height:180px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
+    <h4 style="font-weight:900;margin-bottom:0.5rem;">🏦 بانک هوشمند ازمون ها</h4>
+ 
+    <div class="search-box-lg" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);">
+      <form action="" method="get">
+        <i class="bi bi-search" style="color:rgba(255,255,255,0.7);font-size:1.1rem;"></i>
+        <input placeholder="جستجوی  ..." style="color:white;" oninput="filterQ(this.value)">
+        <button type="submit" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:50px;padding:0.35rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;">جستجو</button>
+      </form>
+    </div>
+  </div>
+
+ 
+
+  <!-- Category chips -->
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;" class="animate-in delay-2">
+    <div class="chip active" onclick="filterCat(this,'')"><i class="bi bi-grid-3x3-gap"></i> همه سوالات</div>
+    {% for category in cagegories %}
+      <div class="chip" onclick="filterCat(this,'{{category.id}}')"><i class="bi bi-calculator"></i> {{category.name}} </div>
+    {% endfor %}
+  </div>
+
+  <!-- Question list -->
+  <div style="display:flex;flex-direction:column;gap:0.75rem;" id="qList" class="animate-in delay-2">
+    {% for item in items %}
+    <a href='{{item.get_absolute_url}}'>
+
+      <div class="question-item" data-cat="{{item.lession.id}}" >
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap;">
+          <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">#{{item.id}}</span>
+          <div class="q-difficulty diff-easy" title="{{item.lession.name}}"></div>
+          <span class="badge-status badge-warning" style="font-size:0.72rem;">{{item.grade.name}}</span>
+          <span class="badge-status badge-danger" style="font-size:0.72rem;">{{item.major.name}}</span>
+ 
+          <span class="badge-status badge-success" style="font-size:0.72rem;">{{item.lession.name}}</span>
+          <span class="badge-status badge-info" style="font-size:0.72rem;">{{item.section}}</span>
+          <span style="margin-right:auto;font-size:0.75rem;color:var(--text-muted);">{{ item.status }}</span>
+
+        </div>
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">{{ item.name }}</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);">زمان شروع ازمون : {{item.start_at|to_jalali:'  %H:%M - %Y/%m/%d'}}</div>
+      </div>
+    </a>
+
+    {% endfor %}
+ 
+  </div>
+
+
+
+</div></main>
+{% endblock  %}
+
+{% block footer %}
+
+
+ <script>
+  function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
+  const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
+  function filterCat(el,cat){
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('#qList .question-item').forEach(q=>{
+      q.style.display=(cat===''||q.dataset.cat===cat)?'':'none';
+    });
+  }
+  function filterQ(q){
+    const lq=q.toLowerCase();
+    document.querySelectorAll('#qList .question-item').forEach(item=>{
+      item.style.display=item.textContent.toLowerCase().includes(lq)?'':'none';
+    });
+  }
+</script>
+{% endblock  %}
+ 

@@ -10,11 +10,15 @@ urlpatterns = [
 
     path('', views.profile.Dashboard.as_view(), name='main'), 
     path('profile/', views.profile.Profile.as_view(), name='profile'), 
+    path('profile/change-password', views.profile.ChangePasswordView.as_view(), name='change-password'), 
+    path('profile/change-phone-number', views.profile.ChangePhoneNumberNaitnalIDView.as_view(), name='change-phone-number'), 
 
-    # qbank
+    # favorate
 
-    path('qbank/', views.qbank.QuestionList.as_view(), name='qbank-list'), 
-    path('qbank/<int:pk>', views.qbank.QuestionDetail.as_view(), name='qbank-detail'), 
+    path('favorate/question-bank/', views.favorate.FavorateQuestionList.as_view(), name='qbank-list'), 
+    path('favorate/blog/', views.favorate.FavorateBlogList.as_view(), name='blog-list'), 
+    path('favorate/quiz/', views.favorate.FavorateQuizList.as_view(), name='favorate-quiz-list'), 
+ 
 
     # quiz
 

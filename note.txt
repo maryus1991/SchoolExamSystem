@@ -7,10 +7,66 @@ phase 1 todo list
     responsive the image and pdf showing qbank and exam start page
     add site setting permmition 
     add negetive score
-    add negetive score
+
 
 phase 2 todo list
+    fix the search bar in favorate quiz qbank blog 
 
 phase 3 todo list 
 
+
 phase 4 todo list 
+
+
+admin panel pages
+    user 
+        list 
+        create 
+        groplly add
+        groplly delete
+
+    site setting 
+        update 
+
+        lesson category 
+            list
+            create
+        
+        major category 
+            list
+            create
+        
+        grade category 
+            list
+            create
+
+    blog 
+        list 
+        create 
+    
+    question bank 
+        list 
+        create
+
+    quiz
+        list
+        create
+        detail
+
+        question 
+            create 
+            list
+            detail
+        
+        answer 
+            groplly add
+            detail
+        
+        report 
+            update
+            list
+            detail
+
+    order:
+        list 
+        detail

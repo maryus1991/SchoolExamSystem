@@ -71,14 +71,11 @@ class User(AbstractUser):
     PhoneNumber = PhoneNumberField(unique=True, db_index=True, verbose_name="شماره")
     gender = models.CharField(max_length=255, choices=GenderOfUser, verbose_name="جنسیت")
     national_id = models.CharField(max_length=255, verbose_name='کد ملی', null=True) 
-    
     province =  models.CharField(max_length=255, verbose_name='نام استان', null=True) 
     city =  models.CharField(max_length=255, verbose_name='نام شهر', null=True) 
     school =  models.CharField(max_length=255, verbose_name='نام مدرسه', null=True) 
-    
     grade =  models.ForeignKey(GradeCategories, related_name='users', null=True, on_delete=models.PROTECT, verbose_name='پایه') 
     major =  models.ForeignKey(MajorCategories, related_name='users', null=True, on_delete=models.PROTECT, verbose_name='رشته تحصیلی') 
-    
     father_name =  models.CharField(max_length=255, verbose_name='نام پدر', null=True) 
     private_code =  models.CharField(max_length=1000, verbose_name='کد مخفی کاربر', null=True, blank=True) 
     birth = models.DateTimeField(verbose_name='تاریخ تولد', null=True)

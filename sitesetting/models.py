@@ -3,6 +3,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django_ckeditor_5.fields import CKEditor5Field 
 from easy_thumbnails.fields import ThumbnailerImageField
 from django.utils.crypto import get_random_string
+from user.models import User
 
 # Create your models here.
 
@@ -118,3 +119,84 @@ class Site(models.Model):
     class Meta:
         verbose_name = 'تنظیمات'
         verbose_name_plural = 'تنظیمات'
+
+
+class TicketProblemCategory(models.Model):
+    order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
+    name = models.CharField( max_length=255, verbose_name='نام  ')
+    is_active = models.BooleanField(default=True, verbose_name='فعال')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'دسته بندی مشکل تیکت'
+        verbose_name_plural = 'دسته بندی مشکلات تیکت ها'
+
+class TicketProblemPlacement(models.Model):
+    order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
+    name = models.CharField( max_length=255, verbose_name='بخش مرتبط')
+    is_active = models.BooleanField(default=True, verbose_name='فعال')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'بخش مرتبط مشکلات در تیکت'
+        verbose_name_plural = 'بخش های مرتبط مشکلات در تیکت'
+
+
+def photo_path_upload_to(instance, filename):
+    return f"questions/{get_random_string(100)}-{filename}"
+
+
+class Ticket(models.Model):
+    name = models.CharField(max_length=500, verbose_name='موضوع')
+    problem =  models.ForeignKey(TicketProblemCategory, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='دسته بندی مشکلات تیکت ها') 
+    user =  models.ForeignKey(User, related_name='tickets', on_delete=models.PROTECT, verbose_name='درخواست دهنده') 
+    admin =  models.ForeignKey(User, related_name='tickets_admin', null=True, on_delete=models.PROTECT, verbose_name='ادمین') 
+    placement =  models.ForeignKey(TicketProblemPlacement, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='بخش های مرتبط مشکلات در تیکت') 
+    description = models.TextField(verbose_name="توضیحات ")
+    file_input = models.FileField(verbose_name='پیوست', upload_to=photo_path_upload_to)
+
+    class TicketImportent(models.TextChoices):
+        low = 'پایین','پایین'
+        mid = 'متوسط','متوسط'
+        high = 'بالا','بالا'
+        huge = 'خیلی زیاد','خیلی زیاد'
+
+    class TicketStatus(models.TextChoices):
+        cancelled = 'کنسل شده','کنسل شده'
+        fixed = 'حل شده','حل شده'
+        awating_admin = 'در حال انتطار ادمین','در حال انتطار ادمین'
+        awating_user = 'در حال انتطار کاربر','در حال انتطار کاربر'
+
+    importent = models.CharField(verbose_name='اهمیت', choices=TicketImportent, max_length=255)
+    status = models.CharField(verbose_name='وضعیت', choices=TicketStatus, max_length=255)
+    create_at = models.DateTimeField(verbose_name='زمان ارسال درخواست', auto_now_add=True)
+
+
+    class Meta:
+        verbose_name ='تیکت '
+        verbose_name_plural ='تیکت  ها'
+
+    def __str__(self):
+        return f'{self.name} - {self.user.PhoneNumber}'
+
+class TicketChat(models.Model):
+    ticket =  models.ForeignKey(Ticket, related_name='chats', on_delete=models.CASCADE, verbose_name='تیکت')
+    create_at = models.DateTimeField(verbose_name='زمان ارسال پیام', auto_now_add=True)
+    is_read_by_admin = models.BooleanField(verbose_name='خوانده شده توسط ادمین', default=False)
+    is_read_by_user = models.BooleanField(verbose_name='خوانده شده توسط کاربر', default=False)
+    description = models.TextField(verbose_name="پیام ")
+     
+
+
+    class Meta:
+        verbose_name ='پیام تیکت  '
+        verbose_name_plural ='پیام های تیکت'
+
+    def __str__(self):
+        return f'{self.id} - {self.ticket.name} - {self.ticket.user.PhoneNumber}'

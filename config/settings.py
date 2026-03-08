@@ -59,7 +59,7 @@ INSTALLED_APPS = [
 
 THUMBNAIL_DEFAULT_OPTIONS = {
     'format': 'WEBP',      # همیشه WebP تولید کنه
-    'quality': 70,         # کیفیت پیش‌فرض (می‌تونی تغییر بدی)
+    'quality': 90,         # کیفیت پیش‌فرض (می‌تونی تغییر بدی)
     'crop': 'center',      # همیشه از مرکز crop کنه (اگر crop فعال باشه)
     'optimize': True,      # بهینه‌سازی lossless با Pillow
 }

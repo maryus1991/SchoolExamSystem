@@ -1,6 +1,6 @@
  
 {% extends "dashboard/base/base.html" %}
- 
+ {% load jalali_tags %}
   {% block header %}
 
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,100 +74,42 @@
   <div style="background:var(--gradient-1);border-radius:24px;padding:2rem 2.5rem;color:white;margin-bottom:1.5rem;position:relative;overflow:hidden;" class="animate-in">
     <div style="position:absolute;bottom:-50px;left:-30px;width:180px;height:180px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
     <h4 style="font-weight:900;margin-bottom:0.5rem;">🏦 بانک هوشمند سوالات</h4>
-    <p style="opacity:0.85;margin-bottom:1.5rem;">۱۲۴ سوال حل‌شده در دسته‌بندی‌های مختلف</p>
+    <p style="opacity:0.85;margin-bottom:1.5rem;">{{items.count}} سوال حل‌شده در دسته‌بندی‌های مختلف</p>
     <div class="search-box-lg" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);">
-      <i class="bi bi-search" style="color:rgba(255,255,255,0.7);font-size:1.1rem;"></i>
-      <input placeholder="جستجوی سوال، موضوع یا درس..." style="color:white;" oninput="filterQ(this.value)">
-      <button style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:50px;padding:0.35rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;">جستجو</button>
-    </div>
+            <form action="" method="get">
+        <i class="bi bi-search" style="color:rgba(255,255,255,0.7);font-size:1.1rem;"></i>
+        <input placeholder="جستجوی سوال، موضوع یا درس..." style="color:white;" oninput="filterQ(this.value)">
+        <button type="submit" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:50px;padding:0.35rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;">جستجو</button>
+      </form></div>
   </div>
 
-  <!-- Stats -->
-  <div class="row g-3 mb-4 animate-in delay-1">
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--primary);">۱۲۴</div><div style="font-size:0.78rem;color:var(--text-muted);">کل سوالات</div></div></div>
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--success);">۹۸</div><div style="font-size:0.78rem;color:var(--text-muted);">پاسخ صحیح</div></div></div>
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--danger);">۲۶</div><div style="font-size:0.78rem;color:var(--text-muted);">نیاز به مرور</div></div></div>
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--secondary);">۷۹٪</div><div style="font-size:0.78rem;color:var(--text-muted);">درصد موفقیت</div></div></div>
-  </div>
+ 
 
   <!-- Category chips -->
   <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;" class="animate-in delay-2">
     <div class="chip active" onclick="filterCat(this,'')"><i class="bi bi-grid-3x3-gap"></i> همه سوالات</div>
-    <div class="chip" onclick="filterCat(this,'ریاضی')"><i class="bi bi-calculator"></i> ریاضی (۳۸)</div>
-    <div class="chip" onclick="filterCat(this,'فیزیک')"><i class="bi bi-lightning"></i> فیزیک (۲۵)</div>
-    <div class="chip" onclick="filterCat(this,'شیمی')"><i class="bi bi-beaker"></i> شیمی (۲۲)</div>
-    <div class="chip" onclick="filterCat(this,'ادبیات')"><i class="bi bi-book"></i> ادبیات (۲۰)</div>
-    <div class="chip" onclick="filterCat(this,'زبان')"><i class="bi bi-translate"></i> زبان (۱۹)</div>
+    {% for category in cagegories %}
+      <div class="chip" onclick="filterCat(this,'{{category.id}}')"><i class="bi bi-calculator"></i> {{category.name}} </div>
+    {% endfor %}
   </div>
 
   <!-- Question list -->
   <div style="display:flex;flex-direction:column;gap:0.75rem;" id="qList" class="animate-in delay-2">
-    <div class="question-item" data-cat="ریاضی" onclick="location.href='10-question-detail.html'">
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap;">
-        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">#۱</span>
-        <div class="q-difficulty diff-easy" title="آسان"></div>
-        <span class="badge-status badge-success" style="font-size:0.72rem;">آسان</span>
-        <span class="badge-status badge-info" style="font-size:0.72rem;">ریاضی • مشتق</span>
-        <span style="margin-right:auto;font-size:0.75rem;color:var(--text-muted);">پاسخ: صحیح ✓</span>
+    {% for item in items %}
+    <a href='{{item.get_absolute_url}}'>
+      <div class="question-item" data-cat="{{item.category.id}}"  >
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap;">
+          <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">#{{item.id}}</span>
+          <div class="q-difficulty diff-easy" title="{{ item.possible.name }}"></div>
+          <span class="badge-status badge-success" style="font-size:0.72rem;">{{item.category.name}} • {{item.lesson}}</span>
+          <span class="badge-status badge-info" style="font-size:0.72rem;">{{item.possible.name}}</span>
+          <span style="margin-right:auto;font-size:0.75rem;color:var(--text-muted);"> زمان پیشنهادی جهت حل سوال:  {{item.solving_time}} دقیقه </span>
+        </div>
+        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">{{ item.name }}</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);">{{ item.created_at|to_jalali:'%Y/%m/%d' }}</div>
       </div>
-      <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">مشتق تابع f(x) = 3x² - 2x + 1 در نقطه x = 1 برابر است با:</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);">آزمون جامع ریاضی • ۱۴۰۳/۰۹/۱۵</div>
-    </div>
-    <div class="question-item" data-cat="فیزیک" onclick="location.href='10-question-detail.html'">
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap;">
-        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">#۲</span>
-        <div class="q-difficulty diff-medium" title="متوسط"></div>
-        <span class="badge-status badge-warning" style="font-size:0.72rem;">متوسط</span>
-        <span class="badge-status badge-info" style="font-size:0.72rem;">فیزیک • مکانیک</span>
-        <span style="margin-right:auto;font-size:0.75rem;color:var(--danger);">پاسخ: غلط ✗</span>
-      </div>
-      <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">جسمی با جرم ۲ کیلوگرم با شتاب ۵ m/s² حرکت می‌کند. نیروی وارد بر آن چقدر است؟</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);">آزمون فیزیک فصل سوم • ۱۴۰۳/۰۸/۲۸</div>
-    </div>
-    <div class="question-item" data-cat="ادبیات" onclick="location.href='10-question-detail.html'">
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap;">
-        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">#۳</span>
-        <div class="q-difficulty diff-easy" title="آسان"></div>
-        <span class="badge-status badge-success" style="font-size:0.72rem;">آسان</span>
-        <span class="badge-status badge-info" style="font-size:0.72rem;">ادبیات • آرایه‌های ادبی</span>
-        <span style="margin-right:auto;font-size:0.75rem;color:var(--success);">پاسخ: صحیح ✓</span>
-      </div>
-      <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">در مصراع «صبا به تهنیت پیر می‌فروش آمد» کدام آرایه ادبی وجود دارد؟</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);">آزمون ادبیات فارسی • ۱۴۰۳/۰۸/۱۰</div>
-    </div>
-    <div class="question-item" data-cat="شیمی" onclick="location.href='10-question-detail.html'">
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap;">
-        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">#۴</span>
-        <div class="q-difficulty diff-hard" title="سخت"></div>
-        <span class="badge-status badge-danger" style="font-size:0.72rem;">سخت</span>
-        <span class="badge-status badge-info" style="font-size:0.72rem;">شیمی • پیوندها</span>
-        <span style="margin-right:auto;font-size:0.75rem;color:var(--danger);">پاسخ: غلط ✗</span>
-      </div>
-      <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">ترتیب قدرت اسیدی HCl، HBr، HI، HF از ضعیف به قوی کدام است؟</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);">آزمون شیمی فصل دوم • ۱۴۰۳/۰۷/۰۵</div>
-    </div>
-    <div class="question-item" data-cat="زبان" onclick="location.href='10-question-detail.html'">
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap;">
-        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">#۵</span>
-        <div class="q-difficulty diff-vhard" title="خیلی سخت"></div>
-        <span class="badge-status badge-info" style="font-size:0.72rem;">خیلی سخت</span>
-        <span class="badge-status badge-info" style="font-size:0.72rem;">زبان • گرامر</span>
-        <span style="margin-right:auto;font-size:0.75rem;color:var(--text-muted);">پاسخ: بدون پاسخ ─</span>
-      </div>
-      <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">The teacher insisted that the students ____ their assignments on time.</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);">آزمون زبان انگلیسی • ۱۴۰۳/۰۷/۲۵</div>
-    </div>
-    <div class="question-item" data-cat="ریاضی" onclick="location.href='10-question-detail.html'">
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap;">
-        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);">#۶</span>
-        <div class="q-difficulty diff-medium" title="متوسط"></div>
-        <span class="badge-status badge-warning" style="font-size:0.72rem;">متوسط</span>
-        <span class="badge-status badge-info" style="font-size:0.72rem;">ریاضی • انتگرال</span>
-        <span style="margin-right:auto;font-size:0.75rem;color:var(--success);">پاسخ: صحیح ✓</span>
-      </div>
-      <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;">انتگرال معین ∫(x²+1)dx از صفر تا ۲ برابر است با:</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);">آزمون جامع ریاضی • ۱۴۰۳/۰۹/۱۵</div>
-    </div>
+    </a>
+    {% endfor %}
   </div>
 
   <!-- Load more -->

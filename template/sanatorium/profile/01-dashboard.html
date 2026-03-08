@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>داشبورد مصحح - سامانه آزمون هوشمند</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+<!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"> -->
+<link href="/static/css/bootstrap5.css" rel="stylesheet">
+<link href="/static/css/bootstrap5-icons.css" rel="stylesheet">
 <style>
 :root {
   --bg-primary: #f0f4ff;
@@ -1107,7 +1107,7 @@ body::before {
 <!-- Toast Container -->
 <div class="toast-container-custom" id="toastContainer"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/main/bootstrap5.bundle.min.js"></script>
 <script>
 // Theme toggle
 function toggleTheme() {
@@ -1162,11 +1162,12 @@ function showToast(type, title, msg) {
     <button onclick="this.closest('.toast-custom').remove()" style="margin-right:auto; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem;"><i class="bi bi-x"></i></button>
   `;
   c.appendChild(t);
-  setTimeout(() => t.classList.add('show'), 50);
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 4000);
+  setTimeout(() => t.classList.add('show'), 5);
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 4000); }, 40000);
 }
 setTimeout(() => showToast('success', 'خوش آمدید!', 'شما ۳ آزمون منتظر تصحیح دارید.'), 800);
 setTimeout(() => showToast('info', 'تیکت جدید', 'یک تیکت جدید برای شما ارسال شده است.'), 2000);
+setTimeout(() => showToast('error', 'تیکت جدید', 'یک تیکت جدید برای شما ارسال شده است.'), 200);
 </script>
 </body>
 </html>

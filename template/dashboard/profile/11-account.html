@@ -51,7 +51,7 @@
     .settings-tab:hover{background:rgba(108,92,231,0.06);color:var(--primary);}
     .settings-tab.active{background:rgba(108,92,231,0.1);color:var(--primary);}
     /* Toast */
-    .toast-success{position:fixed;bottom:2rem;left:2rem;z-index:9999;background:var(--success);color:white;border-radius:14px;padding:0.75rem 1.5rem;font-size:0.88rem;font-weight:600;box-shadow:0 8px 32px rgba(0,184,148,0.4);animation:fadeInUp 0.3s;display:none;}
+    .toast-success{position:fixed;bottom:2rem;left:2rem;z-index:9999;background:var(--success);color:white;border-radius:14px;padding:0.75rem 1.5rem;font-size:0.88rem;font-weight:600;box-shadow:0 8px 32px rgba(0,184,148,0.4);animation:fadeInUp 0.3s; }
     @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
   </style>
 {% endblock header %}
@@ -70,15 +70,14 @@
         <div style="padding:0.5rem 0.5rem 1rem;border-bottom:1px solid var(--border);margin-bottom:0.75rem;">
           <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
             <div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-size:1.75rem;font-weight:800;margin-bottom:0.75rem;" id="mainAvatar">ع</div>
-            <div style="font-weight:700;">علی محمدی</div>
+            <div style="font-weight:700;">{{ user.get_full_name }}</div>
             <div style="font-size:0.78rem;color:var(--text-muted);">دانش‌آموز</div>
           </div>
         </div>
         <button class="settings-tab active" onclick="showTab('profile',this)"><i class="bi bi-person"></i> اطلاعات شخصی</button>
         <button class="settings-tab" onclick="showTab('security',this)"><i class="bi bi-shield-lock"></i> امنیت و رمز عبور</button>
-        <button class="settings-tab" onclick="showTab('notif',this)"><i class="bi bi-bell"></i> اعلان‌ها</button>
-        <button class="settings-tab" onclick="showTab('docs',this)"><i class="bi bi-file-earmark-arrow-up"></i> مدارک</button>
-        <button class="settings-tab" onclick="showTab('privacy',this)"><i class="bi bi-eye-slash"></i> حریم خصوصی</button>
+        <button class="settings-tab" onclick="showTab('number',this)"><i class="bi bi-shield-lock"></i>  تغییر شماره یا کد ملی  </button>
+ 
       </div>
     </div>
 
@@ -89,123 +88,71 @@
         <div class="glass-card p-4 mb-4">
           <div class="section-title mb-4">اطلاعات شخصی</div>
           <div class="d-flex align-items-center gap-4 mb-4 flex-wrap">
-            <div class="avatar-upload-area" onclick="document.getElementById('avatarInput').click()" title="تغییر تصویر پروفایل">
-              <div id="avatarPreview" style="font-size:2.5rem;color:var(--primary);">ع</div>
-            </div>
-            <div>
-              <div style="font-weight:700;margin-bottom:0.25rem;">تصویر پروفایل</div>
-              <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.75rem;">فرمت‌های مجاز: JPG, PNG تا ۵ مگابایت</div>
-              <button onclick="document.getElementById('avatarInput').click()" style="background:var(--gradient-1);border:none;color:white;border-radius:10px;padding:0.4rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;"><i class="bi bi-upload"></i> آپلود تصویر</button>
-              <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="previewAvatar(this)">
-            </div>
+
+ 
           </div>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">نام</label>
-              <input type="text" class="form-control-custom" value="علی">
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+
+              <div class="col-md-6"><label class="form-label">{{ update_form.first_name.label }}</label>{{ update_form.first_name }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.last_name.label }}</label>{{ update_form.last_name }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.gender.label }}</label>{{ update_form.gender }} </div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.province.label }}</label>{{ update_form.province }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.city.label }}</label>{{ update_form.city }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.school.label }}</label>{{ update_form.school }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.grade.label }}</label>{{ update_form.grade }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.major.label }}</label>{{ update_form.major }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.father_name.label }}</label>{{ update_form.father_name }}</div>
+ 
+              <div class="col-md-6"><label class="form-label">{{ update_form.birth.label }}</label>{{ update_form.birth }}</div>
+  
+
+              {{ update_form.media }}
             </div>
-            <div class="col-md-6">
-              <label class="form-label">نام خانوادگی</label>
-              <input type="text" class="form-control-custom" value="محمدی">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">شماره موبایل</label>
-              <input type="tel" class="form-control-custom" value="09123456789" dir="ltr">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">ایمیل</label>
-              <input type="email" class="form-control-custom" value="ali@example.com" dir="ltr">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">پایه تحصیلی</label>
-              <select class="form-control-custom">
-                <option>دهم</option><option>یازدهم</option><option selected>دوازدهم</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">رشته تحصیلی</label>
-              <select class="form-control-custom">
-                <option selected>ریاضی-فیزیک</option><option>تجربی</option><option>انسانی</option>
-              </select>
-            </div>
-            <div class="col-12">
-              <label class="form-label">بیو / معرفی کوتاه</label>
-              <textarea class="form-control-custom" rows="3" style="resize:vertical;">دانش‌آموز پایه دوازدهم رشته ریاضی فیزیک، علاقه‌مند به ریاضیات و فیزیک.</textarea>
-            </div>
+            <div class="d-flex gap-2 mt-4">
+            <button type="submit" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><i class="bi bi-check2"></i> ذخیره تغییرات</button>
+            <button type="reset"  style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.65rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;cursor:pointer;">لغو</button>
           </div>
-          <div class="d-flex gap-2 mt-4">
-            <button onclick="saveProfile()" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><i class="bi bi-check2"></i> ذخیره تغییرات</button>
-            <button style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.65rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;cursor:pointer;">لغو</button>
-          </div>
+          </form>
+
         </div>
       </div>
 
       <!-- Security tab (hidden) -->
       <div id="tab-security" style="display:none;">
         <div class="glass-card p-4 mb-4">
-          <div class="section-title mb-4">تغییر رمز عبور</div>
-          <div class="row g-3">
-            <div class="col-12"><label class="form-label">رمز عبور فعلی</label><input type="password" class="form-control-custom" placeholder="••••••••" dir="ltr"></div>
-            <div class="col-md-6"><label class="form-label">رمز عبور جدید</label><input type="password" class="form-control-custom" placeholder="••••••••" dir="ltr"></div>
-            <div class="col-md-6"><label class="form-label">تکرار رمز عبور جدید</label><input type="password" class="form-control-custom" placeholder="••••••••" dir="ltr"></div>
-          </div>
-          <button onclick="saveProfile()" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
-        </div>
-        <div class="glass-card p-4">
-          <div class="section-title mb-3">تأیید دو‌مرحله‌ای</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div><div style="font-weight:600;font-size:0.9rem;">فعال‌سازی ۲FA</div><div style="font-size:0.8rem;color:var(--text-muted);">برای امنیت بیشتر، تأیید دومرحله‌ای را فعال کنید</div></div>
-            <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" style="cursor:pointer;width:3rem;height:1.5rem;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Documents tab (hidden) -->
-      <div id="tab-docs" style="display:none;">
-        <div class="glass-card p-4">
-          <div class="section-title mb-4">آپلود مدارک</div>
-          <div class="upload-box mb-3" id="uploadBox" 
-            ondragover="this.classList.add('dragover');event.preventDefault()"
-            ondragleave="this.classList.remove('dragover')"
-            ondrop="handleDrop(event)"
-            onclick="document.getElementById('docInput').click()">
-            <div class="upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
-            <div style="font-weight:700;margin-bottom:0.25rem;">فایل را اینجا رها کنید</div>
-            <div style="font-size:0.82rem;color:var(--text-muted);">یا کلیک کنید تا انتخاب کنید</div>
-            <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.5rem;">PDF, JPG, PNG — حداکثر ۱۰MB</div>
-            <input type="file" id="docInput" accept=".pdf,.jpg,.png" style="display:none" onchange="handleFileSelect(this)">
-          </div>
-          <div id="uploadedFiles"></div>
-          <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:1rem;">
-            <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.75rem;">مدارک آپلود شده</div>
-            <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border-radius:12px;background:var(--bg);border:1px solid var(--border);margin-bottom:0.5rem;">
-              <div style="width:40px;height:40px;border-radius:10px;background:rgba(225,112,85,0.15);display:flex;align-items:center;justify-content:center;color:var(--danger);flex-shrink:0;"><i class="bi bi-file-earmark-pdf-fill"></i></div>
-              <div><div style="font-size:0.85rem;font-weight:600;">کارنامه-تحصیلی.pdf</div><div style="font-size:0.75rem;color:var(--text-muted);">۲.۴ MB • ۱۴۰۳/۰۹/۱۰</div></div>
-              <button style="margin-right:auto;background:none;border:none;color:var(--danger);cursor:pointer;"><i class="bi bi-trash"></i></button>
+          
+          <form action="{% url 'dashboard:change-password' %}" method="post">
+            {% csrf_token %}
+            <div class="section-title mb-4">تغییر رمز عبور</div>
+            <div class="row g-3">
+              <div class="col-12"><label class="form-label">رمز عبور فعلی</label>         {{ password_form.current_password }}</div>
+              <div class="col-12"><label class="form-label">رمز عبور جدید</label>       {{ password_form.password }}</div>
+   
             </div>
-          </div>
+            <button type="submit"   style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
+          </form>
         </div>
+         
+      </div>
+      <div id="tab-number" style="display:none;">
+        <div class="glass-card p-4 mb-4">
+          
+          <form action="{% url 'dashboard:change-phone-number' %}" method="post">
+            {% csrf_token %}
+            <div class="section-title mb-4">تغییر شماره</div>
+            <div class="row g-3">
+              <div class="col-12"><label class="form-label">شماره جدید را وارد کنید</label>         {{ phoneNumber_form.PhoneNumber }}</div>
+              <div class="col-12"><label class="form-label">کدملی جدید خود را وارد کنید</label>         {{ phoneNumber_form.national_id }}</div>
+    
+            </div>
+            <button type="submit"   style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
+          </form>
+        </div>
+         
       </div>
 
-      <!-- Notification and privacy tabs (hidden) -->
-      <div id="tab-notif" style="display:none;"><div class="glass-card p-4"><div class="section-title mb-4">تنظیمات اعلان‌ها</div>
-        <div style="display:flex;flex-direction:column;gap:1rem;">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;border-bottom:1px solid var(--border);">
-            <div><div style="font-weight:600;font-size:0.9rem;">نتایج آزمون</div><div style="font-size:0.78rem;color:var(--text-muted);">وقتی نتایج آزمون صادر شد</div></div>
-            <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" checked style="cursor:pointer;width:3rem;height:1.5rem;"></div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;border-bottom:1px solid var(--border);">
-            <div><div style="font-weight:600;font-size:0.9rem;">پاسخ تیکت</div><div style="font-size:0.78rem;color:var(--text-muted);">وقتی پشتیبانی پاسخ می‌دهد</div></div>
-            <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" checked style="cursor:pointer;width:3rem;height:1.5rem;"></div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 0;">
-            <div><div style="font-weight:600;font-size:0.9rem;">خبرنامه</div><div style="font-size:0.78rem;color:var(--text-muted);">اخبار و آپدیت‌های پلتفرم</div></div>
-            <div class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" style="cursor:pointer;width:3rem;height:1.5rem;"></div>
-          </div>
-        </div>
-        <button onclick="saveProfile()" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.5rem;">ذخیره تنظیمات</button>
-      </div></div>
-      <div id="tab-privacy" style="display:none;"><div class="glass-card p-4"><div class="section-title mb-3">حریم خصوصی</div><div style="font-size:0.9rem;color:var(--text-muted);">تنظیمات مربوط به حریم خصوصی و نمایش اطلاعات شما.</div></div></div>
     </div>
   </div>
 
@@ -214,8 +161,8 @@
 
 {% block footer %}
 
-<div class="toast-success" id="toast"><i class="bi bi-check-circle-fill"></i> تغییرات با موفقیت ذخیره شد!</div>
-
+<!-- <div class="toast-success flex"    ><i class="bi bi-check-circle-fill"></i> تغییرات با موفقیت ذخیره شد!</div> -->
+ 
  <script>
   function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
   const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
@@ -258,13 +205,13 @@
     c.appendChild(d);
     setTimeout(()=>{d.querySelector('div:last-child').innerHTML='<i class="bi bi-check-circle-fill" style="color:var(--success);"></i>';},1500);
   }
-  function saveProfile(){
-    const t=document.getElementById('toast');
-    t.style.display='flex';
-    t.style.alignItems='center';
-    t.style.gap='0.5rem';
-    setTimeout(()=>t.style.display='none',3000);
-  }
+  // function saveProfile(){
+  //   const t=document.getElementById('toast');
+  //   t.style.display='flex';
+  //   t.style.alignItems='center';
+  //   t.style.gap='0.5rem';
+  //   setTimeout(()=>t.style.display='none',3000);
+  // }
 </script>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 </body></html>
