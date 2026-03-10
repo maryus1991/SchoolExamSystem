@@ -172,8 +172,8 @@ JALALI_DATE_DEFAULTS = {
     # if change it to true then all dates of the list_display will convert to the Jalali.
     "LIST_DISPLAY_AUTO_CONVERT": True,
     "Strftime": {
-        "date": "%y/%m/%d",
-        "datetime": "%y/%m/%d - %H:%M:%S",
+        "date": "%Y/%m/%d",
+        "datetime": "%Y/%m/%d - %H:%M",
     },
     "Static": {
         "js": [

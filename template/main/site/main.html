@@ -1,6 +1,6 @@
 {% extends "main/base/base.html" %}
 
-
+{% load jalali_tags %}
 {% block content %}
 
 
@@ -29,9 +29,15 @@
             <i class="bi bi-moon-fill moon-icon"></i>
           </div>
           {% if user.is_authenticated %}
-            <a class="btn-primary-gradient btn btn-sm" href="{% url 'dashboard:main' %}"  >داشبورد</a>
-            {% if user.is_superuser %}
-              <a class="btn-primary-gradient btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:main' %}"  >داشبورد</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:order-list' %}"  >سبد خرید</a>
+            {% if user.is_superuser  %}
+              {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
+                <a class="btn-outline-custom btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+              {% endif %}
+            {% endif %}
+            {% if user.is_staff and user.type_of_user == 'S' %}
+              <a class="btn-outline-custom btn btn-sm" href="{% url 'sanatorium:main' %}" > داشبورد مصحح</a>
             {% endif %}
 
           {% else %}
@@ -53,39 +59,38 @@
         <div class="col-lg-6">
           <div class="section-badge" style="background:rgba(255,255,255,0.15);color:white;">
             <i class="bi bi-stars"></i>
-            هوشمندترین پلتفرم آزمون آنلاین ایران
+            {{ site.tag }}
           </div>
           <h1 class="hero-title mb-4">
-            آینده یادگیری<br>
-            <span style="color:rgba(255,255,255,0.75);">با هوش مصنوعی</span>
+             <span style="color:rgba(255,255,255,0.75);">{{site.name}}</span>
           </h1>
           <p class="hero-subtitle mb-5">
-            بانک سوال هوشمند، آزمون‌های آنلاین تعاملی و تصحیح خودکار توسط هوش مصنوعی.<br>
-            یادگیری را به سطح جدیدی ببرید.
+            
+            {{ site.short_description }}
           </p>
           <div class="d-flex gap-3 flex-wrap">
-            <button class="btn btn-light btn-lg fw-700 rounded-pill px-4" onclick="showPage('register')"
+            <a href='{% url "quiz:list" %}' class="btn btn-light btn-lg fw-700 rounded-pill px-4"  
               style="font-family:inherit;font-weight:700;">
               <i class="bi bi-play-fill me-2"></i> شروع رایگان
-            </button>
-            <button class="btn-glass btn btn-lg" onclick="showPage('exam-list')">
+          </a>
+            <a href='{% url "quiz:list" %}' class="btn-glass btn btn-lg"  >
               <i class="bi bi-collection-fill me-2"></i> مشاهده آزمون‌ها
-            </button>
+            </a>
           </div>
        
           <div class="d-flex gap-4 mt-5">
             <div>
-              <div style="font-size:1.8rem;font-weight:900;color:white;">۵۰,۰۰۰+</div>
+              <div style="font-size:1.8rem;font-weight:900;color:white;">{{ site.active_user }}</div>
               <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;">دانش‌آموز فعال</div>
             </div>
             <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
             <div>
-              <div style="font-size:1.8rem;font-weight:900;color:white;">۱۰,۰۰۰+</div>
+              <div style="font-size:1.8rem;font-weight:900;color:white;">{{site.number_questions}}</div>
               <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;">سوال در بانک</div>
             </div>
             <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
             <div>
-              <div style="font-size:1.8rem;font-weight:900;color:white;">۹۸٪</div>
+              <div style="font-size:1.8rem;font-weight:900;color:white;">{{site.user_happies}}٪</div>
               <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;">رضایت کاربران</div>
             </div>
           </div>
@@ -153,9 +158,9 @@
         <div class="section-badge mx-auto" style="width:fit-content;">
           <i class="bi bi-gem"></i> ویژگی‌های منحصربه‌فرد
         </div>
-        <h2 class="section-title">چرا آزمون‌آنلاین؟</h2>
+        <h2 class="section-title">چرا {{site.name}}؟</h2>
         <p class="text-secondary mt-3 mx-auto" style="max-width:550px;">
-          ما با ترکیب تکنولوژی هوش مصنوعی و تجربه آموزشی، یک اکوسیستم یادگیری کامل ساخته‌ایم.
+          {{ site.short_description }}
         </p>
       </div>
       <div class="row g-4">
@@ -215,69 +220,34 @@
           </div>
           <h2 class="section-title mt-2">آخرین آزمون‌ها</h2>
         </div>
-        <button class="btn-outline-custom btn" onclick="showPage('exam-list')">مشاهده همه</button>
+        <a href='{% url "quiz:list" %}' class="btn-outline-custom btn" >مشاهده همه</a>
       </div>
       <div class="row g-4">
-        <!-- Exam Card 1 -->
+        
+
+        
+        {% for item in quiz %}
         <div class="col-lg-4 col-md-6">
           <div class="card-custom hover-lift">
             <div class="d-flex justify-content-between align-items-start mb-3">
-              <span class="badge-custom badge-info">ریاضی</span>
-              <span class="badge-custom badge-success">ثبت نام باز</span>
+              <span class="badge-custom badge-{% cycle 'info' 'success' 'warning' %}">{{item.lession.name}}</span>
+              <span class="badge-custom badge-{% cycle 'info' 'success' 'warning' %}">{{item.status}}</span>
             </div>
-            <h5 class="fw-700 mb-2">آزمون جامع ریاضی سوم دبیرستان</h5>
-            <p class="text-secondary" style="font-size:0.85rem;">شامل تمام مباحث ریاضی ۳ با سوالات چندگزینه‌ای و تشریحی</p>
+            <h5 class="fw-700 mb-2">{{ item.name }} </h5>
+            <p class="text-secondary" style="font-size:0.85rem;">{{ item.section }}</p>
             <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
-              <span><i class="bi bi-clock me-1"></i>۹۰ دقیقه</span>
-              <span><i class="bi bi-question-circle me-1"></i>۴۰ سوال</span>
-              <span><i class="bi bi-people me-1"></i>۳۲۵ نفر</span>
+              <span><i class="bi bi-clock me-1"></i>{{ item.time_minutes }} دقیقه</span>
+              <span><i class="bi bi-question-circle me-1"></i>{{ item.questions.count }} سوال</span>
+ 
             </div>
             <div class="d-flex justify-content-between align-items-center">
-              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>۱۵ اسفند ۱۴۰۳</div>
-              <button class="btn-primary-gradient btn btn-sm" onclick="showPage('exam-detail')">جزئیات</button>
+              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>{{ item.start_at|to_jalali }} </div>
+              <a href='{{item.get_absolute_url}}' class="btn-outline-custom badge-{% cycle 'info' 'success' 'warning' %} btn btn-sm">مشاهده</a>
             </div>
           </div>
         </div>
-        <!-- Exam Card 2 -->
-        <div class="col-lg-4 col-md-6">
-          <div class="card-custom hover-lift">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <span class="badge-custom badge-purple">فیزیک</span>
-              <span class="badge-custom badge-warning">در حال برگزاری</span>
-            </div>
-            <h5 class="fw-700 mb-2">آزمون فیزیک پیش‌دانشگاهی</h5>
-            <p class="text-secondary" style="font-size:0.85rem;">آزمون جامع فصل‌های الکتریسیته و مغناطیس با تأکید بر محاسبات</p>
-            <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
-              <span><i class="bi bi-clock me-1"></i>۱۲۰ دقیقه</span>
-              <span><i class="bi bi-question-circle me-1"></i>۵۵ سوال</span>
-              <span><i class="bi bi-people me-1"></i>۴۷۸ نفر</span>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>۱۰ اسفند ۱۴۰۳</div>
-              <button class="btn-primary-gradient btn btn-sm" onclick="showPage('exam-detail')">جزئیات</button>
-            </div>
-          </div>
-        </div>
-        <!-- Exam Card 3 -->
-        <div class="col-lg-4 col-md-6">
-          <div class="card-custom hover-lift">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <span class="badge-custom badge-info">شیمی</span>
-              <span class="badge-custom badge-muted">به زودی</span>
-            </div>
-            <h5 class="fw-700 mb-2">آزمون شیمی دوم دبیرستان</h5>
-            <p class="text-secondary" style="font-size:0.85rem;">آزمون فصل اول تا سوم شامل پیوندهای شیمیایی و ترمودینامیک</p>
-            <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
-              <span><i class="bi bi-clock me-1"></i>۶۰ دقیقه</span>
-              <span><i class="bi bi-question-circle me-1"></i>۳۰ سوال</span>
-              <span><i class="bi bi-people me-1"></i>۲۱۲ نفر</span>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>۲۵ اسفند ۱۴۰۳</div>
-              <button class="btn-outline-custom btn btn-sm">اطلاع‌رسانی</button>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
+
       </div>
     </div>
   </section>
@@ -320,7 +290,7 @@
               <div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);"></div>
               <div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);"></div>
               <div style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.3);"></div>
-              <span style="color:rgba(255,255,255,0.8);font-size:0.8rem;margin-right:8px;">داشبورد دانش‌آموز | رضا احمدی</span>
+              <span style="color:rgba(255,255,255,0.8);font-size:0.8rem;margin-right:8px;">داشبورد   رضا احمدی</span>
             </div>
             <div class="p-4" style="background:var(--bg-card);">
               <div class="row g-3 mb-3">
@@ -351,10 +321,9 @@
     <div style="position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,0.05);"></div>
     <div class="container text-center" style="position:relative;z-index:1;">
       <h2 style="font-size:2.5rem;font-weight:900;color:white;margin-bottom:16px;">آماده‌اید شروع کنید؟</h2>
-      <p style="color:rgba(255,255,255,0.8);font-size:1.1rem;margin-bottom:32px;">امروز ثبت‌نام کنید و اولین آزمون رایگانتان را بگیرید.</p>
-      <button class="btn btn-light btn-lg rounded-pill px-5 fw-700" style="font-family:inherit;" onclick="showPage('register')">
-        شروع رایگان <i class="bi bi-arrow-left ms-2"></i>
-      </button>
+      <a class="btn btn-light btn-lg rounded-pill px-5 fw-700" style="font-family:inherit;"  href='{% url "quiz:list" %}'>
+        شروع  <i class="bi bi-arrow-left ms-2"></i>
+      </a>
     </div>
   </section>
 
@@ -365,46 +334,44 @@
         <div class="col-lg-4">
           <div class="d-flex align-items-center gap-2 mb-3">
             <div class="navbar-brand-logo"><i class="bi bi-lightning-fill"></i></div>
-            <span class="footer-brand">آزمون‌آنلاین</span>
+            <span class="footer-brand">{{sitem.name}}</span>
           </div>
-          <p style="color:#64748b;font-size:0.9rem;line-height:1.8;">هوشمندترین پلتفرم آزمون آنلاین ایران با بانک سوال جامع و تصحیح هوشمند.</p>
+          <p style="color:#64748b;font-size:0.9rem;line-height:1.8;">{{ site.short_description }}</p>
           <div class="d-flex gap-2 mt-3">
-            <a class="footer-social" href="#"><i class="bi bi-instagram"></i></a>
-            <a class="footer-social" href="#"><i class="bi bi-telegram"></i></a>
-            <a class="footer-social" href="#"><i class="bi bi-twitter-x"></i></a>
-            <a class="footer-social" href="#"><i class="bi bi-youtube"></i></a>
+
+            {% if  site.instagram_link  %}<a class="footer-social" href="{{ site.instagram_link }}"><i class="bi bi-instagram"></i></a>{% endif %}
+            {% if  site.telegram_link  %}<a class="footer-social" href="{{ site.telegram_link }}"><i class="bi bi-telegram"></i></a>{% endif %}
+            {% if  site.eitaa_link  %}<a class="footer-social" href="{{ site.eitaa_link }}"><i class="bi bi-telegram"></i></a>{% endif %}
+ 
           </div>
         </div>
         <div class="col-lg-2 col-6">
           <div style="color:white;font-weight:700;margin-bottom:16px;">دسترسی سریع</div>
-          <a class="footer-link" href="#" onclick="showPage('exam-list')">لیست آزمون‌ها</a>
-          <a class="footer-link" href="#" onclick="showPage('question-bank')">بانک سوال</a>
-          <a class="footer-link" href="#" onclick="showPage('articles')">مقالات</a>
-          <a class="footer-link" href="#" onclick="showPage('about')">درباره ما</a>
+          <a class="footer-link" href="{% url 'quiz:list' %}" >لیست آزمون‌ها</a>
+          <a class="footer-link" href="{% url 'qbank:list' %}" >بانک سوال</a>
+          <a class="footer-link" href="{% url 'blog:list' %}" >مقالات</a>
+          <a class="footer-link" href="{% url 'site:about' %}" >درباره ما</a>
         </div>
         <div class="col-lg-2 col-6">
           <div style="color:white;font-weight:700;margin-bottom:16px;">حساب کاربری</div>
-          <a class="footer-link" href="#" onclick="showPage('login')">ورود</a>
-          <a class="footer-link" href="#" onclick="showPage('register')">ثبت نام</a>
-          <a class="footer-link" href="#" onclick="showPage('student-dashboard')">داشبورد</a>
-          <a class="footer-link" href="#" onclick="showPage('contact')">پشتیبانی</a>
+          <a class="footer-link" href="{% url 'user:login' %}" >ورود</a>
+          <a class="footer-link" href="{% url 'user:register' %}" >ثبت نام</a>
+          <a class="footer-link" href="{% url 'dashboard:main' %}" >داشبورد</a>
+          <a class="footer-link" href="{% url 'site:contact' %}" >پشتیبانی</a>
         </div>
-        <div class="col-lg-4">
-          <div style="color:white;font-weight:700;margin-bottom:16px;">خبرنامه</div>
+        {% comment %} <div class="col-lg-4"> {% endcomment %}
+          {% comment %} <div style="color:white;font-weight:700;margin-bottom:16px;">خبرنامه</div>
           <p style="color:#64748b;font-size:0.85rem;margin-bottom:12px;">برای دریافت آخرین آزمون‌ها و مقالات در خبرنامه ما عضو شوید.</p>
           <div class="d-flex gap-2">
             <input type="email" class="form-control-custom" style="flex:1;" placeholder="ایمیل شما">
             <button class="btn-primary-gradient btn" style="white-space:nowrap;">عضویت</button>
           </div>
-        </div>
+        </div> {% endcomment %}
       </div>
       <hr class="footer-divider">
       <div class="d-flex justify-content-between align-items-center" style="font-size:0.8rem;color:#475569;">
-        <span>© ۱۴۰۳ آزمون‌آنلاین. تمام حقوق محفوظ است.</span>
-        <div class="d-flex gap-3">
-          <a href="#" style="color:#475569;text-decoration:none;">حریم خصوصی</a>
-          <a href="#" style="color:#475569;text-decoration:none;">قوانین استفاده</a>
-        </div>
+        <span>{{site.copyright}}</span>
+ 
       </div>
     </div>
   </footer>

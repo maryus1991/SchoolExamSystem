@@ -116,6 +116,13 @@ body {
   overflow-x: hidden;
 }
 
+a {
+ text-decoration-line: none;
+  color: var(--text-primary);
+
+ background: none;
+}
+
 /* Numbers in Persian context */
 .ltr-nums { direction: ltr; display: inline-block; }
 

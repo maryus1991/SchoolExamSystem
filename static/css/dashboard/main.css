@@ -41,6 +41,13 @@
     * { font-family: 'Vazirmatn', sans-serif; }
     body { background: var(--bg); color: var(--text-main); transition: all 0.3s ease; min-height: 100vh; }
 
+    a {
+ text-decoration-line: none;
+  color: var(--text-primary);
+
+ background: none;
+}
+
     /* Sidebar */
     .sidebar {
       width: 260px; min-height: 100vh; background: var(--sidebar-bg);

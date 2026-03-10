@@ -24,15 +24,22 @@
           </div>
 
           {% if user.is_authenticated %}
-            <a class="btn-primary-gradient btn btn-sm m-2" href="{% url 'dashboard:main' %}"  >داشبورد</a>
-            {% if user.is_superuser %}
-              <a class="btn-primary-gradient btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:main' %}"  >داشبورد</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:order-list' %}"  >سبد خرید</a>
+            {% if user.is_superuser  %}
+              {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
+                <a class="btn-outline-custom btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+              {% endif %}
+            {% endif %}
+            {% if user.is_staff and user.type_of_user == 'S' %}
+              <a class="btn-outline-custom btn btn-sm" href="{% url 'sanatorium:main' %}" > داشبورد مصحح</a>
             {% endif %}
 
           {% else %}
-            <a class="btn-outline-custom btn btn-sm m-2" href="{% url 'user:login' %}" >ورود</a>
-            <a class="btn-primary-gradient btn btn-sm m-2" href="{% url 'user:register' %}" >ثبت نام</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'user:login' %}" >ورود</a>
+            <a class="btn-primary-gradient btn btn-sm" href="{% url 'user:register' %}" >ثبت نام</a>
           {% endif %}
+      
       </div>
         
       </div>
@@ -47,39 +54,35 @@
   <div class="container py-5">
     <!-- Quick filters -->
     <div class="d-flex gap-2 flex-wrap mb-4">
-      <a class="btn-primary-gradient btn btn-sm" href="{% url 'qbank:list' %}">همه دروس</a>
-      {% for item in categories %}
-        <a class="btn btn-sm" href='{{ item.get_absolute_url }}' style="border:2px solid var(--border-color);border-radius:var(--radius-full);background:var(--bg-card);color:var(--text-secondary);font-family:inherit;">
-          {{ item.name }}
-        </a>
-      {% endfor %}
+ 
+ 
     </div>
     <div class="row g-4">
       <div class="col-lg-3">
         <div class="card-custom sticky-top-sm">
-          <h6 class="fw-700 mb-4">فیلتر پیشرفته</h6>
+ 
           <form action="" method="get">
+            {% csrf_token %}
           <div class="mb-4">
-            <label class="form-label-custom">جستجو ...</label>
-            <div class="input-group-custom">
+             <div class="input-group-custom">
               <i class="bi bi-search input-icon"></i>
-              <input type="text"  class="form-control-custom" placeholder="کلمه کلیدی...">
+                {{ form.name }}
             </div>
           </div>
           <div class="mb-4">
-            <label class="form-label-custom">نوع سوال</label>
-            <div class="d-flex flex-column gap-2">
-              {% for item in questions_type  %}
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0" value='{{ item|list_index:0 }}' > {{ item|list_index:1 }} </label>
-{% endfor %}
+             <div class="d-flex flex-column gap-2">
+                {{form.type_}}
             </div>
           </div>
           <div class="mb-4">
-            <label class="form-label-custom">سطح دشواری</label>
-            <div class="d-flex flex-column gap-2">
-              {% for item in possible %}
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;"><input type="checkbox" class="form-check-input m-0" value='{{item.id}}'> {{ item.name }}</label>
-{% endfor %}
+             <div class="d-flex flex-column gap-2">
+                {{form.possible}}
+            </div>
+          </div>
+          <div class="mb-4">
+             <div class="d-flex flex-column gap-2">
+                {{form.grade}}
+
             </div>
           </div>
           <button type="submit" class="btn-primary-gradient btn w-100">جستجو</button>

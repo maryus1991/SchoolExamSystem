@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, CreateView
 from .models import Team, ContactUs, Site
+from quiz.models import Quiz
 from .forms import ContactModelForm
 from django.urls import reverse_lazy
 from django.contrib import messages
+
 
 class MainPage(TemplateView):
     """
@@ -11,6 +13,15 @@ class MainPage(TemplateView):
     """
 
     template_name = 'main/site/main.html'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        data['quiz'] = Quiz.objects.filter(is_active=True).prefetch_related('lession', 'questions').all()[0:3]
+        data['site'] = Site.objects.first()
+
+        return data
+
 
 class Contact(CreateView):
     """
@@ -39,6 +50,7 @@ class Contact(CreateView):
             self.request, form.errors.as_text
         )
         return super().form_invalid(form)
+
 
 class About(TemplateView):
     """

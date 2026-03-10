@@ -21,17 +21,22 @@ class AddToOrder(LoginRequiredMixin, RedirectView):
             quiz = get_object_or_404(Quiz, pk=quiz_id)
 
             if quit.price > 0:
+                
+                if quiz.status != Quiz.QuizStatus.WAITING_START:
 
-                order = Order.objects.get_or_create(
-                    status=Order.OrderStatus.active, 
-                    user=self.request.user
-                )[0]
-                OrderDetail.objects.create(
-                    quiz=quiz,
-                    order=order
-                )
+                    order = Order.objects.get_or_create(
+                        status=Order.OrderStatus.active, 
+                        user=self.request.user
+                    )[0]
+                    result = OrderDetail.objects.get_or_create(
+                        quiz=quiz,
+                        order=order
+                    )
+                    if result[1]: messages.success(self.request, 'ازمون با موفقیت به سبد خرید شما اضافه شد')
+                    else: messages.warning(self.request, 'این ازمون از قبل در سبد خرید شما موجود میباشد')
+                else:
+                    messages.warning(self.request, 'این ازمون شروع شده است و برای شرکت در ان لطفا با ادمین یا نماینده خود در ارتباط باشید')
 
-                messages.success(self.request, 'ازمون با موفقیت به سبد خرید شما اضافه شد')
             else:
                 messages.info(self.request, 'ازمون رایگان می باشد')
                 

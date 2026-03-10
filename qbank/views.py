@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-from .models import QuestionAnswerKey, QuestionBank, QuestionLessonCategory, QuestionPossible, QuestionView
+from .models import  QuestionBank, QuestionView
+from .forms import QBankSearchForm
 from django.http import Http404
 from ipware import get_client_ip
 from django.db.models.aggregates import Count 
 from django.contrib import messages
-
+from django.db.models import Q
 # Create your views here.
 
 
@@ -47,11 +48,19 @@ class QuestionsView(ListView):
             if not queryset.exists() and queryset.count() != 1:
                 raise Http404('obj not found')
             return  queryset.first()
-
-                    
-        if category_id:
-            queryset.filter(category__id=category_id)
-
+        else:
+            form = QBankSearchForm(self.request.GET or None)
+            if form.is_valid():
+                if type_ := form.cleaned_data.get('type_'):
+                    if type_ != QuestionBank.TypeOfQuestions.ALL:
+                        queryset = queryset.filter(type_of_question=type_)
+                if name := form.cleaned_data.get('name'):
+                    queryset = queryset.filter(Q(name__contains=name) | Q(lesson__contains=name) | Q(description__contains=name))
+                if possible := form.cleaned_data.get('possible'):
+                    queryset = queryset.filter(possible=possible)
+                if grade := form.cleaned_data.get('grade'):
+                    queryset = queryset.filter(category=grade)
+      
         return  queryset.all()
     
 
@@ -91,9 +100,8 @@ class QuestionsView(ListView):
         pk = self.kwargs.get('pk')
 
         if not pk :
-            data['possible'] = QuestionPossible.objects.filter(is_active=True).all() 
-            data['categories'] = QuestionLessonCategory.objects.filter(is_active=True).all() 
-            data['questions_type'] = QuestionBank.TypeOfQuestions.choices
+            data['form'] = QBankSearchForm(self.request.GET or None)
+ 
 
         return data
  

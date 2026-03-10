@@ -43,6 +43,7 @@ def photo_path_upload_to(instance, filename):
 
 class QuestionBank(models.Model):
     class TypeOfQuestions(models.TextChoices):
+        ALL = 'همه', 'همه'
         MULTIPLE_CHOICE = 'تستی چهارگزینه‌ای', 'تستی چهارگزینه‌ای'
         TRUE_FALSE = 'درست / نادرست', 'درست / نادرست'
         SHORT_ANSWER = 'پاسخ کوتاه ', 'پاسخ کوتاه '

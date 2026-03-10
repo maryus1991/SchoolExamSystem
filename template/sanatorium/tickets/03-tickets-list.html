@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>لیست تیکت‌ها - مصحح</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+<!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"> -->
+<link href="/static/css/bootstrap5.css" rel="stylesheet">
+<link href="/static/css/bootstrap5-icons.css" rel="stylesheet">
 <style>
 :root{--bg-primary:#f0f4ff;--bg-surface:#ffffff;--bg-surface2:#f8faff;--bg-glass:rgba(255,255,255,0.7);--bg-glass-border:rgba(255,255,255,0.9);--sidebar-bg:rgba(255,255,255,0.85);--text-primary:#1e1b4b;--text-secondary:#6b7280;--text-muted:#9ca3af;--border-color:rgba(79,70,229,0.12);--shadow-sm:0 2px 8px rgba(79,70,229,0.08);--shadow-md:0 8px 32px rgba(79,70,229,0.12);--shadow-lg:0 20px 60px rgba(79,70,229,0.15);--gradient-primary:linear-gradient(135deg,#4f46e5,#7c3aed);--gradient-success:linear-gradient(135deg,#059669,#10b981);--gradient-warning:linear-gradient(135deg,#d97706,#f59e0b);--gradient-hero:linear-gradient(135deg,#4f46e5 0%,#7c3aed 50%,#a78bfa 100%);--accent:#4f46e5;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);}
 [data-theme="dark"]{--bg-primary:#0a0a1a;--bg-surface:#13132b;--bg-surface2:#1a1a35;--bg-glass:rgba(255,255,255,0.04);--bg-glass-border:rgba(255,255,255,0.08);--sidebar-bg:rgba(19,19,43,0.95);--text-primary:#e8e8f8;--text-secondary:#a5b4fc;--text-muted:#6366f1;--border-color:rgba(99,102,241,0.2);--shadow-sm:0 2px 8px rgba(0,0,0,0.3);--shadow-md:0 8px 32px rgba(0,0,0,0.4);--shadow-lg:0 20px 60px rgba(0,0,0,0.5);}
@@ -269,7 +269,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 
 <footer class="dashboard-footer"><div>© ۱۴۰۳ آزمون‌یار</div><div>نسخه ۲.۴.۱</div></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/main/bootstrap5.bundle.min.js"></script>
 <script>
 function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';localStorage.setItem('theme','light');}}
 (function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();

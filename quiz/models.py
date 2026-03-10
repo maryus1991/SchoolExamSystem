@@ -52,8 +52,7 @@ class Quiz(models.Model):
     
     class QuizStatus(models.TextChoices):
         
-        DEACTIVATED = 'غیرفعال', 'غیرفعال'
-        CANCELED = 'کنسل شده', 'کنسل شده'
+        ALL_STATUS = 'همه وضعیت ها ', 'همه وضعیت ها '
         WAITING_START = 'در انتظار شروع', 'در انتظار شروع'
         STARTED = 'شروع شده', 'شروع شده'
         WAITING_END = 'در انتظار پایان', 'در انتظار پایان'
@@ -61,6 +60,8 @@ class Quiz(models.Model):
         WAITING_CORRECTION = 'در انتظار تصحیح', 'در انتظار تصحیح'
         CORRECTED = 'تصحیح شده', 'تصحیح شده'
         RESULTS_PUBLISHED = 'اعلام نتایج', 'اعلام نتایج'
+        DEACTIVATED = 'غیرفعال', 'غیرفعال'
+        CANCELED = 'کنسل شده', 'کنسل شده'
 
     status = models.CharField(verbose_name='وضعیت', choices=QuizStatus, default=QuizStatus.WAITING_START, max_length=55)
     is_active = models.BooleanField(default=True, verbose_name='فعال')
@@ -85,6 +86,22 @@ class Quiz(models.Model):
 def photo_path_upload_to(instance, filename):
     return f"questions/{get_random_string(100)}-{filename}"
 
+
+class UserQuizDetail(models.Model):
+    quiz = models.ForeignKey('Quiz', on_delete=models.PROTECT, related_name='detail', verbose_name='آزمون')
+    student = models.ForeignKey(User, on_delete=models.PROTECT, related_name='quiz_detail', verbose_name='دانش اموز')
+    finished_at = models.DateTimeField(verbose_name='زمان تمام شدن توسط کاربر', null=True, blank=True)
+    out_of_page = models.PositiveSmallIntegerField(verbose_name='خروج از صفحه', default=0)
+    score = models.PositiveSmallIntegerField(verbose_name='نمره کل', default=0)
+
+    class Meta:
+        verbose_name = 'جزییات ازمون برای دانش اموزان'
+        verbose_name_plural = 'جزییات ازمون ها برای دانش اموزان'
+ 
+            
+
+    def __str__(self):
+        return f"{self.id} - {self.quiz.name} - {self.student.PhoneNumber}"
 
 
 class Question(models.Model):

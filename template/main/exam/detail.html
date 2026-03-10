@@ -27,14 +27,20 @@
           </div>
 
           {% if user.is_authenticated %}
-            <a class="btn-primary-gradient btn btn-sm m-2" href="{% url 'dashboard:main' %}"  >داشبورد</a>
-            {% if user.is_superuser %}
-              <a class="btn-primary-gradient btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:main' %}"  >داشبورد</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:order-list' %}"  >سبد خرید</a>
+            {% if user.is_superuser  %}
+              {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
+                <a class="btn-outline-custom btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+              {% endif %}
+            {% endif %}
+            {% if user.is_staff and user.type_of_user == 'S' %}
+              <a class="btn-outline-custom btn btn-sm" href="{% url 'sanatorium:main' %}" > داشبورد مصحح</a>
             {% endif %}
 
           {% else %}
-            <a class="btn-outline-custom btn btn-sm m-2" href="{% url 'user:login' %}" >ورود</a>
-            <a class="btn-primary-gradient btn btn-sm m-2" href="{% url 'user:register' %}" >ثبت نام</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'user:login' %}" >ورود</a>
+            <a class="btn-primary-gradient btn btn-sm" href="{% url 'user:register' %}" >ثبت نام</a>
           {% endif %}
       </div>
         
@@ -124,9 +130,17 @@
             </div>
             <div class="progress-custom"><div class="progress-fill warm" style="width: {{ item.filled_capacity|percent:item.capacity }}%;"></div></div>
           </div>
-          <a href="{% url 'quiz:quiz-start' pk=item.id %}" class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" onclick="showPage('exam-take')">
+
+
+          <a href="{% url 'quiz:quiz-start' pk=item.id %}" class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" >
+            <i class="bi bi-play-fill me-2"></i> ورود
+          </a>
+          
+          <a href="{% url 'quiz:quiz-start' pk=item.id %}" class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" >
             <i class="bi bi-play-fill me-2"></i> ثبت نام و شروع
           </a>
+
+          
           <div class="d-flex gap-2">
             {% if item in user.favorate.quiz.all  %}
               <a href='{% url "quiz:remove-quiz-to-favorate" item.id  %}' class="btn-outline-custom btn flex-1" style="font-size:0.8rem;"><i class="bi bi-heart me-1"></i> حذف از ذخیره</a>

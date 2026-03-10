@@ -1,7 +1,15 @@
+roadmap 
+    -> order service  
+    -> split the select question page and conform the quiz page 
+    -> fix the main page in dashboard 
+    -> fix the nemodar page 
+    -> fix the quiz list and detail page
+
+
 phase 1 todo list
-    fix the search and filter of qbank quiz 
+    fix the search and filter of blog 
     add active section for quiz blog qbank in site setting
-    fix the main page 
+ 
     fix the exam started page
     fix the pdf showing in qbank and exam start page
     responsive the image and pdf showing qbank and exam start page
@@ -14,6 +22,9 @@ phase 2 todo list
     fix the search bar in favorate quiz qbank blog 
     fix the pagination in favorate and ticket list and report/second/
     fix the colors in report/second/
+    fix the main dashboard page 
+    fix the nemodare page 
+    fix the order service 
 
 phase 3 todo list 
 

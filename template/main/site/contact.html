@@ -22,17 +22,23 @@
           <div class="theme-toggle m-2" onclick="toggleTheme()">
             <i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i>
           </div>
-
           {% if user.is_authenticated %}
-            <a class="btn-primary-gradient btn btn-sm m-2" href="{% url 'dashboard:main' %}"  >داشبورد</a>
-            {% if user.is_superuser %}
-              <a class="btn-primary-gradient btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:main' %}"  >داشبورد</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:order-list' %}"  >سبد خرید</a>
+            {% if user.is_superuser  %}
+              {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
+                <a class="btn-outline-custom btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+              {% endif %}
+            {% endif %}
+            {% if user.is_staff and user.type_of_user == 'S' %}
+              <a class="btn-outline-custom btn btn-sm" href="{% url 'sanatorium:main' %}" > داشبورد مصحح</a>
             {% endif %}
 
           {% else %}
-            <a class="btn-outline-custom btn btn-sm m-2" href="{% url 'user:login' %}" >ورود</a>
-            <a class="btn-primary-gradient btn btn-sm m-2" href="{% url 'user:register' %}" >ثبت نام</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'user:login' %}" >ورود</a>
+            <a class="btn-primary-gradient btn btn-sm" href="{% url 'user:register' %}" >ثبت نام</a>
           {% endif %}
+     
       </div>
         
       </div>

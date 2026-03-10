@@ -25,17 +25,23 @@
           <div class="theme-toggle m-2" onclick="toggleTheme()">
             <i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i>
           </div>
-
           {% if user.is_authenticated %}
-            <a class="btn-primary-gradient btn btn-sm m-2" href="{% url 'dashboard:main' %}"  >داشبورد</a>
-            {% if user.is_superuser %}
-              <a class="btn-primary-gradient btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:main' %}"  >داشبورد</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:order-list' %}"  >سبد خرید</a>
+            {% if user.is_superuser  %}
+              {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
+                <a class="btn-outline-custom btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+              {% endif %}
+            {% endif %}
+            {% if user.is_staff and user.type_of_user == 'S' %}
+              <a class="btn-outline-custom btn btn-sm" href="{% url 'sanatorium:main' %}" > داشبورد مصحح</a>
             {% endif %}
 
           {% else %}
-            <a class="btn-outline-custom btn btn-sm m-2" href="{% url 'user:login' %}" >ورود</a>
-            <a class="btn-primary-gradient btn btn-sm m-2" href="{% url 'user:register' %}" >ثبت نام</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'user:login' %}" >ورود</a>
+            <a class="btn-primary-gradient btn btn-sm" href="{% url 'user:register' %}" >ثبت نام</a>
           {% endif %}
+  
       </div>
         
       </div>
@@ -61,63 +67,37 @@
       <div class="col-lg-3">
         <div class="card-custom sticky-top-sm">
           <form action="" method="get">
+
           <h6 class="fw-700 mb-4"><i class="bi bi-funnel me-2"></i>فیلترها</h6>
           <div class="mb-4">
-            <label class="form-label-custom">جستجو</label>
             <div class="input-group-custom">
               <i class="bi bi-search input-icon"></i>
-              <input type="text" class="form-control-custom" name="search" placeholder="نام آزمون...">
+              {{ form.name }}
             </div>
           </div>
+ 
           <div class="mb-4">
-            <label class="form-label-custom">درس</label>
-            <select name="lesson" class="form-control-custom" style="cursor:pointer;">
-              <option value="0">همه دروس</option>
-{% for item in lession %}
-              <option value="{{item.id}}"> {{item.name}}</option>
-
-{% endfor %}
-            </select>
-          </div>
-          <div class="mb-4">
-            <label class="form-label-custom">وضعیت</label>
-            <select name="lesson" class="form-control-custom" style="cursor:pointer;">
-              <option value="0">وضعیت </option>
-{% for item in status %}
-              <option value="{{ item|list_index:0 }}"> {{ item|list_index:1 }}</option>
-
-{% endfor %}
-            </select>
+            {{ form.status }}
           </div>
           
           <div class="mb-4">
-            <label class="form-label-custom">پایه تحصیلی</label>
             <div class="d-flex flex-column gap-2">
-              {% for item in grade %}
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;">
-                <input type="checkbox" name='grade' value='{{item.id}}' class="form-check-input m-0"> {{item.name}}</label> 
-                {% endfor %}
+              {{ form.grade }}
             </div>
           </div>
           <div class="mb-4">
-            <label class="form-label-custom">رشته</label>
             <div class="d-flex flex-column gap-2">
-              {% for item in major %}
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;">
-                <input type="checkbox" name='major' value='{{item.id}}' class="form-check-input m-0"> {{item.name}}</label> 
-                {% endfor %}
+              {{ form.major }}
             </div>
           </div>
-          {% comment %} <div class="mb-4">
-            <label class="form-label-custom">وضعیت</label>
+ 
+          <div class="mb-4">
             <div class="d-flex flex-column gap-2">
-              {% for item in status %}
-              <label class="d-flex align-items-center gap-2" style="cursor:pointer;font-size:0.875rem;">
-                <input type="radio" name="status" value="{{ item|list_index:0 }}" class="form-check-input m-0"> {{ item|list_index:1 }}</label>
-                {% endfor %}
+              {{ form.lession }}
             </div>
-          </div> {% endcomment %}
-          <button class="btn-primary-gradient btn w-100">اعمال فیلتر</button>
+          </div>
+             {% csrf_token %}
+          <button type="submit" class="btn-primary-gradient btn w-100">اعمال فیلتر</button>
         </form>
         </div>
       </div>
@@ -153,9 +133,9 @@
                 <span class="badge-custom badge-success"><i class="bi bi-calendar3 me-1"></i>{{ item.start_at|to_jalali:' %H:%M - %Y/%m/%d ' }}</span>
                 <span class="badge-custom badge-warning"><i class="bi bi-calendar3 me-1"></i>
                 {% if item.price > 0 %}
-                {{item.price|tdc}}  تومان
+                  {{item.price|tdc}}  تومان
                 {% else %}
-                رایگان
+                 رایگان
                 {% endif %}
                 </span>
 

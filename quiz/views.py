@@ -2,15 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, RedirectView, View
 from django.http import Http404
 from ipware import get_client_ip
-from .models import GradeCategories, StudentAnswer,LessionCategories, MajorCategories, Quiz, QuizView, Question, QuestionOption
+from .models import  StudentAnswer, Quiz, QuizView, Question, QuestionOption
 from dashboard.models import UserFavorate
 from django.db.models.aggregates import Count
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.utils.timezone import now
+from .forms import QuizSearchForm
 import random
-
+from django.db.models import Q
 
 # Create your views here.
 
@@ -313,10 +314,7 @@ class QuizListDetailView(ListView):
     paginate_by = 50
 
     def get_queryset(self):
-        queryset = Quiz.objects.filter(is_active=True
-        ).prefetch_related(
-            'grade', 'major', 'lession'
-        )
+        queryset = Quiz.objects.filter(is_active=True).prefetch_related('grade', 'major', 'lession')
 
         queryset = queryset.annotate(views_count=Count('views'), question_count=Count('questions'))
 
@@ -346,14 +344,28 @@ class QuizListDetailView(ListView):
             if not queryset.exists() and queryset.count() != 1:
                 raise Http404('obj not found')
             return  queryset.first()
+        
+        else:
+            form = QuizSearchForm(self.request.GET or None)
+            if form.is_valid():
+                if name := form.cleaned_data.get('name'):
+                    queryset=queryset.filter(Q(name__contains=name) | Q(description__contains=name) | Q(section__contains=name) )
+                if status := form.cleaned_data.get('status'):
+                    if status != Quiz.QuizStatus.ALL_STATUS:
+                        queryset=queryset.filter(status=status)
+
+                if lession := form.cleaned_data.get('lession'):
+                    queryset=queryset.filter(lession=lession)
+                if grade := form.cleaned_data.get('grade'):
+                    queryset=queryset.filter(grade=grade)
+                if major := form.cleaned_data.get('major'):
+                    queryset=queryset.filter(major=major)
+                    
 
                     
-        if grade_category_id:queryset.filter(grade__id=grade_category_id)
-        if lession_category_id:queryset.filter(major__id=lession_category_id)
-        if major_category_id:queryset.filter(lession__id=major_category_id)
-
- 
-
+        if grade_category_id:queryset=queryset.filter(grade__id=grade_category_id)
+        if lession_category_id:queryset=queryset.filter(major__id=lession_category_id)
+        if major_category_id:queryset=queryset.filter(lession__id=major_category_id)
         return  queryset.all()
     
 
@@ -391,10 +403,8 @@ class QuizListDetailView(ListView):
         pk = self.kwargs.get('pk')
 
         if not pk :
-            data['grade'] = GradeCategories.objects.filter(is_active=True).all() 
-            data['lession'] = LessionCategories.objects.filter(is_active=True).all() 
-            data['major'] = MajorCategories.objects.filter(is_active=True).all() 
-            data['status'] = Quiz.QuizStatus.choices 
+            data['form'] = QuizSearchForm(self.request.GET or None)
+
  
         return data
  

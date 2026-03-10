@@ -1,4 +1,11 @@
  
+ a {
+ text-decoration-line: none;
+  color: var(--text-primary);
+
+ background: none;
+}
+
      /* Topbar */
     .topbar {
       position: fixed; top: 0; right: 260px; left: 0; height: 64px;
