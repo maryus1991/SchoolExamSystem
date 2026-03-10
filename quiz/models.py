@@ -37,11 +37,14 @@ class Quiz(models.Model):
     description = CKEditor5Field()
     price = models.PositiveBigIntegerField(default=0, verbose_name='هزینه')
     time_minutes = models.PositiveIntegerField(default=0, verbose_name='(دقیقه) تایمر')
+
     create_at = models.DateTimeField(auto_now_add=True, verbose_name='زمان ساخت')
     start_at = models.DateTimeField(verbose_name='زمان برگذاری')
     stop_at = models.DateTimeField(verbose_name='زمان پایان')
     last_enter = models.DateTimeField(verbose_name='اخرین زمان ورود')
     finished_at = models.DateTimeField(verbose_name='زمان تمام شدن توسط کاربر', null=True, blank=True)
+    corrected_at = models.DateTimeField(verbose_name='زمان تصحیح', null=True, blank=True)
+
     max_score = models.PositiveSmallIntegerField(verbose_name='حداکثر نمره', default=100)
     score = models.PositiveSmallIntegerField(verbose_name='ضریب', default=1)
     capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت', default=1)
@@ -70,6 +73,8 @@ class Quiz(models.Model):
     class Meta:
         verbose_name = 'ازمون'
         verbose_name_plural = 'ازمون ها'
+ 
+            
 
     def __str__(self):
         return f"{self.id} - {self.name}"
@@ -82,12 +87,10 @@ def photo_path_upload_to(instance, filename):
 
 
 
-
 class Question(models.Model):
 
     class TypeOfQuestions(models.TextChoices):
         MULTIPLE_CHOICE = 'تستی چهارگزینه‌ای', 'تستی چهارگزینه‌ای'
-        TRUE_FALSE = 'درست / نادرست', 'درست / نادرست'
         SHORT_ANSWER = 'پاسخ کوتاه', 'پاسخ کوتاه'
         LONG_ANSWER = 'پاسخ تشریحی', 'پاسخ تشریحی'
         IMAGE_BASED = 'مبتنی بر تصویر', 'مبتنی بر تصویر'
@@ -99,7 +102,9 @@ class Question(models.Model):
     description = CKEditor5Field( blank=True, null=True, verbose_name='متن سوال')
     image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
     pdf_file = models.FileField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF سوال' )
+
     score = models.PositiveIntegerField( default=1, verbose_name='نمره سوال')
+
     order = models.PositiveIntegerField( default=1, verbose_name='ترتیب نمایش' )
     is_active = models.BooleanField(default=True, verbose_name='فعال')
     created_at = models.DateTimeField(auto_now_add=True )
@@ -161,28 +166,41 @@ def photo_path_upload_to(instance, filename):
 
 class StudentAnswer(models.Model):
     class TypeOfAnswer(models.TextChoices):
+        OPTION = 'انتخاب گزینه', 'انتخاب گزینه'
         TEXT_BASED = 'پاسخ متنی', 'پاسخ متنی'
         IMAGE_BASED = 'پاسخ تصویری', 'پاسخ تصویری'
         PDF_BASED = 'پاسخ PDF', 'پاسخ PDF'
-        OPTION = 'انتخاب گزینه', 'انتخاب گزینه'
         SKIPPED = 'رد شده', 'رد شده'
+        NOT_ANSWERD = 'جواب داده نشده', 'جواب داده نشده'
 
     quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='student_answers', verbose_name='آزمون')
     student = models.ForeignKey(User, on_delete=models.CASCADE,related_name='answers', verbose_name='دانش‌آموز')
-    question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name='student_answers', null=True, blank=True , verbose_name='سوال')
-    type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', null=True, blank=True)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='student_answers', null=True, blank=True , verbose_name='سوال')
+    
+    type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', default=TypeOfAnswer.NOT_ANSWERD)
     selected_option = models.ForeignKey(QuestionOption,on_delete=models.PROTECT ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده')
     description = models.TextField(blank=True, null=True,verbose_name='متن پاسخ' )
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
     pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF پاسخ')
-    score = models.FloatField(default=0, verbose_name='نمره داده شده')
-    is_correct = models.BooleanField(default=False, verbose_name='صحیح است؟' )
     is_skipped = models.BooleanField(default=False, verbose_name='رد شده' )
+
+    class TypeOfCorrect(models.TextChoices):
+        not_corrected = 'تصحیح نشده', 'تصحیح نشده'
+        wrong = 'کاملا اشتباه', 'کاملا اشتباه'
+        weak = 'نیاز به تلاش بیشتر', 'نیاز به تلاش بیشتر'
+        average = 'قابل قبول', 'قابل قبول'
+        good = 'نسبتا درست', 'نسبتا درست'
+        excellent = 'کاملا درست', 'کاملا درست'
+
+    corrected = models.CharField(max_length=100, choices=TypeOfCorrect.choices,verbose_name='کیفیت جواب', default=TypeOfCorrect.not_corrected ,)
     corrected_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True, related_name='corrected_answers', verbose_name='تصحیح‌کننده')
     corrected_at = models.DateTimeField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    satantorium_message = CKEditor5Field(blank=True, null=True, verbose_name='نظر مصصح' )
 
+    score = models.FloatField(default=0, verbose_name='نمره داده شده')
+    created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
+        ordering = ['question__pk']
         verbose_name = 'پاسخ دانش‌آموز'
         verbose_name_plural = 'پاسخ‌های دانش‌آموزان'
         unique_together = ('student', 'question')

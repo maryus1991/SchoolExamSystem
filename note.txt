@@ -12,7 +12,8 @@ phase 1 todo list
 
 phase 2 todo list
     fix the search bar in favorate quiz qbank blog 
-    fix the pagination in favorate and ticket list
+    fix the pagination in favorate and ticket list and report/second/
+    fix the colors in report/second/
 
 phase 3 todo list 
 

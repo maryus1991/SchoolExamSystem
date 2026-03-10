@@ -77,17 +77,19 @@
  
       <a href="{% url 'dashboard:main' %}" class="sidebar-link"><i class="bi bi-person-circle"></i> پروفایل من</a>
       <a href="{% url 'dashboard:profile' %}" class="sidebar-link"><i class="bi bi-gear"></i> اطلاعات حساب</a>
+      <a href="{% url 'dashboard:order-list' %}" class="sidebar-link"><i class="bi bi-bank"></i>سفارشات  </a>
       <div class="nav-section-title"> آزمون‌ها و کارنامه‌ها</div>
 
-      <a href="{% url 'dashboard:report-third' %}" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> کارنامه ثالث</a>
-      <a href="{% url 'dashboard:report-second-list' %}" class="sidebar-link"><i class="bi bi-collection"></i> لیست کارنامه ثانویه</a>
-      <a href="{% url 'dashboard:report-first-list' %}" class="sidebar-link"><i class="bi bi-list-columns"></i> لیست کارنامه اولیه</a>
-      <a href="{% url 'dashboard:quiz-list' %}" class="sidebar-link"><i class="bi bi-journal-check"></i> آزمون‌های شرکت‌کرده</a>
+      <a href="{% url 'dashboard:report-third' %}" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> نمودار ها</a>
+      <a href="{% url 'dashboard:report-second-list' %}" class="sidebar-link"><i class="bi bi-collection"></i> کارنامه ها</a>
+      <a href="{% url 'dashboard:quiz-list' %}" class="sidebar-link"><i class="bi bi-list-columns"></i>  ازمون های برگذار شده</a>
+ 
 
+      
       <div class="nav-section-title">سوالات و مقالات مورد علاقه</div>
 
-      <a href="{% url 'dashboard:qbank-list' %}" class="sidebar-link"><i class="bi bi-bank"></i> بانک سوالات  </a>
       <a href="{% url 'dashboard:blog-list' %}" class="sidebar-link"><i class="bi bi-bank"></i> مقالات </a>
+      <a href="{% url 'dashboard:qbank-list' %}" class="sidebar-link"><i class="bi bi-bank"></i> سوالات </a>
       <a href="{% url 'dashboard:favorate-quiz-list' %}" class="sidebar-link"><i class="bi bi-bank"></i> ازمون ها</a>
       <div class="nav-section-title">پشتیبانی</div>
 

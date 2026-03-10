@@ -3,7 +3,8 @@
 
 {% extends "dashboard/base/base.html" %}
 
- 
+ {% load jalali_tags %}
+ {% load tdc %}
   {% block header %}
 
   
@@ -50,8 +51,13 @@
     .exam-card.excellent::before{background:var(--gradient-1);}
     .exam-card.good::before{background:var(--gradient-2);}
     .exam-card.average::before{background:linear-gradient(135deg,#fdcb6e,#e17055);}
+    .exam-card.bad::before{background:linear-gradient(135deg,#fd7f6e,#e15555);}
     .exam-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover);}
     .exam-score{font-size:2.2rem;font-weight:900;}
+    .color-success{color:var(--success);}
+    .color-warning{color:#d9a010;}
+    .color-danger{color:var(--danger);}
+    .color-info{color:var(--primary);}
     .donut-ring{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--color) calc(var(--pct)*1%),var(--border) 0);}
     @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
   </style>
@@ -74,136 +80,44 @@
     </div>
   </div>
 
-  <!-- Stats -->
-  <div class="row g-3 mb-4 animate-in delay-1">
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--primary);">۴۷</div><div style="font-size:0.8rem;color:var(--text-muted);">کل آزمون‌ها</div></div></div>
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--success);">۷۸٪</div><div style="font-size:0.8rem;color:var(--text-muted);">میانگین درصد</div></div></div>
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--secondary);">۳۵</div><div style="font-size:0.8rem;color:var(--text-muted);">نتیجه موفق</div></div></div>
-    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--warning);">۲۴ دقیقه</div><div style="font-size:0.8rem;color:var(--text-muted);">میانگین زمان</div></div></div>
-  </div>
-
-  <!-- Exam Cards Grid -->
   <div class="row g-3 animate-in delay-2" id="examGrid">
-    <div class="col-md-4 col-lg-3">
-      <div class="exam-card excellent" onclick="location.href='08-exam-detail.html'">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <span class="badge-status badge-success">عالی</span>
-          <span style="font-size:0.75rem;color:var(--text-muted);">۱۴۰۳/۰۹/۱۵</span>
+
+    {% for item in items %}
+        {{ item.status_level }}
+        <div class="col-md-4 col-lg-3">
+          <div class="exam-card {% cycle  'good'  'excellent' 'average'  'bad'    %} " 
+            onclick="location.href='{% if item.status == status.WAITING_START or item.status ==  status.STARTED or item.status ==  item.WAITING_END %}{{item.get_absolute_url}}{% elif item.status == status.WAITING_CORRECTION or item.status == status.CORRECTED or item.status == status.RESULTS_PUBLISHED or item.status == status.FINISHED  %}{% url 'dashboard:quiz-detail' item.pk %}{% endif %}'">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="badge-status badge-{% cycle 'success' 'info' 'warning' 'danger'  %}">{{ item.status }}</span>
+              <span class="badge-status badge-{% cycle 'success' 'info' 'warning' 'danger'  %}">{% if item.is_online %}ازمون انلاین{% else %}ازمون حضوری {% endif %}</span>
+    
+              <span class="badge-status badge-{% cycle 'success' 'info' 'warning' 'danger'  %}" style="font-size:0.75rem;">{{ item.start_at|to_jalali:"%Y/%m/%d" }} </span>
+            </div>
+            <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.5rem; " class="{% cycle 'color-success' 'color-info' 'color-warning' 'color-danger'   %}">{{ item.name }}</div>
+            <div style="font-weight:800;font-size:0.6rem;margin-bottom:0.5rem; " class="{% cycle 'color-success' 'color-info' 'color-warning' 'color-danger'   %}">{{ item.section }}</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">{{item.question_count}} سوال • {{ item.time_minutes }} دقیقه     </div>
+            <div class="d-flex align-items-center justify-content-between ">
+              <div class=" {% cycle 'color-success' 'color-info'  'color-warning' 'color-danger'  %}"  >{% if item.price > 0 %}{{ item.price|tdc }} تومان {% else %} رایگان {% endif %}</div>
+              <div style="text-align:left;font-size:0.75rem;color:var(--text-muted);">
+                          <span class="badge-status badge-{% cycle 'success' 'info' 'warning' 'danger'  %}">{{ item.grade.name }}</span>
+              <span class="badge-status badge-{% cycle 'success' 'info' 'warning' 'danger'  %}">{{ item.major.name }}</span>
+              <span class="badge-status badge-{% cycle 'success' 'info' 'warning' 'danger'  %}">{{ item.lession.name }}</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.5rem;">آزمون جامع ریاضی</div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">۴۵ سوال • ۹۰ دقیقه • سری الف</div>
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="exam-score" style="color:var(--primary);">۸۵٪</div>
-          <div style="text-align:left;font-size:0.75rem;color:var(--text-muted);">رتبه<br><strong style="font-size:1rem;color:var(--primary);">۱۲</strong></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 col-lg-3">
-      <div class="exam-card good" onclick="location.href='08-exam-detail.html'">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <span class="badge-status badge-info">خوب</span>
-          <span style="font-size:0.75rem;color:var(--text-muted);">۱۴۰۳/۰۸/۲۸</span>
-        </div>
-        <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.5rem;">آزمون فیزیک فصل سوم</div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">۳۵ سوال • ۷۰ دقیقه • سری ب</div>
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="exam-score" style="color:var(--secondary);">۷۲٪</div>
-          <div style="text-align:left;font-size:0.75rem;color:var(--text-muted);">رتبه<br><strong style="font-size:1rem;color:var(--secondary);">۲۵</strong></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 col-lg-3">
-      <div class="exam-card excellent" onclick="location.href='08-exam-detail.html'">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <span class="badge-status badge-success">عالی</span>
-          <span style="font-size:0.75rem;color:var(--text-muted);">۱۴۰۳/۰۸/۱۰</span>
-        </div>
-        <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.5rem;">آزمون ادبیات فارسی</div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">۴۰ سوال • ۸۰ دقیقه • سری الف</div>
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="exam-score" style="color:var(--success);">۹۱٪</div>
-          <div style="text-align:left;font-size:0.75rem;color:var(--text-muted);">رتبه<br><strong style="font-size:1rem;color:var(--success);">۵</strong></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 col-lg-3">
-      <div class="exam-card average" onclick="location.href='08-exam-detail.html'">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <span class="badge-status badge-warning">متوسط</span>
-          <span style="font-size:0.75rem;color:var(--text-muted);">۱۴۰۳/۰۷/۲۵</span>
-        </div>
-        <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.5rem;">آزمون زبان انگلیسی</div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">۵۰ سوال • ۶۰ دقیقه • سری ج</div>
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="exam-score" style="color:var(--danger);">۶۳٪</div>
-          <div style="text-align:left;font-size:0.75rem;color:var(--text-muted);">رتبه<br><strong style="font-size:1rem;color:var(--danger);">۴۸</strong></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 col-lg-3">
-      <div class="exam-card good" onclick="location.href='08-exam-detail.html'">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <span class="badge-status badge-info">خوب</span>
-          <span style="font-size:0.75rem;color:var(--text-muted);">۱۴۰۳/۰۷/۰۵</span>
-        </div>
-        <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.5rem;">آزمون شیمی فصل دوم</div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">۳۰ سوال • ۵۰ دقیقه • سری الف</div>
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="exam-score" style="color:#d9a010;">۶۸٪</div>
-          <div style="text-align:left;font-size:0.75rem;color:var(--text-muted);">رتبه<br><strong style="font-size:1rem;color:#d9a010;">۳۲</strong></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 col-lg-3">
-      <div class="exam-card excellent" onclick="location.href='08-exam-detail.html'">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <span class="badge-status badge-success">عالی</span>
-          <span style="font-size:0.75rem;color:var(--text-muted);">۱۴۰۳/۰۶/۲۰</span>
-        </div>
-        <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.5rem;">آزمون حساب دیفرانسیل</div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">۳۵ سوال • ۷۰ دقیقه • سری ب</div>
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="exam-score" style="color:var(--primary);">۸۸٪</div>
-          <div style="text-align:left;font-size:0.75rem;color:var(--text-muted);">رتبه<br><strong style="font-size:1rem;color:var(--primary);">۸</strong></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 col-lg-3">
-      <div class="exam-card good" onclick="location.href='08-exam-detail.html'">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <span class="badge-status badge-info">خوب</span>
-          <span style="font-size:0.75rem;color:var(--text-muted);">۱۴۰۳/۰۶/۰۱</span>
-        </div>
-        <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.5rem;">آزمون معماری پایه</div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">۲۵ سوال • ۴۵ دقیقه • سری الف</div>
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="exam-score" style="color:var(--secondary);">۷۵٪</div>
-          <div style="text-align:left;font-size:0.75rem;color:var(--text-muted);">رتبه<br><strong style="font-size:1rem;color:var(--secondary);">۲۰</strong></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 col-lg-3">
-      <div class="exam-card average" onclick="location.href='08-exam-detail.html'">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-          <span class="badge-status badge-warning">متوسط</span>
-          <span style="font-size:0.75rem;color:var(--text-muted);">۱۴۰۳/۰۵/۱۵</span>
-        </div>
-        <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.5rem;">آزمون زیست‌شناسی</div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">۴۰ سوال • ۶۰ دقیقه • سری ج</div>
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="exam-score" style="color:#d9a010;">۶۵٪</div>
-          <div style="text-align:left;font-size:0.75rem;color:var(--text-muted);">رتبه<br><strong style="font-size:1rem;color:#d9a010;">۳۸</strong></div>
-        </div>
-      </div>
-    </div>
+        {% empty %}
+          <!-- Load more -->
+          <div class="text-center mt-4 animate-in delay-3 good">
+            <button  style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.75rem 2.5rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(92, 231, 127, 0.35);">
+              شما تا به حال در ازمونی شرکت نکردید
+            </button>
+          </div>
+    {% endfor %}
+
   </div>
 
-  <!-- Load more -->
-  <div class="text-center mt-4 animate-in delay-3">
-    <button style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.75rem 2.5rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);">
-      <i class="bi bi-arrow-down-circle"></i> بارگذاری بیشتر (۳۹ آزمون دیگر)
-    </button>
-  </div>
+
 
 </div></main>
 {% endblock   %}
