@@ -130,16 +130,42 @@
             </div>
             <div class="progress-custom"><div class="progress-fill warm" style="width: {{ item.filled_capacity|percent:item.capacity }}%;"></div></div>
           </div>
-
-
-          <a href="{% url 'quiz:quiz-start' pk=item.id %}" class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" >
-            <i class="bi bi-play-fill me-2"></i> ورود
+ 
+          {% if item and item.stop_at < now %}
+            <a href="#" class="btn-purple-gradient btn w-100 btn-lg mt-4 mb-3" >
+              <i class="bi bi-play-fill me-2"></i>  ازمون پایان یافت
+            </a>
+          
+          {%  elif quiz.price > 0 %}
+            <a href="{% url 'orders:add' pk=item.id %}" class="btn-success-gradient  btn w-100 btn-lg mt-4 mb-3" >
+            <i class="bi bi-play-fill me-2"></i>  ورود به ازمون
           </a>
           
-          <a href="{% url 'quiz:quiz-start' pk=item.id %}" class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" >
-            <i class="bi bi-play-fill me-2"></i> ثبت نام و شروع
-          </a>
+          {%  elif not quiz_in_order %}
+            <a href="{% url 'orders:add' pk=item.id %}" class="btn-success-gradient  btn w-100 btn-lg mt-4 mb-3" >
+              <i class="bi bi-play-fill me-2"></i>  ثبت نام و شرکت در ازمون
+            </a>
+          {% elif  quiz_in_order %}
+            {% if item and order and item.start_at >= now and order.order.status == order_status.paid %}
+              
+              <a href="{% url 'quiz:quiz-start' pk=item.id %}" class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" >
+                <i class="bi bi-play-fill me-2"></i>  ورود به ازمون
+              </a>
+            {% else %}
+              {% if order and order.order.status == order_status.active  %}
 
+                <a href="{% url 'dashboard:order-detail' order.order.id %}" class="btn-purple-gradient btn w-100 btn-lg mt-4 mb-3" >
+                  سبد خرید شما هنوز پرداخت نشده میباشد
+                </a>
+
+              {% else %}
+
+                <a href="#" class="btn-purple-gradient btn w-100 btn-lg mt-4 mb-3" >
+                  ازمون هنوز شروع نشده
+                </a>
+              {% endif %}
+            {% endif %}
+          {% endif %}
           
           <div class="d-flex gap-2">
             {% if item in user.favorate.quiz.all  %}

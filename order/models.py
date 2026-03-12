@@ -1,6 +1,7 @@
 from django.db import models
 from quiz.models import Quiz
 from user.models import User
+from django.urls import reverse
 
 
 class Order(models.Model):
@@ -33,22 +34,46 @@ class Order(models.Model):
         verbose_name = 'سبد خرید'
         verbose_name_plural = 'سبد های خرید'
 
+    def get_absolute_url(self):
+        return reverse("dashboard:order-detail", kwargs={"pk": self.pk})
+    
+    def get_payment_price(cls):
+        
+        if cls.status == cls.OrderStatus.active or cls.final_price is None:
+            price = 0 
+            for item in cls.details.filter(is_active=True).all():
+                price += item.get_item_price()
+                
+            cls.final_price = price
+            cls.save()
+            return price
+        else:
+            return cls.final_price 
+            
 
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order, related_name='details', on_delete=models.PROTECT, verbose_name='سبد خرید')
     quiz = models.ForeignKey(Quiz, related_name='orders', on_delete=models.PROTECT, verbose_name='ازمون')
     price = models.PositiveBigIntegerField(verbose_name='قیمت', null=True, blank=True)
-    create_at = models.DateTimeField(auto_now_add=True,  verbose_name='تاریخ ساخت')
+    create_at = models.DateTimeField(auto_now_add=True,  verbose_name='تاریخ افزودن')
     is_active = models.BooleanField(default=True, verbose_name='فعال بودن')
 
 
     def __str__(self):
-        return f'{self.id} - {self.user.id} - {self.status}'
+        return f'{self.quiz.name} - {self.id} - {self.order.user.id} - {self.order.status}'
     
     class Meta:
         verbose_name = 'جزییات سفارش'
         verbose_name_plural = 'جزییات سفارشات'
 
+    def get_item_price(cls):
+        if cls.order.status == Order.OrderStatus.active or cls.price is None:
+            cls.price = cls.quiz.price
+            cls.save()
+            return cls.quiz.price
+        else:
+            return cls.price
+            
 
 class Discount(models.Model):
     user = models.ManyToManyField(User,related_name='discounts', verbose_name='کاربر',   )

@@ -12,6 +12,7 @@ from django.utils.timezone import now
 from .forms import QuizSearchForm
 import random
 from django.db.models import Q
+from order.models import Order, OrderDetail
 
 # Create your views here.
 
@@ -243,8 +244,6 @@ class QuizStarted(LoginRequiredMixin, View):
         }
         return render(request, 'main/exam/start-exam.html', context)
     
-
-
 class AddToFavorate(LoginRequiredMixin, RedirectView):
     """for add quiz to favorate"""
 
@@ -271,7 +270,6 @@ class AddToFavorate(LoginRequiredMixin, RedirectView):
             print(self.__class__.__name__, E)
 
         return reverse('quiz:detail', kwargs={'pk':quiz_id})
-
 
 class RemoveToFavorate(LoginRequiredMixin, RedirectView):
     """for add quiz to favorate"""
@@ -300,7 +298,6 @@ class RemoveToFavorate(LoginRequiredMixin, RedirectView):
             print(self.__class__.__name__, E)
 
         return reverse('quiz:detail', kwargs={'pk':quiz_id})
-
 
 class QuizListDetailView(ListView):
     """
@@ -404,7 +401,25 @@ class QuizListDetailView(ListView):
 
         if not pk :
             data['form'] = QuizSearchForm(self.request.GET or None)
+        else :
+            if self.request.user.is_authenticated:
 
+                order = OrderDetail.objects.filter(
+                    order__user=self.request.user, 
+                    quiz__pk=pk,
+                ).filter(
+                    Q(order__status=Order.OrderStatus.active) | Q(order__status=Order.OrderStatus.paid)  
+                )
+                
+                data['quiz_in_order'] = order.exists()
+                data['order'] = order.first()
+                data['order_status'] = Order.OrderStatus
+
+            else:
+                data['quiz_in_order'] = False
+
+            data['now'] = now()
+            
  
         return data
  

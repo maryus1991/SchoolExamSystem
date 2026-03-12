@@ -30,6 +30,8 @@ urlpatterns = [
 
     path('order/', views.orders.OrdersList.as_view(), name='order-list'), 
     path('order/<int:pk>/details/', views.orders.OrderDetailsList.as_view(), name='order-detail'), 
+    path('order/<int:pk>/cancel/', views.orders.CancelOrder.as_view(), name='order-cancel'), 
+    path('order/<int:pk>/delete/<int:detail_id>', views.orders.DeleteDetailOfOrder.as_view(), name='order-detail-delete'), 
 
     # ticket
 
