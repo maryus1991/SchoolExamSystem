@@ -1,7 +1,7 @@
 roadmap 
     -> fix the main page in dashboard 
     -> fix the nemodar page 
-    -> split the select question page and conform the quiz page 
+
  
 
 phase 1 todo list
@@ -12,7 +12,6 @@ phase 1 todo list
     responsive the image and pdf showing qbank and exam start page
     add site setting permmition 
     add negetive score
-    add sanatorium link in header
 
 
 phase 2 todo list
@@ -23,6 +22,7 @@ phase 2 todo list
     fix the nemodare page 
     fix the responsive of dashboard panel and order detail
 
+  
 phase 3 todo list 
 
 

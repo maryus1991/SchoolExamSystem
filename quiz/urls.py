@@ -6,6 +6,7 @@ app_name='quiz'
 urlpatterns = [
     path('', views.QuizListDetailView.as_view(), name='list'),
     path('<int:pk>', views.QuizListDetailView.as_view(), name='detail'),
+    path('<int:pk>/set-detail/', views.SetQuizDetailForUser.as_view(), name='set-details'),
     path('<int:pk>/started/', views.QuizStarted.as_view(), name='quiz-start'),
     path('<int:pk>/finished/', views.QuizFinished.as_view(), name='quiz-finished'),
     path('<int:pk>/started/<int:question_id>', views.QuizStarted.as_view(), name='quiz-start-quesion-id'),

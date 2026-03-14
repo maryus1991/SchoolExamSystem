@@ -211,9 +211,7 @@ width="360" height="360"
             {% endif %}
           <!-- Navigation buttons -->
           <div class="d-flex justify-content-between mt-4">
-            {% comment %} <button class="btn-outline-custom btn" disabled>
-              <i class="bi bi-arrow-right me-2"></i> سوال قبلی
-            </button> {% endcomment %}
+ 
             <a href='{% url "quiz:quiz-skipped-quesion-id" pk=quiz.id question_id=question.id %}' class="btn-purple-gradient  btn" >
                   رد کردن سوال
             </a>
@@ -266,37 +264,7 @@ width="360" height="360"
       </div>
     </div>
   </div>
-  <!-- Submit Confirmation Modal -->
-  {% comment %} <div class="modal fade " id="submitModal" >
-    <div class="modal-dialog modal-dialog-centered modal-custom">
-      <div class="modal-content">
-        <div class="modal-header border-bottom-0 pb-0">
-          <h5 class="modal-title fw-700">تأیید ارسال آزمون</h5>
-        </div>
-        <div class="modal-body py-4">
-          <div style="text-align:center;margin-bottom:20px;">
-            <div style="font-size:3rem;margin-bottom:12px;">⚠️</div>
-            <p class="mb-0" style="font-size:0.9rem;color:var(--text-secondary);">آیا مطمئن هستید که می‌خواهید آزمون را به پایان برسانید؟</p>
-          </div>
-          <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:16px;margin-bottom:4px;">
-            <div class="d-flex justify-content-between mb-2" style="font-size:0.875rem;">
-              <span class="text-secondary">سوالات پاسخ داده:</span><span class="fw-700 text-success">۲ سوال</span>
-            </div>
-            <div class="d-flex justify-content-between mb-2" style="font-size:0.875rem;">
-              <span class="text-secondary">سوالات رد شده:</span><span class="fw-700" style="color:var(--warm-500);">۱ سوال</span>
-            </div>
-            <div class="d-flex justify-content-between" style="font-size:0.875rem;">
-              <span class="text-secondary">سوالات پاسخ نشده:</span><span class="fw-700 text-danger">۳۷ سوال</span>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn" style="border:2px solid var(--border-color);border-radius:var(--radius-full);font-family:inherit;padding:9px 20px;background:var(--bg-card);color:var(--text-secondary);" data-bs-dismiss="modal">بازگشت به آزمون</button>
-          <button class="btn-danger btn" style="background:var(--gradient-warm);border:none;border-radius:var(--radius-full);font-family:inherit;font-weight:700;padding:9px 20px;" onclick="showPage('student-dashboard')">ارسال نهایی</button>
-        </div>
-      </div>
-    </div>
-  </div> {% endcomment %}
+ 
 </div>
 
 

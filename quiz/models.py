@@ -42,7 +42,7 @@ class Quiz(models.Model):
     start_at = models.DateTimeField(verbose_name='زمان برگذاری')
     stop_at = models.DateTimeField(verbose_name='زمان پایان')
     last_enter = models.DateTimeField(verbose_name='اخرین زمان ورود')
-    finished_at = models.DateTimeField(verbose_name='زمان تمام شدن توسط کاربر', null=True, blank=True)
+
     corrected_at = models.DateTimeField(verbose_name='زمان تصحیح', null=True, blank=True)
 
     max_score = models.PositiveSmallIntegerField(verbose_name='حداکثر نمره', default=100)
@@ -83,26 +83,25 @@ class Quiz(models.Model):
     def get_absolute_url(self):
         return reverse("quiz:detail", kwargs={"pk": self.pk})
 
-def photo_path_upload_to(instance, filename):
-    return f"questions/{get_random_string(100)}-{filename}"
-
 
 class UserQuizDetail(models.Model):
     quiz = models.ForeignKey('Quiz', on_delete=models.PROTECT, related_name='detail', verbose_name='آزمون')
     student = models.ForeignKey(User, on_delete=models.PROTECT, related_name='quiz_detail', verbose_name='دانش اموز')
-    finished_at = models.DateTimeField(verbose_name='زمان تمام شدن توسط کاربر', null=True, blank=True)
+    student_finished_at = models.DateTimeField(verbose_name='زمان خروج کاربر از ازمون', null=True, blank=True)
+    student_start_at = models.DateTimeField(verbose_name='زمان ورود کاربر به ازمون', auto_now_add=True)
     out_of_page = models.PositiveSmallIntegerField(verbose_name='خروج از صفحه', default=0)
     score = models.PositiveSmallIntegerField(verbose_name='نمره کل', default=0)
 
     class Meta:
         verbose_name = 'جزییات ازمون برای دانش اموزان'
         verbose_name_plural = 'جزییات ازمون ها برای دانش اموزان'
- 
-            
 
     def __str__(self):
         return f"{self.id} - {self.quiz.name} - {self.student.PhoneNumber}"
 
+
+def photo_path_upload_to(instance, filename):
+    return f"questions/{get_random_string(100)}-{filename}"
 
 class Question(models.Model):
 
