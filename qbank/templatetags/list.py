@@ -4,9 +4,12 @@ register = template.Library()
 
 
 @register.filter
-def list_index(list, id):
+def list_index(lis, id):
+    lis = list(lis)
     try:
-        return list[id]
+        return lis[id]
     except Exception as E:
         return 0
+ 
+
  

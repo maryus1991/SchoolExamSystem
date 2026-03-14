@@ -1,6 +1,7 @@
 roadmap 
-    -> fix the main page in dashboard 
+ 
     -> fix the nemodar page 
+    -> test the exam page
 
  
 
@@ -18,7 +19,6 @@ phase 2 todo list
     fix the search bar in favorate quiz qbank blog 
     fix the pagination in favorate and ticket list and report/second/
     fix the colors in report/second/
-    fix the main dashboard page 
     fix the nemodare page 
     fix the responsive of dashboard panel and order detail
 

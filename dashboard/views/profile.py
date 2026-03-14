@@ -6,12 +6,35 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.forms import ChangePhoneNumberNaitnalID 
 from user.models import User
 from django.contrib.auth import logout
+from django.db.models.aggregates import Avg
 
 # Create your views here.
 
 
 class Dashboard(TemplateView):
     template_name = 'dashboard/profile/01-profile.html'
+
+    def get_context_data(self, **kwargs):
+        data =  super().get_context_data(**kwargs)
+
+        quiz = self.request.user.quiz_student.filter(is_active=True)
+
+        data['quiz_count'] = quiz.count()
+        data['exams'] = quiz.all()[:6]
+
+        questions_count = 0
+        for item in quiz.all():
+            questions_count += int(item.questions.count())
+
+        data['questions_count'] = questions_count
+
+        user_report = self.request.user.reports
+        data['best_order'] = user_report.order_by('order').first().order
+        data['reports'] = user_report.order_by('percent').all()[:6]
+        data['avg_exams_percents'] = sum(user_report.values_list('percent', flat=True)) / (100 * len(user_report.values_list('percent', flat=True)))  
+
+
+        return data
 
 
 class Profile(LoginRequiredMixin, View):

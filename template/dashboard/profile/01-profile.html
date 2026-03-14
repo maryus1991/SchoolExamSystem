@@ -1,5 +1,6 @@
 {% extends "dashboard/base/base.html" %}
-
+{% load list %}
+{% load jalali_tags %}
 
 {% block header %}
   <link rel="stylesheet" href="/static/css/dashboard/main.css">
@@ -15,25 +16,24 @@
       <!-- Profile Hero -->
       <div class="profile-hero animate-fade-up">
         <div class="d-flex align-items-center gap-3 flex-wrap">
-          <div class="profile-avatar-lg floating">ع</div>
+          <div class="profile-avatar-lg floating">{{ user.first_name|list_index:0|default:'-' }}</div>
           <div class="flex-grow-1 text-white">
             <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-              <h4 class="mb-0 fw-800" style="font-size:1.5rem;">علی محمدی</h4>
-              <span class="hero-badge"><i class="bi bi-patch-check-fill"></i> دانش‌آموز ممتاز</span>
+              <h4 class="mb-0 fw-800" style="font-size:1.5rem;">{{ user.get_full_name }}</h4>
+              <span class="hero-badge"><i class="bi bi-patch-check-fill"></i> دانش‌آموز ممتاز مدرسه {{ user.school }} </span>
             </div>
-            <p class="mb-2 opacity-75" style="font-size:0.9rem;">کاربر از ۱۴۰۲ • رشته ریاضی-فیزیک • پایه دوازدهم</p>
+            <p class="mb-2 opacity-75" style="font-size:0.9rem;">کاربر از {{ user.date_joined|to_jalali:'%Y' }} • رشته {{ user.major.name }} •  پایه {{ user.grade.name }}</p>
             <div class="d-flex gap-2 flex-wrap">
-              <span class="hero-badge"><i class="bi bi-calendar3"></i> آخرین ورود: امروز ۱۴:۳۲</span>
-              <span class="hero-badge"><i class="bi bi-trophy"></i> رتبه ۱۲ در آزمون‌ها</span>
+              <span class="hero-badge"><i class="bi bi-calendar3"></i> آخرین ورود: {{ user.last_login|to_jalali }}</span>
+              <!-- <span class="hero-badge"><i class="bi bi-trophy"></i> رتبه ۱۲ در آزمون‌ها</span> -->
             </div>
           </div>
           <div class="d-flex gap-2 flex-wrap mt-3 mt-md-0">
-            <a href="11-account.html" class="btn btn-sm" style="background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.4);border-radius:10px;font-family:'Vazirmatn',sans-serif;backdrop-filter:blur(10px);">
+            
+            <a href="{% url 'dashboard:profile' %}" class="btn btn-sm" style="background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.4);border-radius:10px;font-family:'Vazirmatn',sans-serif;backdrop-filter:blur(10px);">
               <i class="bi bi-pencil"></i> ویرایش پروفایل
             </a>
-            <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:10px;font-family:'Vazirmatn',sans-serif;">
-              <i class="bi bi-share"></i> اشتراک‌گذاری
-            </button>
+            
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
         <div class="col-6 col-md-3 animate-fade-up anim-delay-1">
           <div class="glass-card stat-card card-gradient-1">
             <div class="stat-icon mb-2"><i class="bi bi-journal-check"></i></div>
-            <div class="stat-value">۴۷</div>
+            <div class="stat-value">{{quiz_count}}</div>
             <div class="stat-label">آزمون شرکت‌کرده</div>
             <div class="mt-2"><span class="stat-change"><i class="bi bi-arrow-up-short"></i>۵ این ماه</span></div>
           </div>
@@ -51,7 +51,7 @@
         <div class="col-6 col-md-3 animate-fade-up anim-delay-2">
           <div class="glass-card stat-card card-gradient-2">
             <div class="stat-icon mb-2"><i class="bi bi-bar-chart-line"></i></div>
-            <div class="stat-value">۷۸٪</div>
+            <div class="stat-value">{{avg_exams_percents}}٪</div>
             <div class="stat-label">میانگین درصد</div>
             <div class="mt-2"><span class="stat-change"><i class="bi bi-arrow-up-short"></i>+۴٪ نسبت به قبل</span></div>
           </div>
@@ -59,7 +59,7 @@
         <div class="col-6 col-md-3 animate-fade-up anim-delay-3">
           <div class="glass-card stat-card card-gradient-3">
             <div class="stat-icon mb-2"><i class="bi bi-bank2"></i></div>
-            <div class="stat-value">۱۲۴</div>
+            <div class="stat-value">{{questions_count}}</div>
             <div class="stat-label">سوال حل‌شده</div>
             <div class="mt-2"><span class="stat-change"><i class="bi bi-check2-all"></i> ۱۲ امروز</span></div>
           </div>
@@ -67,7 +67,7 @@
         <div class="col-6 col-md-3 animate-fade-up anim-delay-4">
           <div class="glass-card stat-card" style="background:linear-gradient(135deg,#fdcb6e,#e17055);color:white;border:none;">
             <div class="stat-icon mb-2"><i class="bi bi-trophy"></i></div>
-            <div class="stat-value">۱۲</div>
+            <div class="stat-value">{{best_order}}</div>
             <div class="stat-label">رتبه کلی</div>
             <div class="mt-2"><span class="stat-change"><i class="bi bi-arrow-up-short"></i>۳ پله ارتقا</span></div>
           </div>
@@ -78,42 +78,22 @@
         <!-- Skills Progress -->
         <div class="col-lg-6">
           <div class="glass-card p-4 h-100 animate-fade-up">
-            <div class="section-title mb-4">عملکرد درسی</div>
-            <div class="mb-3">
-              <div class="d-flex justify-content-between mb-1">
-                <span style="font-size:0.88rem;font-weight:600;">ریاضی</span>
-                <span style="font-size:0.82rem;color:var(--primary);font-weight:700;">۸۵٪</span>
+            <div class="section-title mb-4">کارنامه های صادر شده</div>
+
+            {% for item in reports %}
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                  <a href='{% url "dashboard:report-second-list"   %}' style="font-size:0.88rem;font-weight:600;">{{item.quiz.name}}</a>
+                  <span style="font-size:0.82rem;color:var({% cycle '--primary' '--secondary' '--accent' '--success' '--warning' %});font-weight:700;">{{item.percent}}٪</span>
+                </div>
+                <div class="skill-bar"><div class="skill-bar-fill" style="width:{{item.percent}}%;background: {% cycle 'var(--gradient-1)' 'var(--gradient-2)' 'var(--gradient-3)' 'linear-gradient(90deg,#00b894,#00cec9)' 'linear-gradient(90deg,#fdcb6e,#e17055)' %};"></div></div>
               </div>
-              <div class="skill-bar"><div class="skill-bar-fill" style="width:85%;background:var(--gradient-1);"></div></div>
-            </div>
-            <div class="mb-3">
-              <div class="d-flex justify-content-between mb-1">
-                <span style="font-size:0.88rem;font-weight:600;">فیزیک</span>
-                <span style="font-size:0.82rem;color:var(--secondary);font-weight:700;">۷۲٪</span>
-              </div>
-              <div class="skill-bar"><div class="skill-bar-fill" style="width:72%;background:var(--gradient-2);"></div></div>
-            </div>
-            <div class="mb-3">
-              <div class="d-flex justify-content-between mb-1">
-                <span style="font-size:0.88rem;font-weight:600;">شیمی</span>
-                <span style="font-size:0.82rem;color:var(--accent);font-weight:700;">۶۸٪</span>
-              </div>
-              <div class="skill-bar"><div class="skill-bar-fill" style="width:68%;background:var(--gradient-3);"></div></div>
-            </div>
-            <div class="mb-3">
-              <div class="d-flex justify-content-between mb-1">
-                <span style="font-size:0.88rem;font-weight:600;">ادبیات فارسی</span>
-                <span style="font-size:0.82rem;color:var(--success);font-weight:700;">۹۱٪</span>
-              </div>
-              <div class="skill-bar"><div class="skill-bar-fill" style="width:91%;background:linear-gradient(90deg,#00b894,#00cec9);"></div></div>
-            </div>
-            <div class="mb-0">
-              <div class="d-flex justify-content-between mb-1">
-                <span style="font-size:0.88rem;font-weight:600;">زبان انگلیسی</span>
-                <span style="font-size:0.82rem;color:var(--warning);font-weight:700;">۶۳٪</span>
-              </div>
-              <div class="skill-bar"><div class="skill-bar-fill" style="width:63%;background:linear-gradient(90deg,#fdcb6e,#e17055);"></div></div>
-            </div>
+              {% empty %}
+              <p class='btn p-4 text-white  w-100' style="font-size:0.82rem;background:var(--gradient-1);">
+                برای شما هنوز کارنامه ای صادر نشده است
+              </p>
+            {% endfor %}
+ 
           </div>
         </div>
 
@@ -121,62 +101,29 @@
         <div class="col-lg-6">
           <div class="glass-card p-4 h-100 animate-fade-up anim-delay-2">
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <div class="section-title">فعالیت اخیر</div>
-              <a href="#" style="font-size:0.8rem;color:var(--primary);text-decoration:none;font-weight:600;">مشاهده همه</a>
+              <div class="section-title">ازمون های برگذار شده</div>
+              <a href="{% url 'dashboard:quiz-list' %}" style="font-size:0.8rem;color:var(--primary);text-decoration:none;font-weight:600;">مشاهده همه</a>
             </div>
+            
+            {% for item in exams %}
             <div class="timeline-item">
               <div class="timeline-icon" style="background:rgba(108,92,231,0.12);color:var(--primary);">
                 <i class="bi bi-journal-check"></i>
               </div>
+              
               <div class="flex-grow-1">
-                <div style="font-size:0.88rem;font-weight:600;">آزمون جامع ریاضی</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);">نمره: ۱۷.۵ از ۲۰ • درصد: ۸۵٪</div>
+                <div style="font-size:0.88rem;font-weight:600;">{{ item.name }}</div>
+                <div style="font-size:0.78rem;color:var(--text-muted);">{{item.major.name}} • {{item.lession.name}} • {{item.grade.name}}  </div>
               </div>
-              <span class="badge-status badge-success">عالی</span>
+              <span class="badge-status badge-{% cycle 'success' 'info' 'warning' 'danger' %}">{{item.status}}</span>
             </div>
-            <div class="timeline-item">
-              <div class="timeline-icon" style="background:rgba(0,206,201,0.12);color:var(--secondary);">
-                <i class="bi bi-bank2"></i>
-              </div>
-              <div class="flex-grow-1">
-                <div style="font-size:0.88rem;font-weight:600;">۱۲ سوال از بانک فیزیک</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);">درصد صحیح: ۷۵٪ • مدت: ۲۸ دقیقه</div>
-              </div>
-              <span class="badge-status badge-info">انجام‌شده</span>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-icon" style="background:rgba(253,203,110,0.15);color:#d9a010;">
-                <i class="bi bi-file-earmark-bar-graph"></i>
-              </div>
-              <div class="flex-grow-1">
-                <div style="font-size:0.88rem;font-weight:600;">کارنامه ثانویه آزمون ۱۲</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);">صادر شد • رتبه: ۱۵ از ۳۰۰</div>
-              </div>
-              <span class="badge-status badge-warning">جدید</span>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-icon" style="background:rgba(225,112,85,0.12);color:var(--danger);">
-                <i class="bi bi-ticket-perforated"></i>
-              </div>
-              <div class="flex-grow-1">
-                <div style="font-size:0.88rem;font-weight:600;">پاسخ تیکت شماره ۴۵</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);">پشتیبانی پاسخ داد</div>
-              </div>
-              <span class="badge-status badge-danger">پاسخ‌داده</span>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-icon" style="background:rgba(0,184,148,0.12);color:var(--success);">
-                <i class="bi bi-trophy"></i>
-              </div>
-              <div class="flex-grow-1">
-                <div style="font-size:0.88rem;font-weight:600;">دستاورد جدید: ۵۰ آزمون</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);">مدال «آزمون‌دهنده ماهر» دریافت کردی!</div>
-              </div>
-              <span class="badge-status badge-success">🏆</span>
-            </div>
+            {% endfor %}
+ 
+ 
+ 
           </div>
         </div>
-
+{% comment %} 
         <!-- Upcoming Exams -->
         <div class="col-12">
           <div class="glass-card p-4 animate-fade-up">
@@ -220,7 +167,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> {% endcomment %}
       </div>
     </div>
   </main>
