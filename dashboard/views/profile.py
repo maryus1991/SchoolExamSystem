@@ -37,10 +37,13 @@ class Dashboard(TemplateView):
         return data
 
 
+#  profile views is used in dashboard and sanatorium panel so becareful when wanna change it
+
 class Profile(LoginRequiredMixin, View):
     template_name = 'dashboard/profile/11-account.html'
 
     def get(self, request, *args, **kwargs):
+ 
         
         context = {
 
@@ -94,6 +97,12 @@ class Profile(LoginRequiredMixin, View):
                 request, form.errors
             )
 
+        
+        next_param = request.GET.get('next')
+        if next_param:
+            return redirect(next_param)
+            
+
         return self.get(request, *args, **kwargs)
 
 class ChangePasswordView(LoginRequiredMixin, View):
@@ -122,6 +131,11 @@ class ChangePasswordView(LoginRequiredMixin, View):
                 request, form.errors
             )
 
+        next_param = request.GET.get('next')
+        if next_param:
+            return redirect(next_param)
+            
+
         return redirect('dashboard:profile')
 
 class ChangePhoneNumberNaitnalIDView(LoginRequiredMixin, View):
@@ -140,7 +154,7 @@ class ChangePhoneNumberNaitnalIDView(LoginRequiredMixin, View):
             if not user.exists():
                 user = request.user
                 user.PhoneNumber = form.cleaned_data.get('PhoneNumber')
-                # user.is_verified = False
+                user.is_verified = False
                 user.save()
 
                 messages.success(
@@ -164,7 +178,7 @@ class ChangePhoneNumberNaitnalIDView(LoginRequiredMixin, View):
             if not user.exists()  :
                 user = request.user
                 user.national_id = form.cleaned_data.get('national_id')
-                # user.is_verified = False
+                user.is_verified = False
                 user.save()
 
                 messages.success(
@@ -187,4 +201,9 @@ class ChangePhoneNumberNaitnalIDView(LoginRequiredMixin, View):
                 request, form.errors
             )
 
+        next_param = request.GET.get('next')
+        if next_param:
+            return redirect(next_param)
+
         return redirect('dashboard:profile')
+    

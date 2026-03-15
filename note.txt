@@ -1,14 +1,11 @@
-roadmap 
  
-    -> fix the nemodar page 
-    -> test the exam page
 
  
 
 phase 1 todo list
     fix the search and filter of blog 
     add active section for quiz blog qbank in site setting
-    fix the exam started page
+    test the exam page  
     fix the pdf showing in qbank and exam start page
     responsive the image and pdf showing qbank and exam start page
     add site setting permmition 
@@ -62,13 +59,11 @@ admin panel pages
     quiz
         list
         create
-        detail
-
+        
         question 
             create 
             list
-            detail
-        
+
         answer 
             groplly add
             detail

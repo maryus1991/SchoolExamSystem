@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl" data-theme="light">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تصحیح سوال ۴ — علی رضایی</title>
-<!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
-<!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"> -->
-<link href="/static/css/bootstrap5.css" rel="stylesheet">
-<link href="/static/css/bootstrap5-icons.css" rel="stylesheet">
+ 
+
+  
+{% extends "sanatorium/base/base.html" %}
+
+
+  
+{% block header %}
+
 <style>
 :root{--bg-primary:#f0f4ff;--bg-surface:#ffffff;--bg-surface2:#f8faff;--bg-glass:rgba(255,255,255,0.7);--bg-glass-border:rgba(255,255,255,0.9);--sidebar-bg:rgba(255,255,255,0.85);--text-primary:#1e1b4b;--text-secondary:#6b7280;--text-muted:#9ca3af;--border-color:rgba(79,70,229,0.12);--shadow-sm:0 2px 8px rgba(79,70,229,0.08);--shadow-md:0 8px 32px rgba(79,70,229,0.12);--shadow-lg:0 20px 60px rgba(79,70,229,0.15);--gradient-primary:linear-gradient(135deg,#4f46e5,#7c3aed);--gradient-success:linear-gradient(135deg,#059669,#10b981);--gradient-warning:linear-gradient(135deg,#d97706,#f59e0b);--accent:#4f46e5;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);}
 [data-theme="dark"]{--bg-primary:#0a0a1a;--bg-surface:#13132b;--bg-surface2:#1a1a35;--bg-glass:rgba(255,255,255,0.04);--bg-glass-border:rgba(255,255,255,0.08);--sidebar-bg:rgba(19,19,43,0.95);--text-primary:#e8e8f8;--text-secondary:#a5b4fc;--text-muted:#6366f1;--border-color:rgba(99,102,241,0.2);--shadow-sm:0 2px 8px rgba(0,0,0,0.3);--shadow-md:0 8px 32px rgba(0,0,0,0.4);--shadow-lg:0 20px 60px rgba(0,0,0,0.5);}
@@ -79,53 +78,9 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .feedback-area{background:var(--bg-surface);border:1.5px solid var(--border-color);border-radius:10px;padding:12px;font-family:'Vazirmatn',sans-serif;font-size:0.85rem;color:var(--text-primary);resize:vertical;width:100%;outline:none;transition:var(--transition);}
 .feedback-area:focus{border-color:var(--accent);}
 </style>
-</head>
-<body>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-<div class="topbar">
-  <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="bi bi-list fs-5"></i></button>
-  <a href="01-dashboard.html" class="topbar-brand"><div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>آزمون‌یار</a>
-  <div class="topbar-spacer"></div>
-  <!-- Quick nav in topbar -->
-  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-    <span style="font-size:0.78rem;color:var(--text-muted);">سوال:</span>
-    <div style="display:flex;gap:3px;">
-      <div class="nav-q-btn done">۱</div>
-      <div class="nav-q-btn done">۲</div>
-      <div class="nav-q-btn done">۳</div>
-      <div class="nav-q-btn active">۴</div>
-      <div class="nav-q-btn">۵</div>
-      <div class="nav-q-btn">۶</div>
-      <div class="nav-q-btn" style="opacity:0.5;">...</div>
-    </div>
-  </div>
-  <div class="topbar-actions">
-    <button class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-moon-stars" id="themeIcon"></i></button>
-    <div class="user-avatar">مص</div>
-  </div>
-</div>
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-section-title">داشبورد</div>
-  <a href="01-dashboard.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-speedometer2"></i></div>صفحه اصلی</a>
-  <a href="02-account.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-person-badge"></i></div>اطلاعات حساب</a>
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section-title">آزمون‌ها</div>
-  <a href="08-pending-exams.html" class="sidebar-item active"><div class="si-icon"><i class="bi bi-clipboard2-check"></i></div>آزمون‌های منتظر<span class="sidebar-badge">۵</span></a>
-  <a href="07-exam-history.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-archive"></i></div>تاریخچه تصحیح‌شده</a>
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section-title">پشتیبانی</div>
-  <a href="03-tickets-list.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-ticket-perforated"></i></div>لیست تیکت‌ها</a>
-  <a href="04-send-ticket.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-send-plus"></i></div>ارسال تیکت</a>
-  <!-- Sidebar student context -->
-  <div style="margin:16px 12px 0;padding:14px;border-radius:12px;background:var(--bg-surface2);border:1px solid var(--border-color);">
-    <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:6px;">در حال تصحیح</div>
-    <div style="font-weight:700;font-size:0.88rem;">علی رضایی</div>
-    <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:2px;">سوال ۴ از ۳۵</div>
-    <div style="margin-top:8px;height:4px;background:var(--border-color);border-radius:4px;">
-      <div style="width:11%;height:100%;background:var(--gradient-primary);border-radius:4px;"></div>
-    </div>
-  </div>
-</nav>
+ {% endblock header %}
+{% block main %}
+  
 <main class="main-content">
 
   <!-- Header -->
@@ -348,8 +303,9 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   </div>
 
 </main>
-<footer class="dashboard-footer"><div>© ۱۴۰۳ آزمون‌یار</div><div>نسخه ۲.۴.۱</div></footer>
-<script src="/static/js/main/bootstrap5.bundle.min.js"></script>
+ {% endblock main %}
+{% block footer %}
+
 <script>
 function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';localStorage.setItem('theme','light');}}
 (function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();
@@ -392,5 +348,4 @@ function saveScore(){
 }
 function saveAndNext(){saveScore();setTimeout(()=>window.location.href='10-exam-questions.html',500);}
 </script>
-</body>
-</html>
+ {% endblock footer %} 

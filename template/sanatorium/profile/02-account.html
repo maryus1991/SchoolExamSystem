@@ -1,381 +1,194 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl" data-theme="light">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>اطلاعات حساب - مصحح</title>
-<!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
-<!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"> -->
-<link href="/static/css/bootstrap5.css" rel="stylesheet">
-<link href="/static/css/bootstrap5-icons.css" rel="stylesheet">
-<style>
-:root{--bg-primary:#f0f4ff;--bg-surface:#ffffff;--bg-surface2:#f8faff;--bg-glass:rgba(255,255,255,0.7);--bg-glass-border:rgba(255,255,255,0.9);--sidebar-bg:rgba(255,255,255,0.85);--text-primary:#1e1b4b;--text-secondary:#6b7280;--text-muted:#9ca3af;--border-color:rgba(79,70,229,0.12);--shadow-sm:0 2px 8px rgba(79,70,229,0.08);--shadow-md:0 8px 32px rgba(79,70,229,0.12);--shadow-lg:0 20px 60px rgba(79,70,229,0.15);--gradient-primary:linear-gradient(135deg,#4f46e5,#7c3aed);--gradient-success:linear-gradient(135deg,#059669,#10b981);--gradient-warning:linear-gradient(135deg,#d97706,#f59e0b);--gradient-hero:linear-gradient(135deg,#4f46e5 0%,#7c3aed 50%,#a78bfa 100%);--accent:#4f46e5;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);}
-[data-theme="dark"]{--bg-primary:#0a0a1a;--bg-surface:#13132b;--bg-surface2:#1a1a35;--bg-glass:rgba(255,255,255,0.04);--bg-glass-border:rgba(255,255,255,0.08);--sidebar-bg:rgba(19,19,43,0.95);--text-primary:#e8e8f8;--text-secondary:#a5b4fc;--text-muted:#6366f1;--border-color:rgba(99,102,241,0.2);--shadow-sm:0 2px 8px rgba(0,0,0,0.3);--shadow-md:0 8px 32px rgba(0,0,0,0.4);--shadow-lg:0 20px 60px rgba(0,0,0,0.5);}
-*,*::before,*::after{box-sizing:border-box;}
-body{font-family:'Vazirmatn',sans-serif;background:var(--bg-primary);color:var(--text-primary);direction:rtl;transition:var(--transition);min-height:100vh;overflow-x:hidden;}
-body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse 80% 80% at 20% 10%,rgba(79,70,229,0.08) 0%,transparent 50%),radial-gradient(ellipse 60% 60% at 80% 90%,rgba(124,58,237,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
-.topbar{position:fixed;top:0;right:0;left:0;height:64px;background:var(--bg-glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border-color);z-index:1030;display:flex;align-items:center;padding:0 24px;gap:16px;}
-.topbar-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;color:var(--accent);text-decoration:none;}
-.brand-icon{width:38px;height:38px;background:var(--gradient-primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.1rem;box-shadow:0 4px 12px rgba(79,70,229,0.4);}
-.topbar-spacer{flex:1;}
-.topbar-actions{display:flex;align-items:center;gap:8px;}
-.topbar-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-glass);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);font-size:1rem;text-decoration:none;}
-.topbar-btn:hover{background:var(--accent);color:white;border-color:var(--accent);}
-.theme-toggle{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-glass);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);}
-.theme-toggle:hover{background:var(--accent);color:white;border-color:var(--accent);}
-.user-avatar{width:38px;height:38px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;border:2px solid var(--border-color);}
-.sidebar-toggle{display:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-glass);color:var(--text-secondary);align-items:center;justify-content:center;cursor:pointer;}
-.sidebar{position:fixed;top:64px;right:0;bottom:0;width:260px;background:var(--sidebar-bg);backdrop-filter:blur(20px);border-left:1px solid var(--border-color);overflow-y:auto;z-index:1020;padding:20px 0;transition:var(--transition);}
-.sidebar-section-title{font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;padding:12px 20px 6px;}
-.sidebar-item{display:flex;align-items:center;gap:12px;padding:10px 20px;color:var(--text-secondary);text-decoration:none;font-size:0.88rem;font-weight:500;transition:var(--transition);margin:1px 12px;border-radius:10px;}
-.sidebar-item:hover{background:rgba(79,70,229,0.08);color:var(--accent);}
-.sidebar-item.active{background:var(--gradient-primary);color:white;box-shadow:0 4px 16px rgba(79,70,229,0.35);}
-.si-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(79,70,229,0.1);font-size:1rem;flex-shrink:0;transition:var(--transition);}
-.sidebar-item.active .si-icon{background:rgba(255,255,255,0.2);}
-.sidebar-badge{margin-right:auto;background:#ef4444;color:white;font-size:0.65rem;padding:2px 7px;border-radius:20px;font-weight:700;}
-.sidebar-divider{height:1px;background:var(--border-color);margin:12px 20px;}
-.main-content{margin-right:260px;margin-top:64px;padding:28px;min-height:calc(100vh - 64px);position:relative;z-index:1;}
-.glass-card{background:var(--bg-glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--bg-glass-border);border-radius:16px;box-shadow:var(--shadow-md);transition:var(--transition);overflow:hidden;}
-[data-theme="dark"] .glass-card{background:var(--bg-glass);border-color:var(--border-color);}
-.btn-gradient{background:var(--gradient-primary);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'Vazirmatn',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(79,70,229,0.35);display:inline-flex;align-items:center;gap:8px;}
-.btn-gradient:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(79,70,229,0.45);color:white;}
-.btn-glass{background:var(--bg-glass);backdrop-filter:blur(10px);border:1px solid var(--border-color);color:var(--text-primary);border-radius:10px;padding:10px 20px;font-family:'Vazirmatn',sans-serif;font-weight:500;font-size:0.88rem;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:8px;}
-.btn-glass:hover{background:rgba(79,70,229,0.1);border-color:var(--accent);color:var(--accent);}
-.section-title{font-size:1rem;font-weight:800;color:var(--text-primary);display:flex;align-items:center;gap:10px;}
-.section-title::before{content:'';width:4px;height:18px;background:var(--gradient-primary);border-radius:4px;display:block;}
-.dashboard-footer{background:var(--bg-glass);backdrop-filter:blur(20px);border-top:1px solid var(--border-color);padding:16px 28px;margin-right:260px;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--text-muted);}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-.fade-in-up{animation:fadeInUp 0.5s ease forwards;}
-.delay-1{animation-delay:0.1s;opacity:0;}.delay-2{animation-delay:0.2s;opacity:0;}.delay-3{animation-delay:0.3s;opacity:0;}
-@media(max-width:991px){.sidebar{transform:translateX(100%);}.sidebar.open{transform:translateX(0);}.main-content{margin-right:0;padding:20px 16px;}.dashboard-footer{margin-right:0;}.sidebar-toggle{display:flex!important;}.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1015;}.sidebar-overlay.show{display:block;}}
-::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-track{background:transparent;} ::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:6px;}
+{% extends "sanatorium/base/base.html" %}
+ 
+  {% block header %}
+  <style>
+    :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);--gradient-2:linear-gradient(135deg,#00CEC9 0%,#81ecec 100%);}
+    [data-theme="dark"]{--bg:#0f0e1a;--bg-2:#1a1830;--sidebar-bg:#1a1830;--card-bg:rgba(26,24,48,0.85);--card-border:rgba(162,155,254,0.15);--text-main:#e8e6ff;--text-muted:#a29bfe;--text-light:#6c6a8a;--shadow:0 8px 32px rgba(0,0,0,0.4);--topbar-bg:rgba(26,24,48,0.92);--border:rgba(162,155,254,0.12);}
+    *{font-family:'Vazirmatn',sans-serif;}body{background:var(--bg);color:var(--text-main);transition:all 0.3s;}
+ 
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate-in{animation:fadeInUp 0.5s ease forwards;}
+    .delay-1{animation-delay:0.1s;opacity:0}
+    /* Form */
+    .form-label{font-size:0.85rem;font-weight:600;margin-bottom:0.4rem;color:var(--text-muted);}
+    .form-control-custom{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:0.65rem 1rem;color:var(--text-main);font-family:Vazirmatn,sans-serif;font-size:0.88rem;outline:none;width:100%;transition:all 0.2s;}
+    .form-control-custom:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(108,92,231,0.1);}
+    /* Avatar upload */
+    .avatar-upload-area{width:120px;height:120px;border-radius:50%;border:3px dashed var(--primary-2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;background:rgba(108,92,231,0.05);position:relative;}
+    .avatar-upload-area:hover{border-color:var(--primary);background:rgba(108,92,231,0.1);}
+    .avatar-upload-area img{width:100%;height:100%;border-radius:50%;object-fit:cover;position:absolute;}
+    /* Upload box */
+    .upload-box{border:2px dashed var(--primary-2);border-radius:16px;padding:2rem;text-align:center;cursor:pointer;transition:all 0.3s;background:rgba(108,92,231,0.03);}
+    .upload-box:hover,.upload-box.dragover{border-color:var(--primary);background:rgba(108,92,231,0.08);transform:scale(1.01);}
+    .upload-icon{width:56px;height:56px;border-radius:50%;background:rgba(108,92,231,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.5rem;color:var(--primary);}
+    /* Settings tabs */
+    .settings-tab{padding:0.65rem 1.25rem;border-radius:10px;cursor:pointer;font-size:0.88rem;font-weight:600;color:var(--text-muted);transition:all 0.2s;border:none;background:transparent;font-family:Vazirmatn,sans-serif;display:flex;align-items:center;gap:0.5rem;width:100%;text-align:right;}
+    .settings-tab:hover{background:rgba(108,92,231,0.06);color:var(--primary);}
+    .settings-tab.active{background:rgba(108,92,231,0.1);color:var(--primary);}
+    /* Toast */
+    .toast-success{position:fixed;bottom:2rem;left:2rem;z-index:9999;background:var(--success);color:white;border-radius:14px;padding:0.75rem 1.5rem;font-size:0.88rem;font-weight:600;box-shadow:0 8px 32px rgba(0,184,148,0.4);animation:fadeInUp 0.3s; }
+    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
+  </style>
+{% endblock header %}
 
-/* Page specific */
-.profile-hero{background:var(--gradient-hero);border-radius:20px;padding:32px;color:white;position:relative;overflow:hidden;margin-bottom:28px;}
-.profile-hero::before{content:'';position:absolute;top:-40%;right:-5%;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.06);}
-.avatar-large{width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:white;border:4px solid rgba(255,255,255,0.4);position:relative;cursor:pointer;transition:var(--transition);}
-.avatar-large:hover{transform:scale(1.05);}
-.avatar-edit{position:absolute;bottom:0;left:0;width:28px;height:28px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:0.8rem;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
-.form-label-custom{font-size:0.82rem;font-weight:700;color:var(--text-secondary);margin-bottom:6px;display:block;}
-.form-control-custom{background:var(--bg-surface);border:1.5px solid var(--border-color);border-radius:10px;padding:12px 16px;font-family:'Vazirmatn',sans-serif;font-size:0.88rem;color:var(--text-primary);width:100%;transition:var(--transition);outline:none;}
-.form-control-custom:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,0.12);}
-[data-theme="dark"] .form-control-custom{background:var(--bg-surface);color:var(--text-primary);}
-.form-control-custom:disabled{background:var(--bg-surface2);opacity:0.7;cursor:not-allowed;}
-.tab-nav{display:flex;gap:4px;background:var(--bg-surface2);border-radius:12px;padding:4px;margin-bottom:24px;flex-wrap:wrap;}
-.tab-btn{padding:8px 16px;border:none;background:transparent;font-family:'Vazirmatn',sans-serif;font-size:0.82rem;font-weight:600;color:var(--text-secondary);border-radius:8px;cursor:pointer;transition:var(--transition);}
-.tab-btn.active{background:var(--bg-surface);color:var(--accent);box-shadow:var(--shadow-sm);}
-.tab-pane{display:none;}
-.tab-pane.active{display:block;animation:fadeInUp 0.3s ease;}
-.badge-skill{padding:6px 14px;border-radius:20px;font-size:0.78rem;font-weight:600;background:rgba(79,70,229,0.1);color:var(--accent);display:inline-flex;align-items:center;gap:6px;margin:4px;}
-.stat-mini{text-align:center;padding:16px;border-radius:12px;background:var(--bg-surface2);border:1px solid var(--border-color);}
-.stat-mini .val{font-size:1.6rem;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.stat-mini .lbl{font-size:0.72rem;color:var(--text-muted);margin-top:4px;}
-.cert-card{padding:16px;border-radius:12px;background:var(--bg-surface2);border:1px solid var(--border-color);display:flex;align-items:center;gap:12px;}
-.cert-icon{width:44px;height:44px;border-radius:12px;background:var(--gradient-warning);display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;}
-</style>
-</head>
-<body>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+ 
+{% block main %}
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="bi bi-list fs-5"></i></button>
-  <a href="01-dashboard.html" class="topbar-brand"><div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>آزمون‌یار</a>
-  <div class="topbar-spacer"></div>
-  <div class="topbar-actions">
-    <a href="#" class="topbar-btn"><i class="bi bi-search"></i></a>
-    <a href="#" class="topbar-btn"><i class="bi bi-bell"></i></a>
-    <button class="theme-toggle" onclick="toggleTheme()"><i class="bi bi-moon-stars" id="themeIcon"></i></button>
-    <div class="user-avatar">مص</div>
-  </div>
-</div>
+<main class="main-content"><div class="page-body">
 
-<!-- SIDEBAR -->
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-section-title">داشبورد</div>
-  <a href="01-dashboard.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-speedometer2"></i></div>صفحه اصلی</a>
-  <a href="02-account.html" class="sidebar-item active"><div class="si-icon"><i class="bi bi-person-badge"></i></div>اطلاعات حساب</a>
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section-title">آزمون‌ها</div>
-  <a href="08-pending-exams.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-clipboard2-check"></i></div>آزمون‌های منتظر تصحیح<span class="sidebar-badge">۵</span></a>
-  <a href="07-exam-history.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-archive"></i></div>تاریخچه تصحیح‌شده</a>
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section-title">پشتیبانی</div>
-  <a href="03-tickets-list.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-ticket-perforated"></i></div>لیست تیکت‌ها<span class="sidebar-badge">۲</span></a>
-  <a href="04-send-ticket.html" class="sidebar-item"><div class="si-icon"><i class="bi bi-send-plus"></i></div>ارسال تیکت</a>
-</nav>
-
-<!-- MAIN CONTENT -->
-<main class="main-content">
-
-  <!-- Profile Hero -->
-  <div class="profile-hero fade-in-up">
-    <div class="row align-items-center g-3">
-      <div class="col-auto">
-        <div class="avatar-large" onclick="document.getElementById('avatarInput').click()">
-          مص
-          <div class="avatar-edit"><i class="bi bi-camera-fill"></i></div>
+  <div class="row g-4">
+    <!-- Sidebar nav -->
+    <div class="col-lg-3">
+      <div class="glass-card p-3 animate-in">
+        <div style="padding:0.5rem 0.5rem 1rem;border-bottom:1px solid var(--border);margin-bottom:0.75rem;">
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+            <div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-size:1.75rem;font-weight:800;margin-bottom:0.75rem;" id="mainAvatar">ع</div>
+            <div style="font-weight:700;">{{ user.get_full_name }}</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);">دانش‌آموز</div>
+          </div>
         </div>
-        <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatar(event)">
+        <button class="settings-tab active" onclick="showTab('profile',this)"><i class="bi bi-person"></i> اطلاعات شخصی</button>
+        <button class="settings-tab" id="sec" onclick="showTab('security',this)"><i class="bi bi-shield-lock"></i> امنیت و رمز عبور</button>
+        <button class="settings-tab" id="numeer" onclick="showTab('number',this)"><i class="bi bi-shield-lock"></i>  تغییر شماره یا کد ملی  </button>
+ 
       </div>
-      <div class="col" style="position:relative;z-index:1;">
-        <h2 style="font-weight:800;margin:0;font-size:1.4rem;">مصطفی احمدی</h2>
-        <div style="opacity:0.85;font-size:0.88rem;margin-top:4px;"><i class="bi bi-geo-alt me-1"></i>تهران، ایران &nbsp;|&nbsp; <i class="bi bi-envelope me-1"></i>mostafa.ahmadi@example.com</div>
-        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
-          <span style="background:rgba(255,255,255,0.2);padding:4px 12px;border-radius:20px;font-size:0.78rem;"><i class="bi bi-award-fill me-1"></i>مصحح ارشد — سطح ۳</span>
-          <span style="background:rgba(255,255,255,0.2);padding:4px 12px;border-radius:20px;font-size:0.78rem;"><i class="bi bi-check-circle-fill me-1"></i>تأیید شده</span>
-          <span style="background:rgba(255,255,255,0.2);padding:4px 12px;border-radius:20px;font-size:0.78rem;"><i class="bi bi-star-fill me-1"></i>امتیاز: ۴.۸</span>
+    </div>
+
+    <!-- Content -->
+    <div class="col-lg-9">
+      <!-- Profile tab -->
+      <div id="tab-profile" class="animate-in">
+        <div class="glass-card p-4 mb-4">
+          <div class="section-title mb-4">اطلاعات شخصی</div>
+          <div class="d-flex align-items-center gap-4 mb-4 flex-wrap">
+
+ 
+          </div>
+          <form action="?next={% url 'sanatorium:edit-infos' %}" method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+
+              <div class="col-md-6"><label class="form-label">{{ update_form.first_name.label }}</label>{{ update_form.first_name }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.last_name.label }}</label>{{ update_form.last_name }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.gender.label }}</label>{{ update_form.gender }} </div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.province.label }}</label>{{ update_form.province }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.city.label }}</label>{{ update_form.city }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.school.label }}</label>{{ update_form.school }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.grade.label }}</label>{{ update_form.grade }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.major.label }}</label>{{ update_form.major }}</div>
+              <div class="col-md-6"><label class="form-label">{{ update_form.father_name.label }}</label>{{ update_form.father_name }}</div>
+ 
+              <div class="col-md-6"><label class="form-label">{{ update_form.birth.label }}</label>{{ update_form.birth }}</div>
+  
+
+              {{ update_form.media }}
+            </div>
+            <div class="d-flex gap-2 mt-4">
+            <button type="submit" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><i class="bi bi-check2"></i> ذخیره تغییرات</button>
+            <button type="reset"  style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.65rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;cursor:pointer;">لغو</button>
+          </div>
+          </form>
+
         </div>
       </div>
-      <div class="col-auto d-none d-md-block" style="position:relative;z-index:1;">
-        <button class="btn-gradient" onclick="saveProfile()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);box-shadow:none;">
-          <i class="bi bi-check2"></i> ذخیره تغییرات
-        </button>
+
+      <!-- Security tab (hidden) -->
+      <div id="tab-security" style="display:none;">
+        <div class="glass-card p-4 mb-4">
+          
+          <form action="{% url 'dashboard:change-password' %}?next={% url 'sanatorium:edit-infos' %}#tab-security" method="post">
+            {% csrf_token %}
+            <div class="section-title mb-4">تغییر رمز عبور</div>
+            <div class="row g-3">
+              <div class="col-12"><label class="form-label">رمز عبور فعلی</label>         {{ password_form.current_password }}</div>
+              <div class="col-12"><label class="form-label">رمز عبور جدید</label>       {{ password_form.password }}</div>
+   
+            </div>
+            <button type="submit"   style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
+          </form>
+        </div>
+         
       </div>
+      <div id="tab-number" style="display:none;">
+        <div class="glass-card p-4 mb-4">
+          
+          <form action="{% url 'dashboard:change-phone-number' %}?next={% url 'sanatorium:edit-infos' %}#tab-number" method="post">
+            {% csrf_token %}
+            <div class="section-title mb-4">تغییر شماره</div>
+            <div class="row g-3">
+              <div class="col-12"><label class="form-label">شماره جدید را وارد کنید</label>         {{ phoneNumber_form.PhoneNumber }}</div>
+              <div class="col-12"><label class="form-label">کدملی جدید خود را وارد کنید</label>         {{ phoneNumber_form.national_id }}</div>
+    
+            </div>
+            <button type="submit"   style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
+          </form>
+        </div>
+         
+      </div>
+
     </div>
   </div>
 
-  <!-- Mini Stats -->
-  <div class="row g-3 mb-4 fade-in-up delay-1">
-    <div class="col-6 col-md-3"><div class="stat-mini"><div class="val">۱۴۷</div><div class="lbl">آزمون تصحیح شده</div></div></div>
-    <div class="col-6 col-md-3"><div class="stat-mini"><div class="val">۸۳۲</div><div class="lbl">دانش‌آموز بررسی شده</div></div></div>
-    <div class="col-6 col-md-3"><div class="stat-mini"><div class="val">۴.۸</div><div class="lbl">میانگین امتیاز</div></div></div>
-    <div class="col-6 col-md-3"><div class="stat-mini"><div class="val">۲ سال</div><div class="lbl">سابقه فعالیت</div></div></div>
-  </div>
+</div></main>
+{% endblock %}
 
-  <!-- Tabs -->
-  <div class="glass-card p-4 fade-in-up delay-2">
-    <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('profile')"><i class="bi bi-person me-1"></i>اطلاعات شخصی</button>
-      <button class="tab-btn" onclick="switchTab('security')"><i class="bi bi-shield-lock me-1"></i>امنیت</button>
-      <button class="tab-btn" onclick="switchTab('expertise')"><i class="bi bi-mortarboard me-1"></i>تخصص‌ها</button>
-      <button class="tab-btn" onclick="switchTab('notifications')"><i class="bi bi-bell me-1"></i>اعلان‌ها</button>
-    </div>
+{% block footer %}
 
-    <!-- Profile Tab -->
-    <div class="tab-pane active" id="tab-profile">
-      <div class="row g-4">
-        <div class="col-md-6">
-          <label class="form-label-custom">نام</label>
-          <input class="form-control-custom" type="text" value="مصطفی">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label-custom">نام خانوادگی</label>
-          <input class="form-control-custom" type="text" value="احمدی">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label-custom">کد ملی</label>
-          <input class="form-control-custom" type="text" value="۰۰۱۲۳۴۵۶۷۸" disabled>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label-custom">شماره موبایل</label>
-          <input class="form-control-custom" type="tel" value="۰۹۱۲-۳۴۵-۶۷۸۹">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label-custom">ایمیل</label>
-          <input class="form-control-custom" type="email" value="mostafa.ahmadi@example.com">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label-custom">شهر</label>
-          <input class="form-control-custom" type="text" value="تهران">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label-custom">استان</label>
-          <select class="form-control-custom">
-            <option selected>تهران</option>
-            <option>اصفهان</option>
-            <option>مشهد</option>
-            <option>شیراز</option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label-custom">سطح تحصیلات</label>
-          <select class="form-control-custom">
-            <option>کارشناسی</option>
-            <option selected>کارشناسی ارشد</option>
-            <option>دکتری</option>
-          </select>
-        </div>
-        <div class="col-12">
-          <label class="form-label-custom">درباره من</label>
-          <textarea class="form-control-custom" rows="4" style="resize:none;">مصحح با تجربه در درس‌های ریاضی، فیزیک و شیمی با بیش از ۲ سال سابقه در آزمون‌های کنکور و پیشرفته. تخصص در تصحیح سریع و دقیق با ارائه بازخورد سازنده برای بهبود عملکرد دانش‌آموزان.</textarea>
-        </div>
-        <div class="col-12 d-flex gap-2 justify-content-end">
-          <button class="btn-glass">لغو تغییرات</button>
-          <button class="btn-gradient" onclick="saveProfile()"><i class="bi bi-check2-all"></i> ذخیره اطلاعات</button>
-        </div>
-      </div>
-    </div>
+<!-- <div class="toast-success flex"    ><i class="bi bi-check-circle-fill"></i> تغییرات با موفقیت ذخیره شد!</div> -->
+ 
+ <script>
 
-    <!-- Security Tab -->
-    <div class="tab-pane" id="tab-security">
-      <div class="row g-4">
-        <div class="col-12">
-          <div style="padding:16px;border-radius:12px;background:rgba(79,70,229,0.06);border:1px solid var(--border-color);display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-            <div style="width:40px;height:40px;border-radius:10px;background:var(--gradient-success);display:flex;align-items:center;justify-content:center;color:white;"><i class="bi bi-shield-check"></i></div>
-            <div><div style="font-weight:700;font-size:0.88rem;">حساب شما امن است</div><div style="font-size:0.78rem;color:var(--text-muted);">آخرین ورود: ۵ اسفند ۱۴۰۳ — ۱۴:۳۲ — تهران، ایران</div></div>
-          </div>
-        </div>
-        <div class="col-12 col-md-8">
-          <div class="section-title mb-3">تغییر رمز عبور</div>
-          <div class="d-flex flex-column gap-3">
-            <div>
-              <label class="form-label-custom">رمز عبور فعلی</label>
-              <div style="position:relative;">
-                <input class="form-control-custom" type="password" placeholder="رمز عبور فعلی را وارد کنید" id="pwdCurrent">
-                <button onclick="togglePwd('pwdCurrent')" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;"><i class="bi bi-eye"></i></button>
-              </div>
-            </div>
-            <div>
-              <label class="form-label-custom">رمز عبور جدید</label>
-              <div style="position:relative;">
-                <input class="form-control-custom" type="password" placeholder="رمز عبور جدید" id="pwdNew" oninput="checkStrength(this.value)">
-                <button onclick="togglePwd('pwdNew')" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;"><i class="bi bi-eye"></i></button>
-              </div>
-              <div style="margin-top:8px;">
-                <div style="height:4px;background:var(--border-color);border-radius:4px;"><div id="strengthBar" style="height:100%;width:0%;border-radius:4px;transition:all 0.3s;"></div></div>
-                <div id="strengthLabel" style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;"></div>
-              </div>
-            </div>
-            <div>
-              <label class="form-label-custom">تکرار رمز عبور جدید</label>
-              <div style="position:relative;">
-                <input class="form-control-custom" type="password" placeholder="تکرار رمز عبور" id="pwdConfirm">
-                <button onclick="togglePwd('pwdConfirm')" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;"><i class="bi bi-eye"></i></button>
-              </div>
-            </div>
-            <div class="d-flex gap-2 justify-content-end">
-              <button class="btn-gradient"><i class="bi bi-lock-fill"></i> تغییر رمز</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="section-title mb-3">احراز هویت دو مرحله‌ای</div>
-          <div style="padding:16px;border-radius:12px;background:var(--bg-surface2);border:1px solid var(--border-color);text-align:center;">
-            <div style="font-size:2.5rem;margin-bottom:8px;">📱</div>
-            <div style="font-weight:700;font-size:0.88rem;margin-bottom:4px;">احراز هویت دو مرحله‌ای</div>
-            <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">با فعال کردن این ویژگی، امنیت حساب شما بیشتر می‌شود.</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg-surface);border-radius:8px;border:1px solid var(--border-color);">
-              <span style="font-size:0.82rem;font-weight:600;">وضعیت</span>
-              <div class="form-check form-switch" style="margin:0;">
-                <input class="form-check-input" type="checkbox" id="twoFactorSwitch">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  function showTab(tab,el){
+    document.querySelectorAll('[id^="tab-"]').forEach(t=>t.style.display='none');
+    document.getElementById('tab-'+tab).style.display='block';
+    document.querySelectorAll('.settings-tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+  }
 
-    <!-- Expertise Tab -->
-    <div class="tab-pane" id="tab-expertise">
-      <div class="row g-4">
-        <div class="col-md-7">
-          <div class="section-title mb-3">درس‌های تخصصی</div>
-          <div class="mb-3">
-            <span class="badge-skill"><i class="bi bi-check-circle-fill"></i> ریاضی ۱</span>
-            <span class="badge-skill"><i class="bi bi-check-circle-fill"></i> ریاضی ۲</span>
-            <span class="badge-skill"><i class="bi bi-check-circle-fill"></i> ریاضی تجربی</span>
-            <span class="badge-skill"><i class="bi bi-check-circle-fill"></i> فیزیک ۱</span>
-            <span class="badge-skill"><i class="bi bi-check-circle-fill"></i> فیزیک ۲</span>
-            <span class="badge-skill"><i class="bi bi-check-circle-fill"></i> فیزیک ۳</span>
-            <span class="badge-skill"><i class="bi bi-check-circle-fill"></i> شیمی ۱</span>
-            <span class="badge-skill"><i class="bi bi-check-circle-fill"></i> شیمی ۲</span>
-            <span class="badge-skill"><i class="bi bi-check-circle-fill"></i> آمار و احتمال</span>
-            <span class="badge-skill" style="background:rgba(16,185,129,0.1);color:#059669;"><i class="bi bi-plus-circle-fill"></i> افزودن درس</span>
-          </div>
-          <div class="section-title mb-3 mt-4">گواهینامه‌ها و مدارک</div>
-          <div class="d-flex flex-column gap-2">
-            <div class="cert-card">
-              <div class="cert-icon"><i class="bi bi-award-fill"></i></div>
-              <div style="flex:1;">
-                <div style="font-weight:700;font-size:0.88rem;">مدرک تخصصی تصحیح کنکور</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">سازمان سنجش آموزش کشور — ۱۴۰۲</div>
-              </div>
-              <span style="background:rgba(16,185,129,0.1);color:#059669;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">تأیید شده</span>
-            </div>
-            <div class="cert-card">
-              <div class="cert-icon" style="background:var(--gradient-info);"><i class="bi bi-book-fill"></i></div>
-              <div style="flex:1;">
-                <div style="font-weight:700;font-size:0.88rem;">کارشناسی ارشد آموزش ریاضی</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">دانشگاه تهران — ۱۴۰۱</div>
-              </div>
-              <span style="background:rgba(16,185,129,0.1);color:#059669;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">تأیید شده</span>
-            </div>
-            <div class="cert-card">
-              <div class="cert-icon" style="background:var(--gradient-warning);"><i class="bi bi-patch-check-fill"></i></div>
-              <div style="flex:1;">
-                <div style="font-weight:700;font-size:0.88rem;">دوره ارزیابی هوش مصنوعی در آزمون</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">موسسه آموزشی نوین — ۱۴۰۳</div>
-              </div>
-              <span style="background:rgba(245,158,11,0.1);color:#d97706;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">در بررسی</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-5">
-          <div class="section-title mb-3">آپلود مدرک جدید</div>
-          <div id="uploadBox" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border-color)'" ondrop="handleDrop(event)" style="border:2px dashed var(--border-color);border-radius:14px;padding:28px;text-align:center;cursor:pointer;transition:var(--transition);background:var(--bg-surface2);">
-            <div style="font-size:2.5rem;color:var(--text-muted);">📎</div>
-            <div style="font-weight:700;margin-top:8px;font-size:0.88rem;">فایل را اینجا رها کنید</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">یا کلیک کنید برای انتخاب</div>
-            <div style="font-size:0.7rem;color:var(--text-muted);margin-top:8px;">PDF، JPG، PNG — حداکثر ۵ مگابایت</div>
-          </div>
-          <input type="file" id="fileInput" style="display:none;" onchange="handleFile(event)">
-          <div id="filePreview" style="display:none;margin-top:12px;padding:12px;border-radius:10px;background:var(--bg-surface);border:1px solid var(--border-color);display:flex;align-items:center;gap:10px;">
-            <i class="bi bi-file-earmark-pdf" style="font-size:1.5rem;color:#ef4444;"></i>
-            <div style="flex:1;"><div id="fileName" style="font-size:0.82rem;font-weight:600;"></div><div id="fileSize" style="font-size:0.72rem;color:var(--text-muted);"></div></div>
-            <button onclick="removeFile()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;"><i class="bi bi-x-circle"></i></button>
-          </div>
-          <button class="btn-gradient mt-3 w-100" style="justify-content:center;"><i class="bi bi-cloud-upload"></i> آپلود مدرک</button>
-        </div>
-      </div>
-    </div>
+  // window_url = String(window.location.href)
 
-    <!-- Notifications Tab -->
-    <div class="tab-pane" id="tab-notifications">
-      <div class="section-title mb-3">تنظیمات اعلان</div>
-      <div class="d-flex flex-column gap-3" style="max-width:600px;">
-        <div style="padding:16px;border-radius:12px;background:var(--bg-surface2);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-weight:700;font-size:0.88rem;"><i class="bi bi-envelope-fill me-2" style="color:var(--accent);"></i>ایمیل — آزمون جدید</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:3px;">هنگام تخصیص آزمون جدید ایمیل دریافت کنید</div></div>
-          <div class="form-check form-switch" style="margin:0;"><input class="form-check-input" type="checkbox" checked></div>
-        </div>
-        <div style="padding:16px;border-radius:12px;background:var(--bg-surface2);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-weight:700;font-size:0.88rem;"><i class="bi bi-phone-fill me-2" style="color:#10b981;"></i>پیامک — یادآور تصحیح</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:3px;">یادآوری آزمون‌های در انتظار از طریق پیامک</div></div>
-          <div class="form-check form-switch" style="margin:0;"><input class="form-check-input" type="checkbox" checked></div>
-        </div>
-        <div style="padding:16px;border-radius:12px;background:var(--bg-surface2);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-weight:700;font-size:0.88rem;"><i class="bi bi-bell-fill me-2" style="color:#f59e0b;"></i>اعلان داخلی — پاسخ تیکت</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:3px;">هنگام پاسخ به تیکت‌های شما اعلان نمایش داده شود</div></div>
-          <div class="form-check form-switch" style="margin:0;"><input class="form-check-input" type="checkbox" checked></div>
-        </div>
-        <div style="padding:16px;border-radius:12px;background:var(--bg-surface2);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-weight:700;font-size:0.88rem;"><i class="bi bi-graph-up-arrow me-2" style="color:#4f46e5;"></i>ایمیل — گزارش هفتگی</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:3px;">گزارش عملکرد هفتگی به ایمیل شما ارسال شود</div></div>
-          <div class="form-check form-switch" style="margin:0;"><input class="form-check-input" type="checkbox"></div>
-        </div>
-        <div class="d-flex justify-content-end mt-2">
-          <button class="btn-gradient"><i class="bi bi-check2-all"></i> ذخیره تنظیمات</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  // if (window_url.contain('tab-security') ){
+  //   showTab('security', document.getElementById('sec'))
+  // }else if( window_url.contain('tab-number')   ){
+  //   showTab('security', document.getElementById('numeer'))
 
-</main>
+  // }
 
-<footer class="dashboard-footer">
-  <div>© ۱۴۰۳ آزمون‌یار</div><div>نسخه ۲.۴.۱</div>
-</footer>
-
-<script src="/static/js/main/bootstrap5.bundle.min.js"></script>
-
-<script>
-function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';localStorage.setItem('theme','light');}}
-(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
-function switchTab(t){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));event.target.classList.add('active');document.getElementById('tab-'+t).classList.add('active');}
-function togglePwd(id){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';}
-function checkStrength(v){const b=document.getElementById('strengthBar'),l=document.getElementById('strengthLabel');let s=0;if(v.length>6)s++;if(v.length>10)s++;if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;const c=['','#ef4444','#f59e0b','#f59e0b','#10b981','#059669'],t=['','خیلی ضعیف','ضعیف','متوسط','قوی','خیلی قوی'];b.style.width=(s*20)+'%';b.style.background=c[s];l.textContent=t[s];l.style.color=c[s];}
-function handleFile(e){const f=e.target.files[0];if(!f)return;document.getElementById('filePreview').style.display='flex';document.getElementById('fileName').textContent=f.name;document.getElementById('fileSize').textContent=(f.size/1024).toFixed(1)+' KB';}
-function handleDrop(e){e.preventDefault();const f=e.dataTransfer.files[0];if(f){document.getElementById('filePreview').style.display='flex';document.getElementById('fileName').textContent=f.name;document.getElementById('fileSize').textContent=(f.size/1024).toFixed(1)+' KB';}document.getElementById('uploadBox').style.borderColor='var(--border-color)';}
-function removeFile(){document.getElementById('filePreview').style.display='none';}
-function saveProfile(){const a=document.createElement('div');a.innerHTML='<div style="position:fixed;bottom:20px;left:20px;background:linear-gradient(135deg,#059669,#10b981);color:white;padding:14px 20px;border-radius:12px;font-family:Vazirmatn,sans-serif;font-size:0.85rem;font-weight:600;z-index:9999;display:flex;gap:8px;align-items:center;box-shadow:0 8px 24px rgba(5,150,105,0.4);animation:fadeInUp 0.4s ease;"><i class="bi bi-check-circle-fill"></i> اطلاعات با موفقیت ذخیره شد</div>';document.body.appendChild(a);setTimeout(()=>a.remove(),3000);}
+  function previewAvatar(input){
+    if(input.files&&input.files[0]){
+      const r=new FileReader();
+      r.onload=e=>{
+        const p=document.getElementById('avatarPreview');
+        p.style.display='none';
+        const existing=document.querySelector('.avatar-upload-area img');
+        if(existing)existing.remove();
+        const img=document.createElement('img');
+        img.src=e.target.result;
+        document.querySelector('.avatar-upload-area').appendChild(img);
+      };
+      r.readAsDataURL(input.files[0]);
+    }
+  }
+  function handleFileSelect(input){
+    if(input.files&&input.files[0])addFileToList(input.files[0]);
+  }
+  function handleDrop(e){
+    e.preventDefault();
+    document.getElementById('uploadBox').classList.remove('dragover');
+    if(e.dataTransfer.files[0])addFileToList(e.dataTransfer.files[0]);
+  }
+  function addFileToList(file){
+    const c=document.getElementById('uploadedFiles');
+    const d=document.createElement('div');
+    d.style.cssText='display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border-radius:12px;background:rgba(108,92,231,0.06);border:1px solid rgba(108,92,231,0.15);margin-top:0.5rem;';
+    const isPdf=file.type.includes('pdf');
+    const size=(file.size/1024/1024).toFixed(2);
+    d.innerHTML=`<div style="width:40px;height:40px;border-radius:10px;background:${isPdf?'rgba(225,112,85,0.15)':'rgba(108,92,231,0.12)'};display:flex;align-items:center;justify-content:center;color:${isPdf?'#e17055':'#6C5CE7'};flex-shrink:0;"><i class="bi bi-file-earmark-${isPdf?'pdf':'image'}-fill"></i></div><div><div style="font-size:0.85rem;font-weight:600;">${file.name}</div><div style="font-size:0.75rem;color:var(--text-muted);">${size} MB • در حال آپلود...</div></div><div style="margin-right:auto;"><div style="width:16px;height:16px;border-radius:50%;border:2px solid var(--primary);border-top-color:transparent;animation:spin 0.8s linear infinite;"></div></div>`;
+    c.appendChild(d);
+    setTimeout(()=>{d.querySelector('div:last-child').innerHTML='<i class="bi bi-check-circle-fill" style="color:var(--success);"></i>';},1500);
+  }
+ 
 </script>
-</body>
-</html>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+</body></html>
+{% endblock %}

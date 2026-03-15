@@ -6,14 +6,15 @@ app_name = 'sanatorium'
 
 urlpatterns = [
     path('', views.profile.SanatoriumPanel.as_view(), name='main'),
-    path('1', views.profile.SanatoriumPanel1.as_view(), name='main1'),
-    path('2', views.profile.SanatoriumPanel2.as_view(), name='main2'),
-    path('3', views.profile.SanatoriumPanel3.as_view(), name='main3'),
-    path('4', views.profile.SanatoriumPanel4.as_view(), name='main4'),
-    path('5', views.profile.SanatoriumPanel5.as_view(), name='main5'),
-    path('6', views.profile.SanatoriumPanel6.as_view(), name='main6'),
-    path('7', views.profile.SanatoriumPanel7.as_view(), name='main7'),
-    path('8', views.profile.SanatoriumPanel8.as_view(), name='main8'),
-    path('9', views.profile.SanatoriumPanel9.as_view(), name='main9'),
-    path('10', views.profile.SanatoriumPanel10.as_view(), name='main10'),
+    path('account/', views.profile.SanatoriumEditProfileInfos.as_view(), name='edit-infos'),
+ 
+    path('exams/pending/', views.quiz_remain.SanatoriumPendingExamList.as_view(), name='exam-list'),
+    path('exams/pending/students/', views.quiz_remain.SanatoriumStudentListOfExam.as_view(), name='exam-student-list'),
+    path('exams/pending/students/question', views.quiz_remain.SanatoriumQuestionListPerStudentOfExam.as_view(), name='exam-student-question-list'),
+    path('exams/pending/students/question/detail', views.quiz_remain.SanatoriumQuestionDetailPerStudentOfExam.as_view(), name='exam-student-question-detail'),
+
+
+    path('ticket/', views.tickets.TicketList.as_view(), name='ticket-list'),
+    path('ticket/send/', views.tickets.SendTicket.as_view(), name='ticket-send'),
+    path('tikcet/<int:pk>/conversation', views.tickets.TicketConversation.as_view(), name='ticket-conversation'),
 ]

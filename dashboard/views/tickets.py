@@ -60,6 +60,11 @@ class TicketSend(LoginRequiredMixin, View):
             messages.success(
                 request, 'پیام شما ارسال شد'
             )
+            next_param = self.request.GET.get('next')
+            if next_param:
+                return redirect( next_param)    
+
+
             return redirect('dashboard:ticket-list')
 
         else:
@@ -137,11 +142,16 @@ class TicketCancelled(LoginRequiredMixin, RedirectView):
             self.request, 'تیکت کنسل شد'
         )
 
+        next_param = self.request.GET.get('next')
+        if next_param:
+            return next_param
+
         return obj.get_absolute_url()
 
 
 class TicketFixed(LoginRequiredMixin, RedirectView):
     """set fixed status for the ticket"""
+
     def get_redirect_url(self, *args, **kwargs):
         pk = kwargs.get('pk')
         obj = get_object_or_404(Ticket, pk=pk, user=self.request.user)
@@ -149,6 +159,10 @@ class TicketFixed(LoginRequiredMixin, RedirectView):
         obj.save()
         messages.success(
             self.request, 'تیکت بسته شد'
-        )
+        )   
+
+        next_param = self.request.GET.get('next')
+        if next_param:
+            return next_param
 
         return obj.get_absolute_url()

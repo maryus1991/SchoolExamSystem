@@ -1,1173 +1,324 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl" data-theme="light">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>داشبورد مصحح - سامانه آزمون هوشمند</title>
-<!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
-<!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"> -->
-<link href="/static/css/bootstrap5.css" rel="stylesheet">
-<link href="/static/css/bootstrap5-icons.css" rel="stylesheet">
-<style>
-:root {
-  --bg-primary: #f0f4ff;
-  --bg-surface: #ffffff;
-  --bg-surface2: #f8faff;
-  --bg-glass: rgba(255,255,255,0.7);
-  --bg-glass-border: rgba(255,255,255,0.9);
-  --sidebar-bg: rgba(255,255,255,0.85);
-  --text-primary: #1e1b4b;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
-  --border-color: rgba(79,70,229,0.12);
-  --shadow-sm: 0 2px 8px rgba(79,70,229,0.08);
-  --shadow-md: 0 8px 32px rgba(79,70,229,0.12);
-  --shadow-lg: 0 20px 60px rgba(79,70,229,0.15);
-  --gradient-primary: linear-gradient(135deg, #4f46e5, #7c3aed);
-  --gradient-success: linear-gradient(135deg, #059669, #10b981);
-  --gradient-warning: linear-gradient(135deg, #d97706, #f59e0b);
-  --gradient-danger: linear-gradient(135deg, #dc2626, #ef4444);
-  --gradient-info: linear-gradient(135deg, #0891b2, #06b6d4);
-  --gradient-hero: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a78bfa 100%);
-  --accent: #4f46e5;
-  --accent2: #7c3aed;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-[data-theme="dark"] {
-  --bg-primary: #0a0a1a;
-  --bg-surface: #13132b;
-  --bg-surface2: #1a1a35;
-  --bg-glass: rgba(255,255,255,0.04);
-  --bg-glass-border: rgba(255,255,255,0.08);
-  --sidebar-bg: rgba(19,19,43,0.95);
-  --text-primary: #e8e8f8;
-  --text-secondary: #a5b4fc;
-  --text-muted: #6366f1;
-  --border-color: rgba(99,102,241,0.2);
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-  --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
-  --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
-}
-*, *::before, *::after { box-sizing: border-box; }
-body {
-  font-family: 'Vazirmatn', sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  direction: rtl;
-  transition: var(--transition);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-/* Animated background */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: 
-    radial-gradient(ellipse 80% 80% at 20% 10%, rgba(79,70,229,0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 60% at 80% 90%, rgba(124,58,237,0.06) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-[data-theme="dark"] body::before {
-  background: 
-    radial-gradient(ellipse 80% 80% at 20% 10%, rgba(79,70,229,0.15) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 60% at 80% 90%, rgba(124,58,237,0.12) 0%, transparent 50%);
-}
+{% extends "sanatorium/base/base.html" %}
+ 
 
-/* ===== TOPBAR ===== */
-.topbar {
-  position: fixed; top: 0; right: 0; left: 0;
-  height: 64px;
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-color);
-  z-index: 1030;
-  display: flex;
-  align-items: center;
-  padding: 0 24px;
-  gap: 16px;
-}
-.topbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: var(--accent);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.topbar-brand .brand-icon {
-  width: 38px; height: 38px;
-  background: var(--gradient-primary);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  color: white;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 12px rgba(79,70,229,0.4);
-}
-.topbar-spacer { flex: 1; }
-.topbar-actions { display: flex; align-items: center; gap: 8px; }
-.topbar-btn {
-  width: 38px; height: 38px;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-glass);
-  color: var(--text-secondary);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 1rem;
-  position: relative;
-  text-decoration: none;
-}
-.topbar-btn:hover {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(79,70,229,0.3);
-}
-.badge-dot {
-  position: absolute;
-  top: 6px; left: 6px;
-  width: 8px; height: 8px;
-  background: #ef4444;
-  border-radius: 50%;
-  border: 2px solid var(--bg-surface);
-}
-.theme-toggle {
-  width: 38px; height: 38px;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-glass);
-  color: var(--text-secondary);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: var(--transition);
-}
-.theme-toggle:hover { background: var(--accent); color: white; border-color: var(--accent); }
-.user-avatar {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: var(--gradient-primary);
-  display: flex; align-items: center; justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 0.85rem;
-  cursor: pointer;
-  border: 2px solid var(--border-color);
-  transition: var(--transition);
-}
-.user-avatar:hover { box-shadow: 0 0 0 3px rgba(79,70,229,0.3); }
-.sidebar-toggle {
-  display: none;
-  width: 38px; height: 38px;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-glass);
-  color: var(--text-secondary);
-  align-items: center; justify-content: center;
-  cursor: pointer;
-}
 
-/* ===== SIDEBAR ===== */
-.sidebar {
-  position: fixed;
-  top: 64px; right: 0; bottom: 0;
-  width: 260px;
-  background: var(--sidebar-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-left: 1px solid var(--border-color);
-  overflow-y: auto;
-  z-index: 1020;
-  padding: 20px 0;
-  transition: var(--transition);
-}
-.sidebar::-webkit-scrollbar { width: 4px; }
-.sidebar::-webkit-scrollbar-track { background: transparent; }
-.sidebar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-.sidebar-section-title {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 12px 20px 6px;
-}
-.sidebar-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 20px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  border-radius: 0;
-  font-size: 0.88rem;
-  font-weight: 500;
-  transition: var(--transition);
-  position: relative;
-  margin: 1px 12px;
-  border-radius: 10px;
-}
-.sidebar-item:hover {
-  background: rgba(79,70,229,0.08);
-  color: var(--accent);
-}
-.sidebar-item.active {
-  background: var(--gradient-primary);
-  color: white;
-  box-shadow: 0 4px 16px rgba(79,70,229,0.35);
-}
-.sidebar-item .si-icon {
-  width: 32px; height: 32px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 8px;
-  background: rgba(79,70,229,0.1);
-  font-size: 1rem;
-  flex-shrink: 0;
-  transition: var(--transition);
-}
-.sidebar-item.active .si-icon { background: rgba(255,255,255,0.2); }
-.sidebar-item:hover .si-icon { background: rgba(79,70,229,0.15); }
-.sidebar-badge {
-  margin-right: auto;
-  background: #ef4444;
-  color: white;
-  font-size: 0.65rem;
-  padding: 2px 7px;
-  border-radius: 20px;
-  font-weight: 700;
-}
-.sidebar-item.active .sidebar-badge { background: rgba(255,255,255,0.3); }
-.sidebar-divider { height: 1px; background: var(--border-color); margin: 12px 20px; }
+{% block main %}
+  <main class="main-content">
 
-/* ===== MAIN CONTENT ===== */
-.main-content {
-  margin-right: 260px;
-  margin-top: 64px;
-  padding: 28px;
-  min-height: calc(100vh - 64px);
-  position: relative;
-  z-index: 1;
-}
-
-/* ===== CARDS ===== */
-.glass-card {
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--bg-glass-border);
-  border-radius: 16px;
-  box-shadow: var(--shadow-md);
-  transition: var(--transition);
-  overflow: hidden;
-}
-.glass-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-}
-[data-theme="dark"] .glass-card {
-  background: var(--bg-glass);
-  border-color: var(--border-color);
-}
-.stat-card {
-  padding: 24px;
-  position: relative;
-  overflow: hidden;
-}
-.stat-card::after {
-  content: '';
-  position: absolute;
-  top: -20px; left: -20px;
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.05);
-}
-.stat-icon {
-  width: 52px; height: 52px;
-  border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem;
-  color: white;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-}
-.stat-value {
-  font-size: 2rem;
-  font-weight: 800;
-  line-height: 1;
-  margin-top: 12px;
-}
-.stat-label { font-size: 0.82rem; opacity: 0.8; margin-top: 4px; }
-.stat-change {
-  font-size: 0.75rem;
-  margin-top: 8px;
-  display: flex; align-items: center; gap: 4px;
-}
-.stat-change.up { color: #10b981; }
-.stat-change.down { color: #ef4444; }
-
-/* ===== HERO BANNER ===== */
-.hero-banner {
-  background: var(--gradient-hero);
-  border-radius: 20px;
-  padding: 32px;
-  color: white;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 12px 40px rgba(79,70,229,0.35);
-}
-.hero-banner::before {
-  content: '';
-  position: absolute;
-  top: -50%; right: -10%;
-  width: 400px; height: 400px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-}
-.hero-banner::after {
-  content: '';
-  position: absolute;
-  bottom: -60%; left: 10%;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.04);
-}
-.hero-title { font-size: 1.6rem; font-weight: 800; position: relative; z-index: 1; }
-.hero-subtitle { font-size: 0.9rem; opacity: 0.85; margin-top: 6px; position: relative; z-index: 1; }
-
-/* ===== BUTTONS ===== */
-.btn-gradient {
-  background: var(--gradient-primary);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-family: 'Vazirmatn', sans-serif;
-  font-weight: 600;
-  font-size: 0.88rem;
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: 0 4px 16px rgba(79,70,229,0.35);
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-gradient:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(79,70,229,0.45);
-  color: white;
-}
-.btn-glass {
-  background: var(--bg-glass);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-family: 'Vazirmatn', sans-serif;
-  font-weight: 500;
-  font-size: 0.88rem;
-  cursor: pointer;
-  transition: var(--transition);
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.btn-glass:hover {
-  background: rgba(79,70,229,0.1);
-  border-color: var(--accent);
-  color: var(--accent);
-  transform: translateY(-1px);
-}
-
-/* ===== STATUS BADGES ===== */
-.badge-custom {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  display: inline-flex; align-items: center; gap: 5px;
-  font-family: 'Vazirmatn', sans-serif;
-}
-.badge-pending { background: rgba(245,158,11,0.12); color: #d97706; }
-.badge-done { background: rgba(16,185,129,0.12); color: #059669; }
-.badge-progress { background: rgba(79,70,229,0.12); color: #4f46e5; }
-.badge-rejected { background: rgba(239,68,68,0.12); color: #dc2626; }
-
-/* ===== MODERN TABLE ===== */
-.modern-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 6px;
-  font-size: 0.85rem;
-}
-.modern-table thead th {
-  color: var(--text-muted);
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 8px 16px;
-  background: transparent;
-  border: none;
-}
-.modern-table tbody tr {
-  background: var(--bg-surface);
-  border-radius: 12px;
-  transition: var(--transition);
-  box-shadow: var(--shadow-sm);
-}
-.modern-table tbody tr:hover {
-  transform: translateX(-3px);
-  box-shadow: var(--shadow-md);
-}
-.modern-table tbody td {
-  padding: 14px 16px;
-  border: none;
-  vertical-align: middle;
-  color: var(--text-primary);
-}
-.modern-table tbody td:first-child { border-radius: 0 12px 12px 0; }
-.modern-table tbody td:last-child { border-radius: 12px 0 0 12px; }
-
-/* ===== CHART CONTAINER ===== */
-.chart-container {
-  padding: 24px;
-}
-.chart-placeholder {
-  height: 180px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(79,70,229,0.05), rgba(124,58,237,0.05));
-  border: 2px dashed var(--border-color);
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column;
-  gap: 8px;
-  color: var(--text-muted);
-  position: relative;
-  overflow: hidden;
-}
-/* Fake bar chart bars */
-.chart-bars {
-  display: flex; align-items: flex-end; gap: 8px; height: 120px; padding: 0 20px;
-}
-.chart-bar {
-  flex: 1;
-  border-radius: 6px 6px 0 0;
-  background: var(--gradient-primary);
-  opacity: 0.7;
-  animation: growUp 1s ease forwards;
-  transform-origin: bottom;
-}
-@keyframes growUp { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-
-/* ===== PROGRESS RING ===== */
-.progress-ring-container {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.progress-ring-text {
-  position: absolute;
-  font-weight: 800;
-  font-size: 1.2rem;
-  color: var(--text-primary);
-}
-
-/* ===== TOAST ===== */
-.toast-container-custom {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.toast-custom {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
-  padding: 16px 20px;
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  min-width: 280px;
-  transform: translateX(120%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.toast-custom.show { transform: translateX(0); }
-.toast-icon {
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-.toast-icon.success { background: rgba(16,185,129,0.15); color: #059669; }
-.toast-icon.info { background: rgba(79,70,229,0.15); color: #4f46e5; }
-.toast-title { font-weight: 700; font-size: 0.85rem; }
-.toast-msg { font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px; }
-
-/* ===== ACTIVITY FEED ===== */
-.activity-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border-color);
-}
-.activity-item:last-child { border-bottom: none; }
-.activity-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  margin-top: 6px;
-  flex-shrink: 0;
-}
-.activity-time { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
-
-/* ===== PAGE HEADER ===== */
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 28px;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.page-title { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0; }
-.page-subtitle { font-size: 0.85rem; color: var(--text-secondary); margin: 2px 0 0; }
-.breadcrumb-custom {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 0.8rem; color: var(--text-muted);
-}
-.breadcrumb-custom a { color: var(--accent); text-decoration: none; }
-.breadcrumb-custom span { color: var(--text-muted); }
-
-/* ===== FOOTER ===== */
-.dashboard-footer {
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border-color);
-  padding: 16px 28px;
-  margin-right: 260px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 991px) {
-  .sidebar {
-    transform: translateX(100%);
-    box-shadow: -20px 0 60px rgba(0,0,0,0.15);
-  }
-  .sidebar.open { transform: translateX(0); }
-  .main-content { margin-right: 0; padding: 20px 16px; }
-  .dashboard-footer { margin-right: 0; }
-  .sidebar-toggle { display: flex !important; }
-  .sidebar-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 1015;
-    backdrop-filter: blur(4px);
-  }
-  .sidebar-overlay.show { display: block; }
-}
-@media (max-width: 576px) {
-  .hero-banner { padding: 20px; }
-  .hero-title { font-size: 1.2rem; }
-  .stat-value { font-size: 1.6rem; }
-}
-
-/* ===== ANIMATIONS ===== */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.fade-in-up { animation: fadeInUp 0.5s ease forwards; }
-.delay-1 { animation-delay: 0.1s; opacity: 0; }
-.delay-2 { animation-delay: 0.2s; opacity: 0; }
-.delay-3 { animation-delay: 0.3s; opacity: 0; }
-.delay-4 { animation-delay: 0.4s; opacity: 0; }
-.delay-5 { animation-delay: 0.5s; opacity: 0; }
-
-/* Hover lift */
-.hover-lift { transition: var(--transition); }
-.hover-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg) !important; }
-
-/* ===== SECTION TITLE ===== */
-.section-title {
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.section-title::before {
-  content: '';
-  width: 4px; height: 18px;
-  background: var(--gradient-primary);
-  border-radius: 4px;
-  display: block;
-}
-
-/* Floating number */
-.floating-number {
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 6px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-
-/* Pending exam card */
-.exam-card {
-  border-radius: 14px;
-  padding: 20px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  transition: var(--transition);
-  box-shadow: var(--shadow-sm);
-}
-.exam-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-.exam-card .exam-title { font-weight: 700; font-size: 0.95rem; }
-.exam-card .exam-meta { font-size: 0.78rem; color: var(--text-secondary); margin-top: 6px; }
-.exam-card .exam-students {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 0.8rem; color: var(--text-muted);
-  margin-top: 10px;
-}
-.student-avatars { display: flex; }
-.student-avatars span {
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  background: var(--gradient-primary);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: white;
-  border: 2px solid var(--bg-surface);
-  margin-right: -8px;
-}
-.student-avatars span:nth-child(2) { background: var(--gradient-info); }
-.student-avatars span:nth-child(3) { background: var(--gradient-success); }
-
-/* Welcome user dropdown */
-.user-dropdown {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
-  padding: 8px;
-  min-width: 200px;
-  box-shadow: var(--shadow-lg);
-  position: absolute;
-  top: 48px; left: 0;
-  z-index: 100;
-  display: none;
-}
-.user-dropdown.show { display: block; animation: fadeInUp 0.2s ease; }
-.user-dropdown a {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: var(--text-primary);
-  text-decoration: none;
-  font-size: 0.85rem;
-  transition: var(--transition);
-}
-.user-dropdown a:hover { background: rgba(79,70,229,0.08); color: var(--accent); }
-.user-dropdown a.danger:hover { background: rgba(239,68,68,0.08); color: #ef4444; }
-</style>
-</head>
-<body>
-
-<!-- Sidebar Overlay (mobile) -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-<!-- TOPBAR -->
-<div class="topbar">
-  <button class="sidebar-toggle" onclick="toggleSidebar()">
-    <i class="bi bi-list fs-5"></i>
-  </button>
-  <a href="01-dashboard.html" class="topbar-brand">
-    <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
-    آزمون‌یار
-  </a>
-  <div class="topbar-spacer"></div>
-  <div class="topbar-actions">
-    <a href="#" class="topbar-btn" title="جستجو"><i class="bi bi-search"></i></a>
-    <a href="#" class="topbar-btn" title="اعلان‌ها">
-      <i class="bi bi-bell"></i>
-      <span class="badge-dot"></span>
-    </a>
-    <a href="03-tickets-list.html" class="topbar-btn" title="تیکت‌ها">
-      <i class="bi bi-headset"></i>
-      <span class="badge-dot"></span>
-    </a>
-    <button class="theme-toggle" onclick="toggleTheme()" title="تغییر تم">
-      <i class="bi bi-moon-stars" id="themeIcon"></i>
-    </button>
-    <div style="position:relative;">
-      <div class="user-avatar" onclick="toggleDropdown()">مص</div>
-      <div class="user-dropdown" id="userDropdown">
-        <div style="padding:10px 12px; border-bottom: 1px solid var(--border-color); margin-bottom:6px;">
-          <div style="font-weight:700; font-size:0.88rem;">مصطفی احمدی</div>
-          <div style="font-size:0.75rem; color:var(--text-muted);">مصحح ارشد</div>
+    <!-- Hero Banner -->
+    <div class="hero-banner mb-4 fade-in-up">
+      <div class="row align-items-center g-0">
+        <div class="col-md-8">
+          <div style="font-size:0.82rem; opacity:0.8; margin-bottom:8px; position:relative; z-index:1;">
+            <i class="bi bi-sun-fill me-1"></i> سه‌شنبه، ۵ اسفند ۱۴۰۳
+          </div>
+          <h1 class="hero-title">سلام، مصطفی جان! 👋</h1>
+          <p class="hero-subtitle">شما امروز ۳ آزمون منتظر تصحیح دارید. بیایید شروع کنیم!</p>
+          <div class="d-flex gap-2 mt-4" style="position:relative; z-index:1;">
+            <a href="08-pending-exams.html" class="btn btn-light btn-sm rounded-3 fw-bold" style="font-family:'Vazirmatn',sans-serif;">
+              <i class="bi bi-play-circle-fill ms-1"></i> شروع تصحیح
+            </a>
+            <a href="07-exam-history.html" class="btn btn-outline-light btn-sm rounded-3" style="font-family:'Vazirmatn',sans-serif;">
+              مشاهده تاریخچه
+            </a>
+          </div>
         </div>
-        <a href="02-account.html"><i class="bi bi-person-circle"></i>اطلاعات حساب</a>
-        <a href="03-tickets-list.html"><i class="bi bi-ticket-perforated"></i>تیکت‌های من</a>
-        <a href="#" class="danger"><i class="bi bi-box-arrow-right"></i>خروج از حساب</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SIDEBAR -->
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-section-title">داشبورد</div>
-  <a href="01-dashboard.html" class="sidebar-item active">
-    <div class="si-icon"><i class="bi bi-speedometer2"></i></div>
-    صفحه اصلی
-  </a>
-  <a href="02-account.html" class="sidebar-item">
-    <div class="si-icon"><i class="bi bi-person-badge"></i></div>
-    اطلاعات حساب
-  </a>
-
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section-title">آزمون‌ها</div>
-  <a href="08-pending-exams.html" class="sidebar-item">
-    <div class="si-icon"><i class="bi bi-clipboard2-check"></i></div>
-    آزمون‌های منتظر تصحیح
-    <span class="sidebar-badge">۵</span>
-  </a>
-  <a href="07-exam-history.html" class="sidebar-item">
-    <div class="si-icon"><i class="bi bi-archive"></i></div>
-    تاریخچه تصحیح‌شده
-  </a>
-
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section-title">پشتیبانی</div>
-  <a href="03-tickets-list.html" class="sidebar-item">
-    <div class="si-icon"><i class="bi bi-ticket-perforated"></i></div>
-    لیست تیکت‌ها
-    <span class="sidebar-badge">۲</span>
-  </a>
-  <a href="04-send-ticket.html" class="sidebar-item">
-    <div class="si-icon"><i class="bi bi-send-plus"></i></div>
-    ارسال تیکت
-  </a>
-
-  <div class="sidebar-divider"></div>
-  <div style="padding:12px 20px;">
-    <div style="background:var(--gradient-primary); border-radius:12px; padding:16px; color:white; text-align:center;">
-      <i class="bi bi-award-fill" style="font-size:1.5rem; display:block; margin-bottom:8px;"></i>
-      <div style="font-size:0.8rem; font-weight:700;">مصحح ارشد</div>
-      <div style="font-size:0.7rem; opacity:0.85; margin-top:3px;">سطح ۳</div>
-      <div style="margin-top:10px; background:rgba(255,255,255,0.2); border-radius:8px; height:6px;">
-        <div style="width:72%; height:100%; background:white; border-radius:8px;"></div>
-      </div>
-      <div style="font-size:0.65rem; opacity:0.8; margin-top:5px;">۷۲٪ تا سطح بعدی</div>
-    </div>
-  </div>
-</nav>
-
-<!-- MAIN CONTENT -->
-<main class="main-content">
-
-  <!-- Hero Banner -->
-  <div class="hero-banner mb-4 fade-in-up">
-    <div class="row align-items-center g-0">
-      <div class="col-md-8">
-        <div style="font-size:0.82rem; opacity:0.8; margin-bottom:8px; position:relative; z-index:1;">
-          <i class="bi bi-sun-fill me-1"></i> سه‌شنبه، ۵ اسفند ۱۴۰۳
-        </div>
-        <h1 class="hero-title">سلام، مصطفی جان! 👋</h1>
-        <p class="hero-subtitle">شما امروز ۳ آزمون منتظر تصحیح دارید. بیایید شروع کنیم!</p>
-        <div class="d-flex gap-2 mt-4" style="position:relative; z-index:1;">
-          <a href="08-pending-exams.html" class="btn btn-light btn-sm rounded-3 fw-bold" style="font-family:'Vazirmatn',sans-serif;">
-            <i class="bi bi-play-circle-fill ms-1"></i> شروع تصحیح
-          </a>
-          <a href="07-exam-history.html" class="btn btn-outline-light btn-sm rounded-3" style="font-family:'Vazirmatn',sans-serif;">
-            مشاهده تاریخچه
-          </a>
+        <div class="col-md-4 text-center d-none d-md-block" style="position:relative; z-index:1;">
+          <div class="floating-number" style="font-size:5rem; opacity:0.15; font-weight:900; line-height:1;">۳</div>
+          <div style="font-size:0.85rem; opacity:0.7; margin-top:-20px;">آزمون در انتظار</div>
         </div>
       </div>
-      <div class="col-md-4 text-center d-none d-md-block" style="position:relative; z-index:1;">
-        <div class="floating-number" style="font-size:5rem; opacity:0.15; font-weight:900; line-height:1;">۳</div>
-        <div style="font-size:0.85rem; opacity:0.7; margin-top:-20px;">آزمون در انتظار</div>
-      </div>
     </div>
-  </div>
 
-  <!-- Stats Row -->
-  <div class="row g-3 mb-4">
-    <div class="col-6 col-xl-3 fade-in-up delay-1">
-      <div class="glass-card stat-card" style="background: var(--gradient-primary);">
-        <div class="d-flex justify-content-between align-items-start">
-          <div>
-            <div class="stat-icon" style="background:rgba(255,255,255,0.2); font-size:1.2rem;">
-              <i class="bi bi-clipboard2-check"></i>
+    <!-- Stats Row -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-xl-3 fade-in-up delay-1">
+        <div class="glass-card stat-card" style="background: var(--gradient-primary);">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="stat-icon" style="background:rgba(255,255,255,0.2); font-size:1.2rem;">
+                <i class="bi bi-clipboard2-check"></i>
+              </div>
+              <div class="stat-value mt-3" style="color:white;">۱۴۷</div>
+              <div class="stat-label" style="color:rgba(255,255,255,0.8);">آزمون تصحیح شده</div>
+              <div class="stat-change up" style="color:rgba(255,255,255,0.9);">
+                <i class="bi bi-arrow-up-right"></i> ۱۲٪ این ماه
+              </div>
             </div>
-            <div class="stat-value mt-3" style="color:white;">۱۴۷</div>
-            <div class="stat-label" style="color:rgba(255,255,255,0.8);">آزمون تصحیح شده</div>
-            <div class="stat-change up" style="color:rgba(255,255,255,0.9);">
-              <i class="bi bi-arrow-up-right"></i> ۱۲٪ این ماه
+            <div style="width:50px; height:50px; background:rgba(255,255,255,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">📊</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-xl-3 fade-in-up delay-2">
+        <div class="glass-card stat-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="stat-icon" style="background: var(--gradient-warning);">
+                <i class="bi bi-hourglass-split"></i>
+              </div>
+              <div class="stat-value">۵</div>
+              <div class="stat-label" style="color:var(--text-secondary);">در انتظار تصحیح</div>
+              <div class="stat-change down">
+                <i class="bi bi-arrow-up-right"></i> ۲ جدید امروز
+              </div>
             </div>
           </div>
-          <div style="width:50px; height:50px; background:rgba(255,255,255,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">📊</div>
         </div>
       </div>
-    </div>
-    <div class="col-6 col-xl-3 fade-in-up delay-2">
-      <div class="glass-card stat-card">
-        <div class="d-flex justify-content-between align-items-start">
-          <div>
-            <div class="stat-icon" style="background: var(--gradient-warning);">
-              <i class="bi bi-hourglass-split"></i>
+      <div class="col-6 col-xl-3 fade-in-up delay-3">
+        <div class="glass-card stat-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="stat-icon" style="background: var(--gradient-success);">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div class="stat-value">۸۳۲</div>
+              <div class="stat-label" style="color:var(--text-secondary);">دانش‌آموز بررسی شده</div>
+              <div class="stat-change up">
+                <i class="bi bi-arrow-up-right"></i> ۸٪ رشد
+              </div>
             </div>
-            <div class="stat-value">۵</div>
-            <div class="stat-label" style="color:var(--text-secondary);">در انتظار تصحیح</div>
-            <div class="stat-change down">
-              <i class="bi bi-arrow-up-right"></i> ۲ جدید امروز
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-xl-3 fade-in-up delay-4">
+        <div class="glass-card stat-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="stat-icon" style="background: var(--gradient-info);">
+                <i class="bi bi-star-fill"></i>
+              </div>
+              <div class="stat-value">۴.۸</div>
+              <div class="stat-label" style="color:var(--text-secondary);">امتیاز کیفی</div>
+              <div class="stat-change up">
+                <i class="bi bi-arrow-up-right"></i> عالی
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-6 col-xl-3 fade-in-up delay-3">
-      <div class="glass-card stat-card">
-        <div class="d-flex justify-content-between align-items-start">
-          <div>
-            <div class="stat-icon" style="background: var(--gradient-success);">
-              <i class="bi bi-people-fill"></i>
-            </div>
-            <div class="stat-value">۸۳۲</div>
-            <div class="stat-label" style="color:var(--text-secondary);">دانش‌آموز بررسی شده</div>
-            <div class="stat-change up">
-              <i class="bi bi-arrow-up-right"></i> ۸٪ رشد
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-xl-3 fade-in-up delay-4">
-      <div class="glass-card stat-card">
-        <div class="d-flex justify-content-between align-items-start">
-          <div>
-            <div class="stat-icon" style="background: var(--gradient-info);">
-              <i class="bi bi-star-fill"></i>
-            </div>
-            <div class="stat-value">۴.۸</div>
-            <div class="stat-label" style="color:var(--text-secondary);">امتیاز کیفی</div>
-            <div class="stat-change up">
-              <i class="bi bi-arrow-up-right"></i> عالی
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Charts + Activity Row -->
-  <div class="row g-3 mb-4">
-    <div class="col-lg-8 fade-in-up delay-2">
-      <div class="glass-card chart-container">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div class="section-title">عملکرد تصحیح ماهانه</div>
-          <select class="form-select form-select-sm" style="width:auto; font-family:'Vazirmatn',sans-serif; background:var(--bg-surface); border:1px solid var(--border-color); color:var(--text-primary); border-radius:8px;">
-            <option>۶ ماه اخیر</option>
-            <option>سال جاری</option>
-          </select>
-        </div>
-        <div class="chart-bars">
-          <div class="chart-bar" style="height:60%; animation-delay:0.1s;"></div>
-          <div class="chart-bar" style="height:80%; animation-delay:0.2s; background:var(--gradient-info);"></div>
-          <div class="chart-bar" style="height:45%; animation-delay:0.3s;"></div>
-          <div class="chart-bar" style="height:90%; animation-delay:0.4s; background:var(--gradient-success);"></div>
-          <div class="chart-bar" style="height:70%; animation-delay:0.5s;"></div>
-          <div class="chart-bar" style="height:100%; animation-delay:0.6s;"></div>
-        </div>
-        <div class="d-flex justify-content-around mt-2" style="font-size:0.72rem; color:var(--text-muted);">
-          <span>مهر</span><span>آبان</span><span>آذر</span><span>دی</span><span>بهمن</span><span>اسفند</span>
-        </div>
-        <div class="row g-3 mt-1">
-          <div class="col-4 text-center">
-            <div style="font-size:0.72rem; color:var(--text-muted);">بیشترین</div>
-            <div style="font-weight:800; font-size:1rem;">۳۲</div>
-            <div style="font-size:0.7rem; color:var(--text-muted);">آزمون</div>
+    <!-- Charts + Activity Row -->
+    <div class="row g-3 mb-4">
+      <div class="col-lg-8 fade-in-up delay-2">
+        <div class="glass-card chart-container">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="section-title">عملکرد تصحیح ماهانه</div>
+            <select class="form-select form-select-sm" style="width:auto; font-family:'Vazirmatn',sans-serif; background:var(--bg-surface); border:1px solid var(--border-color); color:var(--text-primary); border-radius:8px;">
+              <option>۶ ماه اخیر</option>
+              <option>سال جاری</option>
+            </select>
           </div>
-          <div class="col-4 text-center" style="border-right:1px solid var(--border-color); border-left:1px solid var(--border-color);">
-            <div style="font-size:0.72rem; color:var(--text-muted);">میانگین</div>
-            <div style="font-weight:800; font-size:1rem;">۲۴</div>
-            <div style="font-size:0.7rem; color:var(--text-muted);">آزمون</div>
+          <div class="chart-bars">
+            <div class="chart-bar" style="height:60%; animation-delay:0.1s;"></div>
+            <div class="chart-bar" style="height:80%; animation-delay:0.2s; background:var(--gradient-info);"></div>
+            <div class="chart-bar" style="height:45%; animation-delay:0.3s;"></div>
+            <div class="chart-bar" style="height:90%; animation-delay:0.4s; background:var(--gradient-success);"></div>
+            <div class="chart-bar" style="height:70%; animation-delay:0.5s;"></div>
+            <div class="chart-bar" style="height:100%; animation-delay:0.6s;"></div>
           </div>
-          <div class="col-4 text-center">
-            <div style="font-size:0.72rem; color:var(--text-muted);">کمترین</div>
-            <div style="font-weight:800; font-size:1rem;">۱۵</div>
-            <div style="font-size:0.7rem; color:var(--text-muted);">آزمون</div>
+          <div class="d-flex justify-content-around mt-2" style="font-size:0.72rem; color:var(--text-muted);">
+            <span>مهر</span><span>آبان</span><span>آذر</span><span>دی</span><span>بهمن</span><span>اسفند</span>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 fade-in-up delay-3">
-      <div class="glass-card p-4 h-100">
-        <div class="section-title mb-3">خلاصه کیفیت</div>
-        <!-- Progress rings mock -->
-        <div class="text-center mb-3">
-          <svg width="120" height="120" viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="var(--border-color)" stroke-width="8"/>
-            <circle cx="60" cy="60" r="50" fill="none" stroke="url(#pg)" stroke-width="8"
-              stroke-dasharray="314" stroke-dashoffset="87" stroke-linecap="round"
-              transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1s ease;"/>
-            <defs>
-              <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#4f46e5"/>
-                <stop offset="100%" stop-color="#7c3aed"/>
-              </linearGradient>
-            </defs>
-            <text x="60" y="60" text-anchor="middle" dominant-baseline="middle"
-              style="font-family:'Vazirmatn',sans-serif; font-weight:800; font-size:20px; fill:var(--text-primary);">۷۲٪</text>
-          </svg>
-          <div style="font-size:0.82rem; color:var(--text-secondary); margin-top:4px;">میانگین کیفیت تصحیح</div>
-        </div>
-        <div class="d-flex flex-column gap-2">
-          <div>
-            <div class="d-flex justify-content-between mb-1" style="font-size:0.78rem;">
-              <span>دقت تصحیح</span><span style="color:var(--accent); font-weight:700;">۸۸٪</span>
+          <div class="row g-3 mt-1">
+            <div class="col-4 text-center">
+              <div style="font-size:0.72rem; color:var(--text-muted);">بیشترین</div>
+              <div style="font-weight:800; font-size:1rem;">۳۲</div>
+              <div style="font-size:0.7rem; color:var(--text-muted);">آزمون</div>
             </div>
-            <div style="height:6px; background:var(--border-color); border-radius:6px;">
-              <div style="height:100%; width:88%; background:var(--gradient-primary); border-radius:6px;"></div>
+            <div class="col-4 text-center" style="border-right:1px solid var(--border-color); border-left:1px solid var(--border-color);">
+              <div style="font-size:0.72rem; color:var(--text-muted);">میانگین</div>
+              <div style="font-weight:800; font-size:1rem;">۲۴</div>
+              <div style="font-size:0.7rem; color:var(--text-muted);">آزمون</div>
             </div>
-          </div>
-          <div>
-            <div class="d-flex justify-content-between mb-1" style="font-size:0.78rem;">
-              <span>سرعت تصحیح</span><span style="color:#059669; font-weight:700;">۶۵٪</span>
-            </div>
-            <div style="height:6px; background:var(--border-color); border-radius:6px;">
-              <div style="height:100%; width:65%; background:var(--gradient-success); border-radius:6px;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="d-flex justify-content-between mb-1" style="font-size:0.78rem;">
-              <span>رضایت دانش‌آموزان</span><span style="color:#d97706; font-weight:700;">۹۲٪</span>
-            </div>
-            <div style="height:6px; background:var(--border-color); border-radius:6px;">
-              <div style="height:100%; width:92%; background:var(--gradient-warning); border-radius:6px;"></div>
+            <div class="col-4 text-center">
+              <div style="font-size:0.72rem; color:var(--text-muted);">کمترین</div>
+              <div style="font-weight:800; font-size:1rem;">۱۵</div>
+              <div style="font-size:0.7rem; color:var(--text-muted);">آزمون</div>
             </div>
           </div>
         </div>
       </div>
+      <div class="col-lg-4 fade-in-up delay-3">
+        <div class="glass-card p-4 h-100">
+          <div class="section-title mb-3">خلاصه کیفیت</div>
+          <!-- Progress rings mock -->
+          <div class="text-center mb-3">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--border-color)" stroke-width="8"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="url(#pg)" stroke-width="8"
+                stroke-dasharray="314" stroke-dashoffset="87" stroke-linecap="round"
+                transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1s ease;"/>
+              <defs>
+                <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#4f46e5"/>
+                  <stop offset="100%" stop-color="#7c3aed"/>
+                </linearGradient>
+              </defs>
+              <text x="60" y="60" text-anchor="middle" dominant-baseline="middle"
+                style="font-family:'Vazirmatn',sans-serif; font-weight:800; font-size:20px; fill:var(--text-primary);">۷۲٪</text>
+            </svg>
+            <div style="font-size:0.82rem; color:var(--text-secondary); margin-top:4px;">میانگین کیفیت تصحیح</div>
+          </div>
+          <div class="d-flex flex-column gap-2">
+            <div>
+              <div class="d-flex justify-content-between mb-1" style="font-size:0.78rem;">
+                <span>دقت تصحیح</span><span style="color:var(--accent); font-weight:700;">۸۸٪</span>
+              </div>
+              <div style="height:6px; background:var(--border-color); border-radius:6px;">
+                <div style="height:100%; width:88%; background:var(--gradient-primary); border-radius:6px;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-between mb-1" style="font-size:0.78rem;">
+                <span>سرعت تصحیح</span><span style="color:#059669; font-weight:700;">۶۵٪</span>
+              </div>
+              <div style="height:6px; background:var(--border-color); border-radius:6px;">
+                <div style="height:100%; width:65%; background:var(--gradient-success); border-radius:6px;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-between mb-1" style="font-size:0.78rem;">
+                <span>رضایت دانش‌آموزان</span><span style="color:#d97706; font-weight:700;">۹۲٪</span>
+              </div>
+              <div style="height:6px; background:var(--border-color); border-radius:6px;">
+                <div style="height:100%; width:92%; background:var(--gradient-warning); border-radius:6px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Pending Exams + Recent Activity -->
-  <div class="row g-3 mb-4">
-    <div class="col-lg-7 fade-in-up delay-2">
-      <div class="glass-card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div class="section-title">آزمون‌های منتظر تصحیح</div>
-          <a href="08-pending-exams.html" class="btn-gradient" style="padding:7px 16px; font-size:0.78rem;">
-            مشاهده همه <i class="bi bi-arrow-left"></i>
-          </a>
-        </div>
-        <div class="d-flex flex-column gap-2">
-          <div class="exam-card">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <div class="exam-title">آزمون ریاضی پایه دهم - فصل سوم</div>
-                <div class="exam-meta"><i class="bi bi-calendar3 me-1"></i>۴ اسفند ۱۴۰۳ &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>برگزارشده</div>
-                <div class="exam-students">
-                  <div class="student-avatars">
-                    <span>ع</span><span>م</span><span>ز</span>
+    <!-- Pending Exams + Recent Activity -->
+    <div class="row g-3 mb-4">
+      <div class="col-lg-7 fade-in-up delay-2">
+        <div class="glass-card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="section-title">آزمون‌های منتظر تصحیح</div>
+            <a href="08-pending-exams.html" class="btn-gradient" style="padding:7px 16px; font-size:0.78rem;">
+              مشاهده همه <i class="bi bi-arrow-left"></i>
+            </a>
+          </div>
+          <div class="d-flex flex-column gap-2">
+            <div class="exam-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="exam-title">آزمون ریاضی پایه دهم - فصل سوم</div>
+                  <div class="exam-meta"><i class="bi bi-calendar3 me-1"></i>۴ اسفند ۱۴۰۳ &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>برگزارشده</div>
+                  <div class="exam-students">
+                    <div class="student-avatars">
+                      <span>ع</span><span>م</span><span>ز</span>
+                    </div>
+                    <span style="margin-right:10px;">۲۸ دانش‌آموز</span>
                   </div>
-                  <span style="margin-right:10px;">۲۸ دانش‌آموز</span>
                 </div>
+                <span class="badge-custom badge-pending">در انتظار</span>
               </div>
-              <span class="badge-custom badge-pending">در انتظار</span>
+              <div class="mt-2 d-flex gap-2">
+                <a href="09-students-list.html" class="btn-gradient" style="padding:6px 14px; font-size:0.75rem;">شروع تصحیح</a>
+              </div>
             </div>
-            <div class="mt-2 d-flex gap-2">
-              <a href="09-students-list.html" class="btn-gradient" style="padding:6px 14px; font-size:0.75rem;">شروع تصحیح</a>
-            </div>
-          </div>
-          <div class="exam-card">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <div class="exam-title">آزمون فیزیک دوازدهم - الکتریسیته</div>
-                <div class="exam-meta"><i class="bi bi-calendar3 me-1"></i>۳ اسفند ۱۴۰۳ &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>برگزارشده</div>
-                <div class="exam-students">
-                  <div class="student-avatars">
-                    <span>ف</span><span>ح</span>
+            <div class="exam-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="exam-title">آزمون فیزیک دوازدهم - الکتریسیته</div>
+                  <div class="exam-meta"><i class="bi bi-calendar3 me-1"></i>۳ اسفند ۱۴۰۳ &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>برگزارشده</div>
+                  <div class="exam-students">
+                    <div class="student-avatars">
+                      <span>ف</span><span>ح</span>
+                    </div>
+                    <span style="margin-right:10px;">۱۵ دانش‌آموز</span>
                   </div>
-                  <span style="margin-right:10px;">۱۵ دانش‌آموز</span>
                 </div>
+                <span class="badge-custom badge-progress">در حال تصحیح</span>
               </div>
-              <span class="badge-custom badge-progress">در حال تصحیح</span>
+              <div class="mt-2">
+                <div style="height:5px; background:var(--border-color); border-radius:5px; margin-bottom:6px;">
+                  <div style="height:100%; width:40%; background:var(--gradient-info); border-radius:5px;"></div>
+                </div>
+                <div style="font-size:0.72rem; color:var(--text-muted);">۶ از ۱۵ دانش‌آموز تصحیح شده</div>
+              </div>
             </div>
-            <div class="mt-2">
-              <div style="height:5px; background:var(--border-color); border-radius:5px; margin-bottom:6px;">
-                <div style="height:100%; width:40%; background:var(--gradient-info); border-radius:5px;"></div>
+            <div class="exam-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="exam-title">آزمون شیمی دوازدهم - پیوند شیمیایی</div>
+                  <div class="exam-meta"><i class="bi bi-calendar3 me-1"></i>۲ اسفند ۱۴۰۳ &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>برگزارشده</div>
+                  <div class="exam-students">
+                    <div class="student-avatars"><span>س</span><span>ن</span><span>ب</span></div>
+                    <span style="margin-right:10px;">۳۲ دانش‌آموز</span>
+                  </div>
+                </div>
+                <span class="badge-custom badge-pending">در انتظار</span>
               </div>
-              <div style="font-size:0.72rem; color:var(--text-muted);">۶ از ۱۵ دانش‌آموز تصحیح شده</div>
             </div>
           </div>
-          <div class="exam-card">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <div class="exam-title">آزمون شیمی دوازدهم - پیوند شیمیایی</div>
-                <div class="exam-meta"><i class="bi bi-calendar3 me-1"></i>۲ اسفند ۱۴۰۳ &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>برگزارشده</div>
-                <div class="exam-students">
-                  <div class="student-avatars"><span>س</span><span>ن</span><span>ب</span></div>
-                  <span style="margin-right:10px;">۳۲ دانش‌آموز</span>
-                </div>
-              </div>
-              <span class="badge-custom badge-pending">در انتظار</span>
+        </div>
+      </div>
+      <div class="col-lg-5 fade-in-up delay-3">
+        <div class="glass-card p-4 h-100">
+          <div class="section-title mb-3">فعالیت‌های اخیر</div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#10b981;"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.83rem; font-weight:600;">تصحیح آزمون زیست‌شناسی کامل شد</div>
+              <div class="activity-time">۳۰ دقیقه پیش</div>
+            </div>
+            <span class="badge-custom badge-done">تمام</span>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#4f46e5;"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.83rem; font-weight:600;">تیکت جدید دریافت شد</div>
+              <div class="activity-time">۱ ساعت پیش</div>
+            </div>
+            <span class="badge-custom badge-progress">جدید</span>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#f59e0b;"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.83rem; font-weight:600;">آزمون ریاضی تخصیص داده شد</div>
+              <div class="activity-time">۲ ساعت پیش</div>
+            </div>
+            <span class="badge-custom badge-pending">جدید</span>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#10b981;"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.83rem; font-weight:600;">۱۲ دانش‌آموز تصحیح شدند</div>
+              <div class="activity-time">دیروز، ۱۴:۳۰</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#06b6d4;"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.83rem; font-weight:600;">پروفایل به‌روزرسانی شد</div>
+              <div class="activity-time">دیروز، ۱۰:۱۵</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#7c3aed;"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.83rem; font-weight:600;">گواهی عملکرد ماهانه صادر شد</div>
+              <div class="activity-time">۳ روز پیش</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-5 fade-in-up delay-3">
-      <div class="glass-card p-4 h-100">
-        <div class="section-title mb-3">فعالیت‌های اخیر</div>
-        <div class="activity-item">
-          <div class="activity-dot" style="background:#10b981;"></div>
-          <div style="flex:1;">
-            <div style="font-size:0.83rem; font-weight:600;">تصحیح آزمون زیست‌شناسی کامل شد</div>
-            <div class="activity-time">۳۰ دقیقه پیش</div>
-          </div>
-          <span class="badge-custom badge-done">تمام</span>
-        </div>
-        <div class="activity-item">
-          <div class="activity-dot" style="background:#4f46e5;"></div>
-          <div style="flex:1;">
-            <div style="font-size:0.83rem; font-weight:600;">تیکت جدید دریافت شد</div>
-            <div class="activity-time">۱ ساعت پیش</div>
-          </div>
-          <span class="badge-custom badge-progress">جدید</span>
-        </div>
-        <div class="activity-item">
-          <div class="activity-dot" style="background:#f59e0b;"></div>
-          <div style="flex:1;">
-            <div style="font-size:0.83rem; font-weight:600;">آزمون ریاضی تخصیص داده شد</div>
-            <div class="activity-time">۲ ساعت پیش</div>
-          </div>
-          <span class="badge-custom badge-pending">جدید</span>
-        </div>
-        <div class="activity-item">
-          <div class="activity-dot" style="background:#10b981;"></div>
-          <div style="flex:1;">
-            <div style="font-size:0.83rem; font-weight:600;">۱۲ دانش‌آموز تصحیح شدند</div>
-            <div class="activity-time">دیروز، ۱۴:۳۰</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-dot" style="background:#06b6d4;"></div>
-          <div style="flex:1;">
-            <div style="font-size:0.83rem; font-weight:600;">پروفایل به‌روزرسانی شد</div>
-            <div class="activity-time">دیروز، ۱۰:۱۵</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-dot" style="background:#7c3aed;"></div>
-          <div style="flex:1;">
-            <div style="font-size:0.83rem; font-weight:600;">گواهی عملکرد ماهانه صادر شد</div>
-            <div class="activity-time">۳ روز پیش</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-</main>
+  </main>
+{% endblock main %}
 
-<!-- FOOTER -->
-<footer class="dashboard-footer">
-  <div>© ۱۴۰۳ آزمون‌یار — سامانه مدیریت آزمون هوشمند</div>
-  <div>نسخه ۲.۴.۱</div>
-</footer>
 
-<!-- Toast Container -->
-<div class="toast-container-custom" id="toastContainer"></div>
+{% comment %} 
 
-<script src="/static/js/main/bootstrap5.bundle.min.js"></script>
-<script>
-// Theme toggle
-function toggleTheme() {
-  const html = document.documentElement;
-  const icon = document.getElementById('themeIcon');
-  if (html.getAttribute('data-theme') === 'light') {
-    html.setAttribute('data-theme', 'dark');
-    icon.className = 'bi bi-sun-fill';
-    localStorage.setItem('theme', 'dark');
-  } else {
-    html.setAttribute('data-theme', 'light');
-    icon.className = 'bi bi-moon-stars';
-    localStorage.setItem('theme', 'light');
-  }
-}
-// Load saved theme
-(function() {
-  const t = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', t);
-  if (t === 'dark') document.getElementById('themeIcon').className = 'bi bi-sun-fill';
-})();
+{% extends "base/base.html" %}
 
-// Sidebar toggle
-function toggleSidebar() {
-  const s = document.getElementById('sidebar');
-  const o = document.getElementById('sidebarOverlay');
-  s.classList.toggle('open');
-  o.classList.toggle('show');
-}
+{% block header %}{% endblock header %}
+{% block main %}{% endblock main %}
+{% block footer %}{% endblock footer %} 
 
-// User dropdown
-function toggleDropdown() {
-  document.getElementById('userDropdown').classList.toggle('show');
-}
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.user-avatar') && !e.target.closest('.user-dropdown')) {
-    document.getElementById('userDropdown')?.classList.remove('show');
-  }
-});
-
-// Show welcome toast
-function showToast(type, title, msg) {
-  const c = document.getElementById('toastContainer');
-  const t = document.createElement('div');
-  t.className = 'toast-custom';
-  t.innerHTML = `
-    <div class="toast-icon ${type}"><i class="bi bi-check-circle-fill"></i></div>
-    <div>
-      <div class="toast-title">${title}</div>
-      <div class="toast-msg">${msg}</div>
-    </div>
-    <button onclick="this.closest('.toast-custom').remove()" style="margin-right:auto; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem;"><i class="bi bi-x"></i></button>
-  `;
-  c.appendChild(t);
-  setTimeout(() => t.classList.add('show'), 5);
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 4000); }, 40000);
-}
-setTimeout(() => showToast('success', 'خوش آمدید!', 'شما ۳ آزمون منتظر تصحیح دارید.'), 800);
-setTimeout(() => showToast('info', 'تیکت جدید', 'یک تیکت جدید برای شما ارسال شده است.'), 2000);
-setTimeout(() => showToast('error', 'تیکت جدید', 'یک تیکت جدید برای شما ارسال شده است.'), 200);
-</script>
-</body>
-</html>
+{% endcomment %}
