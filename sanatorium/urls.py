@@ -9,7 +9,7 @@ urlpatterns = [
     path('account/', views.profile.SanatoriumEditProfileInfos.as_view(), name='edit-infos'),
  
     path('exams/pending/', views.quiz_remain.SanatoriumPendingExamList.as_view(), name='exam-list'),
-    path('exams/pending/students/', views.quiz_remain.SanatoriumStudentListOfExam.as_view(), name='exam-student-list'),
+    path('exams/<int:pk>/students/', views.quiz_remain.SanatoriumStudentListOfExam.as_view(), name='exam-student-list'),
     path('exams/pending/students/question', views.quiz_remain.SanatoriumQuestionListPerStudentOfExam.as_view(), name='exam-student-question-list'),
     path('exams/pending/students/question/detail', views.quiz_remain.SanatoriumQuestionDetailPerStudentOfExam.as_view(), name='exam-student-question-detail'),
 

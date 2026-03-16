@@ -1,6 +1,7 @@
  
 {% extends "sanatorium/base/base.html" %}
-
+{% load jalali_tags %}
+{% load tdc %}
 
   
 {% block header %}
@@ -39,9 +40,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .btn-glass{background:var(--bg-glass);border:1px solid var(--border-color);color:var(--text-primary);border-radius:10px;padding:8px 16px;font-family:'Vazirmatn',sans-serif;font-weight:500;font-size:0.82rem;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;text-decoration:none;}
 .btn-glass:hover{border-color:var(--accent);color:var(--accent);}
 .badge-custom{padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;}
-.badge-pending{background:rgba(245,158,11,0.12);color:#d97706;}
-.badge-progress{background:rgba(79,70,229,0.12);color:#4f46e5;}
-.badge-urgent{background:rgba(239,68,68,0.12);color:#dc2626;}
+
 .section-title{font-size:1rem;font-weight:800;color:var(--text-primary);display:flex;align-items:center;gap:10px;}
 .section-title::before{content:'';width:4px;height:18px;background:var(--gradient-primary);border-radius:4px;display:block;}
 .dashboard-footer{background:var(--bg-glass);backdrop-filter:blur(20px);border-top:1px solid var(--border-color);padding:16px 28px;margin-right:260px;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--text-muted);}
@@ -54,13 +53,33 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 /* Exam cards */
 .exam-pending-card{padding:22px;border-radius:16px;background:var(--bg-surface);border:1px solid var(--border-color);transition:var(--transition);box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
 .exam-pending-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
+
 .exam-pending-card.urgent{border-right:4px solid #ef4444;}
 .exam-pending-card.new{border-right:4px solid #4f46e5;}
 .exam-pending-card.inprog{border-right:4px solid #f59e0b;}
+.exam-pending-card.finished{border-right:4px solid #c60bf5;}
+.exam-pending-card.primary-card{border-right:4px solid #32f50b;}
+
+
+.badge-pending{background:rgba(245,158,11,0.12);color:#d97706;}
+.badge-progress{background:rgba(79,70,229,0.12);color:#4f46e5;}
+
+
+.badge-inprog{background:#f59f0b36;color:#f59e0b;}
+.badge-new{background:#4e46e53b;color:#4f46e5;}
+.badge-urgent{background:#dc262649;color:#dc2626;}
+.badge-finished{background:#c60bf548 ;color:#c60bf5;}
+.badge-primary-card{background:#32f50b4d;color:#32f50b;}
+
 .deadline-bar{height:4px;border-radius:4px;margin-top:12px;}
-.deadline-ok{background:var(--gradient-success);}
-.deadline-warn{background:var(--gradient-warning);}
-.deadline-crit{background:var(--gradient-danger);}
+
+.deadline-inprog{background:#f59f0b36;}
+.deadline-new{background:#4e46e53b;}
+.deadline-urgent{background:#dc262649;}
+.deadline-finished{background:#c60bf548;}
+.deadline-primary-card{background:#32f50b4d;}
+
+
 
 /* Timer */
 .countdown-timer{display:inline-flex;gap:4px;align-items:center;background:rgba(239,68,68,0.08);padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:800;color:#dc2626;}
@@ -79,181 +98,73 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 
   <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3 fade-in-up">
     <div>
-      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">آزمون‌های منتظر تصحیح</h1>
-      <div style="font-size:0.83rem;color:var(--text-secondary);margin-top:4px;"><a href="01-dashboard.html" style="color:var(--accent);text-decoration:none;">داشبورد</a> / آزمون‌های منتظر</div>
+      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">آزمون‌ها</h1>
     </div>
     <div style="display:flex;align-items:center;gap:8px;background:rgba(239,68,68,0.08);padding:8px 16px;border-radius:20px;">
       <span style="width:8px;height:8px;background:#ef4444;border-radius:50%;display:inline-block;animation:pulse 1s infinite;"></span>
-      <span style="font-size:0.82rem;font-weight:700;color:#dc2626;">۵ آزمون در انتظار</span>
+      <span style="font-size:0.82rem;font-weight:700;color:#dc2626;">{{wait_corrected}}   آزمون در انتظار تصحیح</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(74, 239, 68, 0.43);padding:8px 16px;border-radius:20px;">
+      <span style="width:8px;height:8px;background:rgb(74, 239, 68);border-radius:50%;display:inline-block;animation:pulse 1s infinite;"></span>
+      <span style="font-size:0.82rem;font-weight:700;color:rgb(74, 239, 68);"> {{corrected}} ازمون تصحیح شده</span>
     </div>
   </div>
 
   <!-- Alert Banner -->
-  <div style="background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(245,158,11,0.08));border:1px solid rgba(239,68,68,0.2);border-radius:14px;padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;" class="fade-in-up delay-1">
-    <div style="width:36px;height:36px;border-radius:10px;background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center;color:#dc2626;font-size:1.1rem;flex-shrink:0;"><i class="bi bi-exclamation-triangle-fill"></i></div>
-    <div>
-      <div style="font-weight:700;font-size:0.88rem;color:#dc2626;">آزمون فوری: مهلت ریاضی دهم تا ۲ ساعت دیگر است!</div>
-      <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:2px;">۲۸ پاسخنامه منتظر تصحیح شما هستند. لطفاً هرچه سریع‌تر اقدام فرمایید.</div>
-    </div>
-    <a href="09-students-list.html" class="btn-gradient" style="margin-right:auto;white-space:nowrap;padding:8px 16px;font-size:0.8rem;">شروع فوری</a>
-  </div>
-
-  <!-- Stats Strip -->
-  <div class="row g-3 mb-4 fade-in-up delay-1">
-    <div class="col-6 col-md-3">
-      <div class="glass-card" style="padding:16px;text-align:center;">
-        <div style="font-size:1.8rem;font-weight:900;color:#ef4444;">۱</div>
-        <div style="font-size:0.72rem;color:var(--text-muted);">فوری (کمتر از ۳ ساعت)</div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="glass-card" style="padding:16px;text-align:center;">
-        <div style="font-size:1.8rem;font-weight:900;color:#d97706;">۲</div>
-        <div style="font-size:0.72rem;color:var(--text-muted);">امروز (کمتر از ۱۲ ساعت)</div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="glass-card" style="padding:16px;text-align:center;">
-        <div style="font-size:1.8rem;font-weight:900;color:#4f46e5;">۲</div>
-        <div style="font-size:0.72rem;color:var(--text-muted);">این هفته</div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="glass-card" style="padding:16px;text-align:center;">
-        <div style="font-size:1.8rem;font-weight:900;color:#10b981;">۱۱۵</div>
-        <div style="font-size:0.72rem;color:var(--text-muted);">کل پاسخنامه‌ها</div>
-      </div>
-    </div>
-  </div>
+ 
 
   <!-- Exam Cards Grid -->
-  <div class="row g-3">
-    <!-- Urgent -->
-    <div class="col-12 fade-in-up delay-1">
-      <div class="exam-pending-card urgent">
+  {% for item in items %}
+  <a href='{% url "sanatorium:exam-student-list" item.pk  %}' >
+    <div class="row g-3 m-1">
+     <div class="col-12 fade-in-up delay-1">
+      <div class="exam-pending-card {% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}">
         <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-          <div class="d-flex gap-3 align-items-start">
-            <div class="subject-icon" style="background:rgba(239,68,68,0.1);color:#dc2626;">🧮</div>
-            <div>
+          <div class=" gap-10 align-items-start col-10">
+             <div>
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                <span style="font-weight:800;font-size:1rem;">آزمون ریاضی — مثلثات پیشرفته</span>
-                <span class="badge-custom badge-urgent"><i class="bi bi-fire"></i>فوری</span>
+                <span style="font-weight:800;font-size:1rem;">{{ item.name }}</span>
+                <span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><i class="bi bi-fire"></i>{{ item.status }}</span>
+                <span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><i class="bi bi-fire"></i>{{ item.grade.name }}</span>
+                <span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><i class="bi bi-fire"></i>{{ item.major.name }}</span>
               </div>
               <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:5px;">
-                <i class="bi bi-calendar3 me-1"></i>۵ اسفند ۱۴۰۳ &nbsp;|&nbsp;
-                <i class="bi bi-mortarboard me-1"></i>پایه دهم &nbsp;|&nbsp;
-                <i class="bi bi-file-text me-1"></i>۳۵ سوال
+                <i class="bi bi-calendar3 me-1"></i> {{ item.start_at|to_jalali:'%Y/%m/%d' }} &nbsp;|&nbsp;
+                <i class="bi bi-file-text me-1"></i>{{ item.question_count }} سوال  &nbsp;|&nbsp;
+                <i class="bi bi-mortarboard me-1"></i>  درس {{item.lession.name }}  &nbsp;|&nbsp;
+                <i class="bi bi-mortarboard me-1"></i>   مبحث {{ item.section }}  &nbsp;|&nbsp;
               </div>
+
               <div style="display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;">
-                <div class="student-pile"><span>ع</span><span>م</span><span>س</span><span class="extra">+۲۵</span></div>
-                <span style="font-size:0.8rem;color:var(--text-muted);">۲۸ دانش‌آموز</span>
-                <span class="countdown-timer" id="timer1"><i class="bi bi-alarm me-1"></i><span id="t1">۰۲:۱۴:۳۳</span></span>
-              </div>
-              <div class="deadline-bar deadline-crit" style="width:25%;"></div>
-              <div style="font-size:0.7rem;color:#dc2626;margin-top:3px;">۷۵٪ از مهلت گذشته</div>
+               </div>
+
+
+              <div class="deadline-bar m-1 deadline-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}" style="width:100;"></div>
+                 <span style="font-size:0.8rem;color:var(--text-muted);">{{ item.student_count }} دانش‌آموز</span>
+              <div class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}" >هزینه تصحیح به ازای هر پاسخ نامه : {% if item.corrected_price %}{{item.corrected_price|tdc}} تومان {% else %} بدون هزینه {% endif %}</div>
+
+
             </div>
           </div>
           <div class="d-flex flex-column gap-2 align-items-end">
-            <a href="09-students-list.html" class="btn-gradient" style="padding:9px 18px;">
+            <button class="btn-gradient" style="padding:9px 18px;">
               <i class="bi bi-play-circle-fill"></i>شروع تصحیح
-            </a>
+            </button>
             <button class="btn-glass" style="padding:7px 14px;font-size:0.78rem;"><i class="bi bi-info-circle"></i>جزئیات</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- In progress -->
-    <div class="col-md-6 fade-in-up delay-2">
-      <div class="exam-pending-card inprog">
-        <div class="d-flex gap-3 align-items-start">
-          <div class="subject-icon" style="background:rgba(8,145,178,0.1);color:#0891b2;">⚡</div>
-          <div style="flex:1;">
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-              <span style="font-weight:800;font-size:0.95rem;">آزمون فیزیک — الکتریسیته</span>
-              <span class="badge-custom badge-progress" style="padding:2px 8px;"><i class="bi bi-hourglass-split"></i>در حال تصحیح</span>
-            </div>
-            <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:5px;"><i class="bi bi-calendar3 me-1"></i>۳ اسفند &nbsp;|&nbsp; دوازدهم &nbsp;|&nbsp; ۴۰ سوال</div>
-            <div style="margin-top:10px;">
-              <div style="display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:4px;">
-                <span>پیشرفت تصحیح</span><span style="color:var(--accent);font-weight:700;">۶/۱۵</span>
-              </div>
-              <div style="height:6px;background:var(--border-color);border-radius:6px;">
-                <div style="width:40%;height:100%;background:var(--gradient-primary);border-radius:6px;transition:width 1s;"></div>
-              </div>
-            </div>
-            <div style="margin-top:10px;display:flex;gap:6px;">
-              <a href="09-students-list.html" class="btn-gradient" style="padding:7px 14px;font-size:0.78rem;"><i class="bi bi-play-fill"></i>ادامه</a>
-              <span class="countdown-timer yellow"><i class="bi bi-clock me-1"></i>۱۰:۳۰ مانده</span>
-            </div>
           </div>
         </div>
       </div>
     </div>
+    </div>
+  {% endfor %}
 
-    <!-- New exams -->
-    <div class="col-md-6 fade-in-up delay-2">
-      <div class="exam-pending-card new">
-        <div class="d-flex gap-3 align-items-start">
-          <div class="subject-icon" style="background:rgba(5,150,105,0.1);color:#059669;">🧪</div>
-          <div style="flex:1;">
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-              <span style="font-weight:800;font-size:0.95rem;">آزمون شیمی — پیوند شیمیایی</span>
-              <span class="badge-custom badge-pending" style="padding:2px 8px;"><i class="bi bi-clock"></i>جدید</span>
-            </div>
-            <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:5px;"><i class="bi bi-calendar3 me-1"></i>۲ اسفند &nbsp;|&nbsp; دوازدهم &nbsp;|&nbsp; ۳۰ سوال</div>
-            <div style="display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;">
-              <div class="student-pile"><span>ف</span><span>ن</span><span>ب</span><span class="extra">+۲۹</span></div>
-              <span style="font-size:0.8rem;color:var(--text-muted);">۳۲ دانش‌آموز</span>
-            </div>
-            <div class="deadline-bar deadline-ok" style="width:90%;margin-top:10px;"></div>
-            <div style="font-size:0.7rem;color:#059669;margin-top:3px;">مهلت کافی — ۲ روز مانده</div>
-            <div style="margin-top:8px;">
-              <a href="09-students-list.html" class="btn-gradient" style="padding:7px 14px;font-size:0.78rem;"><i class="bi bi-play-circle"></i>شروع</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+ 
 
-    <div class="col-md-6 fade-in-up delay-3">
-      <div class="exam-pending-card new">
-        <div class="d-flex gap-3 align-items-start">
-          <div class="subject-icon" style="background:rgba(245,158,11,0.1);color:#d97706;">🌿</div>
-          <div style="flex:1;">
-            <div style="font-weight:800;font-size:0.95rem;">آزمون زیست‌شناسی — ژنتیک</div>
-            <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:5px;"><i class="bi bi-calendar3 me-1"></i>۱ اسفند &nbsp;|&nbsp; یازدهم &nbsp;|&nbsp; ۲۵ سوال</div>
-            <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
-              <div class="student-pile"><span>ز</span><span>م</span></div>
-              <span style="font-size:0.8rem;color:var(--text-muted);">۱۸ دانش‌آموز</span>
-            </div>
-            <div class="deadline-bar deadline-warn" style="width:60%;margin-top:10px;"></div>
-            <div style="font-size:0.7rem;color:#d97706;margin-top:3px;">مهلت معقول — ۱۲ ساعت</div>
-            <div style="margin-top:8px;"><a href="09-students-list.html" class="btn-glass" style="font-size:0.78rem;"><i class="bi bi-play-circle"></i>شروع</a></div>
-          </div>
-        </div>
-      </div>
-    </div>
+ 
+ 
 
-    <div class="col-md-6 fade-in-up delay-3">
-      <div class="exam-pending-card new">
-        <div class="d-flex gap-3 align-items-start">
-          <div class="subject-icon" style="background:rgba(79,70,229,0.1);color:#4f46e5;">📊</div>
-          <div style="flex:1;">
-            <div style="font-weight:800;font-size:0.95rem;">آزمون آمار و احتمال</div>
-            <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:5px;"><i class="bi bi-calendar3 me-1"></i>۲۸ بهمن &nbsp;|&nbsp; دهم &nbsp;|&nbsp; ۲۰ سوال</div>
-            <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
-              <div class="student-pile"><span>ح</span><span>س</span><span>ر</span></div>
-              <span style="font-size:0.8rem;color:var(--text-muted);">۲۴ دانش‌آموز</span>
-            </div>
-            <div class="deadline-bar deadline-ok" style="width:95%;margin-top:10px;"></div>
-            <div style="font-size:0.7rem;color:#059669;margin-top:3px;">مهلت کافی — ۳ روز مانده</div>
-            <div style="margin-top:8px;"><a href="09-students-list.html" class="btn-glass" style="font-size:0.78rem;"><i class="bi bi-play-circle"></i>شروع</a></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+ 
 
 </main>
  
@@ -266,14 +177,6 @@ function toggleTheme(){const h=document.documentElement,i=document.getElementByI
 (function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
 
-// Live countdown timer
-let secs = 2*3600 + 14*60 + 33;
-function tick(){
-  if(secs<=0)return;
-  secs--;
-  const h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60),s=secs%60;
-  document.getElementById('t1').textContent=`${String(h).padStart(2,'۰')}:${String(m).padStart(2,'۰')}:${String(s).padStart(2,'۰')}`;
-}
-setInterval(tick, 1000);
+ 
 </script>
  {% endblock footer %} 

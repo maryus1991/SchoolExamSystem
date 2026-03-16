@@ -23,7 +23,7 @@ class LessionCategories(models.Model):
 
 class Quiz(models.Model):
     student = models.ManyToManyField(User, null=True, blank=True, related_name='quiz_student', verbose_name='دانش اموز')
-    sanatorium = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='quiz_sanatorium', verbose_name='مصحح')
+    sanatorium = models.ManyToManyField(User, related_name='quiz_sanatorium', verbose_name='مصحح')
     name = models.CharField(verbose_name='عنوان', max_length=255 )
     section = models.CharField(verbose_name='مبحث', max_length=255 )
 
@@ -36,6 +36,7 @@ class Quiz(models.Model):
     type_of_quiz =  models.CharField(max_length=255, verbose_name='محل و نحوه برگذاری')
     description = CKEditor5Field()
     price = models.PositiveBigIntegerField(default=0, verbose_name='هزینه')
+    corrected_price = models.PositiveBigIntegerField(default=0, verbose_name='هزینه تصحیح به ازای هر پاسخ نامه')
     time_minutes = models.PositiveIntegerField(default=0, verbose_name='(دقیقه) تایمر')
 
     create_at = models.DateTimeField(auto_now_add=True, verbose_name='زمان ساخت')
@@ -53,12 +54,14 @@ class Quiz(models.Model):
     class QuizStatus(models.TextChoices):
         
         ALL_STATUS = 'همه وضعیت ها ', 'همه وضعیت ها '
+        
         WAITING_START = 'در انتظار شروع', 'در انتظار شروع'
         STARTED = 'شروع شده', 'شروع شده'
         WAITING_END = 'در انتظار پایان', 'در انتظار پایان'
         FINISHED = 'پایان یافته', 'پایان یافته'
         WAITING_CORRECTION = 'در انتظار تصحیح', 'در انتظار تصحیح'
         CORRECTED = 'تصحیح شده', 'تصحیح شده'
+
         RESULTS_PUBLISHED = 'اعلام نتایج', 'اعلام نتایج'
         DEACTIVATED = 'غیرفعال', 'غیرفعال'
         CANCELED = 'کنسل شده', 'کنسل شده'
@@ -72,6 +75,7 @@ class Quiz(models.Model):
     have_negetive_score = models.BooleanField(default=True, verbose_name='دارای نمره منفی')
 
     class Meta:
+        ordering = ['-pk']
         verbose_name = 'ازمون'
         verbose_name_plural = 'ازمون ها'
  

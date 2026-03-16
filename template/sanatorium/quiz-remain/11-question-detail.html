@@ -57,7 +57,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .score-input-box{display:flex;flex-direction:column;gap:8px;}
 .score-slider-row{display:flex;align-items:center;gap:12px;}
 .score-slider{width:100%;height:6px;border-radius:6px;accent-color:var(--accent);cursor:pointer;}
-.score-display{width:60px;height:48px;border:2px solid var(--border-color);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:var(--accent);background:var(--bg-surface);}
+.score-display{width:84px;height:48px;border:2px solid var(--border-color);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:var(--accent);background:var(--bg-surface);}
 .quick-score-btn{padding:8px 14px;border-radius:10px;border:2px solid var(--border-color);background:var(--bg-surface);font-family:'Vazirmatn',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;transition:var(--transition);color:var(--text-primary);}
 .quick-score-btn:hover,.quick-score-btn.active{background:var(--gradient-primary);border-color:transparent;color:white;transform:scale(1.05);}
 .criteria-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-color);}
@@ -167,6 +167,11 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
       </div>
 
       <!-- Model Answer -->
+
+    </div>
+
+    <!-- Scoring Panel (right 40%) -->
+    <div class="col-lg-5 fade-in-up delay-2">
       <div class="glass-card p-4">
         <div class="section-title mb-3">پاسخ نمونه</div>
         <div style="background:rgba(16,185,129,0.05);border-radius:10px;padding:14px;border:1px solid rgba(16,185,129,0.2);">
@@ -179,11 +184,6 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Scoring Panel (right 40%) -->
-    <div class="col-lg-5 fade-in-up delay-2">
-
       <!-- Score Input -->
       <div class="glass-card p-4 mb-3">
         <div class="section-title mb-4">ثبت نمره</div>
@@ -191,113 +191,31 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
         <div style="text-align:center;margin-bottom:20px;">
           <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">نمره کل</div>
           <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-            <button onclick="adjustScore(-0.5)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:1.1rem;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">−</button>
-            <div class="score-display" id="scoreDisplay">۰</div>
-            <button onclick="adjustScore(0.5)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:var(--gradient-primary);color:white;cursor:pointer;font-size:1.1rem;">+</button>
+            <button onclick="adjustScore(-0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:1.1rem;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">−</button>
+            <input class="score-display" id="scoreDisplay" value="0">
+            <button onclick="adjustScore(0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:var(--gradient-primary);color:white;cursor:pointer;font-size:1.1rem;">+</button>
           </div>
           <div style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">از ۸ نمره</div>
         </div>
 
-        <input type="range" class="score-slider" id="scoreSlider" min="0" max="8" step="0.5" value="0" oninput="updateScoreFromSlider(this.value)">
+        <input type="range" class="score-slider" id="scoreSlider" min="0" max="8" step="0.01" value="0" oninput="updateScoreFromSlider(this.value)">
 
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;">
-          <div style="font-size:0.75rem;color:var(--text-muted);width:100%;margin-bottom:4px;">انتخاب سریع:</div>
-          <button class="quick-score-btn" onclick="setScore(0)">۰</button>
-          <button class="quick-score-btn" onclick="setScore(2)">۲</button>
-          <button class="quick-score-btn" onclick="setScore(4)">۴</button>
-          <button class="quick-score-btn" onclick="setScore(5)">۵</button>
-          <button class="quick-score-btn" onclick="setScore(6)">۶</button>
-          <button class="quick-score-btn" onclick="setScore(7)">۷</button>
-          <button class="quick-score-btn" onclick="setScore(8)">۸</button>
-        </div>
+ 
       </div>
-
-      <!-- Criteria Scoring -->
-      <div class="glass-card p-4 mb-3">
-        <div class="section-title mb-3">امتیازدهی مرحله‌ای</div>
-        <div class="criteria-row">
-          <div>
-            <div class="criteria-name">تبدیل معادله</div>
-            <div style="font-size:0.72rem;color:var(--text-muted);">sin(x) = √3/2</div>
-          </div>
-          <div class="criteria-score">
-            <input class="criteria-input" type="number" min="0" max="1" step="0.5" value="0" oninput="recalcTotal()">
-            <div class="criteria-max">/ ۱</div>
-          </div>
-        </div>
-        <div class="criteria-row">
-          <div>
-            <div class="criteria-name">شناسایی زاویه پایه</div>
-            <div style="font-size:0.72rem;color:var(--text-muted);">x = π/3</div>
-          </div>
-          <div class="criteria-score">
-            <input class="criteria-input" type="number" min="0" max="2" step="0.5" value="0" oninput="recalcTotal()">
-            <div class="criteria-max">/ ۲</div>
-          </div>
-        </div>
-        <div class="criteria-row">
-          <div>
-            <div class="criteria-name">جواب ربع اول</div>
-            <div style="font-size:0.72rem;color:var(--text-muted);">x₁ = π/3</div>
-          </div>
-          <div class="criteria-score">
-            <input class="criteria-input" type="number" min="0" max="2" step="0.5" value="0" oninput="recalcTotal()">
-            <div class="criteria-max">/ ۲</div>
-          </div>
-        </div>
-        <div class="criteria-row">
-          <div>
-            <div class="criteria-name">جواب ربع دوم</div>
-            <div style="font-size:0.72rem;color:var(--text-muted);">x₂ = 2π/3</div>
-          </div>
-          <div class="criteria-score">
-            <input class="criteria-input" type="number" min="0" max="2" step="0.5" value="0" oninput="recalcTotal()">
-            <div class="criteria-max">/ ۲</div>
-          </div>
-        </div>
-        <div class="criteria-row">
-          <div>
-            <div class="criteria-name">تأیید در بازه</div>
-            <div style="font-size:0.72rem;color:var(--text-muted);">[0, 2π]</div>
-          </div>
-          <div class="criteria-score">
-            <input class="criteria-input" type="number" min="0" max="1" step="0.5" value="0" oninput="recalcTotal()">
-            <div class="criteria-max">/ ۱</div>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding:10px 14px;border-radius:10px;background:var(--bg-surface2);border:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-weight:700;font-size:0.88rem;">جمع نمره مرحله‌ای:</span>
-          <span id="criteriaTotal" style="font-size:1.1rem;font-weight:900;color:var(--accent);">۰ / ۸</span>
-        </div>
-      </div>
-
-      <!-- Rubric Tags -->
-      <div class="glass-card p-4 mb-3">
-        <div class="section-title mb-3">برچسب‌های ارزیابی</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <span class="rubric-tag deduct" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'#dc2626':'';this.style.color=this.classList.contains('active')?'white':'';">−۱ محاسبه اشتباه</span>
-          <span class="rubric-tag deduct" onclick="this.classList.toggle('active');">−۰.۵ علامت‌گذاری ناقص</span>
-          <span class="rubric-tag bonus" onclick="this.classList.toggle('active');">+۰.۵ رویکرد خلاقانه</span>
-          <span class="rubric-tag bonus" onclick="this.classList.toggle('active');">+۰.۵ نظم و ترتیب عالی</span>
-          <span class="rubric-tag deduct" onclick="this.classList.toggle('active');">−۱ مرحله‌ای حذف شده</span>
-        </div>
-      </div>
+ 
+ 
 
       <!-- Feedback -->
       <div class="glass-card p-4 mb-3">
         <div class="section-title mb-3">بازخورد برای دانش‌آموز</div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;">
-          <button onclick="addFeedback('پاسخ کامل و صحیح است.')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);font-size:0.72rem;cursor:pointer;font-family:Vazirmatn,sans-serif;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">پاسخ کامل ✓</button>
-          <button onclick="addFeedback('زاویه را اشتباه محاسبه کرده‌اید.')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);font-size:0.72rem;cursor:pointer;font-family:Vazirmatn,sans-serif;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">زاویه اشتباه</button>
-          <button onclick="addFeedback('نمودار نیاز به دقت بیشتری دارد.')" style="padding:4px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);font-size:0.72rem;cursor:pointer;font-family:Vazirmatn,sans-serif;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">نمودار ناقص</button>
-        </div>
+ 
         <textarea class="feedback-area" id="feedbackText" rows="3" placeholder="بازخورد خود را برای این دانش‌آموز بنویسید..."></textarea>
       </div>
 
       <!-- Save button -->
       <div class="d-flex gap-2">
-        <button class="btn-glass" style="flex:1;justify-content:center;" onclick="saveAndNext()"><i class="bi bi-skip-end"></i>ذخیره و بعدی</button>
-        <button class="btn-gradient" style="flex:1;justify-content:center;" onclick="saveScore()"><i class="bi bi-check2-circle"></i>ثبت نمره</button>
+        
+        <button class="btn-gradient" style="flex:1;justify-content:center;" onclick="saveScore()"><i class="bi bi-skip-end"></i>ذخیره و بعدی</button>
       </div>
     </div>
   </div>
@@ -314,9 +232,8 @@ function toggleSidebar(){document.getElementById('sidebar').classList.toggle('op
 let currentScore = 0;
 function setScore(v){
   currentScore=v;
-  document.getElementById('scoreDisplay').textContent=toPersian(v);
+  document.getElementById('scoreDisplay').value=toPersian(v);
   document.getElementById('scoreSlider').value=v;
-  document.querySelectorAll('.quick-score-btn').forEach(b=>{b.classList.remove('active');if(parseFloat(b.textContent)==v)b.classList.add('active');});
 }
 function adjustScore(d){setScore(Math.max(0,Math.min(8,currentScore+d)));}
 function updateScoreFromSlider(v){setScore(parseFloat(v));}
@@ -327,25 +244,7 @@ function recalcTotal(){
   document.getElementById('criteriaTotal').textContent=toPersian(total)+' / ۸';
   setScore(total);
 }
-function addFeedback(t){
-  const fb=document.getElementById('feedbackText');
-  fb.value=(fb.value?fb.value+' ':'')+t;
-}
-function addAnnotation(sym){
-  const d=document.getElementById('annotations');
-  const s=document.createElement('span');
-  s.style.cssText='padding:2px 10px;border-radius:4px;font-size:0.8rem;background:var(--bg-surface2);border:1px solid var(--border-color);cursor:pointer;';
-  s.textContent=sym;
-  s.onclick=()=>s.remove();
-  d.appendChild(s);
-}
-function saveScore(){
-  const score=currentScore;
-  const a=document.createElement('div');
-  a.innerHTML=`<div style="position:fixed;bottom:20px;left:20px;background:linear-gradient(135deg,#059669,#10b981);color:white;padding:16px 22px;border-radius:14px;font-family:Vazirmatn,sans-serif;font-size:0.88rem;font-weight:700;z-index:9999;display:flex;gap:10px;align-items:center;box-shadow:0 8px 24px rgba(5,150,105,0.4);"><i class="bi bi-check-circle-fill"></i> نمره ${toPersian(score)} از ۸ ثبت شد</div>`;
-  document.body.appendChild(a);
-  setTimeout(()=>a.remove(),2500);
-}
-function saveAndNext(){saveScore();setTimeout(()=>window.location.href='10-exam-questions.html',500);}
+
+
 </script>
  {% endblock footer %} 

@@ -29,9 +29,14 @@ class Dashboard(TemplateView):
         data['questions_count'] = questions_count
 
         user_report = self.request.user.reports
-        data['best_order'] = user_report.order_by('order').first().order
+        if user_report.exists():
+            data['best_order'] = user_report.order_by('order').first().order   
+            data['avg_exams_percents'] = sum(user_report.values_list('percent', flat=True)) / (100 * len(user_report.values_list('percent', flat=True)))  
+        else:
+            data['best_order'] = 0
+            data['avg_exams_percents'] = 0
+
         data['reports'] = user_report.order_by('percent').all()[:6]
-        data['avg_exams_percents'] = sum(user_report.values_list('percent', flat=True)) / (100 * len(user_report.values_list('percent', flat=True)))  
 
 
         return data

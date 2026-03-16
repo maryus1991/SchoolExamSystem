@@ -169,7 +169,11 @@ class LoginWithPassword(View):
 
             if next_url:
                 return redirect(next_url)
-            
+            elif user.is_staff and user.type_of_user == User.TypeOfUser.SANATORUM:
+                return redirect('sanatorium:main')
+            elif user.is_superuser and user.type_of_user == User.TypeOfUser.ADMIN:
+                return redirect('sanatorium:main')
+                
             return redirect('dashboard:main')
 
         
