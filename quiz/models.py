@@ -70,6 +70,7 @@ class Quiz(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='فعال')
     is_online = models.BooleanField(default=True, verbose_name='انلاین')
     allow_return_to_questions = models.BooleanField(default=True, verbose_name='برگشتن به عقب')
+    allow_to_edit_anwerd_by_sanatorium = models.BooleanField(default=True, verbose_name='اجازه به ویرایش پاسخ بعد از تصحصح توسط مصحح')
     change_the_order = models.BooleanField(default=True, verbose_name=' عوض کردن ترتیب سوالات')
     allow_to_edit_the_answered_questions = models.BooleanField(default=True, verbose_name='امکان ویرایش سوالات پاسخ داده شده')
     have_negetive_score = models.BooleanField(default=True, verbose_name='دارای نمره منفی')
@@ -119,6 +120,7 @@ class Question(models.Model):
     quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='questions', verbose_name='آزمون')
     type_of_question = models.CharField( max_length=100, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
     name = models.CharField( max_length=255, verbose_name='عنوان سوال')
+
     description = CKEditor5Field( blank=True, null=True, verbose_name='متن سوال')
     image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
     pdf_file = models.FileField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF سوال' )
@@ -154,7 +156,7 @@ class QuestionOption(models.Model):
     
 
 def photo_path_upload_to(instance, filename):
-    return f"questions/{get_random_string(100)}-{filename}"
+    return f"questions/key/{get_random_string(100)}-{filename}"
 
 
 class QuestionAnswerKey(models.Model):
@@ -165,6 +167,7 @@ class QuestionAnswerKey(models.Model):
 
     question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name='answer_key', verbose_name='سوال')
     type_of_answer = models.CharField(max_length=50, choices=TypeOfAnswer.choices, verbose_name='نوع پاسخ صحیح')
+
     description = CKEditor5Field(blank=True, null=True, verbose_name='متن پاسخ')
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
     pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True,null=True, verbose_name='فایل PDF پاسخ')
@@ -187,9 +190,11 @@ def photo_path_upload_to(instance, filename):
 class StudentAnswer(models.Model):
     class TypeOfAnswer(models.TextChoices):
         OPTION = 'انتخاب گزینه', 'انتخاب گزینه'
+
         TEXT_BASED = 'پاسخ متنی', 'پاسخ متنی'
         IMAGE_BASED = 'پاسخ تصویری', 'پاسخ تصویری'
         PDF_BASED = 'پاسخ PDF', 'پاسخ PDF'
+
         SKIPPED = 'رد شده', 'رد شده'
         NOT_ANSWERD = 'جواب داده نشده', 'جواب داده نشده'
 
@@ -199,9 +204,11 @@ class StudentAnswer(models.Model):
     
     type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', default=TypeOfAnswer.NOT_ANSWERD)
     selected_option = models.ForeignKey(QuestionOption,on_delete=models.PROTECT ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده')
+
     description = models.TextField(blank=True, null=True,verbose_name='متن پاسخ' )
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
     pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF پاسخ')
+    
     is_skipped = models.BooleanField(default=False, verbose_name='رد شده' )
 
     class TypeOfCorrect(models.TextChoices):

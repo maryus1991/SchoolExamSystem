@@ -36,7 +36,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .main-content{margin-right:260px;margin-top:64px;padding:28px;min-height:calc(100vh - 64px);position:relative;z-index:1;}
 .glass-card{background:var(--bg-glass);backdrop-filter:blur(20px);border:1px solid var(--bg-glass-border);border-radius:16px;box-shadow:var(--shadow-md);}
 [data-theme="dark"] .glass-card{background:var(--bg-glass);border-color:var(--border-color);}
-.btn-gradient{background:var(--gradient-primary);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'Vazirmatn',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(79,70,229,0.35);display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+.btn-gradient{flex:1;justify-content:center;  background:var(--gradient-primary);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'Vazirmatn',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(79,70,229,0.35);display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
 .btn-gradient:hover{transform:translateY(-2px);color:white;}
 .btn-glass{background:var(--bg-glass);border:1px solid var(--border-color);color:var(--text-primary);border-radius:10px;padding:8px 16px;font-family:'Vazirmatn',sans-serif;font-weight:500;font-size:0.82rem;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;text-decoration:none;}
 .btn-glass:hover{border-color:var(--accent);color:var(--accent);}
@@ -49,6 +49,36 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 @media(max-width:991px){.sidebar{transform:translateX(100%);}.sidebar.open{transform:translateX(0);}.main-content{margin-right:0;padding:20px 16px;}.dashboard-footer{margin-right:0;}.sidebar-toggle{display:flex!important;}.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1015;}.sidebar-overlay.show{display:block;}}
 ::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:6px;}
 
+
+.form-control-custom {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  width: 100%;
+}
+select option {
+  background: var(--bg-secondary) !important;
+
+}
+.form-control-custom:focus {
+  outline: none;
+  border-color: var(--primary-400);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.08);
+}
+.form-control-custom::placeholder { color: var(--text-muted); }
+
+iframe {
+  width: 100%;
+  border: 2px solid #ddd;
+  margin-bottom: 25px;
+}
+
 /* Correction specific */
 .pdf-viewer{background:var(--bg-surface2);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;position:relative;}
 .pdf-toolbar{background:var(--bg-surface);border-bottom:1px solid var(--border-color);padding:8px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
@@ -58,6 +88,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .score-slider-row{display:flex;align-items:center;gap:12px;}
 .score-slider{width:100%;height:6px;border-radius:6px;accent-color:var(--accent);cursor:pointer;}
 .score-display{width:84px;height:48px;border:2px solid var(--border-color);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:var(--accent);background:var(--bg-surface);}
+ 
 .quick-score-btn{padding:8px 14px;border-radius:10px;border:2px solid var(--border-color);background:var(--bg-surface);font-family:'Vazirmatn',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;transition:var(--transition);color:var(--text-primary);}
 .quick-score-btn:hover,.quick-score-btn.active{background:var(--gradient-primary);border-color:transparent;color:white;transform:scale(1.05);}
 .criteria-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-color);}
@@ -86,14 +117,10 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3 fade-in-up">
     <div>
-      <h1 style="font-size:1.3rem;font-weight:800;margin:0;">تصحیح سوال ۴</h1>
-      <div style="font-size:0.83rem;color:var(--text-secondary);margin-top:4px;"><a href="10-exam-questions.html" style="color:var(--accent);text-decoration:none;">لیست سوالات</a> / سوال ۴ — تشریحی</div>
+      <h1 style="font-size:1.3rem;font-weight:800;margin:0;">تصحیح پاسه نامه شماره {{item.id}}</h1>
+      <div style="font-size:0.83rem;color:var(--text-secondary);margin-top:4px;"><a href="10-exam-questions.html" style="color:var(--accent);text-decoration:none;">لیست سوالات</a> / سوال {{item.question.id}} — {{item.question.type_of_answer}} </div>
     </div>
-    <div class="d-flex gap-2 align-items-center flex-wrap">
-      <a href="10-exam-questions.html" class="btn-glass"><i class="bi bi-arrow-right"></i>سوال قبلی</a>
-      <a href="10-exam-questions.html" class="btn-glass"><i class="bi bi-arrow-left"></i>سوال بعدی</a>
-      <button class="btn-gradient" onclick="saveScore()"><i class="bi bi-check2-all"></i>ثبت نمره</button>
-    </div>
+ 
   </div>
 
   <div class="row g-4">
@@ -104,28 +131,103 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
       <div class="glass-card p-4 mb-3">
         <div class="section-title mb-3">متن سوال</div>
         <div style="background:var(--bg-surface2);border-radius:10px;padding:16px;border-right:4px solid var(--accent);">
-          <div style="font-weight:700;margin-bottom:8px;font-size:0.88rem;">سوال ۴ — تشریحی | ۸ نمره</div>
-          <div style="font-size:0.9rem;line-height:2;">
-            معادله مثلثاتی زیر را در بازه [0, 2π] حل کنید:
-            <div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
-              2 sin(x) = √3
+          <div style="font-weight:700;margin-bottom:8px;font-size:0.88rem;">سوال {{item.question.id}} — {{item.question.type_of_answer}} | {{item.question.score}} نمره</div>
+          {% if   item.question.type_of_question == type_of_questions.MULTIPLE_CHOICE %}
+            <div style="font-size:0.9rem;line-height:2;">
+              {{item.question.name}}
+              {% for option in item.question.options.all %}
+                <div class="mt-3 mx-3" style="text-align:center;font-size:1.1rem;padding:12px;background:var({% if option.is_correct %}--gradient-success{% elif option == item.selected_option %}--gradient-warning{% else %}--bg-surface{% endif %});border-radius:8px; font-family:serif;">
+                  {{ option.text }}
+                </div>
+                {% if option == item.selected_option and option.is_correct %}
+                  <span style="font-size:0.82rem;color:var(--text-muted);">دانش اموز گزینه درست را انتخاب کرده</span>
+
+                {% elif option != item.selected_option and option.is_correct  %}
+                  <span style="font-size:0.82rem;color:var(--text-muted);"> این گزینه درست است و دانش اموز این گزینه را انتخاب نکرده  </span>
+                {% elif option == item.selected_option %}
+                  <span style="font-size:0.82rem;color:var(--text-muted);">  دانش اموز این گزینه را انتخاب کرده  </span>
+
+                {% endif %}
+
+              {% endfor %}
+ 
             </div>
-            <span style="font-size:0.82rem;color:var(--text-muted);">راه‌حل را کامل بنویسید. نمره‌گذاری شامل مراحل میانی است.</span>
-          </div>
+          {% elif item.question.type_of_question == type_of_questions.SHORT_ANSWER or item.question.type_of_question == type_of_questions.LONG_ANSWER  %}
+            <div style="font-size:0.9rem;line-height:2;">
+              {{item.question.name}}
+              <div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
+              {{ item.question.description|safe }}
+              </div>
+             </div>
+ 
+          {% elif item.question.type_of_question == type_of_questions.IMAGE_BASED  %}
+              <div class="pdf-viewer" style="margin:0 16px 16px;">
+                <div class="pdf-toolbar">
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
+                  <a href="{{ item.question.image.url }}" class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
+                </div>
+                <div class="pdf-page">
+                  <!-- Simulated handwritten answer -->
+                  <div style="width:100%;">
+                        <div class="handwritten-sim">
+                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+                            <picture>
+                              <source srcset="{{ item.question.image.url }}"
+                                      type="image/webp">
+                              <img src="{{ item.question.image.url }}"   width="360" height="360"
+                                    loading="lazy">
+                            </picture>
+                        </div>  
+                      </div>
+      
+                  </div>
+                </div>
+              </div>
+      
+
+          {% elif item.question.type_of_question == type_of_questions.PDF_BASED  %}
+ 
+
+              <div class="pdf-viewer" style="margin:0 16px 16px;">
+                <div class="pdf-toolbar">
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
+                  <span style="margin-right:auto;font-size:0.72rem;color:var(--text-muted);">صفحه ۳ از ۱۰</span>
+
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
+                  <a href="{{ item.question.pdf_file.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
+                </div>
+                <div class="pdf-page">
+                  <!-- Simulated handwritten answer -->
+                  <div style="width:100%;">
+                        <div class="handwritten-sim">
+                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+                          <iframe src="{{ item.question.pdf_file.url }}" scrolling="auto" width="360" height="360"></iframe>
+                        </div>  
+                      </div>
+                  </div>
+                </div>
+              </div>
+          {% endif %}
+
         </div>
         <!-- Tags -->
         <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
-          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(79,70,229,0.1);color:#4f46e5;">مثلثات</span>
-          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(8,145,178,0.1);color:#0891b2;">معادله</span>
-          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(245,158,11,0.1);color:#d97706;">سطح متوسط</span>
-        </div>
+          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(79,70,229,0.1);color:#4f46e5;" >{{item.quiz.major.name}}</span>
+          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(8,145,178,0.1);color:#0891b2;" >{{item.quiz.grade.name}}</span>
+          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(245,158,11,0.1);color:#d97706;">{{item.quiz.lession.name}}</span>
+          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(245,158,11,0.1);color:#d97706;">{{item.quiz.section}}</span>
+        </div>  
       </div>
 
+      {% if item.type_of_answer == type_of_answer.TEXT_BASED or item.type_of_answer == type_of_answer.IMAGE_BASED or item.type_of_answer == type_of_answer.PDF_BASED %}
       <!-- Answer Sheet (PDF Viewer mock) -->
       <div class="glass-card mb-3">
         <div style="padding:16px 20px 8px;display:flex;justify-content:space-between;align-items:center;">
           <div class="section-title">پاسخنامه دانش‌آموز</div>
-          <span style="font-size:0.75rem;color:var(--text-muted);">علی رضایی | کد: ۱۰۰۱</span>
+          <span style="font-size:0.75rem;color:var(--text-muted);">کد دانش اموز : {{item.student.pk}}</span>
         </div>
         <div class="pdf-viewer" style="margin:0 16px 16px;">
           <div class="pdf-toolbar">
@@ -139,33 +241,85 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
             <!-- Simulated handwritten answer -->
             <div style="width:100%;">
               <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:8px;border-bottom:1px solid var(--border-color);padding-bottom:8px;"><i class="bi bi-person me-1"></i>علی رضایی — کد ملی: ۰۰۱... — کلاس ۱۰/الف</div>
-              <div style="font-weight:700;font-size:0.82rem;margin-bottom:10px;">حل سوال ۴:</div>
-              <div class="handwritten-sim">
-                داریم:  2 sin(x) = √3<br>
-                پس:     sin(x) = √3 / 2<br>
-                <br>
-                می‌دانیم sin(x) = √3/2 وقتی x = π/3<br>
-                <br>
-                چون sin تابع مثبت است در ربع اول و دوم:<br>
-                x₁ = π/3<br>
-                x₂ = π - π/3 = 2π/3<br>
-                <br>
-                جواب: x = π/3  یا  x = 2π/3
+              <div style="font-weight:700;font-size:0.82rem;margin-bottom:10px;">حل سوال {{ item.question.pk }}:</div>
+
+          {% if item.description %}
+            <div style="font-size:0.9rem;line-height:2;">
+               <div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
+              {{ item.description }}
               </div>
-              <!-- Annotation toolbar (mock) -->
-              <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:var(--bg-surface2);border-radius:8px;font-size:0.75rem;">
-                <span style="color:var(--text-muted);">حاشیه‌نویسی:</span>
-                <button onclick="addAnnotation('✓')" style="padding:3px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:0.75rem;color:#10b981;">✓ درست</button>
-                <button onclick="addAnnotation('✗')" style="padding:3px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:0.75rem;color:#dc2626;">✗ اشتباه</button>
-                <button onclick="addAnnotation('?')" style="padding:3px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:0.75rem;color:#d97706;">? بررسی</button>
-                <button onclick="addAnnotation('★')" style="padding:3px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:0.75rem;color:#4f46e5;">★ عالی</button>
+             </div>
+          {% endif %}
+          {% if item.image  %}
+              <div class="pdf-viewer" style="margin:0 16px 16px;">
+                <div class="pdf-toolbar">
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
+                  <a href="{{ item.image.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
+                </div>
+                <div class="pdf-page">
+                  <!-- Simulated handwritten answer -->
+                  <div style="width:100%;">
+                        <div class="handwritten-sim">
+                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+                            <picture>
+                              <source srcset="{{ item.image.url }}"
+                                      type="image/webp">
+                              <img src="{{ item.image.url }}"   width="360" height="360"
+                                    loading="lazy">
+                            </picture>
+                        </div>  
+                      </div>
+      
+                  </div>
+                </div>
               </div>
-              <div id="annotations" style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;min-height:24px;"></div>
+      
+          {% endif %}
+
+          {% if item.pdf_file  %}
+ 
+
+              <div class="pdf-viewer" style="margin:0 16px 16px;">
+                <div class="pdf-toolbar">
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
+                  <span style="margin-right:auto;font-size:0.72rem;color:var(--text-muted);">صفحه ۳ از ۱۰</span>
+
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
+                  <a href="{{ item.pdf_file.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
+                </div>
+                <div class="pdf-page">
+                  <!-- Simulated handwritten answer -->
+                  <div style="width:100%;">
+                        <div class="handwritten-sim">
+                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+                          <iframe src="{{ item.pdf_file.url }}" scrolling="auto" width="360" height="360"></iframe>
+                        </div>  
+                      </div>
+                  </div>
+                </div>
+              </div>
+          {% endif %}
+ 
             </div>
           </div>
         </div>
       </div>
-
+      {% elif item.type_of_answer == type_of_answer.OPTION %}
+      <div class="glass-card mb-3">
+        <div class="m-3  btn btn-warning">
+          این سوال تستی می باشد و گزینه انتخابی دانش اموز در قسمت متن سوال رنگ زرد نمایان است و رنگ سبر هم گزینه درست هست اگر رنگ زرد نمایان نبود پس دانش اموز درست پاسخ داده است
+        </div>
+      </div>
+      {% else %}
+      <div class="glass-card mb-3">
+        <div class="m-3  btn btn-danger ">
+          دانش اموز پاسخی برای این سوال ثبت نکرده است 
+        </div>
+      </div>
+      {% endif %}
       <!-- Model Answer -->
 
     </div>
@@ -176,47 +330,102 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
         <div class="section-title mb-3">پاسخ نمونه</div>
         <div style="background:rgba(16,185,129,0.05);border-radius:10px;padding:14px;border:1px solid rgba(16,185,129,0.2);">
           <div style="font-size:0.82rem;line-height:2.2;color:var(--text-secondary);">
-            <strong style="color:var(--text-primary);">۱.</strong> تبدیل: 2sin(x) = √3  →  sin(x) = √3/2 &nbsp; <span style="color:#059669;">(۱ نمره)</span><br>
-            <strong style="color:var(--text-primary);">۲.</strong> شناسایی زاویه پایه: x = π/3 &nbsp; <span style="color:#059669;">(۲ نمره)</span><br>
-            <strong style="color:var(--text-primary);">۳.</strong> جواب ربع اول: x₁ = π/3 &nbsp; <span style="color:#059669;">(۲ نمره)</span><br>
-            <strong style="color:var(--text-primary);">۴.</strong> جواب ربع دوم: x₂ = π - π/3 = 2π/3 &nbsp; <span style="color:#059669;">(۲ نمره)</span><br>
-            <strong style="color:var(--text-primary);">۵.</strong> تأیید در بازه [0, 2π] &nbsp; <span style="color:#059669;">(۱ نمره)</span>
+          {% if item.question.answer_key.description %}
+            <div style="font-size:0.9rem;line-height:2;">
+               <div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
+              {{ item.question.answer_key.description|safe }}
+              </div>
+             </div>
+          {% endif %}
+          {% if item.question.answer_key.image  %}
+              <div class="pdf-viewer" style="margin:0 16px 16px;">
+                <div class="pdf-toolbar">
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
+                  <a href="{{ item.question.answer_key.image.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
+                </div>
+                <div class="pdf-page">
+                  <!-- Simulated handwritten answer -->
+                  <div style="width:100%;">
+                        <div class="handwritten-sim">
+                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+                            <picture>
+                              <source srcset="{{ item.question.answer_key.image.url }}"
+                                      type="image/webp">
+                              <img src="{{ item.question.answer_key.image.url }}"   width="360" height="360"
+                                    loading="lazy">
+                            </picture>
+                        </div>  
+                      </div>
+      
+                  </div>
+                </div>
+              </div>
+      
+          {% endif %}
+
+          {% if item.question.answer_key.pdf_file  %}
+ 
+
+              <div class="pdf-viewer" style="margin:0 16px 16px;">
+                <div class="pdf-toolbar">
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
+                  <span style="margin-right:auto;font-size:0.72rem;color:var(--text-muted);">صفحه ۳ از ۱۰</span>
+
+                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
+                  <a href="{{ item.question.answer_key.pdf_file.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
+                </div>
+                <div class="pdf-page">
+                  <!-- Simulated handwritten answer -->
+                  <div style="width:100%;">
+                        <div class="handwritten-sim">
+                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+                          <iframe src="{{ item.question.answer_key.pdf_file.url }}" scrolling="auto" width="360" height="360"></iframe>
+                        </div>  
+                      </div>
+                  </div>
+                </div>
+              </div>
+          {% endif %}
+
           </div>
         </div>
       </div>
       <!-- Score Input -->
-      <div class="glass-card p-4 mb-3">
+      <div class="glass-card p-4 mb-3 mt-3">
         <div class="section-title mb-4">ثبت نمره</div>
+          <form action="{% url 'sanatorium:exam-student-question-detail-pk' pk=item.quiz.pk report_id=item.pk %}" method="post">
+            {% csrf_token %}
+            <div style="text-align:center;margin-bottom:10px;">
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">نمره کل</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+                <button type="button" onclick="adjustScore(-0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:1.1rem;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">−</button>
+                  {{ form.score }}
+                <button type="button" onclick="adjustScore(0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:var(--gradient-primary);color:white;cursor:pointer;font-size:1.1rem;">+</button>
+              </div>
+              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">از {{ item.question.score }} نمره</div>
+            </div>
 
-        <div style="text-align:center;margin-bottom:20px;">
-          <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">نمره کل</div>
-          <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-            <button onclick="adjustScore(-0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:1.1rem;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">−</button>
-            <input class="score-display" id="scoreDisplay" value="0">
-            <button onclick="adjustScore(0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:var(--gradient-primary);color:white;cursor:pointer;font-size:1.1rem;">+</button>
-          </div>
-          <div style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">از ۸ نمره</div>
+            <input type="range" class="score-slider" id="scoreSlider" min="0" max="{{ item.question.score }}" step="0.01" value="0" oninput="updateScoreFromSlider(this.value)">
+
+              {{form.corrected}}
+  
+              {{form.satantorium_message}}
+            
+      
+            <div class="d-flex gap-2 mt-3">
+              <button type="submit" class="btn-gradient"  ><i class="bi bi-skip-end"></i>ذخیره و بعدی</button>
+            </div>
+          </form>
         </div>
-
-        <input type="range" class="score-slider" id="scoreSlider" min="0" max="8" step="0.01" value="0" oninput="updateScoreFromSlider(this.value)">
-
- 
       </div>
  
  
 
-      <!-- Feedback -->
-      <div class="glass-card p-4 mb-3">
-        <div class="section-title mb-3">بازخورد برای دانش‌آموز</div>
  
-        <textarea class="feedback-area" id="feedbackText" rows="3" placeholder="بازخورد خود را برای این دانش‌آموز بنویسید..."></textarea>
-      </div>
 
-      <!-- Save button -->
-      <div class="d-flex gap-2">
-        
-        <button class="btn-gradient" style="flex:1;justify-content:center;" onclick="saveScore()"><i class="bi bi-skip-end"></i>ذخیره و بعدی</button>
-      </div>
     </div>
   </div>
 
@@ -232,10 +441,10 @@ function toggleSidebar(){document.getElementById('sidebar').classList.toggle('op
 let currentScore = 0;
 function setScore(v){
   currentScore=v;
-  document.getElementById('scoreDisplay').value=toPersian(v);
+  document.getElementById('scoreDisplay').value=v;
   document.getElementById('scoreSlider').value=v;
 }
-function adjustScore(d){setScore(Math.max(0,Math.min(8,currentScore+d)));}
+function adjustScore(d){setScore(Math.max(0,Math.min({{item.question.score}},currentScore+d)));}
 function updateScoreFromSlider(v){setScore(parseFloat(v));}
 function toPersian(n){return String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);}
 function recalcTotal(){

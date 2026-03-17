@@ -23,8 +23,8 @@ phase 2 todo list
   
 phase 3 todo list 
     add pagination for quiz list
-    add page for corrected answered and there score and question code and student code 
-    add correcting page and form and with order by question pk and show the question id and just student id  
+    add wallet to sanatorium
+    fix the main page
 
 phase 4 todo list 
 

@@ -2,7 +2,7 @@
 
   
 {% extends "sanatorium/base/base.html" %}
-
+{% load jalali_tags %}
 
   
 {% block header %}
@@ -66,7 +66,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .q-score{margin-right:auto;font-size:0.9rem;font-weight:800;color:var(--text-primary);}
 .q-score.unscored{color:var(--text-muted);font-weight:400;font-size:0.8rem;}
 
-.student-info-card{display:flex;align-items:center;gap:16px;padding:20px 24px;background:var(--gradient-primary);border-radius:16px;color:white;margin-bottom:24px;}
+.student-info-card{display:flex;align-items:;gap:16px;padding:20px 24px;background:var(--gradient-primary);border-radius:16px;color:white;margin-bottom:24px;}
 .s-big-avatar{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;border:3px solid rgba(255,255,255,0.4);flex-shrink:0;}
 </style>
  {% endblock header %}
@@ -76,111 +76,76 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 
   <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3 fade-in-up">
     <div>
-      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">لیست سوالات آزمون</h1>
-      <div style="font-size:0.83rem;color:var(--text-secondary);margin-top:4px;"><a href="09-students-list.html" style="color:var(--accent);text-decoration:none;">دانش‌آموزان</a> / علی رضایی</div>
+      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">لیست پاسخ نامه های  {{quiz.name}}  </h1>
+     </div>
+    <div>
+    <a href='{% url "sanatorium:exam-list"  %}' class="btn-gradient"><i class="bi bi-pencil-square"></i>   لیست ازمون ها</a>
+
     </div>
-    <div class="d-flex gap-2">
-      <a href="09-students-list.html" class="btn-glass"><i class="bi bi-arrow-right"></i>دانش‌آموز قبلی</a>
-      <a href="09-students-list.html" class="btn-glass"><i class="bi bi-arrow-left"></i>دانش‌آموز بعدی</a>
-    </div>
+ 
   </div>
 
-  <!-- Student info -->
+  <!-- quiz info -->
   <div class="student-info-card fade-in-up delay-1">
-    <div class="s-big-avatar">عر</div>
+     
     <div>
-      <div style="font-size:1.1rem;font-weight:800;">علی رضایی</div>
-      <div style="opacity:0.85;font-size:0.82rem;margin-top:3px;"><i class="bi bi-hash me-1"></i>کد: ۱۰۰۱ &nbsp;|&nbsp; <i class="bi bi-mortarboard me-1"></i>پایه دهم &nbsp;|&nbsp; <i class="bi bi-calendar3 me-1"></i>۵ اسفند ۱۴۰۳</div>
+      <div style="font-size:1.1rem;font-weight:800;">{{quiz.name}} </div>
+      <div style="opacity:0.85;font-size:0.82rem;margin-top:3px;"><i class="bi bi-hash me-1"></i>کد: {{quiz.pk}} &nbsp;|&nbsp; <i class="bi bi-mortarboard me-1"></i>{{ quiz.grade.name }} - {{quiz.major.name}} - {{quiz.lession.name}} - {{ quiz.section }} &nbsp;|&nbsp; <i class="bi bi-calendar3 me-1"></i>{{ quiz.start_at|to_jalali }}</div>
     </div>
     <div style="margin-right:auto;text-align:center;">
-      <div style="font-size:1.6rem;font-weight:900;">۰/۱۰۰</div>
-      <div style="font-size:0.75rem;opacity:0.8;">امتیاز فعلی</div>
+ 
     </div>
     <div style="text-align:center;">
-      <div style="font-size:1.2rem;font-weight:800;">۰/۳۵</div>
-      <div style="font-size:0.75rem;opacity:0.8;">سوال تصحیح شده</div>
+      <div style="font-size:1.2rem;font-weight:800;">{{corrected}}/{{all_corrected}}</div>
+      <div style="font-size:0.75rem;opacity:0.8;">پاسخ نامه تصحیح شده</div>
     </div>
   </div>
 
   <!-- Progress -->
   <div class="glass-card p-4 mb-4 fade-in-up delay-1">
-    <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.8rem;"><span>پیشرفت تصحیح این دانش‌آموز</span><span style="color:var(--text-muted);">۰٪</span></div>
-    <div style="height:8px;background:var(--border-color);border-radius:8px;"><div style="width:0%;height:100%;background:var(--gradient-primary);border-radius:8px;"></div></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.8rem;"><span>پیشرفت تصحیح </span><span style="color:var(--text-muted);">{{corrected_percent}}٪</span></div>
+    <div style="height:8px;background:var(--border-color);border-radius:8px;"><div style="width:{{corrected_percent}}%;height:100%;background:var(--gradient-primary);border-radius:8px;"></div></div>
     <div style="display:flex;gap:16px;margin-top:12px;font-size:0.78rem;color:var(--text-muted);">
-      <span><i class="bi bi-circle-fill me-1" style="color:#10b981;font-size:0.5rem;"></i>تصحیح شده: ۰</span>
-      <span><i class="bi bi-circle-fill me-1" style="color:#f59e0b;font-size:0.5rem;"></i>در انتظار: ۳۵</span>
-      <span><i class="bi bi-circle-fill me-1" style="color:#4f46e5;font-size:0.5rem;"></i>تشریحی: ۱۰ سوال</span>
-      <span><i class="bi bi-circle-fill me-1" style="color:#06b6d4;font-size:0.5rem;"></i>چندگزینه‌ای: ۲۵ سوال</span>
+      <span><i class="bi bi-circle-fill me-1" style="color:#10b981;font-size:0.5rem;"></i>تصحیح شده: {{corrected}}</span>
+      <span><i class="bi bi-circle-fill me-1" style="color:#f59e0b;font-size:0.5rem;"></i>در انتظار: {{not_corrected}}</span>
+  
     </div>
   </div>
 
   <!-- Questions List -->
   <div class="glass-card p-4 fade-in-up delay-2">
-    <div class="section-title mb-3">لیست سوالات</div>
+    <div class="section-title mb-3">لیست پاسخ نامه ها</div>
     <div class="d-flex flex-column gap-2">
 
-      <a href="11-question-detail.html" class="question-row">
-        <div class="q-num pending-q">۱</div>
-        <div style="flex:1;">
-          <div class="q-title">سوال ۱ — ساده‌سازی عبارت مثلثاتی sin²θ + cos²θ</div>
-          <div class="q-meta"><span class="q-type q-choice">چندگزینه‌ای</span><span style="margin-right:8px;">۳ نمره</span></div>
-        </div>
-        <span class="q-score unscored">ثبت نشده</span>
-        <i class="bi bi-chevron-left" style="color:var(--text-muted);"></i>
-      </a>
+      {% for item in items %}
+        <a href='{% url "sanatorium:exam-student-question-detail-pk" pk=quiz.id report_id=item.id %}'  class="question-row">
+          <div class="q-num pending-q">{{ item.pk }}</div>
+          <div style="flex:1;">
+            <div class="q-title">{{ item.question.name }} </div>
+            <div class="q-meta"><span class="q-type q-choice">{{item.question.type_of_question}}</span><span style="margin-right:8px;">{{ item.score }} از {{item.question.score}} داده شده</span></div>
+          </div>
+          <span class="q-score unscored ">
+            وضعیت :
+             {% if item.corrected == correction_type.not_corrected %}
+             <span class='btn btn-sm btn-danger'>تصحیح نشده</span>
+             {% elif item.corrected == correction_type.wrong %}<span class='btn btn-sm btn-warning'>{{item.corrected}}</span>
+             {% elif item.corrected == correction_type.weak %}<span class='btn btn-sm btn-warning'>{{item.corrected}}</span>
+             {% elif item.corrected == correction_type.average %}<span class='btn btn-sm btn-info'>{{item.corrected}}</span>
+             {% elif item.corrected == correction_type.good %}<span class='btn btn-sm btn-success'>{{item.corrected}}</span>
+             {% elif item.corrected == correction_type.excellent %}<span class='btn btn-sm btn-success'>{{item.corrected}}</span>
+             {% endif %}
+          </span>
+         </a>
+      {% endfor %}
 
-      <a href="11-question-detail.html" class="question-row">
-        <div class="q-num pending-q">۲</div>
-        <div style="flex:1;">
-          <div class="q-title">سوال ۲ — محاسبه مقدار tan(45°) × cos(60°)</div>
-          <div class="q-meta"><span class="q-type q-choice">چندگزینه‌ای</span><span style="margin-right:8px;">۳ نمره</span></div>
-        </div>
-        <span class="q-score unscored">ثبت نشده</span>
-        <i class="bi bi-chevron-left" style="color:var(--text-muted);"></i>
-      </a>
-
-      <a href="11-question-detail.html" class="question-row">
-        <div class="q-num pending-q">۳</div>
-        <div style="flex:1;">
-          <div class="q-title">سوال ۳ — اثبات هویت مثلثاتی</div>
-          <div class="q-meta"><span class="q-type q-descriptive">تشریحی</span><span style="margin-right:8px;">۵ نمره</span></div>
-        </div>
-        <span class="q-score unscored">ثبت نشده</span>
-        <i class="bi bi-chevron-left" style="color:var(--text-muted);"></i>
-      </a>
-
-      <a href="11-question-detail.html" class="question-row">
-        <div class="q-num pending-q">۴</div>
-        <div style="flex:1;">
-          <div class="q-title">سوال ۴ — حل معادله مثلثاتی ۲sin(x) = √3</div>
-          <div class="q-meta"><span class="q-type q-descriptive">تشریحی</span><span style="margin-right:8px;">۸ نمره</span></div>
-        </div>
-        <span class="q-score unscored">ثبت نشده</span>
-        <i class="bi bi-chevron-left" style="color:var(--text-muted);"></i>
-      </a>
-
-      <a href="11-question-detail.html" class="question-row">
-        <div class="q-num pending-q">۵</div>
-        <div style="flex:1;">
-          <div class="q-title">سوال ۵ — رسم نمودار y = sin(2x) در بازه [0, 2π]</div>
-          <div class="q-meta"><span class="q-type q-descriptive">تشریحی</span><span style="margin-right:8px;">۱۰ نمره</span></div>
-        </div>
-        <span class="q-score unscored">ثبت نشده</span>
-        <i class="bi bi-chevron-left" style="color:var(--text-muted);"></i>
-      </a>
-
-      <!-- More questions summarized -->
-      <div style="padding:14px;border-radius:12px;background:var(--bg-surface2);border:1px dashed var(--border-color);text-align:center;font-size:0.82rem;color:var(--text-muted);">
-        سوالات ۶ تا ۳۵ — برای مشاهده هر سوال روی آن کلیک کنید
-        <br><span style="font-size:0.75rem;">۲۰ سوال چندگزینه‌ای + ۵ سوال تشریحی باقیمانده</span>
-      </div>
+ 
     </div>
 
     <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
-      <div style="font-size:0.82rem;color:var(--text-muted);">تصحیح ۰ از ۳۵ سوال</div>
-      <div class="d-flex gap-2">
-        <button class="btn-glass" onclick="saveDraft()"><i class="bi bi-floppy"></i>ذخیره موقت</button>
-        <a href="11-question-detail.html" class="btn-gradient"><i class="bi bi-pencil-square"></i>شروع تصحیح</a>
+       <div class="d-flex gap-2">
+        {% if not_corrected > 0 %}
+         <a href='{% url "sanatorium:exam-student-question-detail" pk=quiz.id  %}' class="btn-gradient"><i class="bi bi-pencil-square"></i>شروع تصحیح</a>
+         {% endif %}
       </div>
     </div>
   </div>

@@ -115,7 +115,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 
   <!-- Exam Cards Grid -->
   {% for item in items %}
-  <a href='{% url "sanatorium:exam-student-list" item.pk  %}' >
+  <a href='{% url "sanatorium:exam-student-question-list" item.pk  %}' >
     <div class="row g-3 m-1">
      <div class="col-12 fade-in-up delay-1">
       <div class="exam-pending-card {% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}">
