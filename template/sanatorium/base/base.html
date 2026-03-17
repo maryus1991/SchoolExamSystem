@@ -777,9 +777,13 @@ body::before {
 <!-- SIDEBAR -->
 <nav class="sidebar" id="sidebar">
     <div class="sidebar-section-title">داشبورد</div>
-    <a href="{% url 'sanatorium:main' %}" class="sidebar-item ">
+    <a href="{% url 'site:main' %}" class="sidebar-item ">
       <div class="si-icon"><i class="bi bi-speedometer2"></i></div>
       صفحه اصلی
+    </a>
+    <a href="{% url 'sanatorium:main' %}" class="sidebar-item ">
+      <div class="si-icon"><i class="bi bi-speedometer2"></i></div>
+      داشبورد
     </a>
     <a href="{% url 'sanatorium:edit-infos' %}" class="sidebar-item">
       <div class="si-icon"><i class="bi bi-person-badge"></i></div>

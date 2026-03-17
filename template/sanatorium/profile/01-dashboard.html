@@ -1,5 +1,6 @@
 {% extends "sanatorium/base/base.html" %}
- 
+ {% load tdc %}
+ {% load jalali_tags %}
 
 
 {% block main %}
@@ -11,16 +12,16 @@
         <div class="col-md-8">
     
           <h1 class="hero-title">سلام، {{ user.first_name }} جان! 👋</h1>
-          <p class="hero-subtitle">شما امروز ۳ آزمون منتظر تصحیح دارید. بیایید شروع کنیم!</p>
+          <p class="hero-subtitle">شما امروز {{need_correcting.count}} آزمون منتظر تصحیح دارید. بیایید شروع کنیم!</p>
           <div class="d-flex gap-2 mt-4" style="position:relative; z-index:1;">
             <a href="{% url 'sanatorium:exam-list' %}" class="btn btn-light btn-sm rounded-3 fw-bold" style="font-family:'Vazirmatn',sans-serif;">
-              <i class="bi bi-play-circle-fill ms-1"></i> شروع تصحیح
+               شروع تصحیح
             </a>
  
           </div>
         </div>
         <div class="col-md-4 text-center d-none d-md-block" style="position:relative; z-index:1;">
-          <div class="floating-number" style="font-size:5rem; opacity:0.15; font-weight:900; line-height:1;">۳</div>
+          <div class="floating-number" style="font-size:5rem; opacity:0.15; font-weight:900; line-height:1;">{{need_correcting.count}}</div>
           <div style="font-size:0.85rem; opacity:0.7; margin-top:-20px;">آزمون در انتظار</div>
         </div>
       </div>
@@ -35,7 +36,7 @@
               <div class="stat-icon" style="background:rgba(255,255,255,0.2); font-size:1.2rem;">
                 <i class="bi bi-clipboard2-check"></i>
               </div>
-              <div class="stat-value mt-3" style="color:white;">۱۴۷</div>
+              <div class="stat-value mt-3" style="color:white;">{{corrected_quiz}}</div>
               <div class="stat-label" style="color:rgba(255,255,255,0.8);">آزمون تصحیح شده</div>
       
             </div>
@@ -50,7 +51,7 @@
               <div class="stat-icon" style="background: var(--gradient-warning);">
                 <i class="bi bi-hourglass-split"></i>
               </div>
-              <div class="stat-value">۵</div>
+              <div class="stat-value">{{need_correcting.count}}</div>
               <div class="stat-label" style="color:var(--text-secondary);">در انتظار تصحیح</div>
   
             </div>
@@ -64,7 +65,7 @@
               <div class="stat-icon" style="background: var(--gradient-success);">
                 <i class="bi bi-people-fill"></i>
               </div>
-              <div class="stat-value">۸۳۲</div>
+              <div class="stat-value">{{report_count}}</div>
               <div class="stat-label" style="color:var(--text-secondary);">دانش‌آموز بررسی شده</div>
  
             </div>
@@ -78,8 +79,8 @@
               <div class="stat-icon" style="background: var(--gradient-info);">
                 <i class="bi bi-star-fill"></i>
               </div>
-              <div class="stat-value">۴.۸</div>
-              <div class="stat-label" style="color:var(--text-secondary);">قیمت کل </div>
+              <div class="stat-value">{{unpaid_wallets|tdc}} تومان</div>
+              <div class="stat-label" style="color:var(--text-secondary);">مبلغ پرداخت نشده</div>
  
             </div>
           </div>
@@ -93,177 +94,79 @@
       <div class="col-lg-5 fade-in-up delay-2">
         <div class="glass-card p-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="section-title">آزمون‌های منتظر تصحیح</div>
-            <a href="08-pending-exams.html" class="btn-gradient" style="padding:7px 16px; font-size:0.78rem;">
-              مشاهده همه <i class="bi bi-arrow-left"></i>
+            <div class="section-title">آزمون‌ها </div>
+            <a href="{% url 'sanatorium:exam-list' %}" class="btn-gradient" style="padding:7px 16px; font-size:0.78rem;">
+              مشاهده همه  
             </a>
           </div>
-          <div class="d-flex flex-column gap-2">
-            <div class="exam-card">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="exam-title">آزمون ریاضی پایه دهم - فصل سوم</div>
-                  <div class="exam-meta"><i class="bi bi-calendar3 me-1"></i>۴ اسفند ۱۴۰۳ &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>برگزارشده</div>
-                  <div class="exam-students">
-                    <div class="student-avatars">
-                      <span>ع</span><span>م</span><span>ز</span>
-                    </div>
-                    <span style="margin-right:10px;">۲۸ دانش‌آموز</span>
+          <div class="d-flex flex-column gap-2 h-100">
+            {% for item in quiz_list  %}
+
+              <div class="exam-card">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="exam-title">{{item.name}}</div>
+                    <div class="exam-meta"> {{item.start_at|to_jalali}} </div>
+  
                   </div>
+                  <span class="badge-custom badge-{% cycle "progress" "pending" %}   ">{{item.status}}</span>
                 </div>
-                <span class="badge-custom badge-pending">در انتظار</span>
-              </div>
-              <div class="mt-2 d-flex gap-2">
-                <a href="09-students-list.html" class="btn-gradient" style="padding:6px 14px; font-size:0.75rem;">شروع تصحیح</a>
-              </div>
-            </div>
-            <div class="exam-card">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="exam-title">آزمون فیزیک دوازدهم - الکتریسیته</div>
-                  <div class="exam-meta"><i class="bi bi-calendar3 me-1"></i>۳ اسفند ۱۴۰۳ &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>برگزارشده</div>
-                  <div class="exam-students">
-                    <div class="student-avatars">
-                      <span>ف</span><span>ح</span>
-                    </div>
-                    <span style="margin-right:10px;">۱۵ دانش‌آموز</span>
-                  </div>
+                <div class="mt-2 d-flex gap-2">
+                  <a href="{% url "sanatorium:exam-student-question-list" item.pk %}" class="btn-gradient" style="padding:6px 14px; font-size:0.75rem;">جزییات</a>
                 </div>
-                <span class="badge-custom badge-progress">در حال تصحیح</span>
               </div>
-              <div class="mt-2">
-                <div style="height:5px; background:var(--border-color); border-radius:5px; margin-bottom:6px;">
-                  <div style="height:100%; width:40%; background:var(--gradient-info); border-radius:5px;"></div>
-                </div>
-                <div style="font-size:0.72rem; color:var(--text-muted);">۶ از ۱۵ دانش‌آموز تصحیح شده</div>
-              </div>
-            </div>
-            <div class="exam-card">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="exam-title">آزمون شیمی دوازدهم - پیوند شیمیایی</div>
-                  <div class="exam-meta"><i class="bi bi-calendar3 me-1"></i>۲ اسفند ۱۴۰۳ &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>برگزارشده</div>
-                  <div class="exam-students">
-                    <div class="student-avatars"><span>س</span><span>ن</span><span>ب</span></div>
-                    <span style="margin-right:10px;">۳۲ دانش‌آموز</span>
-                  </div>
-                </div>
-                <span class="badge-custom badge-pending">در انتظار</span>
-              </div>
-            </div>
+            {% endfor %}
+ 
           </div>
         </div>
       </div>
+
       <div class="col-lg-4 fade-in-up delay-3">
         <div class="glass-card p-4 h-100">
                     <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="section-title">کیف پول ها</div>
-            <a href="08-pending-exams.html" class="btn-gradient" style="padding:7px 16px; font-size:0.78rem;">
-              مشاهده همه <i class="bi bi-arrow-left"></i>
+            <a href="{% url "sanatorium:wallet-list" %}" class="btn-gradient" style="padding:7px 16px; font-size:0.78rem;">
+              مشاهده همه  
             </a>
           </div>
- 
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#10b981;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">تصحیح آزمون زیست‌شناسی کامل شد</div>
-              <div class="activity-time">۳۰ دقیقه پیش</div>
+          {% for item in wallets %}
+          <a href='{% url "sanatorium:wallet-detail" item.pk %}'>
+
+            <div class="activity-item">
+              <div class="activity-dot " style="background:#{% cycle '10b981' '4f46e5' 'f59e0b' '10b981' '06b6d4' '7c3aed' %};" ></div>
+              <div style="flex:1;">
+                <div style="font-size:0.83rem; font-weight:600;">{{ item.quiz.name }}</div>
+                <div class="activity-time">{{ item.get_payment_price|tdc }} تومان</div>
+              </div>
+              <span class="badge-custom badge-{% cycle 'done' 'pending' 'progress' %}">{{ item.status }}</span>
             </div>
-            <span class="badge-custom badge-done">تمام</span>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#4f46e5;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">تیکت جدید دریافت شد</div>
-              <div class="activity-time">۱ ساعت پیش</div>
-            </div>
-            <span class="badge-custom badge-progress">جدید</span>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#f59e0b;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">آزمون ریاضی تخصیص داده شد</div>
-              <div class="activity-time">۲ ساعت پیش</div>
-            </div>
-            <span class="badge-custom badge-pending">جدید</span>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#10b981;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">۱۲ دانش‌آموز تصحیح شدند</div>
-              <div class="activity-time">دیروز، ۱۴:۳۰</div>
-            </div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#06b6d4;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">پروفایل به‌روزرسانی شد</div>
-              <div class="activity-time">دیروز، ۱۰:۱۵</div>
-            </div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#7c3aed;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">گواهی عملکرد ماهانه صادر شد</div>
-              <div class="activity-time">۳ روز پیش</div>
-            </div>
-          </div>
+          </a>
+          {% endfor %}
         </div>
       </div>
+
       <div class="col-lg-3 fade-in-up delay-3">
         <div class="glass-card p-4 h-100">
                               <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="section-title">تیکت ها</div>
-            <a href="08-pending-exams.html" class="btn-gradient" style="padding:7px 16px; font-size:0.78rem;">
-              مشاهده همه <i class="bi bi-arrow-left"></i>
+            <a href="{% url 'sanatorium:ticket-list' %}" class="btn-gradient" style="padding:7px 16px; font-size:0.78rem;">
+              مشاهده همه  
             </a>
           </div>
+          
+          {% for item in tickets %}
+          <a href='{% url "sanatorium:ticket-conversation" item.pk %}'>
+            <div class="activity-item">
+                <div class="activity-dot" style="background:#{% cycle '10b981' '4f46e5' 'f59e0b' '10b981' '06b6d4' '7c3aed' %};"></div>
+                <div style="flex:1;">
+                  <div style="font-size:0.83rem; font-weight:600;">{{item.name}}</div>
+                  <div class="activity-time">{{ item.create_at|to_jalali }}</div>
+                </div>
+                <span class="badge-custom badge-{% cycle 'done' 'pending' 'progress' %}">{{item.status}}</span>
+              </div>
+            </a>
+          {% endfor %}
  
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#10b981;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">تصحیح آزمون زیست‌شناسی کامل شد</div>
-              <div class="activity-time">۳۰ دقیقه پیش</div>
-            </div>
-            <span class="badge-custom badge-done">تمام</span>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#4f46e5;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">تیکت جدید دریافت شد</div>
-              <div class="activity-time">۱ ساعت پیش</div>
-            </div>
-            <span class="badge-custom badge-progress">جدید</span>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#f59e0b;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">آزمون ریاضی تخصیص داده شد</div>
-              <div class="activity-time">۲ ساعت پیش</div>
-            </div>
-            <span class="badge-custom badge-pending">جدید</span>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#10b981;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">۱۲ دانش‌آموز تصحیح شدند</div>
-              <div class="activity-time">دیروز، ۱۴:۳۰</div>
-            </div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#06b6d4;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">پروفایل به‌روزرسانی شد</div>
-              <div class="activity-time">دیروز، ۱۰:۱۵</div>
-            </div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:#7c3aed;"></div>
-            <div style="flex:1;">
-              <div style="font-size:0.83rem; font-weight:600;">گواهی عملکرد ماهانه صادر شد</div>
-              <div class="activity-time">۳ روز پیش</div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

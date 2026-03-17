@@ -22,9 +22,9 @@ phase 2 todo list
 
   
 phase 3 todo list 
-    add pagination for quiz list
-    fix the main page
- 
+    add pagination for quiz wallet 
+    add report after submit to finish the exam 
+
 phase 4 todo list 
 
 
