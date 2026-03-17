@@ -1,14 +1,13 @@
  
-
-  
 {% extends "sanatorium/base/base.html" %}
 {% load jalali_tags %}
+{% load tdc %}
 
   
 {% block header %}
 
 <style>
-:root{--bg-primary:#f0f4ff;--bg-surface:#ffffff;--bg-surface2:#f8faff;--bg-glass:rgba(255,255,255,0.7);--bg-glass-border:rgba(255,255,255,0.9);--sidebar-bg:rgba(255,255,255,0.85);--text-primary:#1e1b4b;--text-secondary:#6b7280;--text-muted:#9ca3af;--border-color:rgba(79,70,229,0.12);--shadow-sm:0 2px 8px rgba(79,70,229,0.08);--shadow-md:0 8px 32px rgba(79,70,229,0.12);--shadow-lg:0 20px 60px rgba(79,70,229,0.15);--gradient-primary:linear-gradient(135deg,#4f46e5,#7c3aed);--gradient-success:linear-gradient(135deg,#059669,#10b981);--gradient-warning:linear-gradient(135deg,#d97706,#f59e0b);--accent:#4f46e5;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);}
+:root{--bg-primary:#f0f4ff;--bg-surface:#ffffff;--bg-surface2:#f8faff;--bg-glass:rgba(255,255,255,0.7);--bg-glass-border:rgba(255,255,255,0.9);--sidebar-bg:rgba(255,255,255,0.85);--text-primary:#1e1b4b;--text-secondary:#6b7280;--text-muted:#9ca3af;--border-color:rgba(79,70,229,0.12);--shadow-sm:0 2px 8px rgba(79,70,229,0.08);--shadow-md:0 8px 32px rgba(79,70,229,0.12);--shadow-lg:0 20px 60px rgba(79,70,229,0.15);--gradient-primary:linear-gradient(135deg,#4f46e5,#7c3aed);--gradient-success:linear-gradient(135deg,#059669,#10b981);--gradient-warning:linear-gradient(135deg,#d97706,#f59e0b);--gradient-danger:linear-gradient(135deg,#dc2626,#ef4444);--accent:#4f46e5;--transition:all 0.3s cubic-bezier(0.4,0,0.2,1);}
 [data-theme="dark"]{--bg-primary:#0a0a1a;--bg-surface:#13132b;--bg-surface2:#1a1a35;--bg-glass:rgba(255,255,255,0.04);--bg-glass-border:rgba(255,255,255,0.08);--sidebar-bg:rgba(19,19,43,0.95);--text-primary:#e8e8f8;--text-secondary:#a5b4fc;--text-muted:#6366f1;--border-color:rgba(99,102,241,0.2);--shadow-sm:0 2px 8px rgba(0,0,0,0.3);--shadow-md:0 8px 32px rgba(0,0,0,0.4);--shadow-lg:0 20px 60px rgba(0,0,0,0.5);}
 *,*::before,*::after{box-sizing:border-box;}
 body{font-family:'Vazirmatn',sans-serif;background:var(--bg-primary);color:var(--text-primary);direction:rtl;transition:var(--transition);min-height:100vh;}
@@ -31,6 +30,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .si-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(79,70,229,0.1);font-size:1rem;flex-shrink:0;}
 .sidebar-item.active .si-icon{background:rgba(255,255,255,0.2);}
 .sidebar-badge{margin-right:auto;background:#ef4444;color:white;font-size:0.65rem;padding:2px 7px;border-radius:20px;font-weight:700;}
+.sidebar-item.active .sidebar-badge{background:rgba(255,255,255,0.3);}
 .sidebar-divider{height:1px;background:var(--border-color);margin:12px 20px;}
 .main-content{margin-right:260px;margin-top:64px;padding:28px;min-height:calc(100vh - 64px);position:relative;z-index:1;}
 .glass-card{background:var(--bg-glass);backdrop-filter:blur(20px);border:1px solid var(--bg-glass-border);border-radius:16px;box-shadow:var(--shadow-md);transition:var(--transition);}
@@ -40,127 +40,151 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 .btn-glass{background:var(--bg-glass);border:1px solid var(--border-color);color:var(--text-primary);border-radius:10px;padding:8px 16px;font-family:'Vazirmatn',sans-serif;font-weight:500;font-size:0.82rem;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;text-decoration:none;}
 .btn-glass:hover{border-color:var(--accent);color:var(--accent);}
 .badge-custom{padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;}
-.badge-pending{background:rgba(245,158,11,0.12);color:#d97706;}
-.badge-done{background:rgba(16,185,129,0.12);color:#059669;}
+
 .section-title{font-size:1rem;font-weight:800;color:var(--text-primary);display:flex;align-items:center;gap:10px;}
 .section-title::before{content:'';width:4px;height:18px;background:var(--gradient-primary);border-radius:4px;display:block;}
 .dashboard-footer{background:var(--bg-glass);backdrop-filter:blur(20px);border-top:1px solid var(--border-color);padding:16px 28px;margin-right:260px;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--text-muted);}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 .fade-in-up{animation:fadeInUp 0.5s ease forwards;}
-.delay-1{animation-delay:0.1s;opacity:0;}.delay-2{animation-delay:0.2s;opacity:0;}
+.delay-1{animation-delay:0.1s;opacity:0;}.delay-2{animation-delay:0.2s;opacity:0;}.delay-3{animation-delay:0.3s;opacity:0;}
 @media(max-width:991px){.sidebar{transform:translateX(100%);}.sidebar.open{transform:translateX(0);}.main-content{margin-right:0;padding:20px 16px;}.dashboard-footer{margin-right:0;}.sidebar-toggle{display:flex!important;}.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1015;}.sidebar-overlay.show{display:block;}}
 ::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:6px;}
 
-.question-row{padding:16px;border-radius:12px;background:var(--bg-surface);border:1px solid var(--border-color);transition:var(--transition);display:flex;align-items:center;gap:14px;cursor:pointer;text-decoration:none;color:inherit;}
-.question-row:hover{transform:translateX(-2px);box-shadow:var(--shadow-md);border-color:var(--accent);}
-.question-row.corrected{border-right:3px solid #10b981;}
-.q-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem;flex-shrink:0;}
-.q-num.pending-q{background:var(--bg-surface2);border:2px solid var(--border-color);color:var(--text-muted);}
-.q-num.done-q{background:rgba(16,185,129,0.12);border:2px solid #10b981;color:#059669;}
-.q-title{font-weight:700;font-size:0.88rem;}
-.q-meta{font-size:0.75rem;color:var(--text-muted);margin-top:2px;}
-.q-type{padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;}
-.q-descriptive{background:rgba(79,70,229,0.1);color:#4f46e5;}
-.q-choice{background:rgba(8,145,178,0.1);color:#0891b2;}
-.q-true{background:rgba(16,185,129,0.1);color:#059669;}
-.q-score{margin-right:auto;font-size:0.9rem;font-weight:800;color:var(--text-primary);}
-.q-score.unscored{color:var(--text-muted);font-weight:400;font-size:0.8rem;}
+/* Exam cards */
+.exam-pending-card{padding:22px;border-radius:16px;background:var(--bg-surface);border:1px solid var(--border-color);transition:var(--transition);box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
+.exam-pending-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
 
-.student-info-card{display:flex;align-items:;gap:16px;padding:20px 24px;background:var(--gradient-primary);border-radius:16px;color:white;margin-bottom:24px;}
-.s-big-avatar{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;border:3px solid rgba(255,255,255,0.4);flex-shrink:0;}
+.exam-pending-card.urgent{border-right:4px solid #ef4444;}
+.exam-pending-card.new{border-right:4px solid #4f46e5;}
+.exam-pending-card.inprog{border-right:4px solid #f59e0b;}
+.exam-pending-card.finished{border-right:4px solid #c60bf5;}
+.exam-pending-card.primary-card{border-right:4px solid #32f50b;}
+
+
+.badge-pending{background:rgba(245,158,11,0.12);color:#d97706;}
+.badge-progress{background:rgba(79,70,229,0.12);color:#4f46e5;}
+
+
+.badge-inprog{background:#f59f0b36;color:#f59e0b;}
+.badge-new{background:#4e46e53b;color:#4f46e5;}
+.badge-urgent{background:#dc262649;color:#dc2626;}
+.badge-finished{background:#c60bf548 ;color:#c60bf5;}
+.badge-primary-card{background:#32f50b4d;color:#32f50b;}
+
+.deadline-bar{height:4px;border-radius:4px;margin-top:12px;}
+
+.deadline-inprog{background:#f59f0b36;}
+.deadline-new{background:#4e46e53b;}
+.deadline-urgent{background:#dc262649;}
+.deadline-finished{background:#c60bf548;}
+.deadline-primary-card{background:#32f50b4d;}
+
+
+
+/* Timer */
+.countdown-timer{display:inline-flex;gap:4px;align-items:center;background:rgba(239,68,68,0.08);padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:800;color:#dc2626;}
+.countdown-timer.yellow{background:rgba(245,158,11,0.08);color:#d97706;}
+
+.subject-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.student-pile{display:flex;}
+.student-pile span{width:28px;height:28px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;border:2px solid var(--bg-surface);margin-right:-8px;}
+.student-pile span:nth-child(2){background:var(--gradient-info);}
+.student-pile span:nth-child(3){background:var(--gradient-success);}
+.student-pile .extra{background:var(--bg-surface2);color:var(--text-muted);border-color:var(--border-color);}
 </style>
  {% endblock header %}
-{% block main %}
- 
+ {% block main %}
 <main class="main-content">
 
   <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3 fade-in-up">
     <div>
-      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">لیست پاسخ نامه های  {{quiz.name}}  </h1>
-     </div>
-    <div>
-    <a href='{% url "sanatorium:exam-list"  %}' class="btn-gradient"><i class="bi bi-pencil-square"></i>   لیست ازمون ها</a>
-
+      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">کیف پول </h1>
     </div>
  
   </div>
 
-  <!-- quiz info -->
-  <div class="student-info-card fade-in-up delay-1">
-     
-    <div>
-      <div style="font-size:1.1rem;font-weight:800;">{{quiz.name}} </div>
-      <div style="opacity:0.85;font-size:0.82rem;margin-top:3px;"><i class="bi bi-hash me-1"></i>کد: {{quiz.pk}} &nbsp;|&nbsp; <i class="bi bi-mortarboard me-1"></i>{{ quiz.grade.name }} - {{quiz.major.name}} - {{quiz.lession.name}} - {{ quiz.section }} &nbsp;|&nbsp; <i class="bi bi-calendar3 me-1"></i>{{ quiz.start_at|to_jalali }}</div>
-    </div>
-    <div style="margin-right:auto;text-align:center;">
+  <!-- Alert Banner -->
  
-    </div>
-    <div style="text-align:center;">
-      <div style="font-size:1.2rem;font-weight:800;">{{corrected}}/{{all_corrected}}</div>
-      <div style="font-size:0.75rem;opacity:0.8;">پاسخ نامه تصحیح شده</div>
-    </div>
-  </div>
 
-  <!-- Progress -->
-  <div class="glass-card p-4 mb-4 fade-in-up delay-1">
-    <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.8rem;"><span>پیشرفت تصحیح </span><span style="color:var(--text-muted);">{{corrected_percent}}٪</span></div>
-    <div style="height:8px;background:var(--border-color);border-radius:8px;"><div style="width:{{corrected_percent}}%;height:100%;background:var(--gradient-primary);border-radius:8px;"></div></div>
-    <div style="display:flex;gap:16px;margin-top:12px;font-size:0.78rem;color:var(--text-muted);">
-      <span><i class="bi bi-circle-fill me-1" style="color:#10b981;font-size:0.5rem;"></i>تصحیح شده: {{corrected}}</span>
-      <span><i class="bi bi-circle-fill me-1" style="color:#f59e0b;font-size:0.5rem;"></i>در انتظار: {{not_corrected}}</span>
   
-    </div>
-  </div>
 
-  <!-- Questions List -->
-  <div class="glass-card p-4 fade-in-up delay-2">
-    <div class="section-title mb-3">لیست پاسخ نامه ها</div>
-    <div class="d-flex flex-column gap-2">
-
-      {% for item in items %}
-        <a href='{% url "sanatorium:exam-student-question-detail-pk" pk=quiz.id report_id=item.id %}'  class="question-row">
-          <div class="q-num pending-q">{{ item.pk }}</div>
-          <div style="flex:1;">
-            <div class="q-title">{{ item.question.name }} </div>
-            <div class="q-meta"><span class="q-type q-choice">{{item.question.type_of_question}}</span><span style="margin-right:8px;">{{ item.score }} از {{item.question.score}} داده شده</span></div>
-          </div>
-          <span class="q-score unscored ">
-            وضعیت :
-             {% if item.corrected == correction_type.not_corrected %}
-             <span class='btn btn-sm btn-danger'>تصحیح نشده</span>
-             {% elif item.corrected == correction_type.wrong %}<span class='btn btn-sm btn-warning'>{{item.corrected}}</span>
-             {% elif item.corrected == correction_type.weak %}<span class='btn btn-sm btn-warning'>{{item.corrected}}</span>
-             {% elif item.corrected == correction_type.average %}<span class='btn btn-sm btn-info'>{{item.corrected}}</span>
-             {% elif item.corrected == correction_type.good %}<span class='btn btn-sm btn-success'>{{item.corrected}}</span>
-             {% elif item.corrected == correction_type.excellent %}<span class='btn btn-sm btn-success'>{{item.corrected}}</span>
-             {% endif %}
-          </span>
-         </a>
-         {% empty %}
-              <div class="btn btn-info btn-block" > پاسخ نامه ای یافت نشد </div>
-      {% endfor %}
-
+    {% for item in items %}
  
-    </div>
+    <div class="row g-3 m-1">
+     <div class="col-12 fade-in-up delay-1">
+      <div class="exam-pending-card {% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div class=" gap-10 align-items-start col-10">
+             <div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span style="font-weight:800;font-size:1rem;">#{{ item.pk }}</span>
+                <span style="font-weight:800;font-size:1rem;">{{ item.quiz.name }}</span>
+                {% if item.status == status.paid %}
+                <span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><i class="bi bi-fire"></i>{{ item.status }}</span>
+                <span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><i class="bi bi-fire"></i>زمان تصفیه : {{ item.update_at|to_jalali }}</span>
 
-    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
-       <div class="d-flex gap-2">
-        {% if not_corrected > 0 %}
-         <a href='{% url "sanatorium:exam-student-question-detail" pk=quiz.id  %}' class="btn-gradient"><i class="bi bi-pencil-square"></i>شروع تصحیح</a>
-         {% endif %}
+                {% else %}
+                <span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><i class="bi bi-fire"></i>{{ item.status }}</span>
+                {% endif %}
+
+              </div>
+              <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:5px;">
+                <i class="bi bi-calendar3 me-1"></i> زمان برگذاری ازمون: {{ item.quiz.start_at|to_jalali:'%Y/%m/%d' }}  &nbsp;|&nbsp;
+                <i class="bi bi-file-text me-1"></i>{{ item.detail_count }} پاسخ نامه   
+ 
+              </div>
+
+              <div style="display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;">
+               </div>
+
+
+              <div class="deadline-bar m-1 deadline-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}" style="width:100;"></div>
+              <div class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}" >{{item.get_payment_price|tdc}} تومان</div>
+
+
+            </div>
+          </div>
+          <div class="d-flex flex-column gap-2 align-items-end ">
+            {% if item.status != status.paid %}
+              <form action="{% url 'sanatorium:wallet-payment' item.pk %}" method="get">
+                <button class="btn-gradient" style="padding:9px 18px;" >
+                  درخواست تصفیه 
+                  </button>
+              </form>
+            {% endif  %}
+            <form action="{{ item.get_absolute_url }}" method="get">
+              <button class="btn-glass" style="padding:7px 14px;font-size:0.78rem;"><i class="bi bi-info-circle"></i>جزئیات</button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
+{% empty %}
+              <div class="badge-custom badge-new" > کیف پولی  یافت نشد </div>
+
+  {% endfor %}
+
+ 
+ 
+
+ 
+ 
+
+ 
+
 </main>
- {% endblock main %}
+ 
+{% endblock main %}
 {% block footer %}
 
+<style>@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}</style>
 <script>
 function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';localStorage.setItem('theme','light');}}
 (function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
-function saveDraft(){const a=document.createElement('div');a.innerHTML='<div style="position:fixed;bottom:20px;left:20px;background:var(--bg-surface);color:var(--text-primary);padding:14px 20px;border-radius:12px;font-family:Vazirmatn,sans-serif;font-size:0.85rem;font-weight:600;z-index:9999;display:flex;gap:8px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,0.15);border:1px solid var(--border-color);"><i class="bi bi-floppy-fill" style="color:var(--accent);"></i> نمرات موقت ذخیره شدند</div>';document.body.appendChild(a);setTimeout(()=>a.remove(),2500);}
-</script>
+
  
-{% endblock footer %} 
+</script>
+ {% endblock footer %} 

@@ -23,9 +23,8 @@ phase 2 todo list
   
 phase 3 todo list 
     add pagination for quiz list
-    add wallet to sanatorium
     fix the main page
-
+ 
 phase 4 todo list 
 
 

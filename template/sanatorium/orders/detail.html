@@ -3,6 +3,7 @@
   
 {% extends "sanatorium/base/base.html" %}
 {% load jalali_tags %}
+{% load tdc %}
 
   
 {% block header %}
@@ -76,11 +77,17 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 
   <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3 fade-in-up">
     <div>
-      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">لیست پاسخ نامه های  {{quiz.name}}  </h1>
+      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">لیست پاسخ نامه های  {{wallet.quiz.name}}  </h1>
      </div>
     <div>
-    <a href='{% url "sanatorium:exam-list"  %}' class="btn-gradient"><i class="bi bi-pencil-square"></i>   لیست ازمون ها</a>
+    <a href='{% url "sanatorium:wallet-list"  %}' class="btn-gradient"><i class="bi bi-pencil-square"></i>   لیست کیف پول ها</a>
+ 
+    {% if wallet.status == status.active  %}
+      <a href="{% url 'sanatorium:wallet-payment' wallet.id %}" class="btn-gradient btn btn-success">درخواست تصفیه </a>
+{% else%}
+      <a class=" btn btn-success"> تصفیه شده</a>
 
+    {% endif %}
     </div>
  
   </div>
@@ -89,67 +96,46 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
   <div class="student-info-card fade-in-up delay-1">
      
     <div>
-      <div style="font-size:1.1rem;font-weight:800;">{{quiz.name}} </div>
-      <div style="opacity:0.85;font-size:0.82rem;margin-top:3px;"><i class="bi bi-hash me-1"></i>کد: {{quiz.pk}} &nbsp;|&nbsp; <i class="bi bi-mortarboard me-1"></i>{{ quiz.grade.name }} - {{quiz.major.name}} - {{quiz.lession.name}} - {{ quiz.section }} &nbsp;|&nbsp; <i class="bi bi-calendar3 me-1"></i>{{ quiz.start_at|to_jalali }}</div>
+      <div style="font-size:1.1rem;font-weight:800;">{{wallet.quiz.name}} </div>
+      <div style="opacity:0.85;font-size:0.82rem;margin-top:3px;"><i class="bi bi-hash me-1"></i>کد: {{wallet.quiz.pk}} &nbsp;|&nbsp; <i class="bi bi-calendar3 me-1"></i>{{ wallet.quiz.start_at|to_jalali }} &nbsp;|&nbsp; {{wallet.get_payment_price|tdc}} تومان</div>
     </div>
     <div style="margin-right:auto;text-align:center;">
  
     </div>
-    <div style="text-align:center;">
-      <div style="font-size:1.2rem;font-weight:800;">{{corrected}}/{{all_corrected}}</div>
-      <div style="font-size:0.75rem;opacity:0.8;">پاسخ نامه تصحیح شده</div>
-    </div>
+ 
   </div>
-
-  <!-- Progress -->
-  <div class="glass-card p-4 mb-4 fade-in-up delay-1">
-    <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.8rem;"><span>پیشرفت تصحیح </span><span style="color:var(--text-muted);">{{corrected_percent}}٪</span></div>
-    <div style="height:8px;background:var(--border-color);border-radius:8px;"><div style="width:{{corrected_percent}}%;height:100%;background:var(--gradient-primary);border-radius:8px;"></div></div>
-    <div style="display:flex;gap:16px;margin-top:12px;font-size:0.78rem;color:var(--text-muted);">
-      <span><i class="bi bi-circle-fill me-1" style="color:#10b981;font-size:0.5rem;"></i>تصحیح شده: {{corrected}}</span>
-      <span><i class="bi bi-circle-fill me-1" style="color:#f59e0b;font-size:0.5rem;"></i>در انتظار: {{not_corrected}}</span>
-  
-    </div>
-  </div>
+ 
 
   <!-- Questions List -->
   <div class="glass-card p-4 fade-in-up delay-2">
-    <div class="section-title mb-3">لیست پاسخ نامه ها</div>
+    <div class="section-title mb-3">جزییات </div>
     <div class="d-flex flex-column gap-2">
 
       {% for item in items %}
-        <a href='{% url "sanatorium:exam-student-question-detail-pk" pk=quiz.id report_id=item.id %}'  class="question-row">
+        <div  class="question-row">
           <div class="q-num pending-q">{{ item.pk }}</div>
           <div style="flex:1;">
-            <div class="q-title">{{ item.question.name }} </div>
-            <div class="q-meta"><span class="q-type q-choice">{{item.question.type_of_question}}</span><span style="margin-right:8px;">{{ item.score }} از {{item.question.score}} داده شده</span></div>
+            <div class="q-title"><a href='{% url "sanatorium:exam-student-question-list" item.answer.quiz.id %}' > پاسخ نامه شماره {{item.pk}} </a></div>
+          
           </div>
-          <span class="q-score unscored ">
-            وضعیت :
-             {% if item.corrected == correction_type.not_corrected %}
-             <span class='btn btn-sm btn-danger'>تصحیح نشده</span>
-             {% elif item.corrected == correction_type.wrong %}<span class='btn btn-sm btn-warning'>{{item.corrected}}</span>
-             {% elif item.corrected == correction_type.weak %}<span class='btn btn-sm btn-warning'>{{item.corrected}}</span>
-             {% elif item.corrected == correction_type.average %}<span class='btn btn-sm btn-info'>{{item.corrected}}</span>
-             {% elif item.corrected == correction_type.good %}<span class='btn btn-sm btn-success'>{{item.corrected}}</span>
-             {% elif item.corrected == correction_type.excellent %}<span class='btn btn-sm btn-success'>{{item.corrected}}</span>
-             {% endif %}
-          </span>
-         </a>
+          <div style="flex:1;">
+            <div class="q-title">زمان ثبت : {{item.create_at|to_jalali}} </div>
+            <div class="q-meta"></div>
+          </div>
+          <div style="flex:1; ">
+            <div class="q-title">{{item.get_item_price|tdc}} تومان </div>
+           
+          </div>
+ 
+         </div>
          {% empty %}
-              <div class="btn btn-info btn-block" > پاسخ نامه ای یافت نشد </div>
+              <div class="btn btn-info btn-block" > جزییاتی یافت نشد </div>
       {% endfor %}
 
  
     </div>
 
-    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
-       <div class="d-flex gap-2">
-        {% if not_corrected > 0 %}
-         <a href='{% url "sanatorium:exam-student-question-detail" pk=quiz.id  %}' class="btn-gradient"><i class="bi bi-pencil-square"></i>شروع تصحیح</a>
-         {% endif %}
-      </div>
-    </div>
+ 
   </div>
 
 </main>

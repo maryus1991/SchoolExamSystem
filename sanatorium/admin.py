@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import WalletDetails, SanatoriumWallet
 
-# Register your models here.
+admin.site.register(WalletDetails)
+admin.site.register(SanatoriumWallet)

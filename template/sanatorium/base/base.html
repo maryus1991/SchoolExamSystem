@@ -786,17 +786,19 @@ body::before {
       اطلاعات حساب
     </a>
 
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section-title">آزمون‌ها</div>
+   <div class="sidebar-section-title"> </div>
     <a href="{% url 'sanatorium:exam-list' %}" class="sidebar-item">
       <div class="si-icon"><i class="bi bi-clipboard2-check"></i></div>
       آزمون‌ها 
      </a>
+    <a href="{% url 'sanatorium:wallet-list' %}" class="sidebar-item">
+      <div class="si-icon"><i class="bi bi-clipboard2-check"></i></div>
+      کیف پول
+    </a>
  
 
   <div class="sidebar-divider"></div>
-  <div class="sidebar-section-title">پشتیبانی</div>
-    <a href="{% url 'sanatorium:ticket-list' %}" class="sidebar-item">
+     <a href="{% url 'sanatorium:ticket-list' %}" class="sidebar-item">
       <div class="si-icon"><i class="bi bi-ticket-perforated"></i></div>
       لیست تیکت‌ها
      </a>

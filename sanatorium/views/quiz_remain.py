@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.utils.timezone import now
 from django.db.transaction import atomic
 from django.urls import reverse
+from sanatorium.models import SanatoriumWallet, WalletDetails
 
 class SanatoriumPendingExamList(SanatorPermissionRequire, ListView):
     template_name =  'sanatorium/quiz-remain/08-pending-exams.html'
@@ -55,9 +56,7 @@ class SanatoriumReportsListPerStudentOfExam(SanatorPermissionRequire, ListView):
 
         self.query = self.query.prefetch_related('question', 'quiz__grade', 'quiz__major', 'quiz__lession', 'quiz').order_by('-pk')
 
-        if not self.query:
-            raise Http404()
-
+ 
         return self.query
     
     def get_context_data(self, **kwargs):
@@ -68,9 +67,14 @@ class SanatoriumReportsListPerStudentOfExam(SanatorPermissionRequire, ListView):
  
         data['all_corrected'] = queryset.count()
         data['correction_type'] = StudentAnswer.TypeOfCorrect
-        data['corrected_percent'] = 100*(int(data['corrected']) / int(data['all_corrected']))
-        data['quiz'] = queryset.first().quiz
+        try:
+            data['corrected_percent'] = 100*(int(data['corrected']) / int(data['all_corrected']))
+        except:
+            data['corrected_percent'] = 0
+
+        data['quiz'] = Quiz.objects.filter(pk=self.pk, sanatorium=self.request.user).first()
         return data
+
 
 class SanatoriumQuestionDetailPerStudentOfExam(SanatorPermissionRequire, View):
     """for correcting the student answear"""
@@ -112,7 +116,17 @@ class SanatoriumQuestionDetailPerStudentOfExam(SanatorPermissionRequire, View):
 
         if not queryset :
             messages.success(request, 'از پاسخ های شما متشکریم')
-            return redirect('sanatorium:exam-list')
+            if queryset is None:
+                quiz = Quiz.objects.filter(pk=kwargs.get('pk'), sanatorium=request.user)
+                if quiz.exists() and quiz.count() == 1:
+                    quiz = quiz.first()
+                    quiz.status = Quiz.QuizStatus.CORRECTED
+                    quiz.save()
+                    messages.success(request, 'ازمون به حالت تصحیح شده تغییر یافت')
+
+
+            return redirect(reverse('sanatorium:exam-student-question-list', kwargs={'pk':kwargs.get('pk')}))
+
 
 
         inital = {
@@ -155,7 +169,18 @@ class SanatoriumQuestionDetailPerStudentOfExam(SanatorPermissionRequire, View):
                     
                     queryset.save()
                 
-                messages.success(request, 'نمره ثبت شد')
+                    messages.success(request, 'نمره ثبت شد')
+
+                    wallet = SanatoriumWallet.objects.get_or_create(
+                        user=request.user, quiz=queryset.quiz
+                    )[0]
+
+                    wallet_detail = WalletDetails.objects.get_or_create(
+                        wallet=wallet, answer=queryset
+                    )[0]
+                    messages.warning(request, 'مبلغ {} تومان به کیف پول شما اضافه شد '.format(wallet_detail.get_item_price()))
+
+                    
                 return redirect(reverse('sanatorium:exam-student-question-detail', kwargs={'pk':kwargs.get('pk')}))
 
             
