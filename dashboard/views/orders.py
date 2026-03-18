@@ -12,6 +12,8 @@ class OrdersList(LoginRequiredMixin, ListView):
     
     template_name = 'dashboard/order/orders.html'
     context_object_name = 'items'
+    paginate_by = 50
+
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user, is_active=True).annotate(details_count=Count("details")).all()
@@ -27,6 +29,8 @@ class OrderDetailsList(LoginRequiredMixin, ListView):
     """for listing the details of the order"""
     template_name = 'dashboard/order/detail.html'
     context_object_name = 'items'
+    paginate_by = 50
+
 
     def get_queryset(self):
         self.order = get_object_or_404(Order, pk=self.kwargs.get('pk'), user=self.request.user)

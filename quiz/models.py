@@ -63,11 +63,13 @@ class Quiz(models.Model):
         CORRECTED = 'تصحیح شده', 'تصحیح شده'
 
         RESULTS_PUBLISHED = 'اعلام نتایج', 'اعلام نتایج'
+        
         DEACTIVATED = 'غیرفعال', 'غیرفعال'
         CANCELED = 'کنسل شده', 'کنسل شده'
 
     status = models.CharField(verbose_name='وضعیت', choices=QuizStatus, default=QuizStatus.WAITING_START, max_length=55)
     is_active = models.BooleanField(default=True, verbose_name='فعال')
+    start_set_report = models.BooleanField(default=False, verbose_name='شروع به تصحیح')
     is_online = models.BooleanField(default=True, verbose_name='انلاین')
     allow_return_to_questions = models.BooleanField(default=True, verbose_name='برگشتن به عقب')
     allow_to_edit_anwerd_by_sanatorium = models.BooleanField(default=True, verbose_name='اجازه به ویرایش پاسخ بعد از تصحصح توسط مصحح')
@@ -95,7 +97,7 @@ class UserQuizDetail(models.Model):
     student_finished_at = models.DateTimeField(verbose_name='زمان خروج کاربر از ازمون', null=True, blank=True)
     student_start_at = models.DateTimeField(verbose_name='زمان ورود کاربر به ازمون', auto_now_add=True)
     out_of_page = models.PositiveSmallIntegerField(verbose_name='خروج از صفحه', default=0)
-    score = models.PositiveSmallIntegerField(verbose_name='نمره کل', default=0)
+
 
     class Meta:
         verbose_name = 'جزییات ازمون برای دانش اموزان'
@@ -227,13 +229,13 @@ class StudentAnswer(models.Model):
     score = models.FloatField(default=0, verbose_name='نمره داده شده')
     created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
-        ordering = ['question__pk']
+        ordering = ['student']
         verbose_name = 'پاسخ دانش‌آموز'
         verbose_name_plural = 'پاسخ‌های دانش‌آموزان'
         unique_together = ('student', 'question')
 
     def __str__(self):
-        return f"{self.id}"
+        return f"{self.id} - {str(self.student.PhoneNumber).replace(' ', '')} - {self.quiz.name} - {self.score}"
     
 
 class QuizView(models.Model):

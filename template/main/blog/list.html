@@ -125,7 +125,7 @@
 
             <!-- Page numbers -->
             {% for page in page_obj.paginator.page_range %}
-                {% if page.number == page %}
+                {% if page_obj.number == page %}
                     <li class="page-item active" style="border-radius:var(--radius-md);
                                                       border:none; 
                                                       background:var(--gradient-blue);"

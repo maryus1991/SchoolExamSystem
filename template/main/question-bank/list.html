@@ -118,16 +118,17 @@
           {% endfor %}
         </div>
       </div>
-               <style>
-    .page-item.active .page-link {
-        background: var(--gradient-blue) !important;
-        border: none !important;
-        color: inherit !important; /* Ensure text color remains consistent */
-    }
+<style>
+  .page-item .active .page-link {
+      background: var(--gradient-blue) !important;
+      border: none !important;
+      color: inherit !important; /* Ensure text color remains consistent */
+
+  }
     
-    ul.pagination {
-        display: flex;
-    }
+  ul.pagination {
+      display: flex;
+  }
 </style>
 <div class="d-flex justify-content-center mt-5">
     <nav>
@@ -159,10 +160,8 @@
 
             <!-- Page numbers -->
             {% for page in page_obj.paginator.page_range %}
-                {% if page.number == page %}
-                    <li class="page-item active" style="border-radius:var(--radius-md);
-                                                      border:none; 
-                                                      background:var(--gradient-blue);"
+                {% if page_obj.number == page %}
+                    <li class="page-item  active" style="border-radius:var(--radius-md);  border:none; background:var(--gradient-blue);"
                         aria-current="page">
                         <a class="page-link" href="?page={{page}}" style="color:inherit;">
                             {{ forloop.counter }}

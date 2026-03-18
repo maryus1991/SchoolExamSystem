@@ -7,6 +7,7 @@ from quiz.models import LessionCategories
 class FavorateQuestionList(LoginRequiredMixin, ListView):
     template_name = 'dashboard/favorate/09-question-list.html'
     context_object_name = 'items'
+    paginate_by = 50
 
     def get_queryset(self):
         return self.request.user.favorate.qbank.filter(is_active=True).prefetch_related('category', 'possible').all()
@@ -19,6 +20,8 @@ class FavorateQuestionList(LoginRequiredMixin, ListView):
 class FavorateBlogList(LoginRequiredMixin, ListView):
     template_name = 'dashboard/favorate/09-blog-list.html'
     context_object_name = 'items'
+    paginate_by = 50
+
 
     
     def get_queryset(self):
@@ -28,6 +31,8 @@ class FavorateBlogList(LoginRequiredMixin, ListView):
 class FavorateQuizList(LoginRequiredMixin, ListView):
     template_name = 'dashboard/favorate/09-quiz-list.html'
     context_object_name = 'items'
+    paginate_by = 50
+
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)

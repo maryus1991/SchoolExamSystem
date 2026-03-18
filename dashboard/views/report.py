@@ -10,6 +10,8 @@ class SecontReportList(LoginRequiredMixin, ListView):
     """ for list the secund report list  """
     template_name = 'dashboard/report/03-karnameye-sanavilist.html'
     context_object_name = 'items'
+    paginate_by = 50
+
 
     def get_queryset(self):
         self.queryset = Report.objects.filter(user=self.request.user).prefetch_related('user', 'quiz', 'grade',  'major', 'lession').all()

@@ -12,6 +12,7 @@ class WalletListView(SanatorPermissionRequire, ListView):
     """ for list the wallets """
     context_object_name='items'
     template_name = 'sanatorium/orders/list.html'
+    paginate_by = 50
 
     def get_queryset(self):
         queryset = SanatoriumWallet.objects.filter(
@@ -32,6 +33,7 @@ class WalletDetailListView(SanatorPermissionRequire, ListView):
 
     context_object_name='items'
     template_name = 'sanatorium/orders/detail.html'
+    paginate_by = 50
 
     def get_queryset(self):
         self.pk = self.kwargs.get('pk')

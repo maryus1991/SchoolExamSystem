@@ -12,6 +12,8 @@ class Ticketlist(LoginRequiredMixin, ListView):
     """ticket list"""
     template_name = 'dashboard/tickets/12-ticket-list.html'
     context_object_name = 'items'
+    paginate_by = 50
+
 
     def get_queryset(self):
         return Ticket.objects.prefetch_related('placement', 'problem').filter(user=self.request.user)

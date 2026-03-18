@@ -8,6 +8,7 @@ from django.http import Http404
 class QuizList(LoginRequiredMixin, ListView):
     template_name = 'dashboard/quiz/07-exam-list.html'
     context_object_name = 'items'
+    paginate_by = 50
 
     def get_queryset(self):
         queryset = Quiz.objects.filter(
@@ -25,6 +26,8 @@ class QuizList(LoginRequiredMixin, ListView):
 class QuizDetail(LoginRequiredMixin, ListView):
     template_name = 'dashboard/quiz/08-exam-detail.html'
     context_object_name = 'items'
+    paginate_by = 50
+
 
     def get_queryset(self):
         self.quiz = Quiz.objects.filter(

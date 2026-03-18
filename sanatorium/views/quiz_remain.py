@@ -15,6 +15,7 @@ from sanatorium.models import SanatoriumWallet, WalletDetails
 class SanatoriumPendingExamList(SanatorPermissionRequire, ListView):
     template_name =  'sanatorium/quiz-remain/08-pending-exams.html'
     context_object_name = 'items'
+    paginate_by = 50
 
     def get_queryset(cls):
         cls.queryset = Quiz.objects.filter(sanatorium=cls.request.user, is_active=True).prefetch_related('grade', 'major', 'lession').annotate(
@@ -44,6 +45,7 @@ class SanatoriumReportsListPerStudentOfExam(SanatorPermissionRequire, ListView):
     """for list the reposrts"""
     template_name =  'sanatorium/quiz-remain/10-exam-questions.html'
     context_object_name = 'items'
+    paginate_by = 50
     
     def get_queryset(self):
         self.pk = self.kwargs.get('pk')

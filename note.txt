@@ -14,7 +14,6 @@ phase 1 todo list
 
 phase 2 todo list
     fix the search bar in favorate quiz qbank blog 
-    fix the pagination in favorate and ticket list and report/second/
     fix the colors in report/second/
     fix the nemodare page 
     fix the responsive of dashboard panel and order detail
@@ -22,8 +21,7 @@ phase 2 todo list
 
   
 phase 3 todo list 
-    add pagination for quiz wallet 
-    add report after submit to finish the exam 
+ 
 
 phase 4 todo list 
 
