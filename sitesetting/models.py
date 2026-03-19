@@ -20,9 +20,9 @@ class Newsletter(models.Model):
         verbose_name_plural = 'پیام نامه ها'
 
 class QuestionAndAnswer(models.Model):
-    question = models.TextField(verbose_name="سوال")
+    question = models.TextField(verbose_name="سوال",  db_index=True)
     answer = models.TextField(verbose_name="جواب")
-    order = models.PositiveIntegerField(verbose_name='ترتیب (توجه داشته باشید ۳ اول ترتیب در صفحه تیکت ها نمایش داده خواهد شد)')
+    order = models.PositiveIntegerField(verbose_name='ترتیب (توجه داشته باشید ۳ اول ترتیب در صفحه تیکت ها نمایش داده خواهد شد)',  db_index=True)
     is_active = models.BooleanField(default=True, verbose_name="فعال یا غیر فعال")
 
     def __str__(self):
@@ -169,11 +169,11 @@ class Ticket(models.Model):
         awating_admin = 'در انتظار پاسخ ادمین','در انتظار پاسخ ادمین'
         awating_user = 'در انتظار پاسخ کاربر','در انتظار کاربر'
         
-    name = models.CharField(max_length=500, verbose_name='موضوع')
-    problem =  models.ForeignKey(TicketProblemCategory, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='دسته بندی مشکلات تیکت ها') 
-    user =  models.ForeignKey(User, related_name='tickets', on_delete=models.PROTECT, verbose_name='درخواست دهنده') 
-    admin =  models.ForeignKey(User, related_name='tickets_admin', null=True, blank=True, on_delete=models.PROTECT, verbose_name='ادمین') 
-    placement =  models.ForeignKey(TicketProblemPlacement, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='بخش های مرتبط مشکلات در تیکت') 
+    name = models.CharField(max_length=500, verbose_name='موضوع',  db_index=True) 
+    problem =  models.ForeignKey(TicketProblemCategory, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='دسته بندی مشکلات تیکت ها',  db_index=True) 
+    user =  models.ForeignKey(User, related_name='tickets', on_delete=models.PROTECT, verbose_name='درخواست دهنده',  db_index=True) 
+    admin =  models.ForeignKey(User, related_name='tickets_admin', null=True, blank=True, on_delete=models.PROTECT, verbose_name='ادمین',  db_index=True) 
+    placement =  models.ForeignKey(TicketProblemPlacement, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='بخش های مرتبط مشکلات در تیکت',  db_index=True) 
     description = models.TextField(verbose_name="توضیحات ")
     file = models.FileField(verbose_name='پیوست', upload_to=photo_path_upload_to, null=True, blank=True)
     priority = models.CharField(verbose_name='اهمیت', choices=TicketPriority, max_length=255)

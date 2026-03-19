@@ -51,10 +51,10 @@ class QuestionBank(models.Model):
         IMAGE_BASED = 'مبتنی بر تصویر', 'مبتنی بر تصویر'
         PDF_BASED = 'سوال از فایل PDF', 'سوال از فایل PDF'
 
-    possible = models.ForeignKey(QuestionPossible, related_name='questions', on_delete=models.CASCADE, verbose_name='سطح')
-    category = models.ForeignKey(QuestionLessonCategory, related_name='questions', on_delete=models.CASCADE, verbose_name='دسته')
+    possible = models.ForeignKey(QuestionPossible, related_name='questions', on_delete=models.CASCADE, verbose_name='سطح' ,db_index=True)
+    category = models.ForeignKey(QuestionLessonCategory, related_name='questions', on_delete=models.CASCADE, verbose_name='دسته' ,db_index=True)
     type_of_question = models.CharField( max_length=50, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
-    name = models.CharField( max_length=255, verbose_name='عنوان سوال')
+    name = models.CharField( max_length=255, verbose_name='عنوان سوال' ,db_index=True)
     lesson = models.CharField( max_length=255, verbose_name='مبحث')
     description = CKEditor5Field( blank=True, null=True, verbose_name='متن سوال')
     image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
@@ -62,7 +62,7 @@ class QuestionBank(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='فعال')
     has_options = models.BooleanField(default=False, verbose_name='دارای گزینه های دیگر')
     created_at = models.DateTimeField(auto_now_add=True )
-    order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
+    order = models.PositiveIntegerField(default=1, verbose_name='ترتیب' )
     solving_time = models.PositiveIntegerField(default=1, verbose_name='زمان پیشنهادی حل به دقیقه')
 
     class Meta:
@@ -78,7 +78,7 @@ class QuestionBank(models.Model):
     
 
 class QuestionOption(models.Model):
-    question = models.ForeignKey(QuestionBank, on_delete=models.CASCADE, related_name='options', verbose_name='سوال')
+    question = models.ForeignKey(QuestionBank, on_delete=models.CASCADE, related_name='options', verbose_name='سوال', db_index=True)
     text = models.CharField(max_length=500, verbose_name='متن گزینه')
     is_correct = models.BooleanField(default=False, verbose_name='گزینه صحیح')
     order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
@@ -97,16 +97,14 @@ class QuestionAnswerKey(models.Model):
         IMAGE_BASED = 'پاسخ تصویری', 'پاسخ تصویری'
         PDF_BASED = 'پاسخ PDF', 'پاسخ PDF'
 
-    question = models.OneToOneField(QuestionBank, on_delete=models.CASCADE, related_name='answer_key', verbose_name='سوال')
+    question = models.OneToOneField(QuestionBank, on_delete=models.CASCADE, related_name='answer_key', verbose_name='سوال', db_index=True)
     type_of_answer = models.CharField(max_length=50, choices=TypeOfAnswer.choices, verbose_name='نوع پاسخ صحیح')
     description = CKEditor5Field(blank=True, null=True, verbose_name='متن پاسخ')
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
     pdf_file = models.FileField(upload_to=photo_path_upload_to,blank=True,null=True, verbose_name='فایل PDF پاسخ')
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        verbose_name = 'پاسخ صحیح (ادمین)'
-        verbose_name_plural = 'پاسخ‌های صحیح (ادمین)'
+
 
     def __str__(self):
         return f"پاسخ صحیح - {self.question.name}"
@@ -114,10 +112,14 @@ class QuestionAnswerKey(models.Model):
 
 
 class QuestionView(models.Model):
-    question = models.ForeignKey(QuestionBank, on_delete=models.CASCADE, related_name="views")
+    question = models.ForeignKey(QuestionBank, on_delete=models.CASCADE, related_name="views", db_index=True)
     ip = models.GenericIPAddressField()
     count = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'بازدید سوال'
+        verbose_name_plural = 'بازدید های سوالات'
 
     def __str__(self):
         return self.ip

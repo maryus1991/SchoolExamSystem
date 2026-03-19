@@ -5,11 +5,11 @@ from user.models import User, MajorCategories, GradeCategories
 
 # Create your models here.
 class Report(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='کاربر', related_name='reports',)
-    quiz = models.ForeignKey(Quiz, on_delete=models.PROTECT, verbose_name='ازمون', related_name='reports')
-    grade =  models.ForeignKey(GradeCategories,null=True, blank=True, related_name='reports', on_delete=models.PROTECT, verbose_name='پایه') 
-    major =  models.ForeignKey(MajorCategories,null=True, blank=True, related_name='reports', on_delete=models.PROTECT, verbose_name='رشته تحصیلی') 
-    lession =  models.ForeignKey(LessionCategories,null=True, blank=True, related_name='reports', on_delete=models.PROTECT, verbose_name='درس') 
+    user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='کاربر', related_name='reports',  db_index=True)
+    quiz = models.ForeignKey(Quiz, on_delete=models.PROTECT, verbose_name='ازمون', related_name='reports',  db_index=True)
+    grade =  models.ForeignKey(GradeCategories,null=True, blank=True, related_name='reports', on_delete=models.PROTECT, verbose_name='پایه',  db_index=True)
+    major =  models.ForeignKey(MajorCategories,null=True, blank=True, related_name='reports', on_delete=models.PROTECT, verbose_name='رشته تحصیلی',  db_index=True)
+    lession =  models.ForeignKey(LessionCategories,null=True, blank=True, related_name='reports', on_delete=models.PROTECT, verbose_name='درس',  db_index=True)
     score = models.PositiveIntegerField(verbose_name='نمره')
     percent = models.PositiveIntegerField(verbose_name='درصد')
 

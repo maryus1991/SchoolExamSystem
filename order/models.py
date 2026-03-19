@@ -5,7 +5,7 @@ from django.urls import reverse
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User,related_name='orders', verbose_name='کاربر', on_delete=models.PROTECT)
+    user = models.ForeignKey(User,related_name='orders', verbose_name='کاربر', on_delete=models.PROTECT, db_index=True)
     final_price = models.PositiveBigIntegerField(verbose_name='قیمت', null=True, blank=True)
 
     authority = models.CharField(max_length=120, null=True, blank=True, unique=True, verbose_name='کد درگاه پرداخت')
@@ -52,8 +52,8 @@ class Order(models.Model):
             
 
 class OrderDetail(models.Model):
-    order = models.ForeignKey(Order, related_name='details', on_delete=models.PROTECT, verbose_name='سبد خرید')
-    quiz = models.ForeignKey(Quiz, related_name='orders', on_delete=models.PROTECT, verbose_name='ازمون')
+    order = models.ForeignKey(Order, related_name='details', on_delete=models.PROTECT, verbose_name='سبد خرید', db_index=True)
+    quiz = models.ForeignKey(Quiz, related_name='orders', on_delete=models.PROTECT, verbose_name='ازمون', db_index=True)
     price = models.PositiveBigIntegerField(verbose_name='قیمت', null=True, blank=True)
     create_at = models.DateTimeField(auto_now_add=True,  verbose_name='تاریخ افزودن')
     is_active = models.BooleanField(default=True, verbose_name='فعال بودن')

@@ -1,0 +1,197 @@
+ {% extends "admin-panel/base/base.html" %}
+
+{% block main %}
+  <main class="page-content">
+
+    <div class="page-header">
+      <div class="page-header-info">
+        <h1>افزودن گروهی کاربران</h1>
+        <p>بارگذاری فایل اکسل یا CSV برای ثبت دسته‌جمعی</p>
+      </div>
+      <div class="page-header-actions">
+        <a href="list.html" class="btn btn-outline-secondary btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          بازگشت
+        </a>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-xl-8">
+
+        <!-- Upload area -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div class="card-title">بارگذاری فایل</div>
+          </div>
+          <div class="card-body">
+            <div id="dropZone" style="border:2px dashed var(--border-color);border-radius:var(--radius-lg);padding:48px 24px;text-align:center;transition:all .2s;cursor:pointer" onclick="document.getElementById('bulkFile').click()">
+              <div style="width:56px;height:56px;background:var(--bg-tertiary);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <h6 style="color:var(--text-primary);margin-bottom:8px">فایل را اینجا رها کنید</h6>
+              <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:16px">یا روی دکمه زیر کلیک کنید</p>
+              <button class="btn btn-outline-primary btn-sm" type="button">انتخاب فایل</button>
+              <input type="file" id="bulkFile" class="d-none" accept=".xlsx,.xls,.csv">
+              <p style="font-size:.72rem;color:var(--text-muted);margin-top:16px">فرمت‌های مجاز: XLSX, XLS, CSV | حداکثر ۵ مگابایت</p>
+            </div>
+
+            <!-- File selected state (hidden by default) -->
+            <div id="fileSelected" class="d-none mt-3">
+              <div class="alert alert-success">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <div>
+                  <strong id="fileName">users.xlsx</strong> انتخاب شد
+                  <div style="font-size:.75rem;margin-top:2px">۱۲۵ کاربر آماده بارگذاری</div>
+                </div>
+                <button class="btn btn-ghost btn-sm btn-icon me-auto" onclick="clearFile()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview table -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">پیش‌نمایش داده‌ها</div>
+            <span class="badge badge-primary ms-auto">۵ ردیف نمونه</span>
+          </div>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>نام</th>
+                  <th>نام خانوادگی</th>
+                  <th>ایمیل</th>
+                  <th>موبایل</th>
+                  <th>نقش</th>
+                  <th>وضعیت</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color:var(--text-muted)">۱</td>
+                  <td>حسن</td><td>رضایی</td><td>hasan@ex.com</td>
+                  <td>۰۹۱۲۳۴۵۶۷۸۹</td>
+                  <td><span class="badge badge-primary">دانش‌آموز</span></td>
+                  <td><span class="badge badge-success">✓</span></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--text-muted)">۲</td>
+                  <td>مریم</td><td>صادقی</td><td>maryam@ex.com</td>
+                  <td>۰۹۳۵۱۲۳۴۵۶۷</td>
+                  <td><span class="badge badge-purple">معلم</span></td>
+                  <td><span class="badge badge-success">✓</span></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--text-muted)">۳</td>
+                  <td>علی</td><td>محمودی</td><td>ali2@ex.com</td>
+                  <td>۰۹۱۸۹۰۱۲۳۴۵</td>
+                  <td><span class="badge badge-primary">دانش‌آموز</span></td>
+                  <td><span class="badge badge-success">✓</span></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--text-muted)">۴</td>
+                  <td>نازنین</td><td>احمدی</td><td style="color:var(--accent-danger)">invalid-email</td>
+                  <td>۰۹۱۱۲۳۴۵۶۷۸</td>
+                  <td><span class="badge badge-primary">دانش‌آموز</span></td>
+                  <td><span class="badge badge-danger">✗ خطا</span></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--text-muted)">۵</td>
+                  <td>سارا</td><td>رستمی</td><td>sara@ex.com</td>
+                  <td>۰۹۳۶۷۸۹۰۱۲۳</td>
+                  <td><span class="badge badge-info">والدین</span></td>
+                  <td><span class="badge badge-success">✓</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer">
+            <div class="alert alert-warning mb-0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>۱ ردیف دارای خطا است. ردیف‌های خطادار از بارگذاری حذف می‌شوند.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4">
+        <!-- Download template -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <div class="card-title">دانلود قالب</div>
+          </div>
+          <div class="card-body">
+            <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:16px">برای بارگذاری صحیح، ابتدا قالب فایل را دانلود کرده و اطلاعات را وارد کنید.</p>
+            <div class="d-flex flex-column gap-2">
+              <button class="btn btn-outline-success btn-sm" onclick="showToast('دانلود شروع شد.','success')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                قالب Excel
+              </button>
+              <button class="btn btn-outline-secondary btn-sm" onclick="showToast('دانلود شروع شد.','success')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                قالب CSV
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="card mb-3">
+          <div class="card-header"><div class="card-title">تنظیمات بارگذاری</div></div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label">نقش پیش‌فرض</label>
+              <select class="form-select">
+                <option>دانش‌آموز</option>
+                <option>معلم</option>
+                <option>والدین</option>
+              </select>
+            </div>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="skipDuplicates" checked>
+              <label class="form-check-label" for="skipDuplicates">رد کردن کاربران تکراری</label>
+            </div>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="sendNotif" checked>
+              <label class="form-check-label" for="sendNotif">ارسال ایمیل به کاربران</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="autoActivate" checked>
+              <label class="form-check-label" for="autoActivate">فعال‌سازی خودکار حساب</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action -->
+        <div class="card">
+          <div class="card-body d-flex flex-column gap-2">
+            <div class="d-flex justify-content-between mb-2" style="font-size:.82rem">
+              <span style="color:var(--text-muted)">کل ردیف‌ها:</span>
+              <span style="color:var(--text-primary);font-weight:600">۱۲۵</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2" style="font-size:.82rem">
+              <span style="color:var(--text-muted)">معتبر:</span>
+              <span style="color:var(--accent-success);font-weight:600">۱۲۴</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3" style="font-size:.82rem">
+              <span style="color:var(--text-muted)">دارای خطا:</span>
+              <span style="color:var(--accent-danger);font-weight:600">۱</span>
+            </div>
+            <button class="btn btn-primary w-100" onclick="handleBulkImport(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/></svg>
+              شروع بارگذاری (۱۲۴ کاربر)
+            </button>
+            <a href="list.html" class="btn btn-ghost w-100">انصراف</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+{% endblock main %}

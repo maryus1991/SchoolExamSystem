@@ -23,55 +23,6 @@ phase 3 todo list
  
 
 phase 4 todo list 
+    add toggle them for admin panel
 
-
-admin panel pages
-    user 
-        list 
-        create 
-        groplly add
-        groplly delete
-
-    site setting 
-        update 
-
-        lesson category 
-            list
-            create
-        
-        major category 
-            list
-            create
-        
-        grade category 
-            list
-            create
-
-    blog 
-        list 
-        create 
-    
-    question bank 
-        list 
-        create
-
-    quiz
-        list
-        create
-        
-        question 
-            create 
-            list
-
-        answer 
-            groplly add
-            detail
-        
-        report 
-            update
-            list
-            detail
-
-    order:
-        list 
-        detail
+ 

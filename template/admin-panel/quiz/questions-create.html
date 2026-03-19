@@ -1,0 +1,192 @@
+{% extends "admin-panel/base/base.html" %}
+
+{% block main %}
+  <main class="page-content">
+
+    <div class="page-header">
+      <div class="page-header-info">
+        <h1>افزودن سوال به آزمون</h1>
+        <p>آزمون جامع ریاضی - فصل اول | کد: EX-2401</p>
+      </div>
+      <div class="page-header-actions">
+        <a href="questions-list.html" class="btn btn-outline-secondary btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          بازگشت
+        </a>
+      </div>
+    </div>
+
+    <!-- Two tabs: add from bank OR create new -->
+    <div class="card mb-4">
+      <div class="card-header" style="padding-bottom:0">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+            <button class="nav-link active" id="tab-bank" data-bs-toggle="tab" data-bs-target="#paneBank">انتخاب از بانک سوال</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="tab-new" data-bs-toggle="tab" data-bs-target="#paneNew">ایجاد سوال جدید</button>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body tab-content">
+
+        <!-- Bank tab -->
+        <div class="tab-pane fade show active" id="paneBank">
+          <div class="row g-3 mb-3">
+            <div class="col-md-4">
+              <input type="text" class="form-control form-control-sm" id="bankSearch" placeholder="جستجو در بانک سوال...">
+            </div>
+            <div class="col-md-2">
+              <select class="form-select form-select-sm">
+                <option>همه دروس</option>
+                <option>ریاضی</option>
+                <option>فیزیک</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <select class="form-select form-select-sm">
+                <option>همه سطوح</option>
+                <option>آسان</option>
+                <option>متوسط</option>
+                <option>سخت</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <select class="form-select form-select-sm">
+                <option>همه پایه‌ها</option>
+                <option>دهم</option>
+                <option>یازدهم</option>
+                <option>دوازدهم</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-sm" id="bankTable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>کد</th>
+                  <th>متن سوال</th>
+                  <th>درس</th>
+                  <th>پایه</th>
+                  <th>سطح</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input class="form-check-input" type="checkbox"></td>
+                  <td style="font-size:.78rem;color:var(--text-muted)">Q-10045</td>
+                  <td style="max-width:350px">حاصل عبارت log₂8 + log₃9 برابر است با؟</td>
+                  <td><span class="badge badge-primary">ریاضی</span></td>
+                  <td>دوازدهم</td>
+                  <td><span class="badge badge-warning">متوسط</span></td>
+                </tr>
+                <tr>
+                  <td><input class="form-check-input" type="checkbox"></td>
+                  <td style="font-size:.78rem;color:var(--text-muted)">Q-10046</td>
+                  <td style="max-width:350px">اگر f(x) = 2x + 3، آنگاه f(f(1)) برابر است با؟</td>
+                  <td><span class="badge badge-primary">ریاضی</span></td>
+                  <td>دوازدهم</td>
+                  <td><span class="badge badge-success">آسان</span></td>
+                </tr>
+                <tr>
+                  <td><input class="form-check-input" type="checkbox"></td>
+                  <td style="font-size:.78rem;color:var(--text-muted)">Q-10047</td>
+                  <td style="max-width:350px">مجموع جملات تصاعد حسابی ۱ تا ۱۰۰ برابر است با؟</td>
+                  <td><span class="badge badge-primary">ریاضی</span></td>
+                  <td>یازدهم</td>
+                  <td><span class="badge badge-success">آسان</span></td>
+                </tr>
+                <tr>
+                  <td><input class="form-check-input" type="checkbox"></td>
+                  <td style="font-size:.78rem;color:var(--text-muted)">Q-10048</td>
+                  <td style="max-width:350px">حل دستگاه معادلات: x + y = 5 و x - y = 1 چیست؟</td>
+                  <td><span class="badge badge-primary">ریاضی</span></td>
+                  <td>دهم</td>
+                  <td><span class="badge badge-danger">سخت</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span style="font-size:.82rem;color:var(--text-muted)">۰ سوال انتخاب شده</span>
+            <button class="btn btn-primary btn-sm" onclick="showToast('سوالات انتخابی به آزمون اضافه شدند','success')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              افزودن سوالات انتخابی
+            </button>
+          </div>
+        </div>
+
+        <!-- New question tab -->
+        <div class="tab-pane fade" id="paneNew">
+          <div class="row g-4">
+            <div class="col-md-8">
+              <div class="mb-3">
+                <label class="form-label">متن سوال <span class="text-danger">*</span></label>
+                <textarea class="form-control" rows="4" placeholder="متن سوال را وارد کنید..."></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">گزینه ۱</label>
+                <div class="input-group">
+                  <div class="input-group-text" style="background:var(--bg-secondary);border-color:var(--border-color)">
+                    <input class="form-check-input" type="radio" name="correctAns" value="1">
+                  </div>
+                  <input type="text" class="form-control" placeholder="گزینه اول...">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">گزینه ۲</label>
+                <div class="input-group">
+                  <div class="input-group-text" style="background:var(--bg-secondary);border-color:var(--border-color)">
+                    <input class="form-check-input" type="radio" name="correctAns" value="2">
+                  </div>
+                  <input type="text" class="form-control" placeholder="گزینه دوم...">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">گزینه ۳</label>
+                <div class="input-group">
+                  <div class="input-group-text" style="background:var(--bg-secondary);border-color:var(--border-color)">
+                    <input class="form-check-input" type="radio" name="correctAns" value="3">
+                  </div>
+                  <input type="text" class="form-control" placeholder="گزینه سوم...">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">گزینه ۴</label>
+                <div class="input-group">
+                  <div class="input-group-text" style="background:var(--bg-secondary);border-color:var(--border-color)">
+                    <input class="form-check-input" type="radio" name="correctAns" value="4">
+                  </div>
+                  <input type="text" class="form-control" placeholder="گزینه چهارم...">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label">سطح سختی</label>
+                <select class="form-select">
+                  <option>آسان</option>
+                  <option>متوسط</option>
+                  <option>سخت</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">امتیاز این سوال</label>
+                <input type="number" class="form-control" value="2.5" step="0.5" min="0.5">
+              </div>
+              <div class="d-grid">
+                <button class="btn btn-primary" onclick="showToast('سوال به آزمون اضافه شد','success')">ذخیره و افزودن</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+{% endblock main %}

@@ -16,11 +16,12 @@ class Blog(models.Model):
         null=True,
         related_name="blogs",
         verbose_name="نویسنده",
+        db_index=True
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="زمان ساخت")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="زمان انتشار")
 
-    title = models.CharField(max_length=100, verbose_name="عنوان")
+    title = models.CharField(max_length=100, verbose_name="عنوان", db_index=True)
     category = models.CharField(max_length=255, verbose_name="دسته")
     short_content = models.CharField(max_length=100, verbose_name="توضیحات کوتاه")
     content = CKEditor5Field(verbose_name="متن یا بدنه")
@@ -30,7 +31,7 @@ class Blog(models.Model):
         default=False, verbose_name="فعال / غیر فعال "
     )
 
-    sort_number = models.PositiveBigIntegerField(default=0, verbose_name='ترتیب نمایش')
+    sort_number = models.PositiveBigIntegerField(default=0, db_index=True, verbose_name='ترتیب نمایش')
 
     def __str__(self):
         return self.title
@@ -45,9 +46,9 @@ class Blog(models.Model):
 
 
 class BlogView(models.Model):
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="views")
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="views",db_index=True)
     ip = models.GenericIPAddressField()
-    count = models.IntegerField(default=1)
+    count = models.IntegerField(default=1, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

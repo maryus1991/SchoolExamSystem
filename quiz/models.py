@@ -22,14 +22,14 @@ class LessionCategories(models.Model):
         return reverse("quiz:category-lession-list", kwargs={"lession_category_id": self.pk})
 
 class Quiz(models.Model):
-    student = models.ManyToManyField(User, null=True, blank=True, related_name='quiz_student', verbose_name='دانش اموز')
-    sanatorium = models.ManyToManyField(User, related_name='quiz_sanatorium', verbose_name='مصحح')
+    student = models.ManyToManyField(User, null=True, blank=True, related_name='quiz_student', verbose_name='دانش اموز', db_index=True)
+    sanatorium = models.ManyToManyField(User, related_name='quiz_sanatorium', verbose_name='مصحح', db_index=True)
     name = models.CharField(verbose_name='عنوان', max_length=255 )
     section = models.CharField(verbose_name='مبحث', max_length=255 )
 
-    grade =  models.ForeignKey(GradeCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='پایه') 
-    major =  models.ForeignKey(MajorCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='رشته تحصیلی') 
-    lession =  models.ForeignKey(LessionCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='درس') 
+    grade =  models.ForeignKey(GradeCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='پایه', db_index=True) 
+    major =  models.ForeignKey(MajorCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='رشته تحصیلی', db_index=True) 
+    lession =  models.ForeignKey(LessionCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='درس', db_index=True) 
 
     province =  models.CharField(max_length=255, verbose_name=' نام استان محل برگذاری') 
     city =  models.CharField(max_length=255, verbose_name='نام شهر محل برگذاری') 
@@ -92,8 +92,8 @@ class Quiz(models.Model):
 
 
 class UserQuizDetail(models.Model):
-    quiz = models.ForeignKey('Quiz', on_delete=models.PROTECT, related_name='detail', verbose_name='آزمون')
-    student = models.ForeignKey(User, on_delete=models.PROTECT, related_name='quiz_detail', verbose_name='دانش اموز')
+    quiz = models.ForeignKey('Quiz', on_delete=models.PROTECT, related_name='detail', verbose_name='آزمون' , db_index=True)
+    student = models.ForeignKey(User, on_delete=models.PROTECT, related_name='quiz_detail', verbose_name='دانش اموز', db_index=True)
     student_finished_at = models.DateTimeField(verbose_name='زمان خروج کاربر از ازمون', null=True, blank=True)
     student_start_at = models.DateTimeField(verbose_name='زمان ورود کاربر به ازمون', auto_now_add=True)
     out_of_page = models.PositiveSmallIntegerField(verbose_name='خروج از صفحه', default=0)
@@ -119,9 +119,9 @@ class Question(models.Model):
         IMAGE_BASED = 'مبتنی بر تصویر', 'مبتنی بر تصویر'
         PDF_BASED = 'سوال از فایل PDF', 'سوال از فایل PDF'
 
-    quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='questions', verbose_name='آزمون')
+    quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='questions', verbose_name='آزمون',  db_index=True)
     type_of_question = models.CharField( max_length=100, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
-    name = models.CharField( max_length=255, verbose_name='عنوان سوال')
+    name = models.CharField( max_length=255, verbose_name='عنوان سوال',  db_index=True)
 
     description = CKEditor5Field( blank=True, null=True, verbose_name='متن سوال')
     image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
@@ -143,7 +143,7 @@ class Question(models.Model):
 
 
 class QuestionOption(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options', verbose_name='سوال')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options', verbose_name='سوال',  db_index=True)
     text = models.CharField(max_length=500, verbose_name='متن گزینه')
     is_correct = models.BooleanField(default=False, verbose_name='گزینه صحیح')
     order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
@@ -167,7 +167,7 @@ class QuestionAnswerKey(models.Model):
         IMAGE_BASED = 'پاسخ تصویری', 'پاسخ تصویری'
         PDF_BASED = 'پاسخ PDF', 'پاسخ PDF'
 
-    question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name='answer_key', verbose_name='سوال')
+    question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name='answer_key', verbose_name='سوال',  db_index=True)
     type_of_answer = models.CharField(max_length=50, choices=TypeOfAnswer.choices, verbose_name='نوع پاسخ صحیح')
 
     description = CKEditor5Field(blank=True, null=True, verbose_name='متن پاسخ')
@@ -200,12 +200,12 @@ class StudentAnswer(models.Model):
         SKIPPED = 'رد شده', 'رد شده'
         NOT_ANSWERD = 'جواب داده نشده', 'جواب داده نشده'
 
-    quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='student_answers', verbose_name='آزمون')
-    student = models.ForeignKey(User, on_delete=models.CASCADE,related_name='answers', verbose_name='دانش‌آموز')
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='student_answers', null=True, blank=True , verbose_name='سوال')
+    quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='student_answers', verbose_name='آزمون',  db_index=True)
+    student = models.ForeignKey(User, on_delete=models.CASCADE,related_name='answers', verbose_name='دانش‌آموز',  db_index=True)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='student_answers', null=True, blank=True , verbose_name='سوال',  db_index=True)
     
     type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', default=TypeOfAnswer.NOT_ANSWERD)
-    selected_option = models.ForeignKey(QuestionOption,on_delete=models.PROTECT ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده')
+    selected_option = models.ForeignKey(QuestionOption,on_delete=models.PROTECT ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده',  db_index=True)
 
     description = models.TextField(blank=True, null=True,verbose_name='متن پاسخ' )
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
@@ -222,7 +222,7 @@ class StudentAnswer(models.Model):
         excellent = 'کاملا درست', 'کاملا درست'
 
     corrected = models.CharField(max_length=100, choices=TypeOfCorrect.choices,verbose_name='کیفیت جواب', default=TypeOfCorrect.not_corrected ,)
-    corrected_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True, related_name='corrected_answers', verbose_name='تصحیح‌کننده')
+    corrected_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True, related_name='corrected_answers', verbose_name='تصحیح‌کننده',  db_index=True)
     corrected_at = models.DateTimeField(null=True, blank=True)
     satantorium_message = CKEditor5Field(blank=True, null=True, verbose_name='نظر مصصح' )
 
@@ -239,7 +239,7 @@ class StudentAnswer(models.Model):
     
 
 class QuizView(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="views")
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="views",  db_index=True)
     ip = models.GenericIPAddressField()
     count = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)

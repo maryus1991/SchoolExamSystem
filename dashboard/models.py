@@ -7,10 +7,10 @@ from qbank.models import QuestionBank
 # Create your models here.
 
 class UserFavorate(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='کاربر', related_name='favorate')
-    quiz = models.ManyToManyField(Quiz, verbose_name='ازمون', related_name='favorate')
-    blog = models.ManyToManyField(Blog, verbose_name='مقاله', related_name='favorate')
-    qbank = models.ManyToManyField(QuestionBank, verbose_name='بانک سوال', related_name='favorate')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='کاربر', related_name='favorate', db_index=True)
+    quiz = models.ManyToManyField(Quiz, verbose_name='ازمون', related_name='favorate', db_index=True)
+    blog = models.ManyToManyField(Blog, verbose_name='مقاله', related_name='favorate', db_index=True)
+    qbank = models.ManyToManyField(QuestionBank, verbose_name='بانک سوال', related_name='favorate', db_index=True)
 
     class Meta:
         verbose_name='علاقه مندی'

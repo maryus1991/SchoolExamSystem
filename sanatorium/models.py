@@ -6,10 +6,10 @@ from django.urls import reverse
 # Create your models here.
 
 class SanatoriumWallet(models.Model):
-    user = models.ForeignKey(User,related_name='wallet', verbose_name='کاربر', on_delete=models.PROTECT)
-    quiz = models.ForeignKey(Quiz, related_name='wallet', on_delete=models.PROTECT, verbose_name='ازمون')
+    user = models.ForeignKey(User,related_name='wallet', verbose_name='کاربر', on_delete=models.PROTECT,  db_index=True)
+    quiz = models.ForeignKey(Quiz, related_name='wallet', on_delete=models.PROTECT, verbose_name='ازمون',  db_index=True)
 
-    final_price = models.PositiveBigIntegerField(verbose_name='قیمت', default=0)
+    final_price = models.PositiveBigIntegerField(verbose_name='قیمت', default=0,  db_index=True)
  
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(null=True, blank=True)
@@ -47,8 +47,8 @@ class SanatoriumWallet(models.Model):
             
 
 class WalletDetails(models.Model):
-    wallet = models.ForeignKey(SanatoriumWallet, related_name='details', on_delete=models.PROTECT, verbose_name='کیف پول')
-    answer = models.ForeignKey(StudentAnswer, related_name='wallet', on_delete=models.PROTECT, verbose_name='پاسخ نامه')
+    wallet = models.ForeignKey(SanatoriumWallet, related_name='details', on_delete=models.PROTECT, verbose_name='کیف پول',  db_index=True)
+    answer = models.ForeignKey(StudentAnswer, related_name='wallet', on_delete=models.PROTECT, verbose_name='پاسخ نامه',  db_index=True)
 
     price = models.PositiveBigIntegerField(verbose_name='قیمت', default=0)
     create_at = models.DateTimeField(auto_now_add=True,  verbose_name='تاریخ افزودن')
