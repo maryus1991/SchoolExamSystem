@@ -14,11 +14,10 @@ phase 1 todo list
 
 phase 2 todo list
     fix the search bar in favorate quiz qbank blog 
-    fix the colors in report/second/
     fix the nemodare page 
     fix the responsive of dashboard panel and order detail
     fix the create at for student answer that for show the time of answer
-
+    fix the QuizDetail
   
 phase 3 todo list 
  

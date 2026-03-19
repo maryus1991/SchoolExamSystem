@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لیست کاربران | پنل مدیریت</title>
+ <link rel="stylesheet" href="https://tee.s3.ir-thr-at1.arvanstorage.ir/bootstrap5.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+<div class="app-wrapper">
+  <div id="sidebarContainer"></div>
+  <div class="main-content">
+    <div id="topbarContainer"></div>
+    <main class="page-content">
+
+      <div class="page-header">
+        <div class="page-header-info">
+          <h1>لیست کاربران</h1>
+          <p>مدیریت و مشاهده همه کاربران سیستم</p>
+        </div>
+        <div class="page-header-actions">
+          <a href="bulk-delete.html" class="btn btn-outline-danger btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+            حذف گروهی
+          </a>
+          <a href="bulk-add.html" class="btn btn-outline-secondary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            افزودن گروهی
+          </a>
+          <a href="create.html" class="btn btn-primary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            کاربر جدید
+          </a>
+        </div>
+      </div>
+
+      <!-- Bulk actions bar -->
+      <div id="bulkActionsBar" class="alert alert-primary d-none mb-3" style="display:none!important">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span><strong id="selectedCount">0</strong> کاربر انتخاب شده</span>
+        <div class="me-auto d-flex gap-2">
+          <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete(null,'کاربران انتخاب‌شده')">حذف انتخاب‌شده‌ها</button>
+          <button class="btn btn-sm btn-outline-secondary">تغییر وضعیت</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-toolbar">
+          <div class="table-search">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="جستجو نام، ایمیل..." id="userSearch">
+          </div>
+          <div class="table-filters">
+            <select class="filter-select">
+              <option>همه نقش‌ها</option>
+              <option>دانش‌آموز</option>
+              <option>معلم</option>
+              <option>والدین</option>
+              <option>مدیر</option>
+            </select>
+            <select class="filter-select">
+              <option>همه وضعیت‌ها</option>
+              <option>فعال</option>
+              <option>غیرفعال</option>
+              <option>معلق</option>
+            </select>
+          </div>
+          <div class="me-auto d-flex gap-2">
+            <button class="btn btn-ghost btn-sm btn-icon" data-bs-toggle="tooltip" title="خروجی Excel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+            <button class="btn btn-ghost btn-sm btn-icon" data-bs-toggle="tooltip" title="بارگذاری مجدد">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="table" id="usersTable">
+            <thead>
+              <tr>
+                <th class="table-check"><input type="checkbox" class="form-check-input" id="selectAll"></th>
+                <th>کاربر</th>
+                <th>نقش</th>
+                <th>شماره موبایل</th>
+                <th>تاریخ عضویت</th>
+                <th>آخرین ورود</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" class="form-check-input row-checkbox" onchange="updateBulkActions()"></td>
+                <td>
+                  <div class="user-cell">
+                    <div class="avatar" style="background:linear-gradient(135deg,#4f8ef7,#a371f7)">ع.م</div>
+                    <div class="user-cell-info">
+                      <div class="name">علیرضا محمدی</div>
+                      <div class="email">ali@example.com</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge badge-primary">دانش‌آموز</span></td>
+                <td style="direction:ltr;text-align:right">۰۹۱۲-۳۴۵-۶۷۸۹</td>
+                <td style="color:var(--text-muted);font-size:.78rem">۱۴۰۳/۰۹/۱۵</td>
+                <td style="color:var(--text-muted);font-size:.78rem">دیروز</td>
+                <td><span class="badge badge-success">فعال</span></td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="btn btn-ghost btn-sm btn-icon" data-bs-toggle="tooltip" title="ویرایش">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="btn btn-ghost btn-sm btn-icon" data-bs-toggle="tooltip" title="مشاهده">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <button class="btn btn-ghost btn-sm btn-icon" data-bs-toggle="tooltip" title="حذف" onclick="confirmDelete(1,'علیرضا محمدی')">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-danger)" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="form-check-input row-checkbox" onchange="updateBulkActions()"></td>
+                <td>
+                  <div class="user-cell">
+                    <div class="avatar" style="background:linear-gradient(135deg,#2ea043,#58a6ff)">ز.ک</div>
+                    <div class="user-cell-info">
+                      <div class="name">زهرا کریمی</div>
+                      <div class="email">zahra@example.com</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge badge-purple">معلم</span></td>
+                <td style="direction:ltr;text-align:right">۰۹۳۵-۶۷۸-۹۰۱۲</td>
+                <td style="color:var(--text-muted);font-size:.78rem">۱۴۰۳/۰۸/۲۰</td>
+                <td style="color:var(--text-muted);font-size:.78rem">امروز</td>
+                <td><span class="badge badge-success">فعال</span></td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="btn btn-ghost btn-sm btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-ghost btn-sm btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="btn btn-ghost btn-sm btn-icon" onclick="confirmDelete(2,'زهرا کریمی')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-danger)" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="form-check-input row-checkbox" onchange="updateBulkActions()"></td>
+                <td>
+                  <div class="user-cell">
+                    <div class="avatar" style="background:linear-gradient(135deg,#d29922,#f85149)">م.ا</div>
+                    <div class="user-cell-info">
+                      <div class="name">محسن احمدی</div>
+                      <div class="email">mohsen@example.com</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge badge-primary">دانش‌آموز</span></td>
+                <td style="direction:ltr;text-align:right">۰۹۱۱-۲۳۴-۵۶۷۸</td>
+                <td style="color:var(--text-muted);font-size:.78rem">۱۴۰۳/۰۷/۱۰</td>
+                <td style="color:var(--text-muted);font-size:.78rem">۳ روز پیش</td>
+                <td><span class="badge badge-warning">معلق</span></td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="btn btn-ghost btn-sm btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-ghost btn-sm btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="btn btn-ghost btn-sm btn-icon" onclick="confirmDelete(3,'محسن احمدی')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-danger)" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="form-check-input row-checkbox" onchange="updateBulkActions()"></td>
+                <td>
+                  <div class="user-cell">
+                    <div class="avatar" style="background:linear-gradient(135deg,#a371f7,#4f8ef7)">ف.ر</div>
+                    <div class="user-cell-info">
+                      <div class="name">فاطمه رحیمی</div>
+                      <div class="email">fateme@example.com</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge badge-info">والدین</span></td>
+                <td style="direction:ltr;text-align:right">۰۹۱۸-۸۹۰-۱۲۳۴</td>
+                <td style="color:var(--text-muted);font-size:.78rem">۱۴۰۳/۰۶/۰۵</td>
+                <td style="color:var(--text-muted);font-size:.78rem">هفته پیش</td>
+                <td><span class="badge badge-success">فعال</span></td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="btn btn-ghost btn-sm btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-ghost btn-sm btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="btn btn-ghost btn-sm btn-icon" onclick="confirmDelete(4,'فاطمه رحیمی')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-danger)" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="form-check-input row-checkbox" onchange="updateBulkActions()"></td>
+                <td>
+                  <div class="user-cell">
+                    <div class="avatar" style="background:linear-gradient(135deg,#58a6ff,#2ea043)">ر.ن</div>
+                    <div class="user-cell-info">
+                      <div class="name">رضا نوری</div>
+                      <div class="email">reza@example.com</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge badge-muted">مدیر</span></td>
+                <td style="direction:ltr;text-align:right">۰۹۱۲-۰۰۰-۱۱۱۱</td>
+                <td style="color:var(--text-muted);font-size:.78rem">۱۴۰۲/۰۱/۰۱</td>
+                <td style="color:var(--text-muted);font-size:.78rem">همین الان</td>
+                <td><span class="badge badge-success">فعال</span></td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="btn btn-ghost btn-sm btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                    <button class="btn btn-ghost btn-sm btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button class="btn btn-ghost btn-sm btn-icon" disabled><svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-footer d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <span style="font-size:.78rem;color:var(--text-muted)">نمایش ۱ تا ۵ از ۱۲۴۸ کاربر</span>
+          <nav>
+            <ul class="pagination mb-0">
+              <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
+              <li class="page-item active"><a class="page-link" href="#">۱</a></li>
+              <li class="page-item"><a class="page-link" href="#">۲</a></li>
+              <li class="page-item"><a class="page-link" href="#">۳</a></li>
+              <li class="page-item"><a class="page-link" href="#">...</a></li>
+              <li class="page-item"><a class="page-link" href="#">۲۵۰</a></li>
+              <li class="page-item"><a class="page-link" href="#">»</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+    </main>
+    <div id="footerContainer"></div>
+  </div>
+</div>
+<script src="https://tee.s3.ir-thr-at1.arvanstorage.ir/bootstrap5.bundle.min.js"></script>
+ <script src="../../assets/js/components.js"></script>
+<script src="../../assets/js/main.js"></script>
+<script>
+  injectComponents('لیست کاربران', [
+    { label: 'داشبورد', href: '../../index.html' },
+    { label: 'مدیریت کاربران' },
+    { label: 'لیست کاربران' }
+  ]);
+  document.addEventListener('DOMContentLoaded', function() {
+    initTableSearch('userSearch', 'usersTable');
+  });
+</script>
+</body>
+</html>

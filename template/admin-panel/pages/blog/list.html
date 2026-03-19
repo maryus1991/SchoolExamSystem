@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لیست مقالات | پنل مدیریت</title>
+ <link rel="stylesheet" href="https://tee.s3.ir-thr-at1.arvanstorage.ir/bootstrap5.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+<div class="app-wrapper">
+  <div id="sidebarContainer"></div>
+  <div class="main-content">
+    <div id="topbarContainer"></div>
+    <main class="page-content">
+
+      <div class="page-header">
+        <div class="page-header-info">
+          <h1>لیست مقالات</h1>
+          <p>مدیریت و انتشار محتوای بلاگ</p>
+        </div>
+        <div class="page-header-actions">
+          <a href="create.html" class="btn btn-primary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            مقاله جدید
+          </a>
+        </div>
+      </div>
+
+      <!-- Bulk actions bar -->
+      <div id="bulkActionsBar" class="alert alert-primary d-none mb-3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span><strong id="selectedCount">0</strong> مقاله انتخاب شده</span>
+        <div class="me-auto d-flex gap-2">
+          <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete(null,'مقالات انتخاب‌شده')">حذف انتخاب‌شده‌ها</button>
+          <button class="btn btn-sm btn-outline-secondary">تغییر وضعیت</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-toolbar">
+          <div class="table-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="tableSearch" placeholder="جستجو در مقالات..." class="form-control form-control-sm">
+          </div>
+          <div class="d-flex gap-2 align-items-center">
+            <select class="form-select form-select-sm" style="width:auto">
+              <option>همه وضعیت‌ها</option>
+              <option>منتشرشده</option>
+              <option>پیش‌نویس</option>
+              <option>بایگانی</option>
+            </select>
+            <select class="form-select form-select-sm" style="width:auto">
+              <option>همه دسته‌بندی‌ها</option>
+              <option>آموزشی</option>
+              <option>خبر</option>
+              <option>راهنما</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table" id="mainTable">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="checkAll" class="form-check-input"></th>
+                <th>تصویر</th>
+                <th>عنوان مقاله</th>
+                <th>دسته‌بندی</th>
+                <th>نویسنده</th>
+                <th>وضعیت</th>
+                <th>بازدید</th>
+                <th>تاریخ انتشار</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" class="form-check-input row-check"></td>
+                <td>
+                  <div style="width:60px;height:40px;border-radius:6px;background:var(--bg-secondary);overflow:hidden">
+                    <div style="width:100%;height:100%;background:linear-gradient(135deg,var(--accent-primary)30%,var(--accent-purple));opacity:.5"></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="fw-semibold" style="color:var(--text-primary)">راهنمای جامع آزمون کنکور ۱۴۰۳</div>
+                  <div style="font-size:.75rem;color:var(--text-muted)">slug: konkour-guide-1403</div>
+                </td>
+                <td><span class="badge badge-primary">آموزشی</span></td>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar">ا.م</div>
+                    <span>احمد محمدی</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-success">منتشرشده</span></td>
+                <td>۲,۴۵۸</td>
+                <td>۱۴۰۳/۰۴/۱۵</td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <a href="create.html" class="btn btn-icon btn-outline-secondary" title="ویرایش">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </a>
+                    <button class="btn btn-icon btn-outline-danger" onclick="confirmDelete(1,'راهنمای جامع آزمون کنکور')" title="حذف">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="form-check-input row-check"></td>
+                <td>
+                  <div style="width:60px;height:40px;border-radius:6px;background:var(--bg-secondary);overflow:hidden">
+                    <div style="width:100%;height:100%;background:linear-gradient(135deg,var(--accent-success)30%,var(--accent-primary));opacity:.5"></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="fw-semibold" style="color:var(--text-primary)">تکنیک‌های مطالعه برای دانش‌آموزان</div>
+                  <div style="font-size:.75rem;color:var(--text-muted)">slug: study-techniques</div>
+                </td>
+                <td><span class="badge badge-info">راهنما</span></td>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar" style="background:var(--accent-success)">ز.ح</div>
+                    <span>زهرا حسینی</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-success">منتشرشده</span></td>
+                <td>۱,۸۷۲</td>
+                <td>۱۴۰۳/۰۳/۲۰</td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <a href="create.html" class="btn btn-icon btn-outline-secondary" title="ویرایش">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </a>
+                    <button class="btn btn-icon btn-outline-danger" onclick="confirmDelete(2,'تکنیک‌های مطالعه')" title="حذف">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="form-check-input row-check"></td>
+                <td>
+                  <div style="width:60px;height:40px;border-radius:6px;background:var(--bg-secondary);overflow:hidden">
+                    <div style="width:100%;height:100%;background:linear-gradient(135deg,var(--accent-warning)30%,var(--accent-danger));opacity:.5"></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="fw-semibold" style="color:var(--text-primary)">معرفی بهترین منابع ریاضی پیش‌دانشگاهی</div>
+                  <div style="font-size:.75rem;color:var(--text-muted)">slug: math-resources</div>
+                </td>
+                <td><span class="badge badge-primary">آموزشی</span></td>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar" style="background:var(--accent-purple)">م.ر</div>
+                    <span>محمد رضایی</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-warning">پیش‌نویس</span></td>
+                <td>—</td>
+                <td>—</td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <a href="create.html" class="btn btn-icon btn-outline-secondary" title="ویرایش">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </a>
+                    <button class="btn btn-icon btn-outline-danger" onclick="confirmDelete(3,'معرفی منابع ریاضی')" title="حذف">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="form-check-input row-check"></td>
+                <td>
+                  <div style="width:60px;height:40px;border-radius:6px;background:var(--bg-secondary);overflow:hidden">
+                    <div style="width:100%;height:100%;background:linear-gradient(135deg,var(--accent-danger)30%,var(--accent-purple));opacity:.5"></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="fw-semibold" style="color:var(--text-primary)">اخبار آزمون‌های سراسری ۱۴۰۳</div>
+                  <div style="font-size:.75rem;color:var(--text-muted)">slug: exam-news-1403</div>
+                </td>
+                <td><span class="badge badge-muted">خبر</span></td>
+                <td>
+                  <div class="user-cell">
+                    <div class="user-avatar" style="background:var(--accent-warning)">س.ک</div>
+                    <span>سارا کریمی</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-muted">بایگانی</span></td>
+                <td>۵۶۴</td>
+                <td>۱۴۰۳/۰۲/۱۰</td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <a href="create.html" class="btn btn-icon btn-outline-secondary" title="ویرایش">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </a>
+                    <button class="btn btn-icon btn-outline-danger" onclick="confirmDelete(4,'اخبار آزمون‌های سراسری')" title="حذف">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <div class="table-info">نمایش ۱ تا ۴ از ۴ مقاله</div>
+          <nav>
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
+              <li class="page-item active"><a class="page-link" href="#">۱</a></li>
+              <li class="page-item disabled"><a class="page-link" href="#">بعدی</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+    </main>
+    <div id="footerContainer"></div>
+  </div>
+</div>
+<script src="https://tee.s3.ir-thr-at1.arvanstorage.ir/bootstrap5.bundle.min.js"></script>
+
+ <script src="../../assets/js/components.js"></script>
+<script src="../../assets/js/main.js"></script>
+<script>
+  injectComponents('لیست مقالات', [
+    { label: 'داشبورد', href: '../../index.html' },
+    { label: 'بلاگ' },
+    { label: 'لیست مقالات' }
+  ]);
+  initTableSearch('tableSearch', 'mainTable');
+  initCheckboxes();
+</script>
+</body>
+</html>

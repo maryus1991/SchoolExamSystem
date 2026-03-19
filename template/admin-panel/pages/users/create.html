@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ایجاد کاربر | پنل مدیریت</title>
+ <link rel="stylesheet" href="https://tee.s3.ir-thr-at1.arvanstorage.ir/bootstrap5.css">
+ <link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+<div class="app-wrapper">
+  <div id="sidebarContainer"></div>
+  <div class="main-content">
+    <div id="topbarContainer"></div>
+    <main class="page-content">
+
+      <div class="page-header">
+        <div class="page-header-info">
+          <h1>ایجاد کاربر جدید</h1>
+          <p>اطلاعات کاربر جدید را وارد کنید</p>
+        </div>
+        <div class="page-header-actions">
+          <a href="list.html" class="btn btn-outline-secondary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            بازگشت
+          </a>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <!-- Main Form -->
+        <div class="col-xl-8">
+          <div class="card">
+            <div class="card-header">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <div>
+                <div class="card-title">اطلاعات شخصی</div>
+                <div class="card-subtitle">مشخصات اصلی کاربر</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form class="needs-validation" novalidate id="createUserForm">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">نام <span class="required">*</span></label>
+                    <input type="text" class="form-control" placeholder="نام کاربر را وارد کنید" required>
+                    <div class="invalid-feedback">نام الزامی است.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">نام خانوادگی <span class="required">*</span></label>
+                    <input type="text" class="form-control" placeholder="نام خانوادگی را وارد کنید" required>
+                    <div class="invalid-feedback">نام خانوادگی الزامی است.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">ایمیل <span class="required">*</span></label>
+                    <input type="email" class="form-control" placeholder="example@email.com" required>
+                    <div class="invalid-feedback">ایمیل معتبر وارد کنید.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">شماره موبایل <span class="required">*</span></label>
+                    <input type="tel" class="form-control" placeholder="۰۹۱۲XXXXXXX" required>
+                    <div class="invalid-feedback">شماره موبایل الزامی است.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">کد ملی</label>
+                    <input type="text" class="form-control" placeholder="کد ملی ۱۰ رقمی">
+                    <div class="form-text">اختیاری</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">تاریخ تولد</label>
+                    <input type="text" class="form-control" placeholder="۱۳۸۰/۰۱/۰۱">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">آدرس</label>
+                    <textarea class="form-control" rows="3" placeholder="آدرس کامل..."></textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Account Info -->
+          <div class="card mt-3">
+            <div class="card-header">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <div>
+                <div class="card-title">اطلاعات حساب</div>
+                <div class="card-subtitle">نام کاربری و رمز ورود</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">نام کاربری <span class="required">*</span></label>
+                  <div class="input-group">
+                    <span class="input-group-text">@</span>
+                    <input type="text" class="form-control" placeholder="username" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">رمز عبور <span class="required">*</span></label>
+                  <input type="password" class="form-control" placeholder="حداقل ۸ کاراکتر" required>
+                  <div class="form-text">رمز باید شامل حروف و اعداد باشد.</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">تکرار رمز عبور <span class="required">*</span></label>
+                  <input type="password" class="form-control" placeholder="رمز را تکرار کنید" required>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar options -->
+        <div class="col-xl-4">
+          <!-- Avatar upload -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="card-title">تصویر پروفایل</div>
+            </div>
+            <div class="card-body text-center">
+              <div class="avatar-xl mx-auto mb-3" id="avatarPreviewWrap">
+                <img id="avatarPreview" style="display:none;width:64px;height:64px;border-radius:50%;object-fit:cover" alt="preview">
+                <span id="avatarInitials">ک.ج</span>
+              </div>
+              <label class="btn btn-outline-secondary btn-sm" style="cursor:pointer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                انتخاب تصویر
+                <input type="file" class="d-none file-upload-input" accept="image/*" data-preview="avatarPreview">
+              </label>
+              <div class="form-text mt-2">JPG, PNG حداکثر ۲ مگابایت</div>
+            </div>
+          </div>
+
+          <!-- Role & Status -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="card-title">نقش و وضعیت</div>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label class="form-label">نقش کاربر <span class="required">*</span></label>
+                <select class="form-select">
+                  <option value="">انتخاب نقش...</option>
+                  <option>دانش‌آموز</option>
+                  <option>معلم</option>
+                  <option>والدین</option>
+                  <option>مدیر</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">وضعیت حساب</label>
+                <select class="form-select">
+                  <option>فعال</option>
+                  <option>غیرفعال</option>
+                  <option>معلق</option>
+                </select>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="sendWelcome" checked>
+                <label class="form-check-label" for="sendWelcome">ارسال ایمیل خوش‌آمدگویی</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="verifyEmail">
+                <label class="form-check-label" for="verifyEmail">تأیید ایمیل اجباری</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="card">
+            <div class="card-body d-flex flex-column gap-2">
+              <button type="submit" class="btn btn-primary w-100" onclick="handleSave(this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                ذخیره کاربر
+              </button>
+              <button type="button" class="btn btn-outline-secondary w-100" onclick="showToast('پیش‌نویس ذخیره شد.','info')">
+                ذخیره پیش‌نویس
+              </button>
+              <a href="list.html" class="btn btn-ghost w-100">انصراف</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+    <div id="footerContainer"></div>
+  </div>
+</div>
+<script src="https://tee.s3.ir-thr-at1.arvanstorage.ir/bootstrap5.bundle.min.js"></script> 
+ <script src="../../assets/js/components.js"></script>
+<script src="../../assets/js/main.js"></script>
+<script>
+  injectComponents('ایجاد کاربر', [
+    { label: 'داشبورد', href: '../../index.html' },
+    { label: 'مدیریت کاربران', href: 'list.html' },
+    { label: 'ایجاد کاربر' }
+  ]);
+  document.addEventListener('DOMContentLoaded', initFileUpload);
+
+  function handleSave(btn) {
+    const form = document.getElementById('createUserForm');
+    form.classList.add('was-validated');
+    if (form.checkValidity()) {
+      showLoading(btn);
+      setTimeout(function() {
+        hideLoading(btn);
+        showToast('کاربر با موفقیت ایجاد شد!', 'success');
+      }, 1500);
+    }
+  }
+</script>
+</body>
+</html>

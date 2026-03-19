@@ -23,6 +23,7 @@ class QuizList(LoginRequiredMixin, ListView):
         data['status'] = Quiz.QuizStatus
         return data
     
+    
 class QuizDetail(LoginRequiredMixin, ListView):
     template_name = 'dashboard/quiz/08-exam-detail.html'
     context_object_name = 'items'

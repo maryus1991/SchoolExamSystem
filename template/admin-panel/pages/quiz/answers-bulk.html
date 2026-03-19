@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>افزودن پاسخ گروهی | پنل مدیریت</title>
+ <link rel="stylesheet" href="https://tee.s3.ir-thr-at1.arvanstorage.ir/bootstrap5.css">
+ <link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+<div class="app-wrapper">
+  <div id="sidebarContainer"></div>
+  <div class="main-content">
+    <div id="topbarContainer"></div>
+    <main class="page-content">
+
+      <div class="page-header">
+        <div class="page-header-info">
+          <h1>افزودن پاسخ گروهی</h1>
+          <p>ثبت پاسخ‌های شرکت‌کنندگان به صورت دسته‌ای</p>
+        </div>
+        <div class="page-header-actions">
+          <a href="list.html" class="btn btn-outline-secondary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            بازگشت
+          </a>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+
+          <!-- Step 1: Select quiz -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6 class="card-title">
+                <span class="badge badge-primary ms-2">۱</span>
+                انتخاب آزمون
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label class="form-label">آزمون مورد نظر <span class="text-danger">*</span></label>
+                <select class="form-select" id="quizSelect">
+                  <option value="">انتخاب کنید...</option>
+                  <option value="1">آزمون جامع ریاضی - فصل اول (EX-2401)</option>
+                  <option value="2">آزمون میان‌ترم فیزیک (EX-2402)</option>
+                  <option value="3">آزمون شبیه‌سازی کنکور ۱۴۰۳ (EX-2403)</option>
+                </select>
+              </div>
+              <div id="quizInfoBox" class="d-none">
+                <div class="alert alert-primary">
+                  <div class="row g-2">
+                    <div class="col-6 col-md-3 text-center">
+                      <div class="fw-bold">۴۰</div><div style="font-size:.72rem">سوال</div>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                      <div class="fw-bold">۲۸۴</div><div style="font-size:.72rem">شرکت‌کننده</div>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                      <div class="fw-bold">۷۵ دقیقه</div><div style="font-size:.72rem">مدت</div>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                      <span class="badge badge-success">فعال</span><div style="font-size:.72rem;margin-top:2px">وضعیت</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Upload file -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6 class="card-title">
+                <span class="badge badge-primary ms-2">۲</span>
+                بارگذاری فایل پاسخ‌ها
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-primary mb-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                فایل CSV باید شامل ستون‌های: <strong>user_id, question_id, answer</strong> باشد.
+                <a href="#" style="color:var(--accent-primary)">دانلود فایل نمونه</a>
+              </div>
+
+              <div class="upload-area" id="fileUploadArea">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <div class="upload-text">
+                  <p>فایل CSV پاسخ‌ها را اینجا رها کنید یا کلیک کنید</p>
+                  <span>فقط CSV — حداکثر ۱۰MB</span>
+                </div>
+                <input type="file" id="answersFile" accept=".csv,.xlsx">
+              </div>
+
+              <!-- File preview after upload -->
+              <div id="filePreview" class="d-none mt-4">
+                <div class="d-flex align-items-center gap-3 mb-3" style="padding:12px;background:var(--bg-secondary);border-radius:8px;border:1px solid var(--border-color)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2" style="width:24px;height:24px"><polyline points="20 6 9 17 4 12"/></svg>
+                  <div>
+                    <div style="font-size:.88rem;font-weight:600;color:var(--text-primary)" id="fileName">answers.csv</div>
+                    <div style="font-size:.74rem;color:var(--text-muted)"><span id="rowCount">۱,۲۴۰</span> ردیف پیدا شد</div>
+                  </div>
+                  <button class="btn btn-sm btn-outline-danger me-auto" onclick="resetFile()">حذف</button>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table table-sm">
+                    <thead>
+                      <tr>
+                        <th>ردیف</th>
+                        <th>user_id</th>
+                        <th>question_id</th>
+                        <th>answer</th>
+                        <th>وضعیت</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>۱</td>
+                        <td>U-1024</td>
+                        <td>Q-10045</td>
+                        <td>۳</td>
+                        <td><span class="badge badge-success">معتبر</span></td>
+                      </tr>
+                      <tr>
+                        <td>۲</td>
+                        <td>U-1024</td>
+                        <td>Q-10046</td>
+                        <td>۱</td>
+                        <td><span class="badge badge-success">معتبر</span></td>
+                      </tr>
+                      <tr>
+                        <td>۳</td>
+                        <td>U-1025</td>
+                        <td>Q-10045</td>
+                        <td>۴</td>
+                        <td><span class="badge badge-success">معتبر</span></td>
+                      </tr>
+                      <tr>
+                        <td>۴</td>
+                        <td>U-9999</td>
+                        <td>Q-10047</td>
+                        <td>۲</td>
+                        <td><span class="badge badge-danger">خطا: کاربر یافت نشد</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Import -->
+          <div class="card">
+            <div class="card-header">
+              <h6 class="card-title">
+                <span class="badge badge-primary ms-2">۳</span>
+                تأیید و ثبت
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="row g-3 mb-4">
+                <div class="col-md-4 text-center">
+                  <div style="font-size:1.5rem;font-weight:800;color:var(--accent-success)" id="validCount">۰</div>
+                  <div style="font-size:.78rem;color:var(--text-muted)">ردیف معتبر</div>
+                </div>
+                <div class="col-md-4 text-center">
+                  <div style="font-size:1.5rem;font-weight:800;color:var(--accent-danger)" id="errorCount">۰</div>
+                  <div style="font-size:.78rem;color:var(--text-muted)">ردیف خطادار</div>
+                </div>
+                <div class="col-md-4 text-center">
+                  <div style="font-size:1.5rem;font-weight:800;color:var(--accent-primary)" id="totalCount">۰</div>
+                  <div style="font-size:.78rem;color:var(--text-muted)">کل ردیف‌ها</div>
+                </div>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary flex-grow-1" id="importBtn" onclick="handleImport(event)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  ثبت پاسخ‌های معتبر
+                </button>
+                <button class="btn btn-outline-secondary">
+                  دانلود گزارش خطاها
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header">
+              <h6 class="card-title">راهنما</h6>
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-column gap-3">
+                <div>
+                  <div class="fw-semibold mb-1" style="font-size:.85rem;color:var(--text-primary)">فرمت فایل</div>
+                  <div style="font-size:.78rem;color:var(--text-muted)">فایل باید به فرمت CSV یا Excel باشد. ردیف اول باید هدر باشد.</div>
+                </div>
+                <div>
+                  <div class="fw-semibold mb-1" style="font-size:.85rem;color:var(--text-primary)">ستون‌های اجباری</div>
+                  <div style="font-size:.78rem;color:var(--text-muted)">
+                    <code style="background:var(--bg-secondary);padding:1px 5px;border-radius:3px">user_id</code>،
+                    <code style="background:var(--bg-secondary);padding:1px 5px;border-radius:3px">question_id</code>،
+                    <code style="background:var(--bg-secondary);padding:1px 5px;border-radius:3px">answer</code>
+                  </div>
+                </div>
+                <div>
+                  <div class="fw-semibold mb-1" style="font-size:.85rem;color:var(--text-primary)">نکات مهم</div>
+                  <ul style="font-size:.78rem;color:var(--text-muted);padding-right:16px;margin:0">
+                    <li>مقادیر پاسخ: ۱، ۲، ۳، یا ۴</li>
+                    <li>ردیف‌های تکراری نادیده گرفته می‌شوند</li>
+                    <li>ردیف‌های خطادار ثبت نمی‌شوند</li>
+                    <li>می‌توانید گزارش خطا را دانلود کنید</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+    <div id="footerContainer"></div>
+  </div>
+</div>
+<script src="https://tee.s3.ir-thr-at1.arvanstorage.ir/bootstrap5.bundle.min.js"></script> 
+ <script src="../../assets/js/components.js"></script>
+<script src="../../assets/js/main.js"></script>
+<script>
+  injectComponents('افزودن پاسخ گروهی', [
+    { label: 'داشبورد', href: '../../index.html' },
+    { label: 'آزمون‌ها', href: 'list.html' },
+    { label: 'پاسخ گروهی' }
+  ]);
+
+  document.getElementById('quizSelect').addEventListener('change', function() {
+    document.getElementById('quizInfoBox').classList.toggle('d-none', !this.value);
+  });
+
+  document.getElementById('answersFile').addEventListener('change', function() {
+    if (this.files[0]) {
+      document.getElementById('fileName').textContent = this.files[0].name;
+      document.getElementById('filePreview').classList.remove('d-none');
+      document.getElementById('validCount').textContent = '۱,۲۳۶';
+      document.getElementById('errorCount').textContent = '۴';
+      document.getElementById('totalCount').textContent = '۱,۲۴۰';
+    }
+  });
+
+  function resetFile() {
+    document.getElementById('answersFile').value = '';
+    document.getElementById('filePreview').classList.add('d-none');
+    document.getElementById('validCount').textContent = '۰';
+    document.getElementById('errorCount').textContent = '۰';
+    document.getElementById('totalCount').textContent = '۰';
+  }
+
+  function handleImport(e) {
+    const btn = document.getElementById('importBtn');
+    showLoading(btn);
+    setTimeout(() => {
+      hideLoading(btn);
+      showToast('۱,۲۳۶ پاسخ با موفقیت ثبت شد!', 'success');
+    }, 1800);
+  }
+</script>
+</body>
+</html>
