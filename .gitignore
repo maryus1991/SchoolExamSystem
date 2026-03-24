@@ -5,7 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+*runflare*
 # Distribution / packaging
 .Python
 build/

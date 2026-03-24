@@ -208,25 +208,25 @@ class SetQuizDetailForUser(LoginRequiredMixin, RedirectView):
             messages.error(
                 self.request, 'شما در این ازمون ثبت نام نکردید'
             )
-            return redirect(reverse('quiz:detail', kwargs={'pk': self.pk}))
+            return  reverse('quiz:detail', kwargs={'pk': quiz.id})
 
         if quiz.start_at and quiz.start_at > now():
             messages.error(
                 self.request, 'ازمون هنوز شروع نشده است'
             )
-            return redirect(reverse('quiz:detail', kwargs={'pk': self.pk}))
+            return reverse('quiz:detail', kwargs={'pk': quiz.id})
 
         if quiz.stop_at and quiz.stop_at < now():
             messages.error(
                 self.request, 'ازمون پایان یافت'
             )
-            return redirect(reverse('quiz:detail', kwargs={'pk': self.pk}))
+            return reverse('quiz:detail', kwargs={'pk': quiz.id})
 
         if quiz.last_enter and self.quiz.last_enter < now():
             messages.error(
                 self.request, 'مدت مجاز ورود به ازمون تمام شده است'
             )
-            return redirect(reverse('quiz:detail', kwargs={'pk': self.pk}))
+            return reverse('quiz:detail', kwargs={'pk': quiz.id})
 
         UserQuizDetail.objects.get_or_create(
             quiz=quiz,
