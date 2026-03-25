@@ -154,6 +154,7 @@ class UserActiveDeactivate(AdminPermissionRequire, RedirectView):
         return reverse('admin-panel:user-list')
 
 class UserVerifyUnverify(AdminPermissionRequire, RedirectView):
+
     """for deactivate or activate the user"""
 
     def get_redirect_url(self, *args, **kwargs):
@@ -179,3 +180,20 @@ class UserVerifyUnverify(AdminPermissionRequire, RedirectView):
 
 
         return reverse('admin-panel:user-list')
+    
+
+
+    """for list the users"""
+
+    context_object_name = 'items'
+    template_name = 'admin-panel/users/list.html'
+    queryset = User.objects.prefetch_related('major', 'grade').all()
+    paginate_by = 200
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        data['type'] = User.TypeOfUser
+        data['gender'] = User.GenderOfUser
+
+        return data
