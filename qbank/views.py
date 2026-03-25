@@ -17,7 +17,7 @@ class QuestionsView(ListView):
 
     template_name = 'main/question-bank/list.html'
     context_object_name = 'items'
-    paginate_by = 30
+    paginate_by = 50
 
     def get_queryset(self):
         queryset = QuestionBank.objects.filter(is_active=True).prefetch_related('possible', 'category', 'options', 'answer_key')

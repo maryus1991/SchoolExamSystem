@@ -30,6 +30,19 @@ urlpatterns = [
     path('categories/grade/create/', views.categories.GradeCreate.as_view(), name='categories-grade-create'),
     path('categories/grade/update/<int:pk>', views.categories.GradeUpdate.as_view(), name='categories-grade-update'),
     path('categories/grade/active/<int:pk>', views.categories.GradeActiveDeactivate.as_view(), name='categories-grade-active'),
+    # possible
+    path('categories/possible/', views.categories.PossibleListView.as_view(), name='categories-possible-list'),
+    path('categories/possible/create/', views.categories.PossibleCreate.as_view(), name='categories-possible-create'),
+    path('categories/possible/update/<int:pk>', views.categories.PossibleUpdate.as_view(), name='categories-possible-update'),
+    path('categories/possible/active/<int:pk>', views.categories.PossibleActiveDeactivate.as_view(), name='categories-possible-active'),
+
+
+    # blog
+    path('blog/', views.blog.BlogList.as_view(), name='blog-list'),
+    path('blog/create/', views.blog.BlogCreate.as_view(), name='blog-create'),
+    path('blog/update/<int:pk>', views.blog.BlogUpdate.as_view(), name='blog-update'),
+    path('blog/active/<int:pk>', views.blog.BlogActiveDeactivate.as_view(), name='blog-active'),
+    path('blog/delete/<int:pk>', views.blog.BlogDelete.as_view(), name='blog-delete'),
 
 ]
 

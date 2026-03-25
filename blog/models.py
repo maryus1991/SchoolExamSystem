@@ -19,7 +19,7 @@ class Blog(models.Model):
         db_index=True
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="زمان ساخت")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="زمان انتشار")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="زمان انتشار", null=True, blank=True)
 
     title = models.CharField(max_length=100, verbose_name="عنوان", db_index=True)
     category = models.CharField(max_length=255, verbose_name="دسته")
@@ -27,11 +27,11 @@ class Blog(models.Model):
     content = CKEditor5Field(verbose_name="متن یا بدنه")
     time_to_read_minutes = models.PositiveSmallIntegerField(default=10, verbose_name='زمان مطالعه به دقیقه') 
     image = ThumbnailerImageField(verbose_name='عکس', upload_to=photo_path_upload_to)
+    sort_number = models.PositiveBigIntegerField(default=0, db_index=True, verbose_name='ترتیب نمایش')
     is_active = models.BooleanField(
         default=False, verbose_name="فعال / غیر فعال "
     )
 
-    sort_number = models.PositiveBigIntegerField(default=0, db_index=True, verbose_name='ترتیب نمایش')
 
     def __str__(self):
         return self.title

@@ -4,7 +4,7 @@ from admin_panel.mixins import AdminPermissionRequire
 from user.models import GradeCategories, MajorCategories
 from quiz.models import LessionCategories
 from django.shortcuts import render, get_object_or_404
-from admin_panel.forms.categories import LessionModelForm, GradeModelForm, MajorModelForm
+from admin_panel.forms.categories import LessionModelForm, GradeModelForm, MajorModelForm, PossibleModelForm, QuestionPossible
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 
@@ -106,6 +106,34 @@ class GradeActiveDeactivate(MajorActiveDeactivate):
 
     model = GradeCategories
     success_url = reverse_lazy('admin-panel:categories-grade-list')
+
+# possble category
+class PossibleListView(AdminPermissionRequire, ListView):
+    """for list the possible categories"""
+
+    context_object_name = 'items'
+    template_name = 'admin-panel/categories/possible/list.html'
+    queryset = QuestionPossible.objects.all()
+    paginate_by = 200
+class PossibleCreate(MajorCreate):
+    """for create possible categories"""
+
+    template_name = 'admin-panel/categories/possible/create.html'
+    model = QuestionPossible
+    form_class = PossibleModelForm
+    success_url = reverse_lazy('admin-panel:categories-possible-list') 
+class PossibleUpdate(MajorUpdate):
+    """for update possible categories"""
+
+    template_name = 'admin-panel/categories/possible/create.html'
+    model = QuestionPossible
+    form_class = PossibleModelForm
+    success_url = reverse_lazy('admin-panel:categories-possible-list') 
+class PossibleActiveDeactivate(MajorActiveDeactivate):
+    """for deactivate or activate the possible """
+
+    model = QuestionPossible
+    success_url = reverse_lazy('admin-panel:categories-possible-list')
 
 # lession category
 class LessionListView(AdminPermissionRequire, ListView):

@@ -30,8 +30,7 @@
   <nav class="sidebar-nav">
 
     <!-- داشبورد -->
-    <div class="nav-section-label">اصلی</div>
-    <div class="nav-item">
+     <div class="nav-item">
       <a href="/admin-panel/pages/index.html" class="nav-link-item">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
@@ -40,10 +39,18 @@
         داشبورد
       </a>
     </div>
-
+    <!-- تنظیمات -->
+     <div class="nav-item">
+      <a href="/admin-panel/pages/settings/index.html" class="nav-link-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+        </svg>
+        تنظیمات سایت
+      </a>
+    </div>
     <!-- مدیریت کاربران -->
-    <div class="nav-section-label">کاربران</div>
-    <div class="nav-item">
+     <div class="nav-item">
       <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuUsers" aria-expanded="false">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -62,17 +69,7 @@
       </ul>
     </div>
 
-    <!-- تنظیمات -->
-    <div class="nav-section-label">سیستم</div>
-    <div class="nav-item">
-      <a href="/admin-panel/pages/settings/index.html" class="nav-link-item">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
-        </svg>
-        تنظیمات سایت
-      </a>
-    </div>
+
 
     <!-- دسته‌بندی‌ها -->
     <div class="nav-item">
@@ -90,12 +87,12 @@
         <li class="nav-item"><a href="{% url 'admin-panel:categories-major-list' %}" class="nav-link-item"> رشته‌ها</a></li>
         <li class="nav-item"><a href="{% url 'admin-panel:categories-lession-list' %}" class="nav-link-item">دروس</a></li>
         <li class="nav-item"><a href="{% url 'admin-panel:categories-grade-list' %}" class="nav-link-item">پایه‌ها</a></li>
+        <li class="nav-item"><a href="{% url 'admin-panel:categories-possible-list' %}" class="nav-link-item">درجات سختی</a></li>
       </ul>
     </div>
 
     <!-- بلاگ -->
-    <div class="nav-section-label">محتوا</div>
-    <div class="nav-item">
+     <div class="nav-item">
       <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuBlog" aria-expanded="false">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -107,14 +104,13 @@
         <svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <ul class="nav-submenu collapse" id="menuBlog">
-        <li class="nav-item"><a href="/admin-panel/pages/blog/list.html" class="nav-link-item">لیست مقالات</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/blog/create.html" class="nav-link-item">ایجاد مقاله</a></li>
+        <li class="nav-item"><a href="{% url 'admin-panel:blog-list' %}" class="nav-link-item">لیست مقالات</a></li>
+        <li class="nav-item"><a href="{% url 'admin-panel:blog-create' %}" class="nav-link-item">ایجاد مقاله</a></li>
       </ul>
     </div>
 
     <!-- بانک سوال -->
-    <div class="nav-section-label">آموزشی</div>
-    <div class="nav-item">
+     <div class="nav-item">
       <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuQBank" aria-expanded="false">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
@@ -154,8 +150,7 @@
     </div>
 
     <!-- سفارشات -->
-    <div class="nav-section-label">مالی</div>
-    <div class="nav-item">
+     <div class="nav-item">
       <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuOrders" aria-expanded="false">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
@@ -172,33 +167,7 @@
     </div>
 
   </nav>
-
-  <div class="sidebar-footer">
-    <div class="sidebar-user dropdown">
-      <div data-bs-toggle="dropdown">
-        <div class="avatar">م.ر</div>
-        <div>
-          <div class="user-name">محمد رضایی</div>
-          <div class="user-role">مدیر ارشد</div>
-        </div>
-      </div>
-      <ul class="dropdown-menu dropdown-menu-start">
-        <li><a class="dropdown-item" href="/admin-panel/pages/#">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          پروفایل
-        </a></li>
-        <li><a class="dropdown-item" href="/admin-panel/pages/#">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-          تنظیمات
-        </a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item text-danger" href="/admin-panel/pages/#">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          خروج
-        </a></li>
-      </ul>
-    </div>
-  </div>
+ 
 </aside>
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
   </div>
@@ -297,8 +266,8 @@
  
     <div id="footerContainer">
       <footer class="app-footer">
-        <span>© ۱۴۰۳ پنل مدیریت. تمامی حقوق محفوظ است.</span>
-        <span>طراحی و توسعه با ❤ توسط تیم فنی</span>
+        <span>© 1405 پنل مدیریت. تمامی حقوق محفوظ است.</span>
+        <span>طراحی و توسعه با ❤ توسط mez</span>
       </footer>
     </div>
   </div>

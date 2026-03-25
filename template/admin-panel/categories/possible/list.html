@@ -5,8 +5,8 @@
 
     <div class="page-header">
       <div class="page-header-info">
-        <h1>دسته‌بندی رشته‌ها</h1>
-        <p>مدیریت دسته‌بندی رشته‌ها آموزشی</p>
+        <h1>دسته‌بندی درجات سختی ها</h1>
+        <p>مدیریت دسته‌بندی درجات آموزشی</p>
       </div>
     </div>
 
@@ -24,7 +24,7 @@
               <option>فعال</option>
               <option>غیرفعال</option>
             </select>
-            <a class="btn left btn-success" href="{% url 'admin-panel:categories-major-create' %}">اضافه کردن رشته</a>
+            <a class="btn left btn-success" href="{% url 'admin-panel:categories-possible-create' %}">اضافه کردن رشته</a>
           </div>
               
           <div class="table-container">
@@ -50,7 +50,7 @@
                     </td>
  
                     <td>
-                      <a class="btn btn-ghost btn-sm btn-icon" href='{% url "admin-panel:categories-major-active" item.id %}'>
+                      <a class="btn btn-ghost btn-sm btn-icon" href='{% url "admin-panel:categories-possible-active" item.id %}'>
                       {% if item.is_active %}
                           <span class="badge badge-success">فعال</span> 
                       {% else %}    
@@ -60,7 +60,7 @@
                     </td>
                     <td>
                       <div class="d-flex gap-1">
-                        <a class="btn btn-ghost btn-sm btn-icon" href='{% url "admin-panel:categories-major-update" item.id %}'>
+                        <a class="btn btn-ghost btn-sm btn-icon" href='{% url "admin-panel:categories-possible-update" item.id %}'>
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>

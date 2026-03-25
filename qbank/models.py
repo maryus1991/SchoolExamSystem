@@ -2,6 +2,8 @@ from django.db import models
 from django_ckeditor_5.fields import CKEditor5Field
 from django.utils.crypto import get_random_string
 from django.urls import reverse
+from quiz.models import LessionCategories
+
 
 class QuestionLessonCategory(models.Model):
     order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
@@ -52,7 +54,7 @@ class QuestionBank(models.Model):
         PDF_BASED = 'سوال از فایل PDF', 'سوال از فایل PDF'
 
     possible = models.ForeignKey(QuestionPossible, related_name='questions', on_delete=models.CASCADE, verbose_name='سطح' ,db_index=True)
-    category = models.ForeignKey(QuestionLessonCategory, related_name='questions', on_delete=models.CASCADE, verbose_name='دسته' ,db_index=True)
+    category = models.ForeignKey(LessionCategories, related_name='questions', on_delete=models.CASCADE, verbose_name='درس' ,db_index=True)
     type_of_question = models.CharField( max_length=50, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
     name = models.CharField( max_length=255, verbose_name='عنوان سوال' ,db_index=True)
     lesson = models.CharField( max_length=255, verbose_name='مبحث')
