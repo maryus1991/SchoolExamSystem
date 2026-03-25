@@ -273,7 +273,23 @@
 </header>
     </div>
  
-   
+<div class="messages-container" id="messagesContainer">
+    <!-- پیام‌های جنگو اینجا نمایش داده می‌شوند -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message-item">
+                <div class="col-span-12 row item-center alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}info{% endif %} alert-dismissible fade show d-flex align-items-center" role="alert" style="gap: 12px;">
+                    <button type="button" class="btn-close col-span-2" data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
+                    </button>
+                    <span class="col-span-10 ">
+                        {{ message }}
+                    </span>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
 
       {% block main %}
       
