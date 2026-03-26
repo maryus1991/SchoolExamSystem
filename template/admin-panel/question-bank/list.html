@@ -1,5 +1,5 @@
 {% extends "admin-panel/base/base.html" %}
-
+{% load jalali_tags %}
 {% block main %}
   <main class="page-content">
 
@@ -9,54 +9,27 @@
         <p>مدیریت سوالات آزمون‌های سراسری</p>
       </div>
       <div class="page-header-actions">
-        <a href="create.html" class="btn btn-primary btn-sm">
+        <a href="{% url 'admin-panel:qbank-create' %}" class="btn btn-primary btn-sm">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           سوال جدید
         </a>
       </div>
     </div>
 
-    <!-- Stats row -->
-    <div class="row g-3 mb-4">
-      <div class="col-6 col-md-3">
-        <div class="card text-center py-3">
-          <div style="font-size:1.8rem;font-weight:800;color:var(--accent-primary)">۴,۲۸۵</div>
-          <div style="font-size:.8rem;color:var(--text-muted)">کل سوالات</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="card text-center py-3">
-          <div style="font-size:1.8rem;font-weight:800;color:var(--accent-success)">۳,۹۱۴</div>
-          <div style="font-size:.8rem;color:var(--text-muted)">فعال</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="card text-center py-3">
-          <div style="font-size:1.8rem;font-weight:800;color:var(--accent-warning)">۲۸۴</div>
-          <div style="font-size:.8rem;color:var(--text-muted)">بازبینی</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="card text-center py-3">
-          <div style="font-size:1.8rem;font-weight:800;color:var(--accent-danger)">۸۷</div>
-          <div style="font-size:.8rem;color:var(--text-muted)">غیرفعال</div>
-        </div>
-      </div>
-    </div>
-
+ 
     <!-- Bulk actions bar -->
     <div id="bulkActionsBar" class="alert alert-primary d-none mb-3">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      
       <span><strong id="selectedCount">0</strong> سوال انتخاب شده</span>
       <div class="me-auto d-flex gap-2">
-        <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete(null,'سوالات انتخاب‌شده')">حذف انتخاب‌شده‌ها</button>
+        <button class="btn btn-sm btn-outline-danger" >حذف انتخاب‌شده‌ها</button>
       </div>
     </div>
 
     <div class="card">
       <div class="table-toolbar">
+        <svg width="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <div class="table-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="tableSearch" placeholder="جستجو در سوالات..." class="form-control form-control-sm">
         </div>
         <div class="d-flex gap-2">
@@ -86,11 +59,10 @@
         <table class="table" id="mainTable">
           <thead>
             <tr>
-              <th><input type="checkbox" id="checkAll" class="form-check-input"></th>
               <th>#</th>
               <th>متن سوال</th>
               <th>درس</th>
-              <th>پایه</th>
+ 
               <th>سطح</th>
               <th>نوع</th>
               <th>وضعیت</th>
@@ -98,121 +70,81 @@
             </tr>
           </thead>
           <tbody>
+            {% for item in items %}
             <tr>
-              <td><input type="checkbox" class="form-check-input row-check"></td>
-              <td>۱</td>
+              
+              <td>{{item.pk}}</td>
               <td>
                 <div style="max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-primary)">
-                  حاصل عبارت <strong>log₂8 + log₃9</strong> برابر است با؟
+                 {{ item.name }}
                 </div>
-                <div style="font-size:.72rem;color:var(--text-muted)">کد: Q-10045 | ۱۴۰۲/۰۸/۱۵</div>
+                <div style="font-size:.72rem;color:var(--text-muted)">{{ item.created_at|to_jalali }}</div>
               </td>
-              <td><span class="badge badge-primary">ریاضی</span></td>
-              <td>دوازدهم</td>
-              <td><span class="badge badge-warning">متوسط</span></td>
-              <td><span class="badge badge-info">چهارگزینه‌ای</span></td>
-              <td><span class="badge badge-success">فعال</span></td>
+              <td><span class="alert badge-success">{{item.category}}</span></td>
+              <td><span class="alert   badge-warning">{{item.possible}}</span></td>
+              <td><span class="alert   badge-info">{{item.type_of_question}}</span></td>
+              <td><a href="{% url 'admin-panel:qbank-active' item.pk %}"><span class="alert badge-{% if item.is_active %}success{% else %}warning{% endif %}">{% if item.is_active %}فعال{% else %}غیر فعال{% endif %}</span></a></td>
               <td>
                 <div class="d-flex gap-1">
-                  <a href="create.html" class="btn btn-icon btn-outline-secondary" title="ویرایش">
+                  <a href="{% url 'admin-panel:qbank-update' item.id %}" class="btn btn-icon btn-outline-secondary" title="ویرایش">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                   </a>
-                  <button class="btn btn-icon btn-outline-danger" onclick="confirmDelete(1,'سوال ریاضی')" title="حذف">
+                  <a class="btn btn-icon btn-outline-danger"  href="{% url 'admin-panel:qbank-delete' item.id %}" title="حذف">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
-                  </button>
+                  </a>
                 </div>
               </td>
             </tr>
-            <tr>
-              <td><input type="checkbox" class="form-check-input row-check"></td>
-              <td>۲</td>
-              <td>
-                <div style="max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-primary)">
-                  آهنگ تغییر شتاب در حرکت یکنواخت برابر چقدر است؟
-                </div>
-                <div style="font-size:.72rem;color:var(--text-muted)">کد: Q-10046 | ۱۴۰۲/۰۸/۱۶</div>
-              </td>
-              <td><span class="badge badge-purple">فیزیک</span></td>
-              <td>یازدهم</td>
-              <td><span class="badge badge-success">آسان</span></td>
-              <td><span class="badge badge-info">چهارگزینه‌ای</span></td>
-              <td><span class="badge badge-success">فعال</span></td>
-              <td>
-                <div class="d-flex gap-1">
-                  <a href="create.html" class="btn btn-icon btn-outline-secondary" title="ویرایش">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  </a>
-                  <button class="btn btn-icon btn-outline-danger" onclick="confirmDelete(2,'سوال فیزیک')" title="حذف">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="form-check-input row-check"></td>
-              <td>۳</td>
-              <td>
-                <div style="max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-primary)">
-                  واکنش سدیم با آب تولید می‌کند: هیدروکسید سدیم + ؟
-                </div>
-                <div style="font-size:.72rem;color:var(--text-muted)">کد: Q-10047 | ۱۴۰۲/۰۸/۱۷</div>
-              </td>
-              <td><span class="badge badge-warning">شیمی</span></td>
-              <td>دهم</td>
-              <td><span class="badge badge-danger">سخت</span></td>
-              <td><span class="badge badge-muted">تشریحی</span></td>
-              <td><span class="badge badge-warning">بازبینی</span></td>
-              <td>
-                <div class="d-flex gap-1">
-                  <a href="create.html" class="btn btn-icon btn-outline-secondary" title="ویرایش">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  </a>
-                  <button class="btn btn-icon btn-outline-danger" onclick="confirmDelete(3,'سوال شیمی')" title="حذف">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="form-check-input row-check"></td>
-              <td>۴</td>
-              <td>
-                <div style="max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-primary)">
-                  در فرآیند فتوسنتز، کدام گاز جذب می‌شود؟
-                </div>
-                <div style="font-size:.72rem;color:var(--text-muted)">کد: Q-10048 | ۱۴۰۲/۰۸/۱۸</div>
-              </td>
-              <td><span class="badge badge-success">زیست</span></td>
-              <td>دهم</td>
-              <td><span class="badge badge-success">آسان</span></td>
-              <td><span class="badge badge-info">چهارگزینه‌ای</span></td>
-              <td><span class="badge badge-success">فعال</span></td>
-              <td>
-                <div class="d-flex gap-1">
-                  <a href="create.html" class="btn btn-icon btn-outline-secondary" title="ویرایش">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  </a>
-                  <button class="btn btn-icon btn-outline-danger" onclick="confirmDelete(4,'سوال زیست')" title="حذف">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
 
       <div class="table-footer">
-        <div class="table-info">نمایش ۱ تا ۴ از ۴,۲۸۵ سوال</div>
+ 
         <nav>
           <ul class="pagination pagination-sm mb-0">
-            <li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
-            <li class="page-item active"><a class="page-link" href="#">۱</a></li>
-            <li class="page-item"><a class="page-link" href="#">۲</a></li>
-            <li class="page-item"><a class="page-link" href="#">۳</a></li>
-            <li class="page-item"><a class="page-link" href="#">...</a></li>
-            <li class="page-item"><a class="page-link" href="#">۱۰۷</a></li>
-            <li class="page-item"><a class="page-link" href="#">بعدی</a></li>
+{% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">«</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+      </li>
+    {% endif %}
+
+    <!-- شماره صفحات -->
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <!-- صفحه فعال -->
+        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <!-- صفحات نزدیک به صفحه فعلی -->
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% elif num == page_obj.paginator.page_range.start or num == page_obj.paginator.page_range.end %}
+        <!-- اولین و آخرین صفحه -->
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% elif num == page_obj.number|add:'-3' or num == page_obj.number|add:'3' %}
+        <!-- سه نقطه برای نشان دادن حذف شدن صفحات -->
+        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+      {% endif %}
+    {% endfor %}
+
+    <!-- دکمه بعدی -->
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">»</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">»</a>
+      </li>
+    {% endif %}
           </ul>
         </nav>
       </div>

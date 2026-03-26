@@ -129,6 +129,8 @@
   <span class="badge-status badge-{% if item.status == status.awating_admin or item.status == status.awating_user %}warning{% elif item.status == status.fixed %}success{% else %}secondary{% endif %} ">{{ item.status }}</span>        </div>
       </div>
 
+        
+            
       <!-- Input -->
 
       {% if item.status != status.fixed and item.status != status.cancelled %}
@@ -141,6 +143,8 @@
         </div>
        </div>
       </form>
+      
+
       {% endif %}
 
 

@@ -144,8 +144,8 @@
         <svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <ul class="nav-submenu collapse" id="menuQBank">
-        <li class="nav-item"><a href="/admin-panel/pages/question-bank/list.html" class="nav-link-item">لیست سوالات</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/question-bank/create.html" class="nav-link-item">ایجاد سوال</a></li>
+        <li class="nav-item"><a href="{% url 'admin-panel:qbank-list' %}" class="nav-link-item">لیست سوالات</a></li>
+        <li class="nav-item"><a href="{% url 'admin-panel:qbank-create' %}" class="nav-link-item">ایجاد سوال</a></li>
       </ul>
     </div>
 

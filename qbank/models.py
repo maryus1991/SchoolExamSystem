@@ -22,7 +22,6 @@ class QuestionLessonCategory(models.Model):
     def get_absolute_url(self):
         return reverse("qbank:list-by-category", kwargs={"category_id": self.pk})
     
-
 class QuestionPossible(models.Model):
     name = models.CharField( max_length=255, verbose_name='نام سطح')
     order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
@@ -41,8 +40,6 @@ class QuestionPossible(models.Model):
 def photo_path_upload_to(instance, filename):
     return f"questions/{get_random_string(100)}-{filename}"
 
-
-
 class QuestionBank(models.Model):
     class TypeOfQuestions(models.TextChoices):
         ALL = 'همه', 'همه'
@@ -55,18 +52,19 @@ class QuestionBank(models.Model):
 
     possible = models.ForeignKey(QuestionPossible, related_name='questions', on_delete=models.CASCADE, verbose_name='سطح' ,db_index=True)
     category = models.ForeignKey(LessionCategories, related_name='questions', on_delete=models.CASCADE, verbose_name='درس' ,db_index=True)
+    
     type_of_question = models.CharField( max_length=50, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
     name = models.CharField( max_length=255, verbose_name='عنوان سوال' ,db_index=True)
     lesson = models.CharField( max_length=255, verbose_name='مبحث')
     description = CKEditor5Field( blank=True, null=True, verbose_name='متن سوال')
     image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
     pdf_file = models.FileField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF سوال' )
-    is_active = models.BooleanField(default=True, verbose_name='فعال')
     has_options = models.BooleanField(default=False, verbose_name='دارای گزینه های دیگر')
-    created_at = models.DateTimeField(auto_now_add=True )
     order = models.PositiveIntegerField(default=1, verbose_name='ترتیب' )
     solving_time = models.PositiveIntegerField(default=1, verbose_name='زمان پیشنهادی حل به دقیقه')
+    is_active = models.BooleanField(default=True, verbose_name='فعال')
 
+    created_at = models.DateTimeField(auto_now_add=True )
     class Meta:
         ordering = ['-order']
         verbose_name = 'سوال'

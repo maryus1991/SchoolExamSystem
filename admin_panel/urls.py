@@ -62,6 +62,13 @@ urlpatterns = [
     # tickets
     path('tickets/', views.tickets.TicketListViews.as_view(), name='ticket-list'),
     path('tickets/<int:pk>', views.tickets.TicketChat.as_view(), name='ticket-chat'),
+
+    # question bank
+    path('question-bank/', views.qbank.QuestionBankListView.as_view(), name='qbank-list'),
+    path('question-bank/create/', views.qbank.QuestionBankListView.as_view(), name='qbank-create'),
+    path('question-bank/update/<int:pk>', views.qbank.QuestionBankListView.as_view(), name='qbank-update'),
+    path('question-bank/active-deactivate/<int:pk>', views.qbank.QbankActiveDeactivate.as_view(), name='qbank-active'),
+    path('question-bank/delete/<int:pk>', views.qbank.QbankDelete.as_view(), name='qbank-delete'),
     
 
 ]
