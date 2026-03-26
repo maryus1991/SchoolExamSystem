@@ -1,0 +1,198 @@
+   
+{% extends "admin-panel/base/base.html" %}
+{% load jalali_tags %}
+
+ 
+  
+{% block main %}
+ 
+  <style >
+         :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);}
+    [data-theme="dark"]{--bg:#0f0e1a;--bg-2:#1a1830;--sidebar-bg:#1a1830;--card-bg:rgba(26,24,48,0.85);--card-border:rgba(162,155,254,0.15);--text-main:#e8e6ff;--text-muted:#a29bfe;--text-light:#6c6a8a;--shadow:0 8px 32px rgba(0,0,0,0.4);--topbar-bg:rgba(26,24,48,0.92);--border:rgba(162,155,254,0.12);}
+    *{font-family:'Vazirmatn',sans-serif;}body{background:var(--bg);color:var(--text-main);transition:all 0.3s;}
+ 
+    .glass-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;box-shadow:var(--shadow);backdrop-filter:blur(20px);transition:all 0.3s;}
+    .glass-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);}
+ 
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate-in{animation:fadeInUp 0.5s ease forwards;}
+    .delay-1{animation-delay:0.1s;opacity:0}
+    /* Ticket item */
+    .ticket-item{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1.25rem;cursor:pointer;transition:all 0.25s;backdrop-filter:blur(20px);}
+    .ticket-item:hover{transform:translateX(-4px);border-color:var(--primary);box-shadow:var(--shadow-hover);}
+    .ticket-item.unread{border-right:4px solid var(--primary);}
+    .ticket-category{padding:0.25rem 0.7rem;border-radius:6px;font-size:0.72rem;font-weight:700;}
+    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{padding: 10px 10px 10px 10px ;}.topbar{right:0}}
+  </style>
+
+<main class="m-5"><div class="">
+
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 animate-in">
+    <div>
+      <h5 style="font-weight:800;margin:0;">تیکت‌های پشتیبانی</h5>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin:0;">مدیریت تیکت پشتیبانی </p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="row g-3 mb-4 animate-in">
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--primary);">{{ items.count }}</div><div style="font-size:0.78rem;color:var(--text-muted);">کل تیکت‌ها</div></div></div>
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--warning);">{{ await_response }}</div><div style="font-size:0.78rem;color:var(--text-muted);">در انتظار پاسخ</div></div></div>
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--success);">{{ closed }}</div><div style="font-size:0.78rem;color:var(--text-muted);">بسته‌شده</div></div></div>
+    <div class="col-6 col-md-3"><div class="glass-card p-3 text-center"><div style="font-size:1.75rem;font-weight:900;color:var(--secondary);">۴ ساعت</div><div style="font-size:0.78rem;color:var(--text-muted);">میانگین پاسخ</div></div></div>
+  </div>
+
+ 
+
+  <!-- Tickets list -->
+  <div style="display:flex;flex-direction:column;gap:0.75rem;" class="animate-in delay-1">
+    {% for item in items %}
+    <a href="{% url 'admin-panel:ticket-chat' item.pk %}">
+      <div class="ticket-item {% if item.status == status.awating_user %}unread{% endif %} " >
+        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+          <span style="font-weight:800;color:var(--text-muted);font-size:0.78rem;">#{{item.id}}</span>
+          <span class="badge badge-{% if item.status == status.awating_admin or item.status == status.awating_user %}warning{% elif item.status == status.fixed %}success{% else %}primary{% endif %} ">{{ item.status }}</span>
+          <span class="badge badge-{% if item.priority == priority.huge or item.priority == priority.high %}danger{% elif item.priority == priority.mid %}warning{% else %}primary{% endif %} ">{{ item.priority }}</span>
+          <span class="badge badge-warning" >{{ item.problem.name }}</span>
+        </div>
+        <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.25rem;">{{ item.name }}</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);">
+          {% if item.chats.exists and  item.chats.first.is_admin_message %}
+            {{ item.chats.first.admin_message|safe|truncatechars:80 }}
+          {% elif item.chats.exists and not item.chats.first.is_admin_message %}
+            {{ item.chats.first.user_message|truncatechars:80 }}
+          {% else %}
+            {{ item.description|truncatechars:80 }}
+          {% endif %}
+        </div>
+        <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.5rem;">
+          {% if item.chats.exists %}
+            {{item.chats.first.create_at|to_jalali:'%H:%M - %Y/%m/%d'}}
+          {% else %}
+            {{item.create_at|to_jalali:'%H:%M - %Y/%m/%d'}}
+          {% endif %}
+        </div>
+      </div>
+      </a>
+    {% empty %}
+      <!-- Empty state (shown when no results) -->
+      <div id="emptyState" style=" text-align:center;padding:4rem 2rem;">
+        <div style="font-size:4rem;margin-bottom:1rem;">📭</div>
+        <div style="font-weight:700;font-size:1.1rem;margin-bottom:0.5rem;">تیکتی یافت نشد</div>
+        <div style="font-size:0.88rem;color:var(--text-muted);">هنوز تیکتی در این دسته‌بندی وجود ندارد</div>
+       </div>
+    {% endfor %}
+ 
+  </div>
+
+        <div class="d-flex justify-content-center mt-5">
+            <nav>
+                <ul class="pagination gap-1 mb-0" id="myPagination">
+                    <!-- Previous Button -->
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link"
+                            href="?page={{ page_obj.previous_page_number }}"
+                            style="border-radius:var(--radius-md);
+                                  border:1px solid var(--border-color); 
+                                  background:var(--bg-card); 
+                                  color:var(--text-secondary);">
+                            قبلی
+                        </a></li>
+                    {% else %}
+                        <li class="page-item disabled" aria-disabled="true">
+                            <a class="page-link"
+                              href="#"
+                              style="border-radius:var(--radius-md);
+                                      border:none; 
+                                      background:var(--bg-card); 
+                                      color:inherit;"
+                              tabindex="-1"
+                              aria-hidden="true">
+                                قبلی
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <!-- Page numbers -->
+                    {% for page in page_obj.paginator.page_range %}
+                        {% if page_obj.number == page %}
+                            <li class="page-item active" style="border-radius:var(--radius-md);
+                                                              border:none; 
+                                                              background:var(--gradient-blue);"
+                                aria-current="page">
+                                <a class="page-link" href="?page={{page}}" style="color:inherit;">
+                                    {{ forloop.counter }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link"
+                                href="?page={{ page }}"
+                                style="border-radius:var(--radius-md);
+                                      border:1px solid var(--border-color); 
+                                      background:var(--bg-card); 
+                                      color:var(--text-secondary);">
+                                    {{ forloop.counter }}
+                            </a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- Next Button -->
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link"
+                            href="?page={{ page_obj.next_page_number }}"
+                            style="border-radius:var(--radius-md);
+                                  border:1px solid var(--border-color); 
+                                  background:var(--bg-card); 
+                                  color:inherit;">
+                                بعدی
+                            </a></li>
+                    {% else %}
+                        <li class="page-item disabled" aria-disabled="true">
+                            <a class="page-link"
+                              href="#"
+                              style="border-radius:var(--radius-md);
+                                      border:none; 
+                                      background:var(--bg-card); 
+                                      color:inherit;"
+                              tabindex="-1"
+                              aria-hidden="true">
+                                بعدی
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
+</div></main>
+
+<script>
+  // Theme toggle
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  }
+  // Load saved theme
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+ 
+  }
+
+  // Toast helper
+  function showToast(msg, type='success') {
+    const t = document.createElement('div');
+    t.className = `alert alert-${type} d-flex align-items-center gap-2 shadow-lg`;
+    t.style.cssText = 'border-radius:14px;font-family:Vazirmatn,sans-serif;font-size:0.88rem;animation:fadeInUp 0.3s;min-width:280px;';
+    t.innerHTML = `<i class="bi bi-check-circle-fill"></i> ${msg}`;
+    document.getElementById('toast-container').appendChild(t);
+    setTimeout(() => t.remove(), 3500);
+  }
+</script>
+
+  
+{% endblock   %}
+ 

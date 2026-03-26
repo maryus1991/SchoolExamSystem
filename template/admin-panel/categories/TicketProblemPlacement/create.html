@@ -1,0 +1,46 @@
+{% extends "admin-panel/base/base.html" %}
+
+{% block main %}
+  <main class="page-content">
+
+    <div class="page-header">
+      <div class="page-header-info">
+        <h1>دسته‌بندی  بخش  های فنی مشکلات برای تیکت</h1>
+ 
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <!-- Create form -->
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <div class="card-title">ایجاد دسته‌بندی  بخش  های فنی مشکلات برای تیکت ها</div>
+          </div>
+          <div class="card-body">
+            <form class="needs-validation"  id="catForm" action="" method="post">
+                {% csrf_token %}
+                
+                <div class="row m-4">
+                    <div class="col-md-4">
+                        {{form.name}}
+                    </div>
+    
+                    <div class="col-md-4">
+                        {{form.order}}
+                    </div>
+                  <button type="submit" class="btn btn-primary col-md-4 "  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    افزودن دسته‌بندی
+                  </button>
+                    </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+{% endblock main %}

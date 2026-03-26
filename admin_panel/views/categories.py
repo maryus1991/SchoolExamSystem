@@ -4,9 +4,19 @@ from admin_panel.mixins import AdminPermissionRequire
 from user.models import GradeCategories, MajorCategories
 from quiz.models import LessionCategories
 from django.shortcuts import render, get_object_or_404
-from admin_panel.forms.categories import LessionModelForm, GradeModelForm, MajorModelForm, PossibleModelForm, QuestionPossible
+from admin_panel.forms.categories import (
+    LessionModelForm, 
+    GradeModelForm, 
+    MajorModelForm,
+    PossibleModelForm,
+    QuestionPossible, 
+    TicketProblemPlacementModelForm,
+    TicketProblemCategoryModelForm
+
+)
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
+from sitesetting.models import TicketProblemPlacement, TicketProblemCategory
 
 # major category
 class MajorListView(AdminPermissionRequire, ListView):
@@ -163,7 +173,62 @@ class LessionActiveDeactivate(MajorActiveDeactivate):
     model = LessionCategories
     success_url = reverse_lazy('admin-panel:categories-lession-list')
 
- 
+# problem category of tickets 
+class TicketProblemPlacementListView(AdminPermissionRequire, ListView):
+    """for list the TicketProblemPlacement"""
+
+    context_object_name = 'items'
+    template_name = 'admin-panel/categories/TicketProblemPlacement/list.html'
+    queryset = TicketProblemPlacement.objects.all()
+    paginate_by = 200
+class TicketProblemPlacementCreate(MajorCreate):
+    """for create TicketProblemPlacement"""
+
+    template_name = 'admin-panel/categories/TicketProblemPlacement/create.html'
+    model = TicketProblemPlacement
+    form_class = TicketProblemPlacementModelForm
+    success_url = reverse_lazy('admin-panel:categories-TicketProblemPlacement-list') 
+class TicketProblemPlacementUpdate(MajorUpdate):
+    """for update TicketProblemPlacement"""
+
+    template_name = 'admin-panel/categories/TicketProblemPlacement/create.html'
+    model = TicketProblemPlacement
+    form_class = TicketProblemPlacementModelForm
+    success_url = reverse_lazy('admin-panel:categories-TicketProblemPlacement-list') 
+class TicketProblemPlacementActiveDeactivate(MajorActiveDeactivate):
+    """for deactivate or activate the TicketProblemPlacement """
+
+    model = TicketProblemPlacement
+    success_url = reverse_lazy('admin-panel:categories-TicketProblemPlacement-list')
+
+# problem category of site section for tickets 
+class TicketProblemCategoryListView(AdminPermissionRequire, ListView):
+    """for list the lession categories"""
+
+    context_object_name = 'items'
+    template_name = 'admin-panel/categories/TicketProblemCategory/list.html'
+    queryset = TicketProblemCategory.objects.all()
+    paginate_by = 200
+class TicketProblemCategoryCreate(MajorCreate):
+    """for create lession categories"""
+
+    template_name = 'admin-panel/categories/TicketProblemCategory/create.html'
+    model = TicketProblemCategory
+    form_class = TicketProblemCategoryModelForm
+    success_url = reverse_lazy('admin-panel:categories-TicketProblemCategory-list') 
+class TicketProblemCategoryUpdate(MajorUpdate):
+    """for update lession categories"""
+
+    template_name = 'admin-panel/categories/TicketProblemCategory/create.html'
+    model = TicketProblemCategory
+    form_class = TicketProblemCategoryModelForm
+    success_url = reverse_lazy('admin-panel:categories-TicketProblemCategory-list') 
+class TicketProblemCategoryActiveDeactivate(MajorActiveDeactivate):
+    """for deactivate or activate the lession """
+
+    model = TicketProblemCategory
+    success_url = reverse_lazy('admin-panel:categories-TicketProblemCategory-list')
+
 
  
 

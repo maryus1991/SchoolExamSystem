@@ -1,4 +1,6 @@
 {% extends "admin-panel/base/base.html" %}
+{% load jalali_tags %}
+{% load tdc %}
 
 {% block main %}
   <main class="page-content">
@@ -8,58 +10,14 @@
         <h1>مدیریت سفارشات</h1>
         <p>پیگیری و مدیریت تراکنش‌های مالی</p>
       </div>
-      <div class="page-header-actions">
-        <button class="btn btn-outline-secondary btn-sm">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          خروجی Excel
-        </button>
-      </div>
+ 
     </div>
 
-    <!-- Financial stats -->
-    <div class="row g-3 mb-4">
-      <div class="col-6 col-md-3">
-        <div class="card py-3" style="border-right:3px solid var(--accent-primary)">
-          <div class="card-body py-0">
-            <div style="font-size:.76rem;color:var(--text-muted)">درآمد امروز</div>
-            <div style="font-size:1.3rem;font-weight:800;color:var(--accent-primary)">۴,۸۵۰,۰۰۰</div>
-            <div style="font-size:.7rem;color:var(--accent-success)">▲ ۱۲% نسبت به دیروز</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="card py-3" style="border-right:3px solid var(--accent-success)">
-          <div class="card-body py-0">
-            <div style="font-size:.76rem;color:var(--text-muted)">درآمد این ماه</div>
-            <div style="font-size:1.3rem;font-weight:800;color:var(--accent-success)">۱۲۸,۴۰۰,۰۰۰</div>
-            <div style="font-size:.7rem;color:var(--accent-success)">▲ ۸% نسبت به ماه قبل</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="card py-3" style="border-right:3px solid var(--accent-warning)">
-          <div class="card-body py-0">
-            <div style="font-size:.76rem;color:var(--text-muted)">در انتظار تأیید</div>
-            <div style="font-size:1.3rem;font-weight:800;color:var(--accent-warning)">۱۲</div>
-            <div style="font-size:.7rem;color:var(--text-muted)">سفارش</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="card py-3" style="border-right:3px solid var(--accent-danger)">
-          <div class="card-body py-0">
-            <div style="font-size:.76rem;color:var(--text-muted)">ناموفق/مسترد</div>
-            <div style="font-size:1.3rem;font-weight:800;color:var(--accent-danger)">۳</div>
-            <div style="font-size:.7rem;color:var(--text-muted)">این ماه</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+ 
     <div class="card">
       <div class="table-toolbar">
+        <svg viewBox="0 0 24 24" fill="none" width="40" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <div class="table-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="tableSearch" placeholder="جستجو در سفارشات..." class="form-control form-control-sm">
         </div>
         <div class="d-flex gap-2">
@@ -81,113 +39,100 @@
             <tr>
               <th>شماره سفارش</th>
               <th>خریدار</th>
-              <th>محصول/آزمون</th>
-              <th>مبلغ (ریال)</th>
-              <th>روش پرداخت</th>
+              <th>مبلغ کل (تومان)</th>
+           
               <th>وضعیت</th>
-              <th>تاریخ</th>
+              <th>تاریخ ثانویه</th>
               <th>عملیات</th>
             </tr>
           </thead>
           <tbody>
+            {% for item in items %}
             <tr>
-              <td style="font-size:.82rem;color:var(--accent-primary);font-weight:600">#ORD-10241</td>
+              <td style="font-size:.82rem;color:var(--accent-primary);font-weight:600">#{{item.id}}</td>
               <td>
-                <div class="user-cell">
-                  <div class="user-avatar">ع.م</div>
-                  <span>علی محمدی</span>
-                </div>
-              </td>
-              <td style="font-size:.83rem">آزمون جامع ریاضی - فصل اول</td>
-              <td style="font-weight:700">۲۵۰,۰۰۰</td>
-              <td>
-                <span class="badge badge-info">درگاه بانکی</span>
-              </td>
-              <td><span class="badge badge-success">موفق</span></td>
-              <td style="font-size:.8rem">۱۴۰۳/۰۴/۱۵<br><span style="color:var(--text-muted)">۱۰:۳۲</span></td>
-              <td>
-                <a href="detail.html" class="btn btn-icon btn-outline-secondary" title="جزئیات">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <a href="{% url 'admin-panel:user-update' item.user.id %}" class="user-cell">
+                  <span dir="ltr">{{ item.user.PhoneNumber }}</span>
                 </a>
               </td>
-            </tr>
-            <tr>
-              <td style="font-size:.82rem;color:var(--accent-primary);font-weight:600">#ORD-10242</td>
+              <td style="font-weight:700">{{ item.get_payment_price|tdc }}</td>
+ 
               <td>
-                <div class="user-cell">
-                  <div class="user-avatar" style="background:var(--accent-success)">ز.ک</div>
-                  <span>زهرا کریمی</span>
-                </div>
+                {% if  item.status == status.paid %}
+                <span class="badge badge-success">موفق</span>
+                {% elif  item.status == status.cancelled %}
+                <span class="badge badge-danger">کنسل شده</span>
+
+                {% elif  item.status == status.cancelled_by_admin %}
+                <span class="badge badge-danger">کنسل شده توسط ادمین</span>
+
+                {% else %}
+                <span class="badge badge-info">در جریان</span>
+
+                {% endif %}
               </td>
-              <td style="font-size:.83rem">آزمون شبیه‌سازی کنکور ۱۴۰۳</td>
-              <td style="font-weight:700">۸۵۰,۰۰۰</td>
+              <td>{{ item.update_at|to_jalali }}</span></td>
               <td>
-                <span class="badge badge-purple">کیف پول</span>
-              </td>
-              <td><span class="badge badge-success">موفق</span></td>
-              <td style="font-size:.8rem">۱۴۰۳/۰۴/۱۵<br><span style="color:var(--text-muted)">۱۱:۱۵</span></td>
-              <td>
-                <a href="detail.html" class="btn btn-icon btn-outline-secondary" title="جزئیات">
+                <a href="{% url 'admin-panel:order-detail' item.id %}" class="btn  btn-outline-info btn-icon" title="جزئیات">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 </a>
-              </td>
-            </tr>
-            <tr>
-              <td style="font-size:.82rem;color:var(--accent-primary);font-weight:600">#ORD-10243</td>
-              <td>
-                <div class="user-cell">
-                  <div class="user-avatar" style="background:var(--accent-warning)">س.ح</div>
-                  <span>سینا حسنی</span>
-                </div>
-              </td>
-              <td style="font-size:.83rem">آزمون میان‌ترم فیزیک</td>
-              <td style="font-weight:700">۳۵۰,۰۰۰</td>
-              <td>
-                <span class="badge badge-info">درگاه بانکی</span>
-              </td>
-              <td><span class="badge badge-warning">در انتظار</span></td>
-              <td style="font-size:.8rem">۱۴۰۳/۰۴/۱۵<br><span style="color:var(--text-muted)">۱۴:۰۲</span></td>
-              <td>
-                <a href="detail.html" class="btn btn-icon btn-outline-secondary" title="جزئیات">
+                {% if item.status == status.active  %}
+                <a href="{% url 'admin-panel:order-cancel-by-admin' item.id %}" class="btn btn-outline-danger btn-icon" title="کنسل کردن توسط ادمین ">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 </a>
+                {% endif %}
               </td>
             </tr>
-            <tr>
-              <td style="font-size:.82rem;color:var(--accent-primary);font-weight:600">#ORD-10244</td>
-              <td>
-                <div class="user-cell">
-                  <div class="user-avatar" style="background:var(--accent-danger)">م.ر</div>
-                  <span>مریم رضوی</span>
-                </div>
-              </td>
-              <td style="font-size:.83rem">آزمون جامع ریاضی - فصل دوم</td>
-              <td style="font-weight:700">۲۵۰,۰۰۰</td>
-              <td>
-                <span class="badge badge-info">درگاه بانکی</span>
-              </td>
-              <td><span class="badge badge-danger">ناموفق</span></td>
-              <td style="font-size:.8rem">۱۴۰۳/۰۴/۱۵<br><span style="color:var(--text-muted)">۱۶:۴۸</span></td>
-              <td>
-                <a href="detail.html" class="btn btn-icon btn-outline-secondary" title="جزئیات">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                </a>
-              </td>
-            </tr>
+            {% endfor %}
+ 
           </tbody>
         </table>
       </div>
 
       <div class="table-footer">
-        <div class="table-info">نمایش ۱ تا ۴ از ۱,۲۴۸ سفارش</div>
-        <nav>
+         <nav>
           <ul class="pagination pagination-sm mb-0">
-            <li class="page-item disabled"><a class="page-link" href="#">قبلی</a></li>
-            <li class="page-item active"><a class="page-link" href="#">۱</a></li>
-            <li class="page-item"><a class="page-link" href="#">۲</a></li>
-            <li class="page-item"><a class="page-link" href="#">...</a></li>
-            <li class="page-item"><a class="page-link" href="#">۳۱</a></li>
-            <li class="page-item"><a class="page-link" href="#">بعدی</a></li>
+{% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">«</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+      </li>
+    {% endif %}
+
+    <!-- شماره صفحات -->
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <!-- صفحه فعال -->
+        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <!-- صفحات نزدیک به صفحه فعلی -->
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% elif num == page_obj.paginator.page_range.start or num == page_obj.paginator.page_range.end %}
+        <!-- اولین و آخرین صفحه -->
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% elif num == page_obj.number|add:'-3' or num == page_obj.number|add:'3' %}
+        <!-- سه نقطه برای نشان دادن حذف شدن صفحات -->
+        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+      {% endif %}
+    {% endfor %}
+
+    <!-- دکمه بعدی -->
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">»</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">»</a>
+      </li>
+    {% endif %}
           </ul>
         </nav>
       </div>

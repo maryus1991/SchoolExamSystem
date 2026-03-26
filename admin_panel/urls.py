@@ -35,6 +35,16 @@ urlpatterns = [
     path('categories/possible/create/', views.categories.PossibleCreate.as_view(), name='categories-possible-create'),
     path('categories/possible/update/<int:pk>', views.categories.PossibleUpdate.as_view(), name='categories-possible-update'),
     path('categories/possible/active/<int:pk>', views.categories.PossibleActiveDeactivate.as_view(), name='categories-possible-active'),
+    # TicketProblemPlacement
+    path('categories/ticket/placemnt/', views.categories.TicketProblemPlacementListView.as_view(), name='categories-TicketProblemPlacement-list'),
+    path('categories/ticket/placemnt/create/', views.categories.TicketProblemPlacementCreate.as_view(), name='categories-TicketProblemPlacement-create'),
+    path('categories/ticket/placemnt/update/<int:pk>', views.categories.TicketProblemPlacementUpdate.as_view(), name='categories-TicketProblemPlacement-update'),
+    path('categories/ticket/placemnt/active/<int:pk>', views.categories.TicketProblemPlacementActiveDeactivate.as_view(), name='categories-TicketProblemPlacement-active'),
+    # TicketProblemCategory
+    path('categories/ticket/problem/', views.categories.TicketProblemCategoryListView.as_view(), name='categories-TicketProblemCategory-list'),
+    path('categories/ticket/problem/create/', views.categories.TicketProblemCategoryCreate.as_view(), name='categories-TicketProblemCategory-create'),
+    path('categories/ticket/problem/update/<int:pk>', views.categories.TicketProblemCategoryUpdate.as_view(), name='categories-TicketProblemCategory-update'),
+    path('categories/ticket/problem/active/<int:pk>', views.categories.TicketProblemCategoryActiveDeactivate.as_view(), name='categories-TicketProblemCategory-active'),
 
 
     # blog
@@ -43,6 +53,16 @@ urlpatterns = [
     path('blog/update/<int:pk>', views.blog.BlogUpdate.as_view(), name='blog-update'),
     path('blog/active/<int:pk>', views.blog.BlogActiveDeactivate.as_view(), name='blog-active'),
     path('blog/delete/<int:pk>', views.blog.BlogDelete.as_view(), name='blog-delete'),
+
+    # orders
+    path('orders', views.orders.OrdersListView.as_view(), name='order-list'),
+    path('orders/<int:pk>', views.orders.OrderDetailsListVies.as_view(), name='order-detail'),
+    path('orders/cancell-by-admin/<int:pk>', views.orders.OrderCancellByAdmin.as_view(), name='order-cancel-by-admin'),
+
+    # tickets
+    path('tickets/', views.tickets.TicketListViews.as_view(), name='ticket-list'),
+    path('tickets/<int:pk>', views.tickets.TicketChat.as_view(), name='ticket-chat'),
+    
 
 ]
 

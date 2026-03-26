@@ -5,12 +5,7 @@ from django.urls import reverse
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User,related_name='orders', verbose_name='کاربر', on_delete=models.PROTECT, db_index=True)
-    final_price = models.PositiveBigIntegerField(verbose_name='قیمت', null=True, blank=True)
-    create_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(null=True, blank=True)
-    is_active = models.BooleanField(default=True, verbose_name='فعال بودن')
-    
+
 
     authority = models.CharField(max_length=120, null=True, blank=True, unique=True, verbose_name='کد درگاه پرداخت')
     cart = models.CharField(max_length=120, null=True, blank=True, verbose_name='کارت')
@@ -28,7 +23,12 @@ class Order(models.Model):
         paid = 'پرداخت شده', 'پرداخت شده'
 
     status = models.CharField(verbose_name='وضعیت', choices=OrderStatus, default=OrderStatus.active)
-
+    user = models.ForeignKey(User,related_name='orders', verbose_name='کاربر', on_delete=models.PROTECT, db_index=True)
+    final_price = models.PositiveBigIntegerField(verbose_name='قیمت', null=True, blank=True)
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True, verbose_name='فعال بودن')
+    
     def __str__(self):
         return f'{self.id} - {self.user.id} - {self.status}'
     

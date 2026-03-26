@@ -34,7 +34,7 @@ class QuestionPossible(models.Model):
 
 
     class Meta:
-        ordering = ['order']
+        ordering = ['-order']
         verbose_name = 'سطح'
         verbose_name_plural = 'سطوح'
 

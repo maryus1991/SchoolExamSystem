@@ -19,7 +19,7 @@ class GradeCategories(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['order']
+        ordering = ['-order']
         verbose_name = 'پایه'
         verbose_name_plural = 'پایه ها'
 
@@ -37,7 +37,7 @@ class MajorCategories(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['order']
+        ordering = ['-order']
         verbose_name = 'رشته '
         verbose_name_plural = 'رشته ها'
 

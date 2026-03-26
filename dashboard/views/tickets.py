@@ -124,6 +124,8 @@ class TicketChat(LoginRequiredMixin, View):
                 is_read_by_user=True,
                 user_message=form.cleaned_data.get('message')
             )
+            item.status = Ticket.TicketStatus.awating_admin
+            item.save()
             messages.success(request, 'پیام شما ارسال شد')
             
         else:

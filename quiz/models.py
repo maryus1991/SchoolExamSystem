@@ -14,7 +14,7 @@ class LessionCategories(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['order']
+        ordering = ['-order']
         verbose_name = 'درس '
         verbose_name_plural = 'دروس'
 

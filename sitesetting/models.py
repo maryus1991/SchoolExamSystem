@@ -124,6 +124,8 @@ class Site(models.Model):
         verbose_name_plural = 'تنظیمات'
 
 
+# ====================== tickets =======================
+
 class TicketProblemCategory(models.Model):
     order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
     name = models.CharField( max_length=255, verbose_name='نام  ')
@@ -133,7 +135,7 @@ class TicketProblemCategory(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['order']
+        ordering = ['-order']
         verbose_name = 'دسته بندی مشکل تیکت'
         verbose_name_plural = 'دسته بندی مشکلات تیکت ها'
 
@@ -146,7 +148,7 @@ class TicketProblemPlacement(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['order']
+        ordering = ['-order']
         verbose_name = 'بخش مرتبط مشکلات در تیکت'
         verbose_name_plural = 'بخش های مرتبط مشکلات در تیکت'
 
@@ -170,10 +172,12 @@ class Ticket(models.Model):
         awating_user = 'در انتظار پاسخ کاربر','در انتظار کاربر'
         
     name = models.CharField(max_length=500, verbose_name='موضوع',  db_index=True) 
-    problem =  models.ForeignKey(TicketProblemCategory, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='دسته بندی مشکلات تیکت ها',  db_index=True) 
     user =  models.ForeignKey(User, related_name='tickets', on_delete=models.PROTECT, verbose_name='درخواست دهنده',  db_index=True) 
     admin =  models.ForeignKey(User, related_name='tickets_admin', null=True, blank=True, on_delete=models.PROTECT, verbose_name='ادمین',  db_index=True) 
+
+    problem =  models.ForeignKey(TicketProblemCategory, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='دسته بندی مشکلات تیکت ها',  db_index=True) 
     placement =  models.ForeignKey(TicketProblemPlacement, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='بخش های مرتبط مشکلات در تیکت',  db_index=True) 
+    
     description = models.TextField(verbose_name="توضیحات ")
     file = models.FileField(verbose_name='پیوست', upload_to=photo_path_upload_to, null=True, blank=True)
     priority = models.CharField(verbose_name='اهمیت', choices=TicketPriority, max_length=255)
