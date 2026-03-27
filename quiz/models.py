@@ -22,35 +22,7 @@ class LessionCategories(models.Model):
         return reverse("quiz:category-lession-list", kwargs={"lession_category_id": self.pk})
 
 class Quiz(models.Model):
-    student = models.ManyToManyField(User, null=True, blank=True, related_name='quiz_student', verbose_name='دانش اموز', db_index=True)
-    sanatorium = models.ManyToManyField(User, related_name='quiz_sanatorium', verbose_name='مصحح', db_index=True)
-    name = models.CharField(verbose_name='عنوان', max_length=255 )
-    section = models.CharField(verbose_name='مبحث', max_length=255 )
 
-    grade =  models.ForeignKey(GradeCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='پایه', db_index=True) 
-    major =  models.ForeignKey(MajorCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='رشته تحصیلی', db_index=True) 
-    lession =  models.ForeignKey(LessionCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='درس', db_index=True) 
-
-    province =  models.CharField(max_length=255, verbose_name=' نام استان محل برگذاری') 
-    city =  models.CharField(max_length=255, verbose_name='نام شهر محل برگذاری') 
-    type_of_quiz =  models.CharField(max_length=255, verbose_name='محل و نحوه برگذاری')
-    description = CKEditor5Field()
-    price = models.PositiveBigIntegerField(default=0, verbose_name='هزینه')
-    corrected_price = models.PositiveBigIntegerField(default=0, verbose_name='هزینه تصحیح به ازای هر پاسخ نامه')
-    time_minutes = models.PositiveIntegerField(default=0, verbose_name='(دقیقه) تایمر')
-
-    create_at = models.DateTimeField(auto_now_add=True, verbose_name='زمان ساخت')
-    start_at = models.DateTimeField(verbose_name='زمان برگذاری')
-    stop_at = models.DateTimeField(verbose_name='زمان پایان')
-    last_enter = models.DateTimeField(verbose_name='اخرین زمان ورود')
-
-    corrected_at = models.DateTimeField(verbose_name='زمان تصحیح', null=True, blank=True)
-
-    max_score = models.PositiveSmallIntegerField(verbose_name='حداکثر نمره', default=100)
-    score = models.PositiveSmallIntegerField(verbose_name='ضریب', default=1)
-    capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت', default=1)
-    filled_capacity = models.PositiveSmallIntegerField(verbose_name=' ظرفیت پر شده', default=0)
-    
     class QuizStatus(models.TextChoices):
         
         ALL_STATUS = 'همه وضعیت ها ', 'همه وضعیت ها '
@@ -67,15 +39,42 @@ class Quiz(models.Model):
         DEACTIVATED = 'غیرفعال', 'غیرفعال'
         CANCELED = 'کنسل شده', 'کنسل شده'
 
-    status = models.CharField(verbose_name='وضعیت', choices=QuizStatus, default=QuizStatus.WAITING_START, max_length=55)
-    is_active = models.BooleanField(default=True, verbose_name='فعال')
-    start_set_report = models.BooleanField(default=False, verbose_name='شروع به تصحیح')
+    name = models.CharField(verbose_name='عنوان', max_length=255 )
+    section = models.CharField(verbose_name='مبحث', max_length=255 )
+    province =  models.CharField(max_length=255, verbose_name=' نام استان محل برگذاری') 
+    city =  models.CharField(max_length=255, verbose_name='نام شهر محل برگذاری') 
+    type_of_quiz =  models.CharField(max_length=255, verbose_name='محل و نحوه برگذاری')
+    price = models.PositiveBigIntegerField(default=0, verbose_name='هزینه')
+    corrected_price = models.PositiveBigIntegerField(default=0, verbose_name='هزینه تصحیح به ازای هر پاسخ نامه')
+    time_minutes = models.PositiveIntegerField(default=0, verbose_name='(دقیقه) تایمر')
+    
+    create_at = models.DateTimeField(auto_now_add=True, verbose_name='زمان ساخت')
+    start_at = models.DateTimeField(verbose_name='زمان برگذاری')
+    stop_at = models.DateTimeField(verbose_name='زمان پایان')
+    last_enter = models.DateTimeField(verbose_name='اخرین زمان ورود')
+    corrected_at = models.DateTimeField(verbose_name='زمان تصحیح', null=True, blank=True)
+
+    max_score = models.PositiveSmallIntegerField(verbose_name='حداکثر نمره', default=100)
+    score = models.PositiveSmallIntegerField(verbose_name='ضریب', default=1)
+    capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت', default=1)
+    filled_capacity = models.PositiveSmallIntegerField(verbose_name=' ظرفیت پر شده', default=0)
     is_online = models.BooleanField(default=True, verbose_name='انلاین')
     allow_return_to_questions = models.BooleanField(default=True, verbose_name='برگشتن به عقب')
     allow_to_edit_anwerd_by_sanatorium = models.BooleanField(default=True, verbose_name='اجازه به ویرایش پاسخ بعد از تصحصح توسط مصحح')
     change_the_order = models.BooleanField(default=True, verbose_name=' عوض کردن ترتیب سوالات')
     allow_to_edit_the_answered_questions = models.BooleanField(default=True, verbose_name='امکان ویرایش سوالات پاسخ داده شده')
     have_negetive_score = models.BooleanField(default=True, verbose_name='دارای نمره منفی')
+    start_set_report = models.BooleanField(default=False, verbose_name='شروع به تصحیح')
+    is_active = models.BooleanField(default=True, verbose_name='فعال')
+
+
+    status = models.CharField(verbose_name='وضعیت', choices=QuizStatus, default=QuizStatus.WAITING_START, max_length=55, null=True, blank=True)
+    student = models.ManyToManyField(User, null=True, blank=True, related_name='quiz_student', verbose_name='دانش اموز', db_index=True)
+    sanatorium = models.ManyToManyField(User, related_name='quiz_sanatorium', verbose_name='مصحح', db_index=True)
+    grade =  models.ForeignKey(GradeCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='پایه', db_index=True) 
+    major =  models.ForeignKey(MajorCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='رشته تحصیلی', db_index=True) 
+    lession =  models.ForeignKey(LessionCategories, related_name='quiz', on_delete=models.PROTECT, verbose_name='درس', db_index=True) 
+    description = CKEditor5Field()
 
     class Meta:
         ordering = ['-pk']
@@ -89,7 +88,6 @@ class Quiz(models.Model):
 
     def get_absolute_url(self):
         return reverse("quiz:detail", kwargs={"pk": self.pk})
-
 
 class UserQuizDetail(models.Model):
     quiz = models.ForeignKey('Quiz', on_delete=models.PROTECT, related_name='detail', verbose_name='آزمون' , db_index=True)
@@ -106,7 +104,6 @@ class UserQuizDetail(models.Model):
     def __str__(self):
         return f"{self.id} - {self.quiz.name} - {self.student.PhoneNumber}"
 
-
 def photo_path_upload_to(instance, filename):
     return f"questions/{get_random_string(100)}-{filename}"
 
@@ -119,18 +116,18 @@ class Question(models.Model):
         IMAGE_BASED = 'مبتنی بر تصویر', 'مبتنی بر تصویر'
         PDF_BASED = 'سوال از فایل PDF', 'سوال از فایل PDF'
 
-    quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='questions', verbose_name='آزمون',  db_index=True)
-    type_of_question = models.CharField( max_length=100, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
-    name = models.CharField( max_length=255, verbose_name='عنوان سوال',  db_index=True)
 
     description = CKEditor5Field( blank=True, null=True, verbose_name='متن سوال')
     image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
     pdf_file = models.FileField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF سوال' )
 
     score = models.PositiveIntegerField( default=1, verbose_name='نمره سوال')
-
+    type_of_question = models.CharField( max_length=100, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
+    name = models.CharField( max_length=255, verbose_name='عنوان سوال',  db_index=True)
     order = models.PositiveIntegerField( default=1, verbose_name='ترتیب نمایش' )
     is_active = models.BooleanField(default=True, verbose_name='فعال')
+
+    quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='questions', verbose_name='آزمون',  db_index=True)
     created_at = models.DateTimeField(auto_now_add=True )
 
     class Meta:
@@ -140,7 +137,6 @@ class Question(models.Model):
 
     def __str__(self):
         return f"{self.quiz} - {self.name}"
-
 
 class QuestionOption(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options', verbose_name='سوال',  db_index=True)
@@ -156,10 +152,8 @@ class QuestionOption(models.Model):
     def __str__(self):
         return f"{self.question.name} - {self.text}"
     
-
 def photo_path_upload_to(instance, filename):
     return f"questions/key/{get_random_string(100)}-{filename}"
-
 
 class QuestionAnswerKey(models.Model):
     class TypeOfAnswer(models.TextChoices):
@@ -168,12 +162,12 @@ class QuestionAnswerKey(models.Model):
         PDF_BASED = 'پاسخ PDF', 'پاسخ PDF'
 
     question = models.OneToOneField(Question, on_delete=models.CASCADE, related_name='answer_key', verbose_name='سوال',  db_index=True)
-    type_of_answer = models.CharField(max_length=50, choices=TypeOfAnswer.choices, verbose_name='نوع پاسخ صحیح')
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    type_of_answer = models.CharField(max_length=50, choices=TypeOfAnswer.choices, verbose_name='نوع پاسخ صحیح')
     description = CKEditor5Field(blank=True, null=True, verbose_name='متن پاسخ')
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
     pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True,null=True, verbose_name='فایل PDF پاسخ')
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'پاسخ صحیح (ادمین)'
@@ -181,13 +175,9 @@ class QuestionAnswerKey(models.Model):
 
     def __str__(self):
         return f"پاسخ صحیح - {self.question.name}"  
-    
-
-    
+        
 def photo_path_upload_to(instance, filename):
     return f"questions/{get_random_string(100)}-{filename}"
-
-
 
 class StudentAnswer(models.Model):
     class TypeOfAnswer(models.TextChoices):
@@ -237,7 +227,6 @@ class StudentAnswer(models.Model):
     def __str__(self):
         return f"{self.id} - {str(self.student.PhoneNumber).replace(' ', '')} - {self.quiz.name} - {self.score}"
     
-
 class QuizView(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="views",  db_index=True)
     ip = models.GenericIPAddressField()

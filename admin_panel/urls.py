@@ -96,5 +96,18 @@ urlpatterns = [
     path('site/team/', views.site.TeamListView.as_view(), name='site-team-list'),
     path('site/team/create/', views.site.TeamCreateView.as_view(), name='site-team-create'),
     path('site/team/update/<int:pk>', views.site.TeamUpdateView.as_view(), name='site-team-update'),
+
+
+    # exam
+    path('exam/', views.quiz.QuizListView.as_view(), name='quiz-list'),
+    path('exam/create/', views.quiz.QuizCreateView.as_view(), name='quiz-create'),
+    path('exam/update/<int:pk>', views.quiz.QuizUpdateView.as_view(), name='quiz-update'),
+    path('exam/active/<int:pk>', views.quiz.QuizActivateView.as_view(), name='quiz-active'),
+    path('exam/start-currecting/<int:pk>', views.quiz.QuizStartCurrectingView.as_view(), name='quiz-currecting'),
+    # questions
+    path('exam/<int:quiz_id>/questions/', views.quiz.QuestionListView.as_view(), name='quiz-questions-list'),
+    path('exam/<int:quiz_id>/questions/create/', views.quiz.QuizCreateView.as_view(), name='quiz-questions-create'),
+
+
 ]
 
