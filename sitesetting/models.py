@@ -64,8 +64,8 @@ class SiteLaw(models.Model):
         verbose_name_plural = 'قوانین'
         ordering = ['-sort_number']
 
-def photo_path_upload_to(*args, **kwargs):
-    return f"team/avatar/{get_random_string(72)}"
+def photo_path_upload_to(instance, filename):
+    return f"team/avatar/{get_random_string(72)}-{filename}"
 
 class Team(models.Model):
     name = models.CharField(max_length=255, verbose_name='نام')
@@ -75,8 +75,6 @@ class Team(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='وضعیت')
     sort_number = models.IntegerField(default=0, verbose_name='ترتیب')
 
-
-
     def __str__(self):
         return str(self.phone_number).replace(' ','')
 
@@ -85,13 +83,12 @@ class Team(models.Model):
         verbose_name_plural = 'اعضای تیم'
         ordering = ['-sort_number']
 
-def photo_path_upload_to(*args, **kwargs):
-    return f"site/logo/{get_random_string(72)}"
+def photo_path_upload_to(instance, filename):
+    return f"site/logo/{get_random_string(72)}-{filename}"
 
 class Site(models.Model):
-    logo = ThumbnailerImageField(verbose_name='لوگو', upload_to=photo_path_upload_to)
+
     addr = models.CharField(max_length=255, verbose_name='ادرس')
-    phone_number = PhoneNumberField(verbose_name='شماره') 
     email = models.EmailField(verbose_name='ایمیل')
 
     name = models.CharField(max_length=255, verbose_name='نام')
@@ -99,7 +96,6 @@ class Site(models.Model):
     work_hour = models.CharField(max_length=255, verbose_name='ساعات کاری')
     short_description = models.CharField(max_length=255, verbose_name='توضیحات کوتاه')
     copyright = models.CharField(max_length=255, verbose_name='متن کپی رایت', default='© 1405 سورنا . تمام حقوق محفوظ است.')
-    description = CKEditor5Field(verbose_name="توضیحات ")
 
     # links 
     instagram_link = models.CharField(max_length=500, verbose_name='لینک حساب اینستاگرام', null=True, blank=True)
@@ -115,6 +111,10 @@ class Site(models.Model):
     force_to_login_with_otp = models.BooleanField(default=True, verbose_name='اجبار برای ورود با رمز یک بار مصرف')
     
     is_active = models.BooleanField(default=True, verbose_name='وضعیت')
+
+    logo = ThumbnailerImageField(verbose_name='لوگو', upload_to=photo_path_upload_to)
+    phone_number = PhoneNumberField(verbose_name='شماره') 
+    description = CKEditor5Field(verbose_name="توضیحات ")
 
     def __str__(self):
         return str(self.name)

@@ -1,0 +1,63 @@
+{% extends "admin-panel/base/base.html" %}
+
+{% block main %}
+  <main class="page-content">
+
+    <div class="page-header">
+      <div class="page-header-info">
+        <h1>ایجاد کلید برای سوال  </h1>
+       </div>
+      <div class="page-header-actions">
+        <a href="{% url 'admin-panel:qbank-update' item.pk %}" class="btn btn-outline-secondary btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          بازگشت
+        </a>
+      </div>
+    </div>
+    <form action="" method="post">
+      {% csrf_token %}
+      <div class="row g-4">
+        <div class="col-lg-8">
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h6 class="card-title">کلید سوال</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">>
+                <div class="mb-3 col-3">
+                  <label class="form-label">{{form.type_of_answer.label}} <span class="text-danger">*</span></label>
+                    {{form.type_of_answer}}
+                </div>
+                <div class="mb-0 col-3">
+                  <label class="form-label">{{form.pdf_file.label}} </label>
+                    {{form.pdf_file}}
+                </div>
+                <div class="mb-0 col-3">
+                  <label class="form-label">{{form.image.label}} </label>
+                    {{form.image}}
+                </div>
+              </div>  
+              <div class="mb-0 row">
+                <label class="form-label">{{form.description.label}} </label>
+                  {{form.description}}
+              </div>
+          <div class="d-grid gap-2">
+            <button  name="_save" class="btn btn-success " >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              ذخیره و برگشتن به سوال
+            </button>
+          </div> 
+            </div>
+            
+          </div>
+          {{form.media}}
+
+
+        </div>
+      </form>
+ 
+    </div>
+
+  </main>
+{% endblock main %}

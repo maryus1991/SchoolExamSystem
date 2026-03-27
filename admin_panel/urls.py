@@ -65,11 +65,22 @@ urlpatterns = [
 
     # question bank
     path('question-bank/', views.qbank.QuestionBankListView.as_view(), name='qbank-list'),
-    path('question-bank/create/', views.qbank.QuestionBankListView.as_view(), name='qbank-create'),
-    path('question-bank/update/<int:pk>', views.qbank.QuestionBankListView.as_view(), name='qbank-update'),
     path('question-bank/active-deactivate/<int:pk>', views.qbank.QbankActiveDeactivate.as_view(), name='qbank-active'),
     path('question-bank/delete/<int:pk>', views.qbank.QbankDelete.as_view(), name='qbank-delete'),
     
+    path('question-bank/create/', views.qbank.QbankCreateView.as_view(), name='qbank-create'),
+    path('question-bank/create/option/<int:pk>', views.qbank.QbankOptionCreate.as_view(), name='qbank-create-option'),
+    path('question-bank/create/key/<int:pk>', views.qbank.QbankAnswerKey.as_view(), name='qbank-create-key'),
+
+    path('question-bank/update/<int:pk>', views.qbank.QbankUpdateView.as_view(), name='qbank-update'),
+    path('question-bank/update/option/<int:pk>', views.qbank.QbankOptionUpdateView.as_view(), name='qbank-option-update'),
+    path('question-bank/update/key/<int:pk>', views.qbank.QbankAnswerKeyUpdateView.as_view(), name='qbank-key-update'),
+
+    path('question-bank/delete/option/<int:pk>', views.qbank.QuestionOptionDelete.as_view(), name='qbank-option-delete'),
+
+
+    # site 
+    path('site/update', views.site.SiteUpdateView.as_view(), name='site'),
 
 ]
 

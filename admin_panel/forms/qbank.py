@@ -1,7 +1,9 @@
 from django import forms
-from qbank.models import  QuestionBank, QuestionAnswerKey, QuestionOption, QuestionLessonCategory, QuestionPossible
+from qbank.models import  QuestionBank, QuestionAnswerKey, QuestionOption, QuestionPossible
 from django_ckeditor_5.widgets import CKEditor5Widget
 from django.core.validators import FileExtensionValidator
+from quiz.models import LessionCategories
+
 
 class QuestionBankModelForm(forms.ModelForm):
     possible = forms.ModelChoiceField(
@@ -20,7 +22,7 @@ class QuestionBankModelForm(forms.ModelForm):
         required=True,
         label='درس',
         empty_label='درس',
-        queryset=QuestionLessonCategory.objects.filter(is_active=True).all(),
+        queryset=LessionCategories.objects.filter(is_active=True).all(),
         widget=forms.Select(
             attrs={
                 'class':'form-control',
@@ -78,25 +80,29 @@ class QuestionBankModelForm(forms.ModelForm):
     )
     description = forms.CharField(
         required=False,
+        label='توضیحات',
         widget=CKEditor5Widget()
     )
 
     class Meta:
         model = QuestionBank
         fields=[
-            'image', 
-            'possible', 
-            'category', 
-            'pdf_file', 
-            'type_of_question', 
-
             'name', 
             'lesson', 
-            'description', 
-            'is_active', 
-            'has_options', 
             'order', 
-            'solving_time'
+            'solving_time',
+            
+            'has_options', 
+            'is_active', 
+            
+            'type_of_question', 
+            'category', 
+            'possible',
+
+            'image', 
+            'pdf_file', 
+            'description', 
+
         ]
 
         widgets={
@@ -114,16 +120,8 @@ class QuestionBankModelForm(forms.ModelForm):
 
                 }
             ),
-            'is_active': forms.CheckboxInput(
-                attrs={
-                    'class':'form-control'
-                }
-            ),
-            'has_options': forms.CheckboxInput(
-                attrs={
-                    'class':'form-control'
-                }
-            ),
+            'is_active': forms.CheckboxInput(),
+            'has_options': forms.CheckboxInput(),
             'order': forms.NumberInput(
                 attrs={
                     'class':'form-control'
@@ -193,7 +191,11 @@ class QuestionAnwerKeyModelForm(forms.ModelForm):
 
     class Meta:
         model = QuestionAnswerKey
-        fields=['type_of_answer', 'description', 'image', 'pdf_file']
+        fields=[
+            'type_of_answer', 
+            'description', 
+            'image', 
+            'pdf_file']
  
 class QuestionOptionsModelForm(forms.ModelForm):
     class Meta:
@@ -206,11 +208,7 @@ class QuestionOptionsModelForm(forms.ModelForm):
                     'placeholder':'نام'
                 }
             ) ,
-            'is_correct':forms.CheckboxInput(
-                attrs={
-                    'class':'form-control'
-                }
-            ),
+            'is_correct':forms.CheckboxInput(),
             'order':forms.NumberInput(
                 attrs={
                     'class':'form-control'

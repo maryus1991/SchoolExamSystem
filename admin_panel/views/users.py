@@ -1,4 +1,4 @@
-from django.views.generic import DeleteView, RedirectView, ListView, DetailView, View
+from django.views.generic import  RedirectView, ListView, View
 from admin_panel.mixins import AdminPermissionRequire
 from user.models import User, GradeCategories, MajorCategories
 from django.shortcuts import render, get_object_or_404

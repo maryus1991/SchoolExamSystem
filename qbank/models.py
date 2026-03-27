@@ -45,6 +45,7 @@ class QuestionBank(models.Model):
         ALL = 'همه', 'همه'
         MULTIPLE_CHOICE = 'تستی چهارگزینه‌ای', 'تستی چهارگزینه‌ای'
         TRUE_FALSE = 'درست / نادرست', 'درست / نادرست'
+
         SHORT_ANSWER = 'پاسخ کوتاه ', 'پاسخ کوتاه '
         LONG_ANSWER = 'پاسخ تشریحی', 'پاسخ تشریحی'
         IMAGE_BASED = 'مبتنی بر تصویر', 'مبتنی بر تصویر'
@@ -54,7 +55,7 @@ class QuestionBank(models.Model):
     category = models.ForeignKey(LessionCategories, related_name='questions', on_delete=models.CASCADE, verbose_name='درس' ,db_index=True)
     
     type_of_question = models.CharField( max_length=50, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
-    name = models.CharField( max_length=255, verbose_name='عنوان سوال' ,db_index=True)
+    name = models.CharField( max_length=1000, verbose_name='عنوان سوال' ,db_index=True)
     lesson = models.CharField( max_length=255, verbose_name='مبحث')
     description = CKEditor5Field( blank=True, null=True, verbose_name='متن سوال')
     image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
@@ -66,7 +67,7 @@ class QuestionBank(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True )
     class Meta:
-        ordering = ['-order']
+        ordering = ['-order', '-id']
         verbose_name = 'سوال'
         verbose_name_plural = 'سوالات'
 
@@ -104,10 +105,12 @@ class QuestionAnswerKey(models.Model):
     pdf_file = models.FileField(upload_to=photo_path_upload_to,blank=True,null=True, verbose_name='فایل PDF پاسخ')
     created_at = models.DateTimeField(auto_now_add=True)
 
-
+    class Meta:
+        verbose_name = 'کلید سوال'
+        verbose_name_plural = 'کلید های  سوال'
 
     def __str__(self):
-        return f"پاسخ صحیح - {self.question.name}"
+        return f"پاسخ صحیح - {self.question.name} - {self.question.id}"
     
 
 
