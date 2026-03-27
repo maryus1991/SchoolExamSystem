@@ -31,6 +31,26 @@
 
     <!-- داشبورد -->
      <div class="nav-item">
+      <a href="/" class="nav-link-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        صفحه اصلی
+      </a>
+    </div>
+    {% if user.is_superuser %}
+      <div class="nav-item">
+        <a href="{% url 'admin:index' %}" class="nav-link-item">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          صفحه تخصصی ادمین
+        </a>
+      </div>  
+    {% endif %}
+     <div class="nav-item">
       <a href="{% url 'admin-panel:main' %}" class="nav-link-item">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
@@ -39,16 +59,7 @@
         داشبورد
       </a>
     </div>
-    <!-- تنظیمات -->
-     <div class="nav-item">
-      <a href="{% url 'admin-panel:site' %}" class="nav-link-item">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
-        </svg>
-        تنظیمات سایت
-      </a>
-    </div>
+
          <div class="nav-item">
       <a href="{% url 'admin-panel:order-list' %}" class="nav-link-item" >
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -69,8 +80,25 @@
         </a>
  
     </div>
-
-    <!-- مدیریت کاربران -->
+ 
+    <!-- تنظیمات -->
+     <div class="nav-item">
+      <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuSettings" aria-expanded="false">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+        </svg>
+        تنظیمات سایت
+        <svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <ul class="nav-submenu collapse" id="menuSettings">
+        <li class="nav-item"><a href="{% url 'admin-panel:site' %}" class="nav-link-item">تنظیمات</a></li>
+        <li class="nav-item"><a href="{% url 'admin-panel:site-team-list' %}" class="nav-link-item">تیم سایت</a></li>
+        <li class="nav-item"><a href="{% url 'admin-panel:site-law-list' %}" class="nav-link-item">قوانین سایت</a></li>
+        <li class="nav-item"><a href="{% url 'admin-panel:site-qa-list' %}" class="nav-link-item">پرسش پاسخ سایت</a></li>
+  
+      </ul>
+    </div>
      <div class="nav-item">
       <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuUsers" aria-expanded="false">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -151,14 +179,33 @@
 
     <!-- آزمون -->
     <div class="nav-item">
+      <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuReport" aria-expanded="false">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 11 12 14 22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        کارنامه ها
+         <svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <ul class="nav-submenu collapse" id="menuReport">
+        <li class="nav-item"><a href="/admin-panel/pages/quiz/list.html" class="nav-link-item">لیست آزمون‌ها</a></li>
+        <li class="nav-item"><a href="/admin-panel/pages/quiz/create.html" class="nav-link-item">ایجاد آزمون</a></li>
+        <li class="nav-item"><a href="/admin-panel/pages/quiz/questions-list.html" class="nav-link-item">سوالات آزمون</a></li>
+        <li class="nav-item"><a href="/admin-panel/pages/quiz/questions-create.html" class="nav-link-item">افزودن سوال</a></li>
+        <li class="nav-item"><a href="/admin-panel/pages/quiz/answers-bulk.html" class="nav-link-item">افزودن پاسخ گروهی</a></li>
+        <li class="nav-item"><a href="/admin-panel/pages/quiz/answer-detail.html" class="nav-link-item">جزئیات پاسخ</a></li>
+        <li class="nav-item"><a href="/admin-panel/pages/quiz/reports.html" class="nav-link-item">گزارشات</a></li>
+        <li class="nav-item"><a href="/admin-panel/pages/quiz/report-detail.html" class="nav-link-item">جزئیات گزارش</a></li>
+      </ul>
+    </div>
+    <div class="nav-item">
       <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuQuiz" aria-expanded="false">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="9 11 12 14 22 4"/>
           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
         </svg>
         مدیریت آزمون
-        <span class="nav-badge badge badge-primary">جدید</span>
-        <svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+         <svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <ul class="nav-submenu collapse" id="menuQuiz">
         <li class="nav-item"><a href="/admin-panel/pages/quiz/list.html" class="nav-link-item">لیست آزمون‌ها</a></li>

@@ -120,8 +120,15 @@ class QuestionBankModelForm(forms.ModelForm):
 
                 }
             ),
-            'is_active': forms.CheckboxInput(),
-            'has_options': forms.CheckboxInput(),
+            'is_active': forms.CheckboxInput(
+                attrs={
+                    'class':'form-check-input form-switch'
+                }
+            ),
+            'has_options': forms.CheckboxInput(                
+                attrs={
+                    'class':'form-check-input form-switch'
+                }),
             'order': forms.NumberInput(
                 attrs={
                     'class':'form-control'
@@ -208,7 +215,11 @@ class QuestionOptionsModelForm(forms.ModelForm):
                     'placeholder':'نام'
                 }
             ) ,
-            'is_correct':forms.CheckboxInput(),
+            'is_correct':forms.CheckboxInput(
+                attrs={
+                    'class':'form-check-input form-switch'
+                }
+            ),
             'order':forms.NumberInput(
                 attrs={
                     'class':'form-control'

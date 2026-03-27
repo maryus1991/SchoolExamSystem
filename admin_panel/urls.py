@@ -82,5 +82,19 @@ urlpatterns = [
     # site 
     path('site/update', views.site.SiteUpdateView.as_view(), name='site'),
 
+    # site law
+    path('site/law/', views.site.SiteLawListView.as_view(), name='site-law-list'),
+    path('site/law/create/', views.site.SiteLawCreateView.as_view(), name='site-law-create'),
+    path('site/law/update/<int:pk>', views.site.SiteLawUpdateView.as_view(), name='site-law-update'),
+
+    # site Q&A 
+    path('site/Q&A/', views.site.QuestionAndAnswerListView.as_view(), name='site-qa-list'),
+    path('site/Q&A/create/', views.site.QuestionAndAnswerCreateView.as_view(), name='site-qa-create'),
+    path('site/Q&A/update/<int:pk>', views.site.QuestionAndAnswerUpdateView.as_view(), name='site-qa-update'),
+
+    # site team
+    path('site/team/', views.site.TeamListView.as_view(), name='site-team-list'),
+    path('site/team/create/', views.site.TeamCreateView.as_view(), name='site-team-create'),
+    path('site/team/update/<int:pk>', views.site.TeamUpdateView.as_view(), name='site-team-update'),
 ]
 

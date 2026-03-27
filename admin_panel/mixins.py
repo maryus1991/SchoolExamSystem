@@ -8,7 +8,7 @@ class AdminPermissionRequire(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
 
-        if request.user.is_superuser :
+        if request.user.type_of_user == User.TypeOfUser.ADMIN :
             return response
         else:
             raise Http404()

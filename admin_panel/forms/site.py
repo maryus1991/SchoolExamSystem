@@ -4,19 +4,10 @@ from django.core.validators import FileExtensionValidator
 from django_ckeditor_5.widgets import CKEditor5Widget
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import RegionalPhoneNumberWidget, PhoneNumberPrefixWidget
+from . import BaseForm
 
-class SiteModelForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        excluded_widgets = (CKEditor5Widget, forms.CheckboxInput, )
-        for field in self.fields.values():
 
-            if  not isinstance(field.widget, excluded_widgets):
-                field.widget.attrs.update({'class': 'form-control col-md-4 p-2 m-2'})
-            elif  isinstance(field.widget, forms.CheckboxInput):
-                field.widget.attrs.update({'class': 'p-2 m-2'})
-            
-
+class SiteModelForm(BaseForm, forms.ModelForm):
     description = forms.CharField(
         required=True,
         label='توضیحات',
@@ -59,6 +50,54 @@ class SiteModelForm(forms.ModelForm):
         exclude = ['id']
         field_classes = {'form-control'}
 
-class QuestionAndAnswerModelForm(forms.ModelForm):pass
-class TeamModelForm(forms.ModelForm):pass
-class SiteLawModelForm(forms.ModelForm):pass
+class QuestionAndAnswerModelForm(BaseForm, forms.ModelForm):
+    
+    class Meta:
+        model = QuestionAndAnswer
+        exclude = ['id']
+
+class TeamModelForm(BaseForm, forms.ModelForm):
+
+    avatar = forms.ImageField(
+        required=True,
+        label='عکس',
+        widget=forms.FileInput(
+            attrs={
+                'class':'form-control',
+                'placeholder':'عکس'
+            }
+        ),
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=["webp", 'jpeg', 'png', 'jpg', 'heic' ]
+            )
+        ],
+    )
+
+    phone_number = PhoneNumberField(
+        required=True,
+        label="شماره ",
+        widget=RegionalPhoneNumberWidget(
+            attrs={
+                'class':'form-control',
+                'placeholder':' ... شماره',
+                'dir':'rtl'
+            }
+        )
+    )
+
+    class Meta:
+        model = Team
+        exclude = ['id']
+        
+class SiteLawModelForm(BaseForm, forms.ModelForm):
+
+    description = forms.CharField(
+        required=True,
+        label='توضیحات',
+        widget=CKEditor5Widget()
+    )
+
+    class Meta:
+        model = SiteLaw
+        exclude = ['id']

@@ -33,7 +33,7 @@
             <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:order-list' %}"  >سبد خرید</a>
             {% if user.is_superuser  %}
               {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
-                <a class="btn-outline-custom btn btn-sm" href="/admin/" > داشبورد ادمین</a>
+                <a class="btn-outline-custom btn btn-sm" href="{% url 'admin-panel:main' %}" > داشبورد ادمین</a>
               {% endif %}
             {% endif %}
             {% if user.is_staff and user.type_of_user == 'S' %}
