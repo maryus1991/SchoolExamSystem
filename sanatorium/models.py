@@ -17,6 +17,7 @@ class SanatoriumWallet(models.Model):
     
     class OrderStatus(models.TextChoices):
         active = 'جاری', 'جاری'
+        request_to_paid = 'درخواست تصفیه', 'درخواست تصفیه'
         paid = 'تصفیه شده', 'تصفیه شده'
 
     status = models.CharField(verbose_name='وضعیت', choices=OrderStatus, default=OrderStatus.active)
@@ -43,8 +44,7 @@ class SanatoriumWallet(models.Model):
             cls.save()
             return price
         else:
-            return cls.final_price 
-            
+            return cls.final_price        
 
 class WalletDetails(models.Model):
     wallet = models.ForeignKey(SanatoriumWallet, related_name='details', on_delete=models.PROTECT, verbose_name='کیف پول',  db_index=True)

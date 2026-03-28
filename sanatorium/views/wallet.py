@@ -6,12 +6,12 @@ from django.db.models.aggregates import Count
 from django.urls import reverse
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-
+from django.utils.timezone import now
 
 class WalletListView(SanatorPermissionRequire, ListView):
     """ for list the wallets """
     context_object_name='items'
-    template_name = 'sanatorium/orders/list.html'
+    template_name = 'admin-panel/wallets/list.html'
     paginate_by = 50
 
     def get_queryset(self):
@@ -32,7 +32,7 @@ class WalletDetailListView(SanatorPermissionRequire, ListView):
     """ for list the wallet detail """
 
     context_object_name='items'
-    template_name = 'sanatorium/orders/detail.html'
+    template_name = 'admin-panel/wallets/detail.html'
     paginate_by = 50
 
     def get_queryset(self):
@@ -55,8 +55,9 @@ class WalletRequestPayment(SanatorPermissionRequire, RedirectView):
 
         wallet = get_object_or_404(SanatoriumWallet, pk=kwargs.get('pk'), user=self.request.user)
         wallet.get_payment_price()
-        wallet.status = SanatoriumWallet.OrderStatus.paid
+        wallet.status = SanatoriumWallet.OrderStatus.request_to_paid
+        wallet.update_at = now() 
         wallet.save()
         messages.success(self.request, 'درخواست شما به ادمین ارسال شد')
 
-        return reverse('sanatorium:wallet-detail', kwargs=kwargs)
+        return reverse('admin-panel:wallet-list', kwargs=kwargs)

@@ -25,6 +25,6 @@ phase 3 todo list
 
 phase 4 todo list 
     add toggle them for admin panel
-    fix the search bar for users
-    add wallet 
+    fix the search fields
+ 
  

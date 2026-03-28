@@ -110,7 +110,7 @@ def photo_path_upload_to(instance, filename):
 class Question(models.Model):
 
     class TypeOfQuestions(models.TextChoices):
-        MULTIPLE_CHOICE = 'تستی چهارگزینه‌ای', 'تستی چهارگزینه‌ای'
+        MULTIPLE_CHOICE = 'تستی چند گزینه‌ای', 'تستی چند گزینه‌ای'
         SHORT_ANSWER = 'پاسخ کوتاه', 'پاسخ کوتاه'
         LONG_ANSWER = 'پاسخ تشریحی', 'پاسخ تشریحی'
         IMAGE_BASED = 'مبتنی بر تصویر', 'مبتنی بر تصویر'

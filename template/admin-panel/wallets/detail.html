@@ -1,0 +1,122 @@
+{% extends "admin-panel/base/base.html" %}
+{% load jalali_tags %}
+{% load tdc %}
+{% load list %}
+
+{% block main %}
+  <main class="page-content">
+
+    <div class="page-header">
+      <div class="page-header-info">
+        <h1>جزئیات کیف پول</h1>
+        <p>شماره کیف پول: #{{order.id}}</p>
+      </div>
+      <div class="page-header-actions">
+ 
+        <a href="{% url 'admin-panel:wallet-list' %}" class="btn btn-outline-secondary btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          بازگشت
+        </a>
+        {% if wallet.status == status.request_to_paid %}
+          <a href="{% url 'admin-panel:wallet-paid' wallet.id %}" class="btn  btn-warning " title="تبدیل به وضعیت پرداخت شده">
+            تبدیل به وضعیت پرداخت شده
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+ 
+
+    <div class="row g-4">
+      <div class="col-md-6">
+
+        <!-- Customer info -->
+
+ 
+      </div>
+
+      <div class="col-md-12">
+
+        <!-- Order details -->
+        <div class="card mb-4">
+ 
+                  <div class="card mb-4">
+          <div class="card-header">
+            <h6 class="card-title">اطلاعات صاحب کیف پول</h6>
+          </div>
+          <div class="card-body">
+            <div class="d-flex align-items-center gap-3 mb-3">
+               <div>
+                <a href="{% url 'admin-panel:user-update' wallet.user.id %}">
+                <div style="font-weight:700;font-size:.95rem;color:var(--text-primary)">{{ wallet.user.get_full_name }}</div>
+                <p dir="ltr">{{wallet.user.PhoneNumber}}</p>
+                </a>
+              </div>
+            </div>
+ 
+          </div>
+        </div>
+
+          <div class="card-body">
+            <div class="d-flex flex-column gap-3">
+              <div class="d-flex justify-content-between">
+                <span style="font-size:.82rem;color:var(--text-muted)">شماره سفارش</span>
+                <span style="font-size:.82rem;font-weight:700;color:var(--accent-primary)">#{{wallet.id}}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span style="font-size:.82rem;color:var(--text-muted)">تاریخ ثبت</span>
+                <span style="font-size:.82rem;color:var(--text-muted)">{{wallet.create_at|to_jalali}}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span style="font-size:.82rem;color:var(--text-muted)">تاریخ ثانویه</span>
+                <span style="font-size:.82rem;color:var(--text-muted)">{{wallet.update_at|to_jalali}}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span style="font-size:.82rem;color:var(--text-muted)">وضعیت سفارش</span>
+                <span class="badge badge-success">{{wallet.status}}</span>
+              </div>
+              <hr style="border-color:var(--border-color);margin:0">
+              <div>
+                <h5 class="mb-3"  >کارنامه ها</h5>
+                <h5 ><a href="{% url 'admin-panel:quiz-update' wallet.quiz.id %}">{{ wallet.quiz.name }}</a></h5>
+
+                {% for item in items %}
+                <div  class="m-1  px-4 py-3 alert-dismissible fade show message-item alert-primary rounded">
+                   <div class="d-flex justify-content-between align-items-center mt-2">
+
+                      <div  class=" row">
+                        <div class="col-4">
+                          
+                          <div class="q-title"><a href='{% url "sanatorium:exam-student-question-list" item.answer.quiz.id %}' > پاسخ نامه شماره {{item.pk}} </a></div>
+                        </div>
+                        <div class="col-6">
+                          <div class="q-title">زمان ثبت : {{item.create_at|to_jalali}} </div>
+                          <div class="q-meta"></div>
+                        </div>
+                        <div class="col-2">
+                          <div class="q-title">{{item.get_item_price|tdc}} تومان </div>
+                        </div>
+                         
+                      </div>
+
+                    </div>
+                  </div>
+               
+                {% empty %}
+                <div  class="m-1  px-4 py-3 alert-dismissible fade show message-item alert-primary rounded">
+                  <h5   > موردی یافت نشده است</h5>
+ 
+                </div>
+                {% endfor %}
+ 
+
+              </div>
+            </div>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+
+  </main>
+{% endblock main %}

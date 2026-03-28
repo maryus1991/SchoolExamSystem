@@ -1,10 +1,14 @@
 from django.views.generic import  RedirectView, ListView, View
 from admin_panel.mixins import AdminPermissionRequire
-from user.models import User, GradeCategories, MajorCategories
+from user.models import User 
 from django.shortcuts import render, get_object_or_404
 from admin_panel.forms.users import CreateUserForm, UpdateUserForm
 from django.contrib import messages
 from django.urls import reverse
+
+
+
+# users
 
 class UserListView(AdminPermissionRequire, ListView):
     """for list the users"""

@@ -97,7 +97,11 @@ urlpatterns = [
     path('site/team/create/', views.site.TeamCreateView.as_view(), name='site-team-create'),
     path('site/team/update/<int:pk>', views.site.TeamUpdateView.as_view(), name='site-team-update'),
 
-
+    # wallet 
+    path('wallets/', views.wallet.WalletsListView.as_view(), name='wallet-list'),
+    path('wallets/<int:pk>/details', views.wallet.WalletDetailListView.as_view(), name='wallet-detail'),
+    path('wallets/<int:pk>/paid', views.wallet.WalletChangeStatus.as_view(), name='wallet-paid'),
+    
     # exam
     path('exam/', views.quiz.QuizListView.as_view(), name='quiz-list'),
     path('exam/create/', views.quiz.QuizCreateView.as_view(), name='quiz-create'),

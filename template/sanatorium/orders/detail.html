@@ -84,6 +84,9 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
  
     {% if wallet.status == status.active  %}
       <a href="{% url 'sanatorium:wallet-payment' wallet.id %}" class="btn-gradient btn btn-success">درخواست تصفیه </a>
+ 
+    {% elif wallet.status == status.request_to_paid  %}
+      <a href="#" class=" btn btn-warning">درخواست ارسال شد</a>
 {% else%}
       <a class=" btn btn-success"> تصفیه شده</a>
 
@@ -116,7 +119,6 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
           <div class="q-num pending-q">{{ item.pk }}</div>
           <div style="flex:1;">
             <div class="q-title"><a href='{% url "sanatorium:exam-student-question-list" item.answer.quiz.id %}' > پاسخ نامه شماره {{item.pk}} </a></div>
-          
           </div>
           <div style="flex:1;">
             <div class="q-title">زمان ثبت : {{item.create_at|to_jalali}} </div>
@@ -124,10 +126,9 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
           </div>
           <div style="flex:1; ">
             <div class="q-title">{{item.get_item_price|tdc}} تومان </div>
-           
           </div>
  
-         </div>
+        </div>
          {% empty %}
               <div class="btn btn-info btn-block" > جزییاتی یافت نشد </div>
       {% endfor %}

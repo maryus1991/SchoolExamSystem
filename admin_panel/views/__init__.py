@@ -7,3 +7,4 @@ from . import qbank
 from . import orders
 from . import users
 from . import categories
+from . import wallet

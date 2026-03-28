@@ -193,4 +193,3 @@ class QuestionOptionsModelForm(BaseForm, forms.ModelForm):
     class Meta:
         model= QuestionOption
         fields = ['text' ,'is_correct' ,'order']
- 

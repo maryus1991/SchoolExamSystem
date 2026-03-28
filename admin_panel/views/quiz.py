@@ -1,7 +1,7 @@
 from django.views.generic import CreateView, UpdateView, RedirectView, ListView, View
 from admin_panel.mixins import AdminPermissionRequire
 from quiz.models import Quiz, QuestionOption, Question, QuestionAnswerKey, UserQuizDetail
-from admin_panel.forms.quiz import QuizModelForm
+from admin_panel.forms.quiz import QuizModelForm, QuestionModelForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
@@ -91,16 +91,58 @@ class QuestionListView(AdminPermissionRequire, ListView):
     context_object_name = 'items'
 
     def get_queryset(self):
-        quiz_id = self.kwargs.get('quiz_id')
-        self.quiz = get_object_or_404(Quiz, pk=quiz_id)
-        print(dir(self.quiz))
+ 
+        self.quiz = get_object_or_404(Quiz, pk=self.kwargs.get('quiz_id'))
+ 
         return self.quiz.questions.all()
     
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['quiz'] = self.quiz
         return data
-class QuestionCreateView(AdminPermissionRequire, CreateView):pass
+class QuestionCreateView(AdminPermissionRequire, CreateView):
+    """for create question for quiz"""
+    
+    model = Question.objects.prefetch_related('options')
+    template_name = 'admin-panel/exam/questions/create-question.html'
+    form_class = QuestionModelForm
+
+    def form_valid(self, form):
+        type_of_question = form.cleaned_data.get('type_of_answer')
+ 
+        if type_of_question == Question.TypeOfQuestions.LONG_ANSWER and not form.cleaned_data.get('description'):
+            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
+            return self.form_invalid(form)
+        elif type_of_question == Question.TypeOfQuestions.SHORT_ANSWER and not form.cleaned_data.get('description'):
+            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
+            return self.form_invalid(form)
+        elif type_of_question == Question.TypeOfQuestions.IMAGE_BASED and not form.cleaned_data.get('image'):
+            messages.error(self.request, 'لطفا عکس را اپلود کنید')
+            return self.form_invalid(form)
+        elif type_of_question == Question.TypeOfQuestions.PDF_BASED and not form.cleaned_data.get('pdf_file'):
+            messages.error(self.request, 'لطفا فایل pdf را وارد کنید')
+            return self.form_invalid(form)
+    
+        form.instance.quiz = get_object_or_404(Quiz, pk=self.kwargs.get('quiz_id'))
+
+        return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        data['status'] = Question.TypeOfQuestions 
+
+        return data
+    
+    def get_success_url(self):
+        messages.success(self.request, 'سوال افزوده شد')
+        return reverse_lazy('admin-panel:qbank-update', kwargs={'pk':self.object.pk})
+
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+
+
 class QuestionUpdateView(AdminPermissionRequire, UpdateView):pass
 
 

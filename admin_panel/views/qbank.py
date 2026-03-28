@@ -51,6 +51,25 @@ class QbankCreateView(AdminPermissionRequire, CreateView):
     form_class = QuestionBankModelForm
     model = QuestionBank.objects.prefetch_related('options')
     template_name = 'admin-panel/question-bank/create-question.html'
+
+    def form_valid(self, form):
+        type_of_question = form.cleaned_data.get('type_of_answer')
+ 
+        if type_of_question == QuestionBank.TypeOfQuestions.LONG_ANSWER and not form.cleaned_data.get('description'):
+            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
+            return self.form_invalid(form)
+        elif type_of_question == QuestionBank.TypeOfQuestions.SHORT_ANSWER and not form.cleaned_data.get('description'):
+            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
+            return self.form_invalid(form)
+        elif type_of_question == QuestionBank.TypeOfQuestions.IMAGE_BASED and not form.cleaned_data.get('image'):
+            messages.error(self.request, 'لطفا عکس را اپلود کنید')
+            return self.form_invalid(form)
+        elif type_of_question == QuestionBank.TypeOfQuestions.PDF_BASED and not form.cleaned_data.get('pdf_file'):
+            messages.error(self.request, 'لطفا فایل pdf را وارد کنید')
+            return self.form_invalid(form)
+    
+        return super().form_valid(form)
+    
     
     def get_success_url(self):
 
@@ -82,6 +101,8 @@ class QbankOptionCreate(AdminPermissionRequire, CreateView):
     form_class = QuestionOptionsModelForm
     model = QuestionOption
     template_name = 'admin-panel/question-bank/create-options.html'
+
+
 
     def dispatch(self, request, *args, **kwargs):
         self.item = get_object_or_404(QuestionBank, pk=self.kwargs.get('pk')) 
@@ -126,10 +147,23 @@ class QbankAnswerKey(AdminPermissionRequire, CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        messages.success(self.request, 'کلید ذخیره شد')
         form.instance.question = self.item 
 
         QuestionAnswerKey.objects.filter(question=self.item).delete()
+
+        type_of_answer = form.cleaned_data.get('type_of_answer')
+
+        if type_of_answer == QuestionAnswerKey.TypeOfAnswer.TEXT_BASED and not form.cleaned_data.get('description'):
+            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
+            return self.form_invalid(form)
+        elif type_of_answer == QuestionAnswerKey.TypeOfAnswer.IMAGE_BASED and not form.cleaned_data.get('image'):
+            messages.error(self.request, 'لطفا عکس را اپلود کنید')
+            return self.form_invalid(form)
+        elif type_of_answer == QuestionAnswerKey.TypeOfAnswer.PDF_BASED and not form.cleaned_data.get('pdf_file'):
+            messages.error(self.request, 'لطفا فایل pdf را وارد کنید')
+            return self.form_invalid(form)
+        
+        messages.success(self.request, 'کلید ذخیره شد')
  
         return super().form_valid(form)
         
@@ -159,6 +193,23 @@ class QbankUpdateView(AdminPermissionRequire, UpdateView):
     def get_queryset(self):
         return QuestionBank.objects.prefetch_related('options', 'answer_key')
          
+    def form_valid(self, form):
+        type_of_question = form.cleaned_data.get('type_of_question')
+ 
+        if type_of_question == QuestionBank.TypeOfQuestions.LONG_ANSWER and not form.cleaned_data.get('description'):
+            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
+            return self.form_invalid(form)
+        elif type_of_question == QuestionBank.TypeOfQuestions.SHORT_ANSWER and not form.cleaned_data.get('description'):
+            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
+            return self.form_invalid(form)
+        elif type_of_question == QuestionBank.TypeOfQuestions.IMAGE_BASED and not form.cleaned_data.get('image'):
+            messages.error(self.request, 'لطفا عکس را اپلود کنید')
+            return self.form_invalid(form)
+        elif type_of_question == QuestionBank.TypeOfQuestions.PDF_BASED and not form.cleaned_data.get('pdf_file'):
+            messages.error(self.request, 'لطفا فایل pdf را وارد کنید')
+            return self.form_invalid(form)
+    
+        return super().form_valid(form)
     
     def get_success_url(self):
 
@@ -201,6 +252,18 @@ class QbankAnswerKeyUpdateView(AdminPermissionRequire, UpdateView):
         return QuestionAnswerKey.objects.get_or_create(question=self.item)[0]
 
     def form_valid(self, form):
+        type_of_answer = form.cleaned_data.get('type_of_answer')
+
+        if type_of_answer == QuestionAnswerKey.TypeOfAnswer.TEXT_BASED and not form.cleaned_data.get('description'):
+            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
+            return self.form_invalid(form)
+        elif type_of_answer == QuestionAnswerKey.TypeOfAnswer.IMAGE_BASED and not form.cleaned_data.get('image'):
+            messages.error(self.request, 'لطفا عکس را اپلود کنید')
+            return self.form_invalid(form)
+        elif type_of_answer == QuestionAnswerKey.TypeOfAnswer.PDF_BASED and not form.cleaned_data.get('pdf_file'):
+            messages.error(self.request, 'لطفا فایل pdf را وارد کنید')
+            return self.form_invalid(form)
+        
         messages.success(self.request, 'کلید بروز رسانی شد')
         return super().form_valid(form)
     
