@@ -1,5 +1,5 @@
 from django import forms
-from quiz.models import Quiz, Question, QuestionOption, QuestionAnswerKey, GradeCategories, MajorCategories, LessionCategories
+from quiz.models import Quiz, Question, QuestionOption, QuestionAnswerKey, GradeCategories, MajorCategories, LessionCategories, StudentAnswer
 from . import BaseForm
 from django_ckeditor_5.widgets import CKEditor5Widget
 from django.core.validators import FileExtensionValidator
@@ -193,3 +193,15 @@ class QuestionOptionsModelForm(BaseForm, forms.ModelForm):
     class Meta:
         model= QuestionOption
         fields = ['text' ,'is_correct' ,'order']
+
+class StudentAnswerModelForm(BaseForm, forms.ModelForm):
+    satantorium_message = forms.CharField(
+        required=False,
+        widget=CKEditor5Widget(),
+        label='پیام مصحح'
+    )
+     
+    class Meta:
+        model = StudentAnswer
+        exclude = ("quiz", 'question', 'created_at', 'id', 'student')
+ 

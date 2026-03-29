@@ -1,10 +1,10 @@
 from django.views.generic import CreateView, UpdateView, RedirectView, ListView, View
 from admin_panel.mixins import AdminPermissionRequire
-from quiz.models import Quiz, QuestionOption, Question, QuestionAnswerKey
-from admin_panel.forms.quiz import QuizModelForm, QuestionModelForm, QuestionAnwerKeyModelForm, QuestionOptionsModelForm
+from quiz.models import Quiz, QuestionOption, Question, QuestionAnswerKey, StudentAnswer
+from admin_panel.forms.quiz import QuizModelForm, QuestionModelForm, QuestionAnwerKeyModelForm, QuestionOptionsModelForm, StudentAnswerModelForm
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.db.models.aggregates import Count
 
 class QuizListView(AdminPermissionRequire, ListView):
@@ -403,4 +403,65 @@ class QuestionOptionDelete(AdminPermissionRequire, RedirectView):
         messages.info(self.request, 'گزینه حذف شد')
         return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':kwargs.get('quiz_id'), 'pk':kwargs.get('qid')})
 
- 
+
+class QuestionAnswerLitView(AdminPermissionRequire, ListView):
+    """for list the student anwers """
+    
+    template_name = 'admin-panel/exam/answers/list.html'
+    context_object_name = 'items'
+
+    def dispatch(self, request, *args, **kwargs):
+        print(1)
+        self.quiz = get_object_or_404(Quiz, pk=self.kwargs.get('quiz_id'))
+        print(2)
+        self.question = get_object_or_404(Question, pk=self.kwargs.get('qid'))
+        print(3)
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs)  :
+        context = super().get_context_data(**kwargs)
+        context["quiz"] = self.quiz 
+        context["question"] = self.question 
+        return context
+
+    def get_queryset(self):
+        return StudentAnswer.objects.filter(quiz=self.quiz, question=self.question
+        ).prefetch_related('student', 'corrected_by').all()
+class QuestionAnswerUpdateView(AdminPermissionRequire, UpdateView):
+    """ for update the answer """
+
+    template_name = 'admin-panel/exam/answers/create.html'
+    context_object_name = 'item'
+    form_class = StudentAnswerModelForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.item = get_object_or_404(
+            StudentAnswer.objects.prefetch_related('quiz', 'student', 'question'), 
+            quiz__id=self.kwargs.get('quiz_id'), 
+            question=self.kwargs.get('qid'), 
+            pk=self.kwargs.get('pk')
+        )
+        self.quiz = self.item.quiz
+        self.question = self.item.question
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs)  :
+        context = super().get_context_data(**kwargs)
+        context["quiz"] = self.quiz 
+        context["question"] = self.question 
+        return context
+
+    def get_object(self):
+        return self.item
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'تغییرات اعمال شد')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+        
+    def get_success_url(self):
+        return reverse('admin-panel:quiz-question-answer-list', kwargs={'quiz_id':self.quiz.id, 'qid':self.question.id})
+    

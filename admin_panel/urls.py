@@ -102,7 +102,7 @@ urlpatterns = [
     path('wallets/<int:pk>/details', views.wallet.WalletDetailListView.as_view(), name='wallet-detail'),
     path('wallets/<int:pk>/paid', views.wallet.WalletChangeStatus.as_view(), name='wallet-paid'),
     
-    # exam
+    # quiz
     path('exam/', views.quiz.QuizListView.as_view(), name='quiz-list'),
     path('exam/create/', views.quiz.QuizCreateView.as_view(), name='quiz-create'),
     path('exam/update/<int:pk>', views.quiz.QuizUpdateView.as_view(), name='quiz-update'),
@@ -124,6 +124,15 @@ urlpatterns = [
     path('exam/<int:quiz_id>/question/<int:qid>/options/update/<int:pk>', views.quiz.QuestionOptionsUpdateView.as_view(), name='quiz-question-option-update'),
     path('exam/<int:quiz_id>/question/<int:qid>/options/delete/<int:pk>', views.quiz.QuestionOptionDelete.as_view(), name='quiz-question-option-delete'),
 
-
+    # quiz questions answer 
+    path('exam/<quiz_id>/question/<int:qid>/answers/', views.quiz.QuestionAnswerLitView.as_view(), name='quiz-question-answer-list'),
+    path('exam/<quiz_id>/question/<int:qid>/answer/<int:pk>', views.quiz.QuestionAnswerUpdateView.as_view(), name='quiz-question-answer-update'),
+    
+    # reports 
+    path('reports/', views.reports.ReportListView.as_view(), name='report-list'),
+    path('reports/<int:quiz_id>', views.reports.ReportListView.as_view(), name='report-quiz-list'),
+    path('reports/create', views.reports.ReportCreateView.as_view(), name='report-create'),
+    path('reports/update/<int:pk>', views.reports.ReportUpdateView.as_view(), name='report-update'),
+    
 ]
 

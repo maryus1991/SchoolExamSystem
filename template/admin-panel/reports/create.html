@@ -1,0 +1,43 @@
+ 
+{% extends "admin-panel/base/base.html" %}
+
+{% block main %}
+  
+  
+  <main class="page-content">
+
+      <div class="page-header">
+        <div class="page-header-info">
+          <h1>کارنامه کاربر </h1>
+ 
+        </div>
+        {% if item %}
+          <div class="page-header-actions">
+          <a href="{% url 'admin-panel:quiz-update' item.quiz.id %}" class="btn btn-primary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            بروز رسانی ازمون
+          </a>
+          <a href="{% url 'admin-panel:user-update' item.user.id %}" class="btn btn-primary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            بروز رسانی کاربر 
+          </a>
+        </div>
+        {% endif %}
+      </div>
+
+ 
+
+      <div class="row g-3">
+ 
+        <form action="" class="row col-md-12 grid" method="post">
+          {% csrf_token %}
+          {{form.as_ul}}
+          {{form.media}}
+          <button type="submit" class="btn btn-success btn-lg w-100">ثبت</button>
+        </form>
+
+ 
+      </div>
+
+    </main>
+ {% endblock main %}
