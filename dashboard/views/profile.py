@@ -180,8 +180,10 @@ class ChangePhoneNumberNaitnalIDView(LoginRequiredMixin, View):
                 national_id=form.cleaned_data.get('national_id')
             )
 
-            if not user.exists()  :
+            if not user.exists() :
                 user = request.user
+                
+             
                 user.national_id = form.cleaned_data.get('national_id')
                 user.is_verified = False
                 user.save()

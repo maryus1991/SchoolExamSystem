@@ -48,7 +48,7 @@ class SanatoriumWallet(models.Model):
 
 class WalletDetails(models.Model):
     wallet = models.ForeignKey(SanatoriumWallet, related_name='details', on_delete=models.PROTECT, verbose_name='کیف پول',  db_index=True)
-    answer = models.ForeignKey(StudentAnswer, related_name='wallet', on_delete=models.PROTECT, verbose_name='پاسخ نامه',  db_index=True)
+    answer = models.ForeignKey(StudentAnswer, related_name='wallet', on_delete=models.SET_NULL,null=True, verbose_name='پاسخ نامه',  db_index=True)
 
     price = models.PositiveBigIntegerField(verbose_name='قیمت', default=0)
     create_at = models.DateTimeField(auto_now_add=True,  verbose_name='تاریخ افزودن')

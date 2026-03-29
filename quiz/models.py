@@ -121,11 +121,12 @@ class Question(models.Model):
     image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
     pdf_file = models.FileField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF سوال' )
 
-    score = models.PositiveIntegerField( default=1, verbose_name='نمره سوال')
-    type_of_question = models.CharField( max_length=100, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
     name = models.CharField( max_length=255, verbose_name='عنوان سوال',  db_index=True)
     order = models.PositiveIntegerField( default=1, verbose_name='ترتیب نمایش' )
+
     is_active = models.BooleanField(default=True, verbose_name='فعال')
+    type_of_question = models.CharField( max_length=100, choices=TypeOfQuestions.choices, verbose_name='نوع سوال')
+    score = models.PositiveIntegerField( default=1, verbose_name='حداکثر نمره سوال')
 
     quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='questions', verbose_name='آزمون',  db_index=True)
     created_at = models.DateTimeField(auto_now_add=True )
@@ -195,7 +196,7 @@ class StudentAnswer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='student_answers', null=True, blank=True , verbose_name='سوال',  db_index=True)
     
     type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', default=TypeOfAnswer.NOT_ANSWERD)
-    selected_option = models.ForeignKey(QuestionOption,on_delete=models.PROTECT ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده',  db_index=True)
+    selected_option = models.ForeignKey(QuestionOption,on_delete=models.SET_NULL ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده',  db_index=True)
 
     description = models.TextField(blank=True, null=True,verbose_name='متن پاسخ' )
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
@@ -212,7 +213,7 @@ class StudentAnswer(models.Model):
         excellent = 'کاملا درست', 'کاملا درست'
 
     corrected = models.CharField(max_length=100, choices=TypeOfCorrect.choices,verbose_name='کیفیت جواب', default=TypeOfCorrect.not_corrected ,)
-    corrected_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True, related_name='corrected_answers', verbose_name='تصحیح‌کننده',  db_index=True)
+    corrected_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='corrected_answers', verbose_name='تصحیح‌کننده',  db_index=True)
     corrected_at = models.DateTimeField(null=True, blank=True)
     satantorium_message = CKEditor5Field(blank=True, null=True, verbose_name='نظر مصصح' )
 

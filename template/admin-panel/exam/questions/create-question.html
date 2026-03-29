@@ -12,119 +12,96 @@
 
         
         {% if item  %}
-        <a href="{% url 'admin-panel:qbank-key-update' item.id %}" class="btn btn-warning btn-sm">
+        <a href="{% url 'admin-panel:quiz-question-key-update' quiz_id=quiz.id qid=item.id %}" class="btn btn-warning btn-sm">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
           بروز رسانی کلید پاسخ
         </a>
-        {% if item.has_options %}
-          <a href="{% url 'admin-panel:qbank-create-option' item.id %}" class="btn btn-success btn-sm">
+        <a href="{% url 'admin-panel:quiz-questions-delete' quiz_id=quiz.id pk=item.id %}" class="btn btn-danger btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          حذف سوال 
+        </a>
+        {% if item.type_of_question == status.MULTIPLE_CHOICE %}
+          <a href="{% url 'admin-panel:quiz-question-option-create' quiz_id=quiz.id qid=item.id %}" class="btn btn-success btn-sm">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
             اضافه کردن گزینه
           </a>
         {% endif %}
-        <a href="{% url 'qbank:detail' item.id %}" class="btn btn-info btn-sm">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-          دیدن سوال
-        </a>
+ 
         {% endif %}
 
-        <a href="{% url 'admin-panel:qbank-list' %}" class="btn btn-outline-secondary btn-sm">
+        <a href="{% url 'admin-panel:quiz-update' quiz.id %}" class="btn btn-outline-secondary btn-sm">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-          بازگشت
+          بازگشت به ازمون
+        </a>
+        <a href="{% url 'admin-panel:quiz-questions-list' quiz.id %}" class="btn btn-outline-secondary btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          بازگشت به لیست سوالات ازمون
         </a>
       </div>
     </div>
 
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="row g-4">
-        <div class="col-lg-{% if  item and item.has_options %}4{% else %}8{% endif %}">
+        <div class="col-lg-{% if  item and item.type_of_question == status.MULTIPLE_CHOICE  %}8{% else %}12{% endif %}">
 
           <div class="card mb-4">
             <div class="card-header">
               <h6 class="card-title">موارد سوال</h6>
             </div>
             <div class="card-body">
-              <div class="mb-4">
+              <div class="mb-3">
                 <label class="form-label">{{form.name.label}} <span class="text-danger">*</span></label>
                 {{form.name}}
               </div>
-              <div class="mb-4">
-                <label class="form-label">{{form.lesson.label}} <span class="text-danger">*</span></label>
 
-                {{form.lesson}}
-              </div>
-              <div class="mb-3">
-                <label class="form-label">{{form.order.label}} <span class="text-danger">*</span></label>
 
-                {{form.order}}
-              </div>
-              <div class="mb-2">
-                <label class="form-label">{{form.solving_time.label}} <span class="text-danger">*</span></label>
-
-                {{form.solving_time}}
-              </div>
-              <div class="mb-2">
-                <label class="form-label">{{form.has_options.label}} <span class="text-danger">*</span></label>
-
-                {{form.has_options}}
-              </div>
-              <div class="mb-2">
-                <label class="form-label">{{form.is_active.label}} <span class="text-danger">*</span></label>
-
-                {{form.is_active}}
-              </div>
-            </div>
-          </div>
-
-        </div>
-    
-        <div class="col-lg-4">
- 
-          <div class="card mb-4">
-            <div class="card-header">
-              <h6 class="card-title">دسته‌بندی</h6>
-            </div>
-            <div class="card-body">
-
-              <div class="mb-5   " >
+                            <div class="mb-1" >
                 <label class="form-label">{{form.type_of_question.label}} <span class="text-danger">*</span></label>
                 {{form.type_of_question}}
               </div>
  
-              <div class="mb-5  ">
-                <label class="form-label">{{form.category.label}} <span class="text-danger">*</span></label>
-                {{form.category}}
+              <div class="mb-1">
+                <label class="form-label">{{form.score.label}} <span class="text-danger">*</span></label>
+                {{form.score}}
               </div>
  
-              <div class="mb-5 ">
-                <label class="form-label">{{form.possible.label}} <span class="text-danger">*</span></label>
-                {{form.possible}}
+ 
+
+               <div class="mb-1">
+                <label class="form-label">{{form.order.label}} <span class="text-danger">*</span></label>
+
+                {{form.order}}
               </div>
 
-              <div class="d-grid gap-5">
-                <button class="btn btn-primary" id="saveBtn" onclick="handleSave(event)">
+              <div class="mb-5">
+                <label class="form-label">{{form.is_active.label}} <span class="text-danger">*</span></label>
+
+                {{form.is_active}}
+              </div>
+                                          <div class="d-grid gap-5">
+                <button name="_save" class="btn btn-primary"  >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                   ذخیره سوال
                 </button>
-                <button class="btn btn-outline-secondary" onclick="handleSave(event, true)">
-                  ذخیره و سوال بعدی
-                </button>
-              </div>
  
+              </div>
             </div>
+            
             
           </div>
 
         </div>
-
-        {% if item and item.has_options %}
+    
+ 
+ 
+        {% if item and item.type_of_question  == status.MULTIPLE_CHOICE  %}
         <div class="col-lg-4 card mb-4" id="multipleChoiceCard">
           <div class="card-header d-flex justify-content-between align-items-center">
             <h6 class="card-title mb-0">گزینه‌های پاسخ</h6>
   
           </div>
-          <div class="card-body">
+          <div class="card-body ">
             <div class="alert alert-primary">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
               گزینه صحیح را مشخص کنید. برای تعیین پاسخ درست روی مربع کنار گزینه کلیک کنید.
@@ -132,18 +109,18 @@
 
 
             {% for option in item.options.all %}
-              <div class="mb-2">
+              <div class="mb-1">
                 <label class="form-label">گزینه {{ forloop.counter }}</label>
                 <div class="input-group">
                   
                   <div class="w-100 input-group-text " >
 
-                      <a class="input-group    w-100"  href="{% url 'admin-panel:qbank-option-update' option.pk %}">
+                      <a class="input-group    w-100"  href="{% url 'admin-panel:quiz-question-option-update' quiz_id=quiz.id qid=item.id pk=option.pk %}">
                         <input class="form-check-input" {% if option.is_correct %}checked{% endif %}  disabled type="checkbox" name="correctAnswer" value="1" id="correct1">
                         <p>{{ option.text }}</p>
                         
                       </a>
-                      <a class="btn btn-icon btn-outline-danger" href="{% url 'admin-panel:qbank-option-delete' option.id %}" title="حذف">
+                      <a class="btn btn-icon btn-outline-danger" href="{% url 'admin-panel:quiz-question-option-delete' quiz_id=quiz.id qid=item.id pk=option.id %}" title="حذف">
                         <svg width="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14H6L5 6"></path></svg>
                       </a>
                     </div>

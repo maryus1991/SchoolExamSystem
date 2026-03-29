@@ -1,8 +1,8 @@
 from django.views.generic import CreateView, UpdateView, RedirectView, ListView, View
 from admin_panel.mixins import AdminPermissionRequire
-from quiz.models import Quiz, QuestionOption, Question, QuestionAnswerKey, UserQuizDetail
-from admin_panel.forms.quiz import QuizModelForm, QuestionModelForm
-from django.urls import reverse_lazy
+from quiz.models import Quiz, QuestionOption, Question, QuestionAnswerKey
+from admin_panel.forms.quiz import QuizModelForm, QuestionModelForm, QuestionAnwerKeyModelForm, QuestionOptionsModelForm
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.db.models.aggregates import Count
@@ -103,56 +103,304 @@ class QuestionListView(AdminPermissionRequire, ListView):
 class QuestionCreateView(AdminPermissionRequire, CreateView):
     """for create question for quiz"""
     
-    model = Question.objects.prefetch_related('options')
+  
     template_name = 'admin-panel/exam/questions/create-question.html'
     form_class = QuestionModelForm
+    queryset = Question.objects.prefetch_related('options')
+
+
+    def dispatch(self, request, *args, **kwargs):
+        self.quiz = get_object_or_404(Quiz, pk=self.kwargs.get('quiz_id'))
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        type_of_question = form.cleaned_data.get('type_of_answer')
- 
-        if type_of_question == Question.TypeOfQuestions.LONG_ANSWER and not form.cleaned_data.get('description'):
-            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
-            return self.form_invalid(form)
-        elif type_of_question == Question.TypeOfQuestions.SHORT_ANSWER and not form.cleaned_data.get('description'):
-            messages.error(self.request, 'لطفا توضیحات را ثبت کنید')
-            return self.form_invalid(form)
-        elif type_of_question == Question.TypeOfQuestions.IMAGE_BASED and not form.cleaned_data.get('image'):
+        type_of_question = form.cleaned_data.get('type_of_question')
+
+        if type_of_question == Question.TypeOfQuestions.IMAGE_BASED and not form.cleaned_data.get('image'):
             messages.error(self.request, 'لطفا عکس را اپلود کنید')
             return self.form_invalid(form)
         elif type_of_question == Question.TypeOfQuestions.PDF_BASED and not form.cleaned_data.get('pdf_file'):
             messages.error(self.request, 'لطفا فایل pdf را وارد کنید')
             return self.form_invalid(form)
     
-        form.instance.quiz = get_object_or_404(Quiz, pk=self.kwargs.get('quiz_id'))
-
+        form.instance.quiz = self.quiz
         return super().form_valid(form)
     
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-
         data['status'] = Question.TypeOfQuestions 
+        data['quiz'] = self.quiz
 
         return data
     
     def get_success_url(self):
         messages.success(self.request, 'سوال افزوده شد')
-        return reverse_lazy('admin-panel:qbank-update', kwargs={'pk':self.object.pk})
+
+        if self.object.type_of_question == Question.TypeOfQuestions.MULTIPLE_CHOICE  :
+            messages.info(self.request, 'لطفا گزینه ها را ثبت کنید')
+            return reverse_lazy('admin-panel:quiz-question-option-create', kwargs={'quiz_id': self.quiz.id, 'qid':self.object.id})
+        else :
+            messages.info(self.request, 'لطفا کلید پاسخ  را ثبت کنید')
+            return reverse_lazy('admin-panel:quiz-question-key-create', kwargs={'quiz_id': self.quiz.id, 'qid':self.object.id})
+            
+ 
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+class QuestionUpdateView(AdminPermissionRequire, UpdateView):
+    """for create question for quiz"""
+    
+    queryset = Question.objects.prefetch_related('options')
+    template_name = 'admin-panel/exam/questions/create-question.html'
+    form_class = QuestionModelForm
+    context_object_name = 'item'
+
+    def form_valid(self, form):
+        type_of_question = form.cleaned_data.get('type_of_question')
+ 
+        if type_of_question == Question.TypeOfQuestions.IMAGE_BASED and not form.cleaned_data.get('image'):
+            messages.error(self.request, 'لطفا عکس را اپلود کنید')
+            return self.form_invalid(form)
+        elif type_of_question == Question.TypeOfQuestions.PDF_BASED and not form.cleaned_data.get('pdf_file'):
+            messages.error(self.request, 'لطفا فایل pdf را وارد کنید')
+            return self.form_invalid(form)
+    
+        form.instance.quiz =  self.get_object().quiz 
+
+        return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        self.quiz = self.get_object().quiz 
+
+        data['status'] = Question.TypeOfQuestions 
+        data['quiz'] = self.quiz 
+ 
+
+
+        return data
+    
+    def get_success_url(self):
+        messages.success(self.request, 'سوال بروز رسانی شد')
+        self.quiz = self.get_object().quiz 
+
+
+        obj = self.get_object()
+
+        options = QuestionOption.objects.filter(question__id=obj.id)
+
+        if self.get_object().type_of_question == Question.TypeOfQuestions.MULTIPLE_CHOICE and not options.exists():
+            messages.error(self.request, 'لطفا گزینه ها را ثبت کنید')
+            return reverse_lazy('admin-panel:quiz-question-option-create', kwargs={'quiz_id': self.quiz.id, 'qid':obj.id})
+        
+        question_key = QuestionAnswerKey.objects.filter(question__id=obj.id)
+
+        if not question_key.exists():
+            messages.error(self.request, 'لطفا کلید پاسخ  را ثبت کنید')
+            return reverse_lazy('admin-panel:quiz-question-key-create', kwargs={'quiz_id': self.quiz.id, 'qid':obj.id})
+        
+        return reverse_lazy('admin-panel:quiz-questions-update', kwargs={**self.kwargs})
 
     def form_invalid(self, form):
         messages.error(self.request, form.errors)
         return super().form_invalid(form)
+class QuestionDelete(AdminPermissionRequire, RedirectView):
+    """for delete the questions"""
+    def get_redirect_url(self, *args, **kwargs):
+        question = get_object_or_404(Question, pk=kwargs.get('pk')) 
+        question.delete()
+        messages.info(self.request, 'سوال حذف شد')
+        return reverse('admin-panel:quiz-questions-list', kwargs={'quiz_id':kwargs.get('quiz_id')})
 
 
-class QuestionUpdateView(AdminPermissionRequire, UpdateView):pass
+class QuestionAnswerKeyCreateView(AdminPermissionRequire, CreateView):
+    """ for create key for question"""
+
+    template_name = 'admin-panel/exam/key/create-key.html'
+    form_class = QuestionAnwerKeyModelForm
+    queryset = QuestionAnswerKey.objects.prefetch_related('question', 'question__quiz')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.question = get_object_or_404(Question, pk=kwargs.get('qid'))
+        self.quiz = get_object_or_404(Quiz, pk=kwargs.get('quiz_id'))
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_success_url(self):
+        obj = self.question
+ 
+        options = QuestionOption.objects.filter(question__id=self.question.id)
+
+        if obj.type_of_question == Question.TypeOfQuestions.MULTIPLE_CHOICE and not options.exists():
+            messages.error(self.request, 'لطفا گزینه ها را ثبت کنید')
+            return reverse_lazy('admin-panel:quiz-question-option-create', kwargs={'quiz_id': self.quiz.id, 'qid':obj.id})
+ 
+        return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':self.quiz.id, 'pk':self.question.id}) 
+
+    def form_valid(self, form):
+        type_of_answer = form.cleaned_data.get('type_of_answer')
+ 
+        if type_of_answer == QuestionAnswerKey.TypeOfAnswer.IMAGE_BASED and not form.cleaned_data.get('image'):
+            messages.error(self.request, 'لطفا عکس را اپلود کنید')
+            return self.form_invalid(form)
+        elif type_of_answer == QuestionAnswerKey.TypeOfAnswer.PDF_BASED and not form.cleaned_data.get('pdf_file'):
+            messages.error(self.request, 'لطفا فایل pdf را وارد کنید')
+            return self.form_invalid(form)
+    
+        form.instance.question =  self.question 
+
+        messages.success(self.request, 'کلید افزوده شد')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        data['item']=self.question
+        data['quiz']=self.quiz
+
+        return data
+class QuestionAnswerKeyUpdateView(AdminPermissionRequire, UpdateView):
+    """for update the key of the question"""
 
 
-class QuestionAnswerKeyListView(AdminPermissionRequire, ListView):pass
-class QuestionAnswerKeyCreateView(AdminPermissionRequire, CreateView):pass
-class QuestionAnswerKeyUpdateView(AdminPermissionRequire, UpdateView):pass
+    template_name = 'admin-panel/exam/key/create-key.html'
+    form_class = QuestionAnwerKeyModelForm
+    queryset = QuestionAnswerKey.objects.prefetch_related('question', 'question__quiz')
+ 
+    def dispatch(self, request, *args, **kwargs):
+        self.question = get_object_or_404(Question, pk=kwargs.get('qid'))
+        self.quiz = get_object_or_404(Quiz, pk=kwargs.get('quiz_id'))
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_object(self):
+        return self.question.answer_key
+    
+    def get_success_url(self):
+        obj = self.question
+ 
+        options = QuestionOption.objects.filter(question__id=self.question.id)
 
+        if obj.type_of_question == Question.TypeOfQuestions.MULTIPLE_CHOICE and not options.exists():
+            messages.error(self.request, 'لطفا گزینه ها را ثبت کنید')
+            return reverse_lazy('admin-panel:quiz-question-option-create', kwargs={'quiz_id': self.quiz.id, 'qid':obj.id})
+ 
+        return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':self.quiz.id, 'pk':self.question.id}) 
 
-class QuestionOptionsListView(AdminPermissionRequire, ListView):pass
-class QuestionOptionsCreateView(AdminPermissionRequire, CreateView):pass
-class QuestionOptionsUpdateView(AdminPermissionRequire, UpdateView):pass
+    def form_valid(self, form):
+        type_of_answer = form.cleaned_data.get('type_of_answer')
+ 
+        if type_of_answer == QuestionAnswerKey.TypeOfAnswer.IMAGE_BASED and not form.cleaned_data.get('image'):
+            messages.error(self.request, 'لطفا عکس را اپلود کنید')
+            return self.form_invalid(form)
+        elif type_of_answer == QuestionAnswerKey.TypeOfAnswer.PDF_BASED and not form.cleaned_data.get('pdf_file'):
+            messages.error(self.request, 'لطفا فایل pdf را وارد کنید')
+            return self.form_invalid(form)
+    
+        form.instance.question =  self.question 
+
+        messages.success(self.request, 'کلید بروز رسانی شد')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        data['item']=self.question
+        data['quiz']=self.quiz
+
+        return data
+ 
+
+class QuestionOptionsCreateView(AdminPermissionRequire, CreateView):
+    """for create option to question"""
+
+    form_class = QuestionOptionsModelForm
+    template_name = 'admin-panel/exam/options/create-options.html'
+    queryset = QuestionOption.objects.prefetch_related('question', 'question__quiz')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.question = get_object_or_404(Question, pk=kwargs.get('qid'))
+        self.quiz = get_object_or_404(Quiz, pk=kwargs.get('quiz_id'))
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, 'گزینه ایجاد شد')    
+        form.instance.question = self.question
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['item']=self.question
+        data['quiz']=self.quiz
+        return data
+    
+    def get_success_url(self):
+
+        if '_add' in self.request.POST:
+            return reverse('admin-panel:quiz-question-option-create', kwargs={'quiz_id':self.quiz.id, 'qid':self.question.id}) 
+
+        obj = self.question
+        question_key = QuestionAnswerKey.objects.filter(question__id=obj.id)
+        if not question_key.exists():
+            messages.error(self.request, 'لطفا کلید پاسخ  را ثبت کنید')
+            return reverse_lazy('admin-panel:quiz-question-key-create', kwargs={'quiz_id': self.quiz.id, 'qid':obj.id})
+ 
+        return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':self.quiz.id, 'pk':self.question.id}) 
+class QuestionOptionsUpdateView(AdminPermissionRequire, UpdateView):
+    """for update option to question"""
+
+    form_class = QuestionOptionsModelForm
+    template_name = 'admin-panel/exam/options/create-options.html'
+    queryset = QuestionOption.objects.prefetch_related('question', 'question__quiz')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.question = get_object_or_404(Question, pk=kwargs.get('qid'))
+        self.quiz = get_object_or_404(Quiz, pk=kwargs.get('quiz_id'))
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, 'گزینه بروز رسانی شد')    
+        form.instance.question = self.question
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['item']=self.question
+        data['quiz']=self.quiz
+        return data
+    
+    def get_success_url(self):
+
+        if '_add' in self.request.POST:
+            return reverse('admin-panel:quiz-question-option-create', kwargs={'quiz_id':self.quiz.id, 'qid':self.question.id}) 
+
+        obj = self.question
+        question_key = QuestionAnswerKey.objects.filter(question__id=obj.id)
+        if not question_key.exists():
+            messages.error(self.request, 'لطفا کلید پاسخ  را ثبت کنید')
+            return reverse_lazy('admin-panel:quiz-question-key-create', kwargs={'quiz_id': self.quiz.id, 'qid':obj.id})
+ 
+        return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':self.quiz.id, 'pk':self.question.id}) 
+class QuestionOptionDelete(AdminPermissionRequire, RedirectView):
+    """for delete the item"""
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(QuestionOption, pk=kwargs.get('pk')) 
+        item.delete()
+        messages.info(self.request, 'گزینه حذف شد')
+        return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':kwargs.get('quiz_id'), 'pk':kwargs.get('qid')})
 
  

@@ -108,9 +108,21 @@ urlpatterns = [
     path('exam/update/<int:pk>', views.quiz.QuizUpdateView.as_view(), name='quiz-update'),
     path('exam/active/<int:pk>', views.quiz.QuizActivateView.as_view(), name='quiz-active'),
     path('exam/start-currecting/<int:pk>', views.quiz.QuizStartCurrectingView.as_view(), name='quiz-currecting'),
+
     # questions
     path('exam/<int:quiz_id>/questions/', views.quiz.QuestionListView.as_view(), name='quiz-questions-list'),
-    path('exam/<int:quiz_id>/questions/create/', views.quiz.QuizCreateView.as_view(), name='quiz-questions-create'),
+    path('exam/<int:quiz_id>/questions/create/', views.quiz.QuestionCreateView.as_view(), name='quiz-questions-create'),
+    path('exam/<int:quiz_id>/questions/update/<int:pk>', views.quiz.QuestionUpdateView.as_view(), name='quiz-questions-update'),
+    path('exam/<int:quiz_id>/questions/delete/<int:pk>', views.quiz.QuestionDelete.as_view(), name='quiz-questions-delete'),
+
+    # question key
+    path('exam/<int:quiz_id>/question/<int:qid>/key/create/', views.quiz.QuestionAnswerKeyCreateView.as_view(), name='quiz-question-key-create'),
+    path('exam/<int:quiz_id>/question/<int:qid>/key/update/', views.quiz.QuestionAnswerKeyUpdateView.as_view(), name='quiz-question-key-update'),
+
+    # question option
+    path('exam/<int:quiz_id>/question/<int:qid>/options/create/', views.quiz.QuestionOptionsCreateView.as_view(), name='quiz-question-option-create'),
+    path('exam/<int:quiz_id>/question/<int:qid>/options/update/<int:pk>', views.quiz.QuestionOptionsUpdateView.as_view(), name='quiz-question-option-update'),
+    path('exam/<int:quiz_id>/question/<int:qid>/options/delete/<int:pk>', views.quiz.QuestionOptionDelete.as_view(), name='quiz-question-option-delete'),
 
 
 ]

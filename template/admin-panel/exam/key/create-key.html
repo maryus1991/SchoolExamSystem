@@ -6,15 +6,17 @@
     <div class="page-header">
       <div class="page-header-info">
         <h1>ایجاد کلید برای سوال  </h1>
+        <p>سوال {{item.name}}</p>
+
        </div>
       <div class="page-header-actions">
-        <a href="{% url 'admin-panel:qbank-update' item.pk %}" class="btn btn-outline-secondary btn-sm">
+        <a href="{% url 'admin-panel:quiz-questions-update' quiz_id=quiz.id pk=item.pk %}" class="btn btn-outline-secondary btn-sm">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
           بازگشت
         </a>
       </div>
     </div>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="row g-4">
         <div class="col-lg-8">

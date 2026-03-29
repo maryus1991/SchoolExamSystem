@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sornac.ir' , 'sorna.runflare.run']
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'django_ckeditor_5',
     'easy_thumbnails',
     'jalali_date',
+    # 'corsheaders',
 
     # apps
     'user',
@@ -57,6 +59,8 @@ INSTALLED_APPS = [
 
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 THUMBNAIL_DEFAULT_OPTIONS = {
     'format': 'WEBP',      # همیشه WebP تولید کنه
     'quality': 90,         # کیفیت پیش‌فرض (می‌تونی تغییر بدی)
@@ -66,6 +70,7 @@ THUMBNAIL_DEFAULT_OPTIONS = {
 
 
 MIDDLEWARE = [
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

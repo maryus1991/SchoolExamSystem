@@ -10,7 +10,8 @@ phase 1 todo list
     responsive the image and pdf showing qbank and exam start page
     add site setting permmition 
     add negetive score
-
+    remove the ازمون های انلاین فقط ازمون باشه
+    add score avg to main dashboard
 
 phase 2 todo list
     fix the search bar in favorate quiz qbank blog 

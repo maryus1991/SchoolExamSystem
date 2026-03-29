@@ -188,44 +188,20 @@
     </div>
 
     <!-- آزمون -->
-    <div class="nav-item">
-      <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuReport" aria-expanded="false">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 11 12 14 22 4"/>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-        </svg>
-        کارنامه ها
-         <svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <ul class="nav-submenu collapse" id="menuReport">
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/list.html" class="nav-link-item">لیست آزمون‌ها</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/create.html" class="nav-link-item">ایجاد آزمون</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/questions-list.html" class="nav-link-item">سوالات آزمون</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/questions-create.html" class="nav-link-item">افزودن سوال</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/answers-bulk.html" class="nav-link-item">افزودن پاسخ گروهی</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/answer-detail.html" class="nav-link-item">جزئیات پاسخ</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/reports.html" class="nav-link-item">گزارشات</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/report-detail.html" class="nav-link-item">جزئیات گزارش</a></li>
-      </ul>
-    </div>
+ 
     <div class="nav-item">
       <button class="nav-link-item nav-collapse-toggle" data-bs-toggle="collapse" data-bs-target="#menuQuiz" aria-expanded="false">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="9 11 12 14 22 4"/>
           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
         </svg>
-        مدیریت آزمون
+        مدیریت آزمون و کارنامه ها
          <svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <ul class="nav-submenu collapse" id="menuQuiz">
         <li class="nav-item"><a href="{% url 'admin-panel:quiz-list' %}" class="nav-link-item">لیست آزمون‌ها</a></li>
         <li class="nav-item"><a href="{% url 'admin-panel:quiz-create' %}" class="nav-link-item">ایجاد آزمون</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/questions-list.html" class="nav-link-item">سوالات آزمون</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/questions-create.html" class="nav-link-item">افزودن سوال</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/answers-bulk.html" class="nav-link-item">افزودن پاسخ گروهی</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/answer-detail.html" class="nav-link-item">جزئیات پاسخ</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/reports.html" class="nav-link-item">گزارشات</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/quiz/report-detail.html" class="nav-link-item">جزئیات گزارش</a></li>
+ 
       </ul>
     </div>
 
