@@ -100,6 +100,9 @@ class User(AbstractUser):
         verbose_name_plural = 'کاربران'
 
     def __str__(self):
+        if self.first_name or self.last_login:
+            return self.get_full_name()
+
         return f"{str(self.PhoneNumber).replace(' ', '')}"
     
     def set_otp(self) -> int:

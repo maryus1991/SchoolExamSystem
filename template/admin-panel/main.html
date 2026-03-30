@@ -1,25 +1,18 @@
  
 {% extends "admin-panel/base/base.html" %}
-
+{% load tdc %}
+{% load jalali_tags %}
+{% load list %}
 {% block main %} 
 <main class="page-content">
 
   <!-- Page Header -->
   <div class="page-header">
     <div class="page-header-info">
-      <h1>داشبورد</h1>
+      <h1>داشبورد ادمین</h1>
       <p>خوش آمدید! خلاصه‌ای از وضعیت سیستم را مشاهده می‌کنید.</p>
     </div>
-    <div class="page-header-actions">
-      <button class="btn btn-outline-secondary btn-sm">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        دانلود گزارش
-      </button>
-      <button class="btn btn-primary btn-sm">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        افزودن جدید
-      </button>
-    </div>
+    
   </div>
 
   <!-- Stats -->
@@ -35,12 +28,9 @@
           </svg>
         </div>
         <div>
-          <div class="stat-value">۱,۲۴۸</div>
+          <div class="stat-value">{{users_count}}</div>
           <div class="stat-label">کاربران فعال</div>
-          <div class="stat-change up">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-            ۱۲٪ نسبت به ماه قبل
-          </div>
+ 
         </div>
       </div>
     </div>
@@ -53,12 +43,9 @@
           </svg>
         </div>
         <div>
-          <div class="stat-value">۳۴۸</div>
+          <div class="stat-value">{{ order_count}}</div>
           <div class="stat-label">سفارشات این ماه</div>
-          <div class="stat-change up">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-            ۸٪ افزایش
-          </div>
+ 
         </div>
       </div>
     </div>
@@ -71,12 +58,9 @@
           </svg>
         </div>
         <div>
-          <div class="stat-value">۱۲.۵M</div>
+          <div class="stat-value">{{all_peyment_for_last_month|tdc}} </div>
           <div class="stat-label">درآمد (تومان)</div>
-          <div class="stat-change up">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-            ۲۳٪ رشد
-          </div>
+ 
         </div>
       </div>
     </div>
@@ -89,12 +73,9 @@
           </svg>
         </div>
         <div>
-          <div class="stat-value">۵۶۲</div>
+          <div class="stat-value">{{quiz_count}}</div>
           <div class="stat-label">آزمون‌های برگزار شده</div>
-          <div class="stat-change down">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-            ۳٪ کاهش
-          </div>
+ 
         </div>
       </div>
     </div>
@@ -102,7 +83,7 @@
 
   <!-- Charts Row -->
   <div class="row g-3 mb-4">
-    <div class="col-xl-8">
+    <div class="col-xl-4">
       <div class="card">
         <div class="card-header">
           <div>
@@ -110,7 +91,7 @@
             <div class="card-subtitle">۱۲ ماه گذشته</div>
           </div>
           <div class="ms-auto d-flex gap-2">
-            <button class="btn btn-ghost btn-sm active">ماهانه</button>
+            <button class="btn btn-ghost btn-sm  ">ماهانه</button>
             <button class="btn btn-ghost btn-sm">هفتگی</button>
           </div>
         </div>
@@ -128,6 +109,42 @@
       <div class="card h-100">
         <div class="card-header">
           <div>
+            <div class="card-title">اخرین  سفارشات</div>
+            <div class="card-subtitle">این ماه</div>
+          </div>        
+          <div class="ms-auto d-flex gap-2">
+            <a class="btn btn-ghost btn-sm" href="{% url 'admin-panel:order-list' %}">همه</a>
+ 
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column gap-3">
+            
+            {% for item in orders_list %}
+            <a href="{% url 'admin-panel:order-detail' item.id %}">
+              <div class="d-flex justify-content-between mb-1" style="font-size:.8rem">
+                <span  class="w-75">
+                  <span class="text-white " >{{item.user}}</span>
+                  
+                </span>
+                <span class="w25" >
+
+                  <span class="text-white badge badge-{% cycle 'success' 'info' 'warning' 'danger' 'primary' %} p-2" >{{item.status}}</span>
+                </span>
+              </div>
+              <div class="progress w-100"><div class="progress-bar w-100 btn-{% cycle 'success' 'info' 'warning' 'danger' 'primary' %}"  ></div></div>
+            </a>
+            {% endfor %}
+ 
+          </div>
+ 
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <div>
             <div class="card-title">وضعیت سفارشات</div>
             <div class="card-subtitle">این ماه</div>
           </div>
@@ -136,48 +153,48 @@
           <div class="d-flex flex-column gap-3">
             <div>
               <div class="d-flex justify-content-between mb-1" style="font-size:.8rem">
-                <span style="color:var(--text-secondary)">پرداخت شده</span>
-                <span style="color:var(--accent-success);font-weight:700">۶۸٪</span>
+                <span class="text-white" >پرداخت شده</span>
+                <span class="text-white">{{ paid_order_percent }}٪</span>
               </div>
-              <div class="progress"><div class="progress-bar" style="width:68%;background:var(--accent-success)"></div></div>
+              <div class="progress"><div class="progress-bar btn-success w-{{paid_order_percent}}"></div></div>
             </div>
             <div>
               <div class="d-flex justify-content-between mb-1" style="font-size:.8rem">
-                <span style="color:var(--text-secondary)">در انتظار</span>
-                <span style="color:var(--accent-warning);font-weight:700">۱۸٪</span>
+                <span  class="text-white">در انتظار</span>
+                <span  class="text-white">{{active_order_percent}}٪</span>
               </div>
-              <div class="progress"><div class="progress-bar" style="width:18%;background:var(--accent-warning)"></div></div>
+              <div class="progress"><div class="progress-bar btn-warning w-{{active_order_percent}}"  ></div></div>
             </div>
             <div>
               <div class="d-flex justify-content-between mb-1" style="font-size:.8rem">
-                <span style="color:var(--text-secondary)">لغو شده</span>
-                <span style="color:var(--accent-danger);font-weight:700">۱۴٪</span>
+                <span class="text-white" >لغو شده</span>
+                <span class="text-white"  >{{ cancell_order_percent }}٪</span>
               </div>
-              <div class="progress"><div class="progress-bar" style="width:14%;background:var(--accent-danger)"></div></div>
+              <div class="progress"><div class="progress-bar btn-danger w-{{cancell_order_percent}}"  ></div></div>
             </div>
           </div>
           <div class="divider"></div>
           <div class="d-flex flex-column gap-2">
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center gap-2">
-                <div style="width:8px;height:8px;border-radius:50%;background:var(--accent-primary)"></div>
-                <span style="font-size:.8rem;color:var(--text-secondary)">کل سفارشات</span>
+                <div  class="btn-primary p-2 rounded"></div>
+                <span  class="text-info ">کل سفارشات</span>
               </div>
-              <span style="font-size:.85rem;font-weight:700;color:var(--text-primary)">۳۴۸</span>
+              <span class="text-info ">{{all_order_count}}</span>
             </div>
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center gap-2">
-                <div style="width:8px;height:8px;border-radius:50%;background:var(--accent-success)"></div>
-                <span style="font-size:.8rem;color:var(--text-secondary)">موفق</span>
+                <div  class="btn-success p-2 rounded"></div>
+                <span  class="text-success ">موفق</span>
               </div>
-              <span style="font-size:.85rem;font-weight:700;color:var(--text-primary)">۲۳۷</span>
+              <span  class="text-success">{{paid_order_count}}</span>
             </div>
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center gap-2">
-                <div style="width:8px;height:8px;border-radius:50%;background:var(--accent-warning)"></div>
-                <span style="font-size:.8rem;color:var(--text-secondary)">در انتظار</span>
+                <div  class="btn-warning p-2 rounded"></div>
+                <span  class="text-warning ">در انتظار</span>
               </div>
-              <span style="font-size:.85rem;font-weight:700;color:var(--text-primary)">۶۳</span>
+              <span  class="text-warning ">{{active_order_count}}</span>
             </div>
           </div>
         </div>
@@ -187,14 +204,14 @@
 
   <!-- Recent Users & Activity -->
   <div class="row g-3">
-    <div class="col-xl-7">
+        <div class="col-xl-4">
       <div class="card">
         <div class="card-header">
           <div>
             <div class="card-title">آخرین کاربران</div>
             <div class="card-subtitle">تازه‌ترین ثبت‌نام‌ها</div>
           </div>
-          <a href="pages/users/list.html" class="btn btn-ghost btn-sm ms-auto">مشاهده همه</a>
+          <a href="{% url 'admin-panel:user-list' %}" class="btn btn-ghost btn-sm ms-auto">مشاهده همه</a>
         </div>
         <div class="table-container">
           <table class="table">
@@ -204,129 +221,140 @@
                 <th>نقش</th>
                 <th>تاریخ عضویت</th>
                 <th>وضعیت</th>
+                <th>تاییده شماره</th>
               </tr>
             </thead>
             <tbody>
+              {% for item in last_users %}
               <tr>
-                <td>
-                  <div class="user-cell">
-                    <div class="avatar" style="background:linear-gradient(135deg,#4f8ef7,#a371f7)">ع.م</div>
-                    <div class="user-cell-info">
-                      <div class="name">علیرضا محمدی</div>
-                      <div class="email">ali@example.com</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="badge badge-primary">دانش‌آموز</span></td>
-                <td style="color:var(--text-muted);font-size:.78rem">۱۴۰۳/۰۹/۱۵</td>
-                <td><span class="badge badge-success">فعال</span></td>
+                  <td>
+                    <a href="{% url 'admin-panel:user-update' item.id %}"> 
+                      <div class="user-cell">
+                         
+                        <div class="user-cell-info">
+                          <div class="name">{{item}}</div>
+                          <div class="email" dir="ltr">{{item.PhoneNumber}}</div>
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+                  <td><span class="badge badge-primary">{{item.type_of_user}}</span></td>
+                  <td style="color:var(--text-muted);font-size:.78rem">{{item.date_joined|to_jalali}}</td>
+                  {% if item.is_active %}
+                  <td><span class="badge badge-success">فعال</span></td>
+                  {% else %}
+                  <td><span class="badge badge-warning">غیر فعال</span></td>
+                  {% endif %}
+                  {% if item.is_verified %}
+                  <td><span class="badge badge-success">تایید شده</span></td>
+                  {% else %}
+                  <td><span class="badge badge-danget"> تایید نشده</span></td>
+                  {% endif %}
+                </a>
               </tr>
-              <tr>
-                <td>
-                  <div class="user-cell">
-                    <div class="avatar" style="background:linear-gradient(135deg,#2ea043,#58a6ff)">ز.ک</div>
-                    <div class="user-cell-info">
-                      <div class="name">زهرا کریمی</div>
-                      <div class="email">zahra@example.com</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="badge badge-purple">معلم</span></td>
-                <td style="color:var(--text-muted);font-size:.78rem">۱۴۰۳/۰۹/۱۴</td>
-                <td><span class="badge badge-success">فعال</span></td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="user-cell">
-                    <div class="avatar" style="background:linear-gradient(135deg,#d29922,#f85149)">م.ا</div>
-                    <div class="user-cell-info">
-                      <div class="name">محسن احمدی</div>
-                      <div class="email">mohsen@example.com</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="badge badge-primary">دانش‌آموز</span></td>
-                <td style="color:var(--text-muted);font-size:.78rem">۱۴۰۳/۰۹/۱۳</td>
-                <td><span class="badge badge-warning">معلق</span></td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="user-cell">
-                    <div class="avatar" style="background:linear-gradient(135deg,#a371f7,#4f8ef7)">ف.ر</div>
-                    <div class="user-cell-info">
-                      <div class="name">فاطمه رحیمی</div>
-                      <div class="email">fateme@example.com</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span class="badge badge-info">والدین</span></td>
-                <td style="color:var(--text-muted);font-size:.78rem">۱۴۰۳/۰۹/۱۲</td>
-                <td><span class="badge badge-success">فعال</span></td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
     </div>
+ 
     <div class="col-xl-5">
-      <div class="card h-100">
+      <div class="card">
         <div class="card-header">
           <div>
-            <div class="card-title">فعالیت‌های اخیر</div>
-            <div class="card-subtitle">رویدادهای سیستم</div>
+            <div class="card-title">  اخرین تیکت ها</div>
+            <div class="card-subtitle">مشکلات کاربران</div>
           </div>
+          <a href="{% url 'admin-panel:ticket-list' %}" class="btn btn-ghost btn-sm ms-auto">مشاهده همه</a>
         </div>
-        <div class="card-body p-0">
-          <div class="d-flex flex-column">
-            <div class="notif-item border-bottom" style="border-color:var(--border-light)!important">
-              <div style="width:34px;height:34px;border-radius:var(--radius-md);background:rgba(79,142,247,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-              </div>
-              <div>
-                <div class="notif-text">کاربر <strong>علیرضا محمدی</strong> ثبت‌نام کرد</div>
-                <div class="notif-time">۵ دقیقه پیش</div>
-              </div>
-            </div>
-            <div class="notif-item border-bottom" style="border-color:var(--border-light)!important">
-              <div style="width:34px;height:34px;border-radius:var(--radius-md);background:rgba(46,160,67,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-success)" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-              </div>
-              <div>
-                <div class="notif-text">سفارش <strong>#۱۰۲۴۸</strong> پرداخت شد</div>
-                <div class="notif-time">۲۰ دقیقه پیش</div>
-              </div>
-            </div>
-            <div class="notif-item border-bottom" style="border-color:var(--border-light)!important">
-              <div style="width:34px;height:34px;border-radius:var(--radius-md);background:rgba(163,113,247,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-              </div>
-              <div>
-                <div class="notif-text">آزمون <strong>ریاضی پایه دهم</strong> ایجاد شد</div>
-                <div class="notif-time">۱ ساعت پیش</div>
-              </div>
-            </div>
-            <div class="notif-item border-bottom" style="border-color:var(--border-light)!important">
-              <div style="width:34px;height:34px;border-radius:var(--radius-md);background:rgba(210,153,34,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-warning)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              </div>
-              <div>
-                <div class="notif-text">خطا در پردازش پرداخت سفارش <strong>#۱۰۲۴۵</strong></div>
-                <div class="notif-time">۲ ساعت پیش</div>
-              </div>
-            </div>
-            <div class="notif-item">
-              <div style="width:34px;height:34px;border-radius:var(--radius-md);background:rgba(88,166,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-info)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              </div>
-              <div>
-                <div class="notif-text">مقاله <strong>«روش‌های مطالعه»</strong> منتشر شد</div>
-                <div class="notif-time">۳ ساعت پیش</div>
-              </div>
-            </div>
-          </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>مشکل / کاربر</th>
+                <th>اهمیت</th>
+                <th>تاریخ ثبت</th>
+                <th>وضعیت</th>
+                <th>بخش</th>
+                <th>دسته</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in last_tickets %}
+              <tr>
+                  <td>
+                    <a href="{% url 'admin-panel:ticket-chat' item.id %}"> 
+                      <div class="user-cell">
+                         
+                        <div class="user-cell-info">
+                          <div class="name">{{item.name}}</div>
+                          <div class="email" dir="ltr">{{item.user}}</div>
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+                  <td><span class="badge badge-warning">{{item.priority}}</span></td>
+                  <td style="color:var(--text-muted);font-size:.78rem">{{item.create_at|to_jalali}}</td>
+                  <td><span class="badge badge-danger">{{item.status}}</span></td>
+                  <td><span class="badge badge-success">{{item.problem}}</span></td>
+                  <td><span class="badge badge-info   ">{{item.placement}}</span></td>
+ 
+                </a>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
+    <div class="col-xl-3">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">  اخرین ازمون ها</div>
+            <div class="card-subtitle">جدید ترین ازمون ها</div>
+            
+          </div>
+          <a href="{% url 'admin-panel:quiz-list' %}" class="btn btn-ghost btn-sm ms-auto">مشاهده همه</a>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>نام و زمان برگذاری</th>
+                <th>وضعیت</th>
+                <th>ظرفیت فعلی / کل</th>
+ 
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in quiz_list %}
+              <tr>
+                  <td>
+                    <a href="{% url 'admin-panel:quiz-update' item.id %}"> 
+                      <div class="user-cell">
+                         
+                        <div class="user-cell-info">
+                          <div class="name">{{item.name}}</div>
+                          <div class="email">{{item.start_at|to_jalali:'%Y/%m/%d'}}</div>
+
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+                  <td><span class="badge badge-warning">{{item.status}}</span></td>
+                  <td style="color:var(--text-muted);font-size:.78rem"><span >{{item.filled_capacity}} / {{item.capacity}}</span></td>
+                  
+                </a>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </main>
