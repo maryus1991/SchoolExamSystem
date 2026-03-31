@@ -18,8 +18,8 @@ phase 2 todo list
     fix the nemodare page 
     fix the responsive of dashboard panel and order detail
     fix the create at for student answer that for show the time of answer
-    fix the QuizDetail 
-    fix the template in main dashboard page
+    check the QuizDetail for larg scale
+  
   
 phase 3 todo list 
  

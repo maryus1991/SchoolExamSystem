@@ -45,8 +45,8 @@ urlpatterns = [
 
     path('report/third/', views.report.ThirdReport.as_view(), name='report-third'), 
     path('report/second/', views.report.SecontReportList.as_view(), name='report-second-list'), 
-    path('report/second/<int:pk>', views.report.SecondRespotDetail.as_view(), name='report-second-detail'), 
-    path('report/first/', views.report.FirstReportList.as_view(), name='report-first-list'), 
-    path('report/first/<int:pk>', views.report.FirstReportDetail.as_view(), name='report-fist-detail'), 
+    # path('report/second/<int:pk>', views.report.SecondRespotDetail.as_view(), name='report-second-detail'), 
+    # path('report/first/', views.report.FirstReportList.as_view(), name='report-first-list'), 
+    # path('report/first/<int:pk>', views.report.FirstReportDetail.as_view(), name='report-fist-detail'), 
  
 ]

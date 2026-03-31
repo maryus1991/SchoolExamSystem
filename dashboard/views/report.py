@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from report.models import Report, GradeCategories, LessionCategories, MajorCategories
 from django.db.models.aggregates import Avg
 from django.db.models import Q
-
+import math
 
 
 class SecontReportList(LoginRequiredMixin, ListView):
@@ -33,15 +33,38 @@ class SecontReportList(LoginRequiredMixin, ListView):
 
         return data
 
-
-class FirstReportList(TemplateView):
-    template_name = 'dashboard/report/05-karnameye-avalilist.html'
-
-class FirstReportDetail(TemplateView):
-    template_name = 'dashboard/report/06-karnameye-avali-detail.html'
-
-class SecondRespotDetail(TemplateView):
-    template_name = 'dashboard/report/04-karnameye-sanavi-detail.html'
- 
-class ThirdReport(TemplateView):
+class ThirdReport(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/report/02-karnameye-sales.html'
+
+    def get_context_data(self, **kwargs) -> dict[str, ...]:
+        context = super().get_context_data(**kwargs)
+        user_reports = Report.objects.filter(user=self.request.user).prefetch_related('quiz')  
+        percents_list = list(user_reports.values_list('percent', flat=True))
+        score_list = list(user_reports.values_list('score', flat=True))
+
+
+        context["avg_percent"] = sum(percents_list) / len(percents_list)
+        context["avg_score"] = sum(score_list) / len(score_list)
+        
+        context["best_percent"] = max(percents_list)
+        context["best_order"] = user_reports.order_by('-order').first().order 
+        context["best_teraze"] = user_reports.order_by('-teraze').first().teraze
+        context["best_score"] = max(score_list)
+
+        context["report_list"] = user_reports.order_by('-pk').annotate(teraze_avg=Avg('teraze')).all()[:25]
+  
+        return context
+    
+
+
+
+#####
+# class FirstReportList(TemplateView):
+#     template_name = 'dashboard/report/05-karnameye-avalilist.html'
+
+# class FirstReportDetail(TemplateView):
+#     template_name = 'dashboard/report/06-karnameye-avali-detail.html'
+
+# class SecondRespotDetail(TemplateView):
+#     template_name = 'dashboard/report/04-karnameye-sanavi-detail.html'
+#####

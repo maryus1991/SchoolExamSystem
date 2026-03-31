@@ -1,5 +1,5 @@
 {% extends "dashboard/base/base.html" %}
-
+{% load jalali_tags %}
 
 {% block header %}
 
@@ -43,10 +43,10 @@
     .stat-ring{width:120px;height:120px;border-radius:50%;border:8px solid rgba(255,255,255,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);}
     /* Chart mock */
     .chart-container{background:var(--bg);border-radius:16px;padding:1.5rem;border:1px solid var(--border);}
-    .bar-chart{display:flex;align-items:flex-end;gap:8px;height:160px;padding:0 0.5rem;}
-    .bar{flex:1;border-radius:8px 8px 0 0;transition:all 0.3s;cursor:pointer;position:relative;}
+    .bar-chart{display:flex;align-items:flex-end;gap:8px;height:400px;padding:0 0.5rem; }
+    .bar{flex:1;border-radius:8px 8px 0 0;transition:all 0.3s;cursor:pointer;position:relative; width: 37px;}
     .bar:hover{filter:brightness(1.1);}
-    .bar-label{text-align:center;font-size:0.65rem;color:var(--text-muted);margin-top:0.3rem;}
+    .bar-label{text-align:center;font-size:0.65rem;color:var(--text-muted);margin-top:0.3rem; width: 37px;}
     @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     .animate-in{animation:fadeInUp 0.5s ease forwards;}
     .delay-1{animation-delay:0.1s;opacity:0}.delay-2{animation-delay:0.2s;opacity:0}.delay-3{animation-delay:0.3s;opacity:0}
@@ -73,12 +73,12 @@
       </div>
       <div class="d-flex gap-3">
         <div class="stat-ring text-center">
-          <div style="font-size:1.6rem;font-weight:900;line-height:1;">۷۸٪</div>
-          <div style="font-size:0.7rem;opacity:0.8;margin-top:2px;">درصد کل</div>
+          <div style="font-size:1.6rem;font-weight:900;line-height:1;">{{avg_percent}}٪</div>
+          <div style="font-size:0.7rem;opacity:0.8;margin-top:2px;">میانگین درصد</div>
         </div>
         <div class="stat-ring text-center">
-          <div style="font-size:1.6rem;font-weight:900;line-height:1;">۱۲</div>
-          <div style="font-size:0.7rem;opacity:0.8;margin-top:2px;">بهترین رتبه</div>
+          <div style="font-size:1.6rem;font-weight:900;line-height:1;">{{avg_score}}</div>
+          <div style="font-size:0.7rem;opacity:0.8;margin-top:2px;">میانگین نمره</div>
         </div>
       </div>
     </div>
@@ -88,30 +88,33 @@
     </div> -->
   </div>
 
+
+
+
   <!-- Summary stats -->
   <div class="row g-3 mb-4">
     <div class="col-6 col-md-3 animate-in delay-1">
       <div class="glass-card p-3 text-center">
-        <div style="font-size:2rem;font-weight:900;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">۱۷.۵</div>
-        <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">نمره کل (از ۲۰)</div>
+        <div style="font-size:2rem;font-weight:900;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">{{best_score}}</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">بهترین نمره</div>
       </div>
     </div>
     <div class="col-6 col-md-3 animate-in delay-2">
       <div class="glass-card p-3 text-center">
-        <div style="font-size:2rem;font-weight:900;color:var(--secondary);">۳۰۰</div>
-        <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">تعداد شرکت‌کننده</div>
+        <div style="font-size:2rem;font-weight:900;color:var(--secondary);">{{best_percent}}</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">بهترین درصد</div>
       </div>
     </div>
     <div class="col-6 col-md-3 animate-in delay-3">
       <div class="glass-card p-3 text-center">
-        <div style="font-size:2rem;font-weight:900;color:var(--success);">۱۲</div>
-        <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">رتبه در استان</div>
+        <div style="font-size:2rem;font-weight:900;color:var(--success);">{{best_order }}</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">بهترین رتبه</div>
       </div>
     </div>
     <div class="col-6 col-md-3 animate-in delay-1">
       <div class="glass-card p-3 text-center">
-        <div style="font-size:2rem;font-weight:900;color:var(--warning);">۴۵</div>
-        <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">رتبه کشوری</div>
+        <div style="font-size:2rem;font-weight:900;color:var(--warning);">{{best_teraze}}</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);font-weight:600;">بهترین تراز</div>
       </div>
     </div>
   </div>
@@ -172,7 +175,7 @@
     <!-- Chart + rank -->
     <div class=" animate-in delay-3">
       <div class="glass-card p-4 mb-4">
-        <div class="section-title mb-3">نمودار مقایسه‌ای</div>
+        <div class="section-title mb-3">نمودار  </div>
         <div class="chart-container">
           <div class="bar-chart" id="barChart"></div>
           <div class="d-flex" id="barLabels" style="gap:8px;margin-top:4px;padding:0 0.5rem;"></div>
@@ -196,17 +199,41 @@
  
 {% endblock   %}
 {% block footer %}
-
+ 
 
 <script>
   function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
   const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
   // Build bar chart
-  const data=[{label:'ریاضی',pct:85,color:'#6C5CE7'},{label:'فیزیک',pct:72,color:'#00CEC9'},{label:'شیمی',pct:68,color:'#fdcb6e'},{label:'ادبیات',pct:91,color:'#fd79a8'},{label:'زبان',pct:63,color:'#e17055'}];
+
+  const data=[];
+  {% for item in report_list %}
+
+  data.push(
+    {label:'{{item.quiz.name}}  {{item.quiz.start_at|to_jalali:"%m/%d"}}',  pct: Math.round(100 * ({{item.teraze}} / {{item.teraze_avg}})) , color:"{% cycle 'green' 'blue' 'brown' 'pink' 'red' 'yellow'  'burlywood' 'rgb(206, 51, 77)' 'rgb(206, 203, 51)' 'rgb(206, 95, 51)' 'rgb(51, 87, 206)' 'rgb(206, 51, 141)' 'rgb(51, 206, 98)' 'rgb(0, 47, 255)' 'rgb(163, 8, 99)' 'rgb(5, 240, 44)' 'rgb(206, 51, 51)' 'rgb(51, 206, 160)' 'rgb(157, 51, 206)' 'rgb(63, 1, 133)' 'rgb(109, 2, 20)' 'rgb(103, 131, 2)' %}"},
+  )
+  {% endfor %}
+  
+  if (data.length <= 25){
+    for (let index = 1; index <= 25 - data.length ; index+=0) {
+      data.push(
+         {label:'',  pct: 0 , color:"none"},
+      )  
+    
+    }
+  }
+  // {% for item in '12345678901234567890123456789012345' %}
+
+  // data.push(
+  //   {label:'123',  pct: Math.round(100 * Math.random()) , color:"{% cycle 'green' 'blue' 'brown' 'pink' 'red' 'yellow'  'burlywood' 'rgb(206, 51, 77)' 'rgb(206, 203, 51)' 'rgb(206, 95, 51)' 'rgb(51, 87, 206)' 'rgb(206, 51, 141)' 'rgb(51, 206, 98)' 'rgb(0, 47, 255)' 'rgb(163, 8, 99)' 'rgb(5, 240, 44)' 'rgb(206, 51, 51)' 'rgb(51, 206, 160)' 'rgb(157, 51, 206)' 'rgb(63, 1, 133)' 'rgb(109, 2, 20)' 'rgb(103, 131, 2)' %}"},
+  // )  
+  // {% endfor %}
+
+
   const chart=document.getElementById('barChart');const labels=document.getElementById('barLabels');
   data.forEach(d=>{
-    const b=document.createElement('div');b.className='bar';b.style.cssText=`height:${d.pct*1.4}px;background:${d.color};title:${d.label}:${d.pct}%`;b.title=d.label+': '+d.pct+'%';chart.appendChild(b);
-    const l=document.createElement('div');l.className='bar-label';l.style.flex='1';l.textContent=d.label;labels.appendChild(l);
+    const b=document.createElement('div');b.className='bar rounded-full';b.style.cssText=`width:38px;height:${d.pct}%;background:${d.color};title:${d.label}:${d.pct}%`;b.title=d.label+': '+d.pct+'%';chart.appendChild(b);
+    const l=document.createElement('div');l.className='bar-label';l.style.flex='1';l.style.width = '38px';l.textContent=d.label;labels.appendChild(l);
   });
 </script>
 {% endblock   %}

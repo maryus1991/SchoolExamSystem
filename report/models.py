@@ -29,7 +29,7 @@ class Report(models.Model):
         return f'{self.quiz.name} - {str(self.user.PhoneNumber).replace(" ", "")} - {self.teraze} - {self.percent} - {self.score} - {self.status}'
     
     class Meta:
-        ordering = ['order']
+        ordering = ['-order']
         verbose_name = 'کارنامه '
         verbose_name_plural = 'کارنامه ها'
         unique_together = ('quiz', 'user')

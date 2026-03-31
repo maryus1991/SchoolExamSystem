@@ -49,24 +49,25 @@ class QuizDetail(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
+        
         data['TypeOfQuestions'] = Question.TypeOfQuestions
-        data['TypeOfKey'] = QuestionAnswerKey.TypeOfAnswer
-        data['status'] = Quiz.QuizStatus
-        data['corrected'] = StudentAnswer.TypeOfCorrect
-        data['TypeOfAnswer'] = StudentAnswer.TypeOfAnswer
-        data['quiz'] = self.quiz
-        data['answers'] = self.quiz.student_answers.all()
-        data['report'] = self.quiz.reports.filter(user=self.request.user).first()
+        data['TypeOfKey'] =       QuestionAnswerKey.TypeOfAnswer
+        data['status'] =          Quiz.QuizStatus
+        data['corrected'] =       StudentAnswer.TypeOfCorrect
+        data['TypeOfAnswer'] =    StudentAnswer.TypeOfAnswer
+        data['quiz'] =            self.quiz
+        data['answers'] =         self.quiz.student_answers.filter(student=self.request.user).all()
+        data['report'] =          self.quiz.reports.filter(user=self.request.user).first()
 
-        question_user = self.questions.filter(student_answers__student=self.request.user)
+        anwers = data['answers']
 
-        data['not_corrected'] = question_user.filter(student_answers__corrected=StudentAnswer.TypeOfCorrect.not_corrected).count()
-        data['skipped'] = question_user.filter(Q(student_answers__is_skipped=True) | Q(student_answers__type_of_answer__isnull=True) ).count()
-        data['excellent'] = question_user.filter(student_answers__corrected=StudentAnswer.TypeOfCorrect.excellent, ).count()
-        data['good'] = question_user.filter(student_answers__corrected=StudentAnswer.TypeOfCorrect.good, ).count()
-        data['average'] = question_user.filter(student_answers__corrected=StudentAnswer.TypeOfCorrect.average, ).count()
-        data['weak'] =question_user.filter(student_answers__corrected=StudentAnswer.TypeOfCorrect.weak, ).count()
-        data['wrong'] = question_user.filter(student_answers__corrected=StudentAnswer.TypeOfCorrect.wrong, ).count()
+        data['not_corrected'] = anwers.filter(corrected=StudentAnswer.TypeOfCorrect.not_corrected).count()
+        data['skipped'] =       anwers.filter(is_skipped=True).count()
+        data['excellent'] =     anwers.filter(corrected=StudentAnswer.TypeOfCorrect.excellent, ).count()
+        data['good'] =          anwers.filter(corrected=StudentAnswer.TypeOfCorrect.good, ).count()
+        data['average'] =       anwers.filter(corrected=StudentAnswer.TypeOfCorrect.average, ).count()
+        data['weak'] =          anwers.filter(corrected=StudentAnswer.TypeOfCorrect.weak, ).count()
+        data['wrong'] =         anwers.filter(corrected=StudentAnswer.TypeOfCorrect.wrong, ).count()
 
         return data
     
