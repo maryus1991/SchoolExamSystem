@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_ckeditor_5',
     'easy_thumbnails',
     'jalali_date',
+    'storages',
     # 'corsheaders',
 
     # apps
@@ -208,3 +209,16 @@ CKEDITOR_5_CONFIGS = {
 }
  
 CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"   
+CKEDITOR_5_FILE_STORAGE = 'config.storage.CKEditorMediaStorage'
+
+# object storage
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# اطلاعات اتصال
+AWS_ACCESS_KEY_ID = 'ac023df1-eacb-4f6d-a2e7-27876110428f'
+AWS_SECRET_ACCESS_KEY = '0fa8ff33ffb2badc391eee0362b8503778ad5100b48e50f90c0e906bfa219a2d'
+AWS_STORAGE_BUCKET_NAME = 'sorna'
+AWS_S3_REGION_NAME = 'ir-thr-at1'
+ 
+AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.arvanstorage.ir'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.arvanstorage.ir'

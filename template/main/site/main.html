@@ -18,8 +18,11 @@
         </div>
         <div class="d-flex align-items-center gap-2 d-none d-md-flex">
           <a class="nav-link-custom btn" href="{% url 'quiz:list' %}"  >آزمون‌ها</a>
+          {% if site.active_qbank %}
           <a class="nav-link-custom btn" href="{% url 'qbank:list' %}"  >بانک سوال</a>
+          {% endif %}{% if site.active_blog %}
           <a class="nav-link-custom btn" href="{% url 'blog:list' %}"  >مقالات</a>
+          {% endif %}
           <a class="nav-link-custom btn" href="{% url 'site:about' %}"  >درباره ما</a>
           <a class="nav-link-custom btn" href="{% url 'site:contact' %}"  >تماس</a>
         </div>

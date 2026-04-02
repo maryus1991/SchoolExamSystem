@@ -10,135 +10,635 @@
 <!-- ============================================================
      PAGE 11: QUESTION DETAIL / جزئیات سوال
      ============================================================ -->
-<div class="page-section  active" id="page-question-detail">
+<div class="page-section active" id="page-question-detail">
   <nav class="main-navbar">
     <div class="container">
       <div class="d-flex align-items-center justify-content-between w-100">
         <div class="d-flex align-items-center gap-3">
           <a class="btn p-0" style="color:var(--text-secondary);" href="{% url 'qbank:list' %}">
             <i class="bi bi-arrow-right fs-5"></i>
-          <span class="navbar-brand-text">لیست  سوالات</span></a>
-          
+            <span class="navbar-brand-text">لیست سوالات</span>
+          </a>
         </div>
-        <div class="d-flex align-items-center justify-content-between " >
-                  
+        <div class="d-flex align-items-center justify-content-between">
           <div class="theme-toggle m-2" onclick="toggleTheme()">
-            <i class="bi bi-sun-fill sun-icon"></i><i class="bi bi-moon-fill moon-icon"></i>
+            <i class="bi bi-sun-fill sun-icon"></i>
+            <i class="bi bi-moon-fill moon-icon"></i>
           </div>
+          
           {% if user.is_authenticated %}
-            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:main' %}"  >داشبورد</a>
-            <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:order-list' %}"  >سبد خرید</a>
-            {% if user.is_superuser  %}
+          <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:main' %}">داشبورد</a>
+          <a class="btn-outline-custom btn btn-sm" href="{% url 'dashboard:order-list' %}">سبد خرید</a>
+            {% if user.is_superuser %}
               {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
-                <a class="btn-outline-custom btn btn-sm" href="{% url 'admin-panel:main' %}" > داشبورد ادمین</a>
+              <a class="btn-outline-custom btn btn-sm" href="{% url 'admin-panel:main' %}">داشبورد ادمین</a>
               {% endif %}
             {% endif %}
             {% if user.is_staff and user.type_of_user == 'S' %}
-              <a class="btn-outline-custom btn btn-sm" href="{% url 'sanatorium:main' %}" > داشبورد مصحح</a>
+            <a class="btn-outline-custom btn btn-sm" href="{% url 'sanatorium:main' %}">داشبورد مصحح</a>
             {% endif %}
-
           {% else %}
-            <a class="btn-outline-custom btn btn-sm" href="{% url 'user:login' %}" >ورود</a>
-            <a class="btn-primary-gradient btn btn-sm" href="{% url 'user:register' %}" >ثبت نام</a>
+          <a class="btn-outline-custom btn btn-sm" href="{% url 'user:login' %}">ورود</a>
+          <a class="btn-primary-gradient btn btn-sm" href="{% url 'user:register' %}">ثبت نام</a>
           {% endif %}
-      </div>
-        
+        </div>
       </div>
     </div>
   </nav>
+  
   <div class="container py-5">
     <div class="row g-4">
+      <!-- Main Content -->
       <div class="col-lg-8">
         <!-- Question Card -->
-        <div class="card-custom mb-4">
-          <div class="d-flex gap-2 mb-4">
+        <div class="question-card" style="
+          background: var(--bg-card);
+          border: 1px solid var(--border-color);
+          border-radius: var(--radius-lg);
+          padding: 24px;
+          margin-bottom: 24px;
+        ">
+          <!-- Badges -->
+          <div class="d-flex flex-wrap gap-2 mb-4">
             <span class="badge-custom badge-info">{{ item.category.name }}</span>
             <span class="badge-custom badge-warning">{{ item.possible.name }}</span>
             <span class="badge-custom badge-muted">{{ item.type_of_question }}</span>
           </div>
-          <h5 class="fw-700 mb-3">متن سوال</h5>
-          <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;line-height:2.2;font-size:1rem;">
+          
+          <!-- Question Title -->
+          <h5 class="fw-700 mb-3" style="color: var(--text-primary);">متن سوال</h5>
+          
+          <!-- Question Text -->
+          <div class="content-box" style="
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 24px;
+            line-height: 2;
+            font-size: 1rem;
+            color: var(--text-primary);
+          ">
             {{ item.name }}
           </div>
+          
+          <!-- Question Description -->
           {% if item.description %}
-            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;line-height:2.2;font-size:1rem;">
-              {{ item.description|safe }}
-            </div>
+          <div class="content-box" style="
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 24px;
+            line-height: 2;
+            font-size: 1rem;
+            color: var(--text-primary);
+          ">
+            {{ item.description|safe }}
+          </div>
           {% endif %}
+          
+          <!-- Question Image -->
           {% if item.image %}
-            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;line-height:2.2;font-size:1rem;">
-                <picture>
-                  <source srcset="{{ item.image.url }}"
-                          type="image/webp">
-                  <img src="{{ item.image.url }}" alt="{{ item.title }}"  width="480" height="auto"
-                        loading="lazy">
-                </picture>
+          <div class="media-container mb-4">
+            <div class="media-wrapper" style="
+              background: var(--bg-secondary);
+              border-radius: var(--radius-md);
+              padding: 16px;
+              display: inline-block;
+              max-width: 100%;
+            ">
+              <picture>
+                <source srcset="{{ item.image.url }}" type="image/webp">
+                <img 
+                  src="{{ item.image.url }}" 
+                  alt="{{ item.title }}" 
+                  style="
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: var(--radius-sm);
+                    display: block;
+                  "
+                  loading="lazy"
+                >
+              </picture>
             </div>
+          </div>
           {% endif %}
+          
+          <!-- Question PDF -->
           {% if item.pdf_file %}
-            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;line-height:2.2;font-size:1rem;">
-              <iframe src="{{item.pdf_file.url}}" frameborder="1"></iframe>
+          <div class="pdf-container mb-4">
+            <div class="pdf-wrapper" style="
+              background: var(--bg-secondary);
+              border-radius: var(--radius-md);
+              padding: 16px;
+            ">
+              <div class="pdf-header d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-file-earmark-pdf-fill" style="color: var(--danger-500); font-size: 1.5rem;"></i>
+                <span style="color: var(--text-primary); font-weight: 600;">فایل پیوستی سوال</span>
+              </div>
+              <iframe 
+                src="{{ item.pdf_file.url }}" 
+                style="
+                  width: 100%;
+                  height: 500px;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--radius-sm);
+                  background: white;
+                "
+                loading="lazy"
+              >
+              </iframe>
+              <a 
+                href="{{ item.pdf_file.url }}" 
+                target="_blank"
+                class="btn btn-outline-primary mt-2"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  color: var(--primary-600);
+                  border-color: var(--primary-600);
+                "
+              >
+                <i class="bi bi-download"></i>
+                دانلود فایل PDF
+              </a>
             </div>
+          </div>
           {% endif %}
-          <!-- Options with correct answer -->
-           {% if item.has_options %}
-            <div class="d-flex flex-column gap-2 mb-4">
+          
+          <!-- Options -->
+          {% if item.has_options %}
+          <div class="options-container mt-4">
+            <h6 class="fw-700 mb-3" style="color: var(--text-primary);">گزینه‌ها</h6>
+            <div class="d-flex flex-column gap-3">
               {% for option in item.options.all %}
-                <div class="question-option" {% if option.is_correct %} style="border-color:var(--accent-500);background:rgba(16,185,129,0.06);" {% endif %}>
-                  <div class="option-dot" {% if option.is_correct %} style="border-color:var(--accent-500);background:var(--accent-500);" {% endif %}></div>
-                  <span class="fw-600" style="color:var(--accent-500);">{{option.id}}) {{ option.text }} {% if option.is_correct %}✓{% endif %}
-                  </span>
-                </div>
-   
+              <div 
+                class="option-item {% if option.is_correct %}correct{% endif %}" 
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  gap: 12px;
+                  padding: 16px;
+                  background: var(--bg-secondary);
+                  border: 2px solid var(--border-color);
+                  border-radius: var(--radius-md);
+                  transition: var(--transition);
+                  {% if option.is_correct %}
+                  border-color: var(--accent-500);
+                  background: rgba(16, 185, 129, 0.08);
+                  {% endif %}
+                "
+              >
+                <span 
+                  class="option-letter" 
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: var(--bg-card);
+                    border: 2px solid var(--border-color);
+                    font-weight: 700;
+                    font-size: 0.875rem;
+                    flex-shrink: 0;
+                    {% if option.is_correct %}
+                    border-color: var(--accent-500);
+                    background: var(--accent-500);
+                    color: white;
+                    {% endif %}
+                  "
+                >
+                  {{ option.id }}
+                </span>
+                <span class="option-text" style="
+                  flex: 1;
+                  color: var(--text-primary);
+                  line-height: 1.6;
+                  {% if option.is_correct %}
+                  color: var(--accent-500);
+                  font-weight: 600;
+                  {% endif %}
+                ">
+                  {{ option.text }}
+                  {% if option.is_correct %}
+                  <i class="bi bi-check-circle-fill ms-2" style="color: var(--accent-500);"></i>
+                  {% endif %}
+                </span>
+              </div>
               {% endfor %}
             </div>
+          </div>
           {% endif %}
         </div>
-        <!-- Solution -->
-        <div class="card-custom" style="border-right:4px solid var(--accent-500);">
-          <h5 class="fw-700 mb-4"><i class="bi bi-lightbulb-fill me-2" style="color:var(--warm-500);"></i>پاسخنامه</h5>
-                    {% if item.answer_key.description %}
-            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;line-height:2.2;font-size:1rem;">
-              {{ item.answer_key.description|safe }}
-            </div>
+        
+        <!-- Solution Card -->
+        <div class="solution-card" style="
+          background: var(--bg-card);
+          border: 1px solid var(--border-color);
+          border-right: 4px solid var(--accent-500);
+          border-radius: var(--radius-lg);
+          padding: 24px;
+        ">
+          <h5 class="fw-700 mb-4" style="color: var(--text-primary);">
+            <i class="bi bi-lightbulb-fill me-2" style="color: var(--warm-500);"></i>
+            پاسخنامه
+          </h5>
+          
+          {% if item.answer_key.description %}
+          <div class="content-box" style="
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 24px;
+            line-height: 2;
+            font-size: 1rem;
+            color: var(--text-primary);
+          ">
+            {{ item.answer_key.description|safe }}
+          </div>
           {% endif %}
+          
           {% if item.answer_key.image %}
-            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;line-height:2.2;font-size:1rem;">
-                <picture>
-                  <source srcset="{{ item.answer_key.image.url }}"
-                          type="image/webp">
-                  <img src="{{ item.answer_key.image.url }}" alt="{{ item.title }}"  width="480" height="auto"
-                        loading="lazy">
-                </picture>
+          <div class="media-container mb-4">
+            <div class="media-wrapper" style="
+              background: var(--bg-secondary);
+              border-radius: var(--radius-md);
+              padding: 16px;
+              display: inline-block;
+              max-width: 100%;
+            ">
+              <picture>
+                <source srcset="{{ item.answer_key.image.url }}" type="image/webp">
+                <img 
+                  src="{{ item.answer_key.image.url }}" 
+                  alt="پاسخ سوال" 
+                  style="
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: var(--radius-sm);
+                    display: block;
+                  "
+                  loading="lazy"
+                >
+              </picture>
             </div>
+          </div>
           {% endif %}
+          
           {% if item.answer_key.pdf_file %}
-            <div style="background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;line-height:2.2;font-size:1rem;">
-              <iframe src="{{item.answer_key.pdf_file.url}}" frameborder="1"></iframe>
+          <div class="pdf-container mb-4">
+            <div class="pdf-wrapper" style="
+              background: var(--bg-secondary);
+              border-radius: var(--radius-md);
+              padding: 16px;
+            ">
+              <div class="pdf-header d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-file-earmark-pdf-fill" style="color: var(--danger-500); font-size: 1.5rem;"></i>
+                <span style="color: var(--text-primary); font-weight: 600;">فایل پاسخنامه</span>
+              </div>
+              <iframe 
+                src="{{ item.answer_key.pdf_file.url }}" 
+                style="
+                  width: 100%;
+                  height: 500px;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--radius-sm);
+                  background: white;
+                "
+                loading="lazy"
+              >
+              </iframe>
+              <a 
+                href="{{ item.answer_key.pdf_file.url }}" 
+                target="_blank"
+                class="btn btn-outline-primary mt-2"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  color: var(--primary-600);
+                  border-color: var(--primary-600);
+                "
+              >
+                <i class="bi bi-download"></i>
+                دانلود پاسخنامه PDF
+              </a>
             </div>
+          </div>
           {% endif %}
         </div>
       </div>
+      
       <!-- Sidebar -->
       <div class="col-lg-4">
-        <div class="card-custom mb-4">
-          <h6 class="fw-700 mb-4">اطلاعات سوال</h6>
-          <div class="timer-display mb-4" style="background:linear-gradient(135deg,#0f172a,#1e293b);">
-            <div class="timer-label mb-1">زمان پیشنهادی حل</div>
-            <div class="timer-numbers">{{ item.solving_time }}<span class="timer-dot">:</span>00</div>
-          </div>
-          <div class="d-flex flex-column gap-3" style="font-size:0.875rem;">
-            <div class="d-flex justify-content-between"><span class="text-secondary">درس:</span><span class="fw-600">{{ item.category.name }}</span></div>
-            <div class="d-flex justify-content-between"><span class="text-secondary">مبحث:</span><span class="fw-600">{{ item.lesson }}</span></div>
-            <div class="d-flex justify-content-between"><span class="text-secondary">سطح:</span><span class="fw-600 badge-custom badge-warning">متوسط</span></div>
+        <div class="sidebar-card" style="
+          background: var(--bg-card);
+          border: 1px solid var(--border-color);
+          border-radius: var(--radius-lg);
+          padding: 24px;
+          position: sticky;
+          top: 100px;
+        ">
+          <h6 class="fw-700 mb-4" style="color: var(--text-primary);">اطلاعات سوال</h6>
+          
+          <!-- Timer -->
+          <div class="timer-box mb-4" style="
+            background: linear-gradient(135deg, var(--primary-600), var(--secondary-600));
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+          ">
+<!-- Timer Section -->
+<div class="timer-box mb-4" style="
+  background: linear-gradient(135deg, var(--primary-600), var(--secondary-600));
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+">
+  <div style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin-bottom: 8px;">زمان پیشنهادی حل</div>
+  
+  <!-- تایمر -->
+  <div class="timer-display" style="color: white; font-size: 2rem; font-weight: 700; font-family: monospace; margin-bottom: 16px;">
+    <span id="timer-minutes">{{ item.solving_time }}</span>:<span id="timer-seconds">00</span>
+  </div>
+  
+  <!-- دکمه‌های کنترل -->
+  <div class="timer-controls d-flex justify-content-center gap-2">
+    <button 
+      id="timer-start" 
+      onclick="startTimer()" 
+      class="btn-timer"
+      style="
+        background: rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        padding: 8px 16px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      "
+    >
+      <i class="bi bi-play-fill"></i> شروع
+    </button>
+    
+    <button 
+      id="timer-pause" 
+      onclick="pauseTimer()" 
+      class="btn-timer"
+      style="
+        background: rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        padding: 8px 16px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: var(--transition);
+        display: none;
+        align-items: center;
+        gap: 6px;
+      "
+    >
+      <i class="bi bi-pause-fill"></i> مکث
+    </button>
+    
+    <button 
+      id="timer-reset" 
+      onclick="resetTimer()" 
+      class="btn-timer"
+      style="
+        background: rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        padding: 8px 16px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      "
+    >
+      <i class="bi bi-arrow-counterclockwise"></i> ریست
+    </button>
+  </div>
+  
+  <!-- نوار پیشرفت -->
+  <div class="timer-progress mt-3" style="
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    overflow: hidden;
+  ">
+    <div 
+      id="timer-progress-bar" 
+      style="
+        height: 100%;
+        background: white;
+        width: 100%;
+        transition: width 1s linear;
+      "
+    ></div>
+  </div>
+  
  
-            <div class="d-flex justify-content-between"><span class="text-secondary">بازدید:</span><span class="fw-600">{{ item.views_counts }}</span></div>
+</div>
+
+<!-- JavaScript تایمر -->
+<script>
+  // متغیرهای تایمر
+  let totalSeconds = {{ item.solving_time }} * 60;
+  let remainingSeconds = totalSeconds;
+  let timerInterval = null;
+  let isRunning = false;
+  
+  // المان‌ها
+  const timerMinutes = document.getElementById('timer-minutes');
+  const timerSeconds = document.getElementById('timer-seconds');
+  const timerProgressBar = document.getElementById('timer-progress-bar');
+  const btnStart = document.getElementById('timer-start');
+  const btnPause = document.getElementById('timer-pause');
+  const btnReset = document.getElementById('timer-reset');
+  
+  // بروزرسانی نمایش تایمر
+  function updateTimerDisplay() {
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = remainingSeconds % 60;
+    
+    timerMinutes.textContent = minutes.toString().padStart(2, '0');
+    timerSeconds.textContent = seconds.toString().padStart(2, '0');
+    
+    // بروزرسانی نوار پیشرفت
+    const progress = (remainingSeconds / totalSeconds) * 100;
+    timerProgressBar.style.width = progress + '%';
+  }
+  
+  // شروع تایمر
+  function startTimer() {
+    if (remainingSeconds <= 0) {
+      resetTimer();
+      return;
+    }
+    
+    if (!isRunning) {
+      isRunning = true;
+       
+      // تغییر دکمه‌ها
+      btnStart.style.display = 'none';
+      btnPause.style.display = 'flex';
+      
+      timerInterval = setInterval(() => {
+        remainingSeconds--;
+        updateTimerDisplay();
+        
+        if (remainingSeconds <= 0) {
+          clearInterval(timerInterval);
+          isRunning = false;
+           btnPause.style.display = 'none';
+          btnStart.style.display = 'flex';
+          btnStart.innerHTML = '<i class="bi bi-arrow-clockwise"></i> شروع مجدد';
+          
+          // صدای آلارم (اختیاری)
+          // new Audio('/path/to/alarm.mp3').play();
+        }
+      }, 1000);
+    }
+  }
+  
+  // مکث تایمر
+  function pauseTimer() {
+    if (isRunning) {
+      clearInterval(timerInterval);
+      isRunning = false;
+       
+      // تغییر دکمه‌ها
+      btnPause.style.display = 'none';
+      btnStart.style.display = 'flex';
+      btnStart.innerHTML = '<i class="bi bi-play-fill"></i> ادامه';
+    }
+  }
+  
+  // ریست تایمر
+  function resetTimer() {
+    clearInterval(timerInterval);
+    isRunning = false;
+    remainingSeconds = totalSeconds;
+    
+    updateTimerDisplay();
+     
+    // ریست دکمه‌ها
+    btnStart.style.display = 'flex';
+    btnPause.style.display = 'none';
+    btnStart.innerHTML = '<i class="bi bi-play-fill"></i> شروع';
+  }
+  
+  // هاور دکمه‌ها
+  document.querySelectorAll('.btn-timer').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      btn.style.background = 'rgba(255,255,255,0.3)';
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.background = 'rgba(255,255,255,0.2)';
+    });
+  });
+</script>
+          </div>
+          
+          <!-- Info List -->
+          <div class="info-list d-flex flex-column gap-3" style="font-size: 0.9rem;">
+            <div class="info-item d-flex justify-content-between">
+              <span style="color: var(--text-muted);">درس:</span>
+              <span style="color: var(--text-primary); font-weight: 600;">{{ item.category.name }}</span>
+            </div>
+            <div class="info-item d-flex justify-content-between">
+              <span style="color: var(--text-muted);">مبحث:</span>
+              <span style="color: var(--text-primary); font-weight: 600;">{{ item.lesson }}</span>
+            </div>
+            <div class="info-item d-flex justify-content-between">
+              <span style="color: var(--text-muted);">سطح:</span>
+              <span class="badge-custom badge-warning">متوسط</span>
+            </div>
+            <div class="info-item d-flex justify-content-between">
+              <span style="color: var(--text-muted);">بازدید:</span>
+              <span style="color: var(--text-primary); font-weight: 600;">{{ item.views_counts }}</span>
+            </div>
           </div>
         </div>
- 
       </div>
     </div>
   </div>
 </div>
+
+<!-- استایل‌های اضافی -->
+<style>
+  /* هاور گزینه‌ها */
+  .option-item:hover {
+    border-color: var(--primary-400) !important;
+    transform: translateX(4px);
+  }
+  
+  .option-item.correct {
+    animation: pulse-correct 2s infinite;
+  }
+  
+  @keyframes pulse-correct {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  }
+  
+  /* ریسپانسیو */
+  @media (max-width: 991px) {
+    .sidebar-card {
+      position: static !important;
+      margin-bottom: 24px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .question-card,
+    .solution-card,
+    .sidebar-card {
+      padding: 16px !important;
+    }
+    
+    .content-box {
+      padding: 16px !important;
+      font-size: 0.95rem !important;
+    }
+    
+    iframe {
+      height: 400px !important;
+    }
+    
+    .timer-box {
+      padding: 16px !important;
+    }
+    
+    .timer-box div:last-child {
+      font-size: 1.5rem !important;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .option-item {
+      padding: 12px !important;
+    }
+    
+    .option-letter {
+      width: 28px !important;
+      height: 28px !important;
+      font-size: 0.8rem !important;
+    }
+    
+    iframe {
+      height: 300px !important;
+    }
+  }
+</style>
 
 {% endblock content %}

@@ -19,6 +19,15 @@ class QuestionsView(ListView):
     context_object_name = 'items'
     paginate_by = 50
 
+    def dispatch(self, request, *args, **kwargs):   
+        from sitesetting.models import Site
+        from django.http import Http404
+
+        if not Site.objects.first().active_qbank:
+            raise Http404()
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         queryset = QuestionBank.objects.filter(is_active=True).prefetch_related('possible', 'category', 'options', 'answer_key')
 
@@ -32,7 +41,7 @@ class QuestionsView(ListView):
 
             try:
                 ip, is_rout = get_client_ip(self.request)
-                view = QuestionView.objects.get_or_create(ip=ip, blog_id=pk)
+                view = QuestionView.objects.get_or_create(ip=ip, question_id=pk)
 
                 if not view[1]:
                     view[0].count += 1

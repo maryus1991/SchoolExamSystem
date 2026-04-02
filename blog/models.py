@@ -4,6 +4,7 @@ from user.models import User
 from easy_thumbnails.fields import ThumbnailerImageField
 from django.utils.crypto import get_random_string
 from django.urls import reverse
+from config.storage import PublicMediaStorage
 
 def photo_path_upload_to(instance, filename):
     return f"questions/{get_random_string(100)}-{filename}"
@@ -26,11 +27,12 @@ class Blog(models.Model):
     short_content = models.CharField(max_length=100, verbose_name="توضیحات کوتاه")
     content = CKEditor5Field(verbose_name="متن یا بدنه")
     time_to_read_minutes = models.PositiveSmallIntegerField(default=10, verbose_name='زمان مطالعه به دقیقه') 
-    image = ThumbnailerImageField(verbose_name='عکس', upload_to=photo_path_upload_to)
     sort_number = models.PositiveBigIntegerField(default=0, db_index=True, verbose_name='ترتیب نمایش')
+    image = ThumbnailerImageField(verbose_name='عکس', upload_to=photo_path_upload_to, storage=PublicMediaStorage)
     is_active = models.BooleanField(
         default=False, verbose_name="فعال / غیر فعال "
     )
+ 
 
 
     def __str__(self):

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView
 from .models import Team, ContactUs, Site
 from quiz.models import Quiz

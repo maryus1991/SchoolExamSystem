@@ -3,7 +3,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 from django.utils.crypto import get_random_string
 from django.urls import reverse
 from quiz.models import LessionCategories
-
+from config.storage import PublicMediaStorage
 
 class QuestionLessonCategory(models.Model):
     order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
@@ -58,8 +58,8 @@ class QuestionBank(models.Model):
     name = models.CharField( max_length=1000, verbose_name='عنوان سوال' ,db_index=True)
     lesson = models.CharField( max_length=255, verbose_name='مبحث')
     description = CKEditor5Field( blank=True, null=True, verbose_name='متن سوال')
-    image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
-    pdf_file = models.FileField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF سوال' )
+    image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' , storage=PublicMediaStorage)
+    pdf_file = models.FileField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF سوال' , storage=PublicMediaStorage)
     has_options = models.BooleanField(default=False, verbose_name='دارای گزینه های دیگر')
     order = models.PositiveIntegerField(default=1, verbose_name='ترتیب' )
     solving_time = models.PositiveIntegerField(default=1, verbose_name='زمان پیشنهادی حل به دقیقه')
@@ -77,7 +77,6 @@ class QuestionBank(models.Model):
     def get_absolute_url(self):
         return reverse("qbank:detail", kwargs={"pk": self.pk})
     
-
 class QuestionOption(models.Model):
     question = models.ForeignKey(QuestionBank, on_delete=models.CASCADE, related_name='options', verbose_name='سوال', db_index=True)
     text = models.CharField(max_length=500, verbose_name='متن گزینه')
@@ -101,8 +100,8 @@ class QuestionAnswerKey(models.Model):
     question = models.OneToOneField(QuestionBank, on_delete=models.CASCADE, related_name='answer_key', verbose_name='سوال', db_index=True)
     type_of_answer = models.CharField(max_length=50, choices=TypeOfAnswer.choices, verbose_name='نوع پاسخ صحیح')
     description = CKEditor5Field(blank=True, null=True, verbose_name='متن پاسخ')
-    image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
-    pdf_file = models.FileField(upload_to=photo_path_upload_to,blank=True,null=True, verbose_name='فایل PDF پاسخ')
+    image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ', storage=PublicMediaStorage)
+    pdf_file = models.FileField(upload_to=photo_path_upload_to,blank=True,null=True, verbose_name='فایل PDF پاسخ', storage=PublicMediaStorage)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -112,8 +111,6 @@ class QuestionAnswerKey(models.Model):
     def __str__(self):
         return f"پاسخ صحیح - {self.question.name} - {self.question.id}"
     
-
-
 class QuestionView(models.Model):
     question = models.ForeignKey(QuestionBank, on_delete=models.CASCADE, related_name="views", db_index=True)
     ip = models.GenericIPAddressField()

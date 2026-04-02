@@ -7,6 +7,7 @@ from user.models import User
 from django.urls import reverse
 # Create your models here.
 
+from config.storage import PublicMediaStorage
 
 class Newsletter(models.Model):
     phone_number = PhoneNumberField(verbose_name='شماره')
@@ -71,7 +72,7 @@ class Team(models.Model):
     name = models.CharField(max_length=255, verbose_name='نام')
     work = models.CharField(max_length=255, verbose_name='سمت')
     phone_number = PhoneNumberField(verbose_name='شماره') 
-    avatar = ThumbnailerImageField(verbose_name='عکس', upload_to=photo_path_upload_to)
+    avatar = ThumbnailerImageField(verbose_name='عکس', upload_to=photo_path_upload_to, storage=PublicMediaStorage)
     is_active = models.BooleanField(default=True, verbose_name='وضعیت')
     sort_number = models.IntegerField(default=0, verbose_name='ترتیب')
 
@@ -111,8 +112,11 @@ class Site(models.Model):
     force_to_login_with_otp = models.BooleanField(default=True, verbose_name='اجبار برای ورود با رمز یک بار مصرف')
     
     is_active = models.BooleanField(default=True, verbose_name='وضعیت')
+    active_blog = models.BooleanField(default=True, verbose_name='فعال بودن قسمت بلاگ ')
+    active_qbank = models.BooleanField(default=True, verbose_name='فعال بودن قسمت بانک سوالات')
+    
 
-    logo = ThumbnailerImageField(verbose_name='لوگو', upload_to=photo_path_upload_to)
+    logo = ThumbnailerImageField(verbose_name='لوگو', upload_to=photo_path_upload_to, storage=PublicMediaStorage)
     phone_number = PhoneNumberField(verbose_name='شماره') 
     description = CKEditor5Field(verbose_name="توضیحات ")
 
@@ -179,7 +183,7 @@ class Ticket(models.Model):
     placement =  models.ForeignKey(TicketProblemPlacement, related_name='tickets', null=True, on_delete=models.PROTECT, verbose_name='بخش های مرتبط مشکلات در تیکت',  db_index=True) 
     
     description = models.TextField(verbose_name="توضیحات ")
-    file = models.FileField(verbose_name='پیوست', upload_to=photo_path_upload_to, null=True, blank=True)
+    file = models.FileField(verbose_name='پیوست', upload_to=photo_path_upload_to, null=True, blank=True, storage=PublicMediaStorage)
     priority = models.CharField(verbose_name='اهمیت', choices=TicketPriority, max_length=255)
     status = models.CharField(verbose_name='وضعیت', choices=TicketStatus, max_length=255)
     create_at = models.DateTimeField(verbose_name='زمان ارسال درخواست', auto_now_add=True)

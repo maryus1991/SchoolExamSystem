@@ -4,6 +4,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 from django.utils.crypto import get_random_string
 from user.models import GradeCategories, MajorCategories
 from django.urls import reverse
+from config.storage import PrivateMediaStorage
 
 class LessionCategories(models.Model):
     order = models.PositiveIntegerField(default=1, verbose_name='ترتیب')
@@ -118,8 +119,8 @@ class Question(models.Model):
 
 
     description = CKEditor5Field( blank=True, null=True, verbose_name='متن سوال')
-    image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' )
-    pdf_file = models.FileField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF سوال' )
+    image = models.ImageField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر سوال' , storage=PrivateMediaStorage)
+    pdf_file = models.FileField( upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF سوال' , storage=PrivateMediaStorage)
 
     name = models.CharField( max_length=255, verbose_name='عنوان سوال',  db_index=True)
     order = models.PositiveIntegerField( default=1, verbose_name='ترتیب نمایش' )
@@ -167,8 +168,8 @@ class QuestionAnswerKey(models.Model):
 
     type_of_answer = models.CharField(max_length=50, choices=TypeOfAnswer.choices, verbose_name='نوع پاسخ صحیح')
     description = CKEditor5Field(blank=True, null=True, verbose_name='متن پاسخ')
-    image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
-    pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True,null=True, verbose_name='فایل PDF پاسخ')
+    image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ', storage=PrivateMediaStorage)
+    pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True,null=True, verbose_name='فایل PDF پاسخ', storage=PrivateMediaStorage)
 
     class Meta:
         verbose_name = 'پاسخ صحیح (ادمین)'
@@ -201,8 +202,8 @@ class StudentAnswer(models.Model):
     quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='student_answers', verbose_name='آزمون',  db_index=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='student_answers', null=True, blank=True , verbose_name='سوال',  db_index=True)
     description = models.TextField(blank=True, null=True,verbose_name='متن پاسخ' )
-    image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ')
-    pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF پاسخ')
+    image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ', storage=PrivateMediaStorage)
+    pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF پاسخ', storage=PrivateMediaStorage)
     is_skipped = models.BooleanField(default=False, verbose_name='رد شده' )
     satantorium_message = CKEditor5Field(blank=True, null=True, verbose_name='نظر مصصح' )
 
