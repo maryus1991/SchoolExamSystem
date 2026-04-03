@@ -15,13 +15,13 @@ class QuizListView(AdminPermissionRequire, ListView):
     paginate_by = 25
     queryset = Quiz.objects.prefetch_related(
         'grade', 'major' ,'lession', 'questions'
-        ).annotate(student_count=Count('student')).all()
+        ).annotate(student_count=Count('student')).order_by('-pk').all()
 class QuizCreateView(AdminPermissionRequire, CreateView):
     """for create quiz"""
 
     form_class = QuizModelForm
     template_name = 'admin-panel/exam/quiz/create.html'
-    success_url = reverse_lazy('admin-panel:quiz-list')
+   
 
     def form_valid(self, form):
         messages.success(self.request, 'ایتم ساخته شد')
@@ -30,12 +30,15 @@ class QuizCreateView(AdminPermissionRequire, CreateView):
     def form_invalid(self, form):
         messages.error(self.request, form.errors)
         return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('admin-panel:quiz-questions-list', kwargs={'quiz_id': self.object.id})
 class QuizUpdateView(AdminPermissionRequire, UpdateView):
     """for update quiz"""
 
     form_class = QuizModelForm
     template_name = 'admin-panel/exam/quiz/create.html'
-    success_url = reverse_lazy('admin-panel:quiz-list')
+ 
     context_object_name = 'item'
     model = Quiz
 
@@ -47,6 +50,9 @@ class QuizUpdateView(AdminPermissionRequire, UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, form.errors)
         return super().form_invalid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('admin-panel:quiz-questions-list', kwargs={'quiz_id': self.kwargs.get('pk')})
 class QuizActivateView(AdminPermissionRequire, RedirectView):
     """for active or deactivated the quiz"""
 
@@ -211,7 +217,27 @@ class QuestionDelete(AdminPermissionRequire, RedirectView):
         question.delete()
         messages.info(self.request, 'سوال حذف شد')
         return reverse('admin-panel:quiz-questions-list', kwargs={'quiz_id':kwargs.get('quiz_id')})
+class QuestionDeleteImage(AdminPermissionRequire, RedirectView):
+    """for delete the image"""
 
+    def get_redirect_url(self, *args, **kwargs):
+        question = get_object_or_404(Question, pk=kwargs.get('pk')) 
+        question.image = None
+        question.save()
+        messages.info(self.request, 'عکس حذف شد')
+        
+        return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':kwargs.get('quiz_id'), 'pk':question.id})
+class QuestionDeletePDF(AdminPermissionRequire, RedirectView):
+    """for delete the image"""
+
+    def get_redirect_url(self, *args, **kwargs):
+        question = get_object_or_404(Question, pk=kwargs.get('pk')) 
+        question.pdf_file = None
+        question.save()
+
+        messages.info(self.request, 'pdf حذف شد')
+        
+        return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':kwargs.get('quiz_id'), 'pk':question.id})
 
 class QuestionAnswerKeyCreateView(AdminPermissionRequire, CreateView):
     """ for create key for question"""
@@ -269,6 +295,7 @@ class QuestionAnswerKeyUpdateView(AdminPermissionRequire, UpdateView):
     template_name = 'admin-panel/exam/key/create-key.html'
     form_class = QuestionAnwerKeyModelForm
     queryset = QuestionAnswerKey.objects.prefetch_related('question', 'question__quiz')
+   
  
     def dispatch(self, request, *args, **kwargs):
         self.question = get_object_or_404(Question, pk=kwargs.get('qid'))
@@ -276,7 +303,7 @@ class QuestionAnswerKeyUpdateView(AdminPermissionRequire, UpdateView):
         return super().dispatch(request, *args, **kwargs)
     
     def get_object(self):
-        return self.question.answer_key
+        return QuestionAnswerKey.objects.get_or_create(question = self.question)[0]
     
     def get_success_url(self):
         obj = self.question
@@ -313,9 +340,31 @@ class QuestionAnswerKeyUpdateView(AdminPermissionRequire, UpdateView):
 
         data['item']=self.question
         data['quiz']=self.quiz
+        data['key']=self.get_object()
 
         return data
- 
+class QuestionKeyDeleteImage(AdminPermissionRequire, RedirectView):
+    """for delete the image"""
+
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(QuestionAnswerKey, pk=kwargs.get('pk')) 
+        item.image = None
+        item.save()
+
+        messages.info(self.request, 'عکس حذف شد')
+        
+        return reverse('admin-panel:quiz-question-key-update', kwargs={'quiz_id':kwargs.get('quiz_id'), 'qid':item.question.id})
+class QuestionKeyDeletePDF(AdminPermissionRequire, RedirectView):
+    """for delete the image"""
+
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(QuestionAnswerKey, pk=kwargs.get('pk')) 
+        item.pdf_file = None
+        item.save()
+
+        messages.info(self.request, 'pdf حذف شد')
+        
+        return reverse('admin-panel:quiz-question-key-update', kwargs={'quiz_id':kwargs.get('quiz_id'), 'qid':item.question.id})
 
 class QuestionOptionsCreateView(AdminPermissionRequire, CreateView):
     """for create option to question"""
@@ -411,11 +460,9 @@ class QuestionAnswerLitView(AdminPermissionRequire, ListView):
     context_object_name = 'items'
 
     def dispatch(self, request, *args, **kwargs):
-        print(1)
+      
         self.quiz = get_object_or_404(Quiz, pk=self.kwargs.get('quiz_id'))
-        print(2)
         self.question = get_object_or_404(Question, pk=self.kwargs.get('qid'))
-        print(3)
         return super().dispatch(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs)  :
@@ -464,4 +511,4 @@ class QuestionAnswerUpdateView(AdminPermissionRequire, UpdateView):
         
     def get_success_url(self):
         return reverse('admin-panel:quiz-question-answer-list', kwargs={'quiz_id':self.quiz.id, 'qid':self.question.id})
-    
+

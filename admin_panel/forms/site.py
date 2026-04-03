@@ -16,20 +16,17 @@ class SiteModelForm(BaseForm, forms.ModelForm):
 
     logo = forms.ImageField(
         required=True,
-        label='عکس',
+        label='لوگو',
         widget=forms.FileInput(
             attrs={
                 'class':'form-control',
-                'placeholder':'عکس'
+                'placeholder':'لوگو'
 
                 
             }
         ),
-        validators=[
-            FileExtensionValidator(
-                allowed_extensions=["webp" ]
-            )
-        ],
+        
+        
     )
 
     phone_number = PhoneNumberField(

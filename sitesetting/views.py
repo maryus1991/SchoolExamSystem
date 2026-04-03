@@ -1,11 +1,23 @@
-from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, View
 from .models import Team, ContactUs, Site
 from quiz.models import Quiz
 from .forms import ContactModelForm
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.http.response import HttpResponsePermanentRedirect
+from django.http import HttpResponse
+from config.settings import BASE_DIR
 
+class FavIcon(View):
+    """for return the favicon.ico"""
+
+    def get(self, *args, **kwargs):
+        try:
+            logo = Site.objects.first().logo
+            return HttpResponsePermanentRedirect(logo.url)
+        except:
+            with open(BASE_DIR / 'sorna.jpg', 'rb') as f :
+                return HttpResponse(f.read(), content_type="image/png")
 
 class MainPage(TemplateView):
     """
@@ -21,7 +33,6 @@ class MainPage(TemplateView):
         data['site'] = Site.objects.first()
 
         return data
-
 
 class Contact(CreateView):
     """
@@ -50,7 +61,6 @@ class Contact(CreateView):
             self.request, form.errors.as_text
         )
         return super().form_invalid(form)
-
 
 class About(TemplateView):
     """

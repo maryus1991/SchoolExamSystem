@@ -5,8 +5,8 @@
 
     <div class="page-header">
       <div class="page-header-info">
-        <h1>سوالات آزمون</h1>
-        <p>آزمون جامع ریاضی - فصل اول | کد: EX-2401</p>
+        <h1> سوالات آزمون {{quiz.name}} </h1>
+        <p> {{quiz.name}}     - {{quiz.section}}  | کد: {{quiz.id}}</p>
       </div>
       <div class="page-header-actions">
         <a href="{% url 'admin-panel:quiz-list' %}" class="btn btn-outline-secondary btn-sm">

@@ -2,7 +2,7 @@ from django.views.generic import CreateView, ListView, RedirectView, View, Updat
 from django.contrib import messages 
 from qbank.models import QuestionBank, QuestionOption, QuestionAnswerKey
 from admin_panel.mixins import AdminPermissionRequire
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404, redirect
 from admin_panel.forms.qbank import QuestionAnwerKeyModelForm, QuestionOptionsModelForm, QuestionBankModelForm
 
@@ -277,6 +277,7 @@ class QbankAnswerKeyUpdateView(AdminPermissionRequire, UpdateView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['item'] = self.item
+        data['key'] = self.item.answer_key
         return data 
 
 # delete
@@ -309,3 +310,50 @@ class QbankDelete(AdminPermissionRequire, RedirectView):
         messages.warning(self.request, 'سوال مورد نظر حذف شد')
 
         return self.success_url
+
+class QuestionKeyDeleteImage(AdminPermissionRequire, RedirectView):
+    """for delete the image"""
+
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(QuestionAnswerKey, pk=kwargs.get('pk')) 
+        item.image = None
+        item.save()
+
+        messages.info(self.request, 'عکس حذف شد')
+        
+        return reverse('admin-panel:qbank-key-update', kwargs={'pk':item.question.id})
+class QuestionKeyDeletePDF(AdminPermissionRequire, RedirectView):
+    """for delete the image"""
+
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(QuestionAnswerKey, pk=kwargs.get('pk')) 
+        item.pdf_file = None
+        item.save()
+
+        messages.info(self.request, 'pdf حذف شد')
+        
+        return reverse('admin-panel:qbank-key-update', kwargs={'pk':item.question.id})
+class QuestionDeleteImage(AdminPermissionRequire, RedirectView):
+    """for delete the image"""
+
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(QuestionBank, pk=kwargs.get('pk')) 
+        item.image = None
+        item.save()
+
+        messages.info(self.request, 'عکس حذف شد')
+        
+        return reverse('admin-panel:qbank-update', kwargs={'pk':item.id})
+class QuestionDeletePDF(AdminPermissionRequire, RedirectView):
+    """for delete the image"""
+
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(QuestionBank, pk=kwargs.get('pk')) 
+        item.pdf_file = None
+        item.save()
+
+        messages.info(self.request, 'pdf حذف شد')
+        
+        return reverse('admin-panel:qbank-update', kwargs={'pk':item.id})
+
+

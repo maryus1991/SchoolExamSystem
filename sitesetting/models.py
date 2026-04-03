@@ -7,7 +7,7 @@ from user.models import User
 from django.urls import reverse
 # Create your models here.
 
-from config.storage import PublicMediaStorage
+from config.storage import PublicMediaStorage, LogoStorage
 
 class Newsletter(models.Model):
     phone_number = PhoneNumberField(verbose_name='شماره')
@@ -116,7 +116,7 @@ class Site(models.Model):
     active_qbank = models.BooleanField(default=True, verbose_name='فعال بودن قسمت بانک سوالات')
     
 
-    logo = ThumbnailerImageField(verbose_name='لوگو', upload_to=photo_path_upload_to, storage=PublicMediaStorage)
+    logo = ThumbnailerImageField(verbose_name='لوگو', upload_to=photo_path_upload_to, storage=LogoStorage)
     phone_number = PhoneNumberField(verbose_name='شماره') 
     description = CKEditor5Field(verbose_name="توضیحات ")
 

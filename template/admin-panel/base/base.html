@@ -15,15 +15,20 @@
     <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
+        <picture>
+ 
+    <img src="{% url 'site:favicon' %}" 
+         alt="سورنا"
+         width="40"
+         height="40"
+         loading="eager"
+         decoding="async"
+         class="site-logo">
+</picture>
     </div>
     <div>
-      <div class="logo-text">پنل مدیریت</div>
-      <div class="logo-sub">نسخه ۲.۰.۰</div>
+      <div class="logo-text"> پنل مدیریت سورنا</div>
+ 
     </div>
   </div>
 

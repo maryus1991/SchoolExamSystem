@@ -222,3 +222,17 @@ AWS_S3_REGION_NAME = 'ir-thr-at1'
  
 AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.arvanstorage.ir'
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.arvanstorage.ir'
+AWS_QUERYSTRING_EXPIRE = 1
+
+
+FILE_UPLOAD_TEMP_DIR = BASE_DIR / 'tmp/'
+
+# مدیریت آپلود فایل
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.MemoryFileUploadHandler',
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
+
+DATA_UPLOAD_MAX_MEMORY_SIZE =  1024 * 1024 * 10
+ 
+

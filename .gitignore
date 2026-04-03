@@ -51,6 +51,7 @@ coverage.xml
 .pytest_cache/
 cover/
 
+
 # Translations
 *.mo
 *.pot
@@ -74,6 +75,11 @@ docs/_build/
 # PyBuilder
 .pybuilder/
 target/
+
+static/node_modules/*
+static/admin/*
+static/django_ckeditor_5/*
+tmp/*
 
 # Jupyter Notebook
 .ipynb_checkpoints

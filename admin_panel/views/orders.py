@@ -60,3 +60,29 @@ class OrderCancellByAdmin(AdminPermissionRequire, RedirectView):
  
 
         return reverse('admin-panel:order-list')
+    
+class OrderSubmitByAdmin(AdminPermissionRequire, RedirectView):
+    """for cancell the order by admin """
+
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(Order, pk=kwargs.get('pk'))
+
+ 
+        item.status = Order.OrderStatus.paid
+        item.update_at = now()
+        item.save()
+        
+        messages.warning(
+            self.request, 'سفارش مورد نظر تایید شد'
+        )
+
+        for detail in item.details.all():
+            detail.quiz.student.add(
+                item.user
+            )
+            detail.quiz.detail.get_or_create(
+                student=item.user
+            )
+ 
+
+        return reverse('admin-panel:order-detail', kwargs={'pk': item.id})

@@ -58,7 +58,102 @@
 
         </div>
       </form>
+           {% if key and key.pdf_file %}
+          <div class="pdf-container mb-4">
+            <div class="pdf-wrapper" style="background: var(--bg-secondary);border-radius: var(--radius-md);padding: 16px; ">
+              <div class="pdf-header d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-file-earmark-pdf-fill" style="color: var(--danger-500); font-size: 1.5rem;"></i>
+                <span style="color: var(--text-primary); font-weight: 600;">فایل pdf </span>
+              </div>
+              <iframe 
+                src="{{ key.pdf_file.url }}" 
+                style="
+                  width: 100%;
+                  height: 500px;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--radius-sm);
+                  background: white;
+                "
+                loading="lazy"
+              >
+              </iframe>
+              <a 
+                href="{{ key.pdf_file.url }}" 
  
+                class="btn btn-outline-primary mt-2"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  color: var(--primary-600);
+                  border-color: var(--primary-600);
+                "
+              >
+                <i class="bi bi-download"></i>
+                دانلود فایل PDF
+              </a>
+              <a 
+                href="{% url 'admin-panel:quiz-questions-key-delete-pdf' quiz_id=quiz.id qid=item.id pk=key.id %}" 
+    
+                class="btn btn-danger mt-2"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  color: var(--primary-600);
+                  border-color: var(--primary-600);
+                "
+              >
+                
+                حذف فایل PDF
+              </a>
+            </div>
+          </div>
+          {% endif %}
+
+            {% if key and key.image %}
+          <div class="media-container mb-4">
+            <div class="media-wrapper" style="
+              background: var(--bg-secondary);
+              border-radius: var(--radius-md);
+              padding: 16px;
+              display: inline-block;
+              max-width: 100%;
+              ">
+              <p>عکس اپلود شده</p>
+              <picture>
+                <source srcset="{{ key.image.url }}" type="image/webp">
+                <img 
+                  src="{{ key.image.url }}" 
+ 
+                  style="
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: var(--radius-sm);
+                    display: block;
+                  "
+                  loading="lazy"
+                >
+              </picture>
+
+            </div>
+                          <a 
+                href="{% url 'admin-panel:quiz-questions-key-delete-image' quiz_id=quiz.id qid=item.id pk=key.id %}" 
+        
+                class="btn btn-danger mt-2"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  color: var(--primary-600);
+                  border-color: var(--primary-600);
+                "
+              >
+                
+                حذف عکس 
+              </a>
+          </div>
+          {% endif %}
     </div>
 
   </main>

@@ -772,7 +772,7 @@ a {
    TIMER COMPONENT
    ============================================================ */
 .timer-display {
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
+ 
   border-radius: var(--radius-2xl);
   padding: 20px 28px;
   text-align: center;

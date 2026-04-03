@@ -905,8 +905,15 @@ body::before {
     <i class="bi bi-list fs-5"></i>
   </button>
   <a href="{% url 'sanatorium:main' %}" class="topbar-brand">
-    <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
-    آزمون‌یار
+    <div class="brand-icon">    <img src="{% url 'site:favicon' %}" 
+         alt="سورنا"
+         width="40"
+         height="40"
+         loading="eager"
+         decoding="async"
+         class="site-logo">
+</picture></div>
+    سورنا
   </a>
   <div class="topbar-spacer"></div>
   <div class="topbar-actions">

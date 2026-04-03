@@ -60,14 +60,15 @@ class Quiz(models.Model):
     capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت', default=1)
     filled_capacity = models.PositiveSmallIntegerField(verbose_name=' ظرفیت پر شده', default=0)
     is_online = models.BooleanField(default=True, verbose_name='انلاین')
-    allow_return_to_questions = models.BooleanField(default=True, verbose_name='برگشتن به عقب')
     allow_to_edit_anwerd_by_sanatorium = models.BooleanField(default=True, verbose_name='اجازه به ویرایش پاسخ بعد از تصحصح توسط مصحح')
     change_the_order = models.BooleanField(default=True, verbose_name=' عوض کردن ترتیب سوالات')
-    allow_to_edit_the_answered_questions = models.BooleanField(default=True, verbose_name='امکان ویرایش سوالات پاسخ داده شده')
-    have_negetive_score = models.BooleanField(default=True, verbose_name='دارای نمره منفی')
+    have_negetive_score = models.BooleanField(default=True, verbose_name='- ') # دارای نمره منفی
     start_set_report = models.BooleanField(default=False, verbose_name='شروع به تصحیح')
     is_active = models.BooleanField(default=True, verbose_name='فعال')
 
+    allow_to_edit_the_answered_questions = models.BooleanField(default=True, verbose_name='امکان ویرایش سوالات پاسخ داده شده')
+    allow_return_to_questions = models.BooleanField(default=True, verbose_name='برگشتن به عقب')
+    allow_to_edit_the_question_after_the_user_finish = models.BooleanField(default=True, verbose_name='اجازه به ویرایش پاسخ بعد از اتمام کاربر و قبل از اتمام وقت')
 
     status = models.CharField(verbose_name='وضعیت', choices=QuizStatus, default=QuizStatus.WAITING_START, max_length=55, null=True, blank=True)
     student = models.ManyToManyField(User, null=True, blank=True, related_name='quiz_student', verbose_name='دانش اموز', db_index=True)
@@ -78,7 +79,7 @@ class Quiz(models.Model):
     description = CKEditor5Field()
 
     class Meta:
-        ordering = ['-pk']
+        ordering = ['-id']
         verbose_name = 'ازمون'
         verbose_name_plural = 'ازمون ها'
  
@@ -94,7 +95,7 @@ class UserQuizDetail(models.Model):
     quiz = models.ForeignKey('Quiz', on_delete=models.PROTECT, related_name='detail', verbose_name='آزمون' , db_index=True)
     student = models.ForeignKey(User, on_delete=models.PROTECT, related_name='quiz_detail', verbose_name='دانش اموز', db_index=True)
     student_finished_at = models.DateTimeField(verbose_name='زمان خروج کاربر از ازمون', null=True, blank=True)
-    student_start_at = models.DateTimeField(verbose_name='زمان ورود کاربر به ازمون', auto_now_add=True)
+    student_start_at = models.DateTimeField(verbose_name='زمان ورود کاربر به ازمون', blank=True, null=True)
     out_of_page = models.PositiveSmallIntegerField(verbose_name='خروج از صفحه', default=0)
 
 

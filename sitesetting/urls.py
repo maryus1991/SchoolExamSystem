@@ -7,4 +7,5 @@ urlpatterns = [
     path('contact/', views.Contact.as_view(), name='contact'),
     path('about/', views.About.as_view(), name='about'),
     path('', views.MainPage.as_view(), name='main'),
+    path('favicon.ico', views.FavIcon.as_view(), name='favicon'),
 ]

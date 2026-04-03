@@ -57,6 +57,7 @@ urlpatterns = [
     # orders
     path('orders', views.orders.OrdersListView.as_view(), name='order-list'),
     path('orders/<int:pk>', views.orders.OrderDetailsListVies.as_view(), name='order-detail'),
+    path('orders/submitting/<int:pk>', views.orders.OrderSubmitByAdmin.as_view(), name='order-admin-submmiting'),
     path('orders/cancell-by-admin/<int:pk>', views.orders.OrderCancellByAdmin.as_view(), name='order-cancel-by-admin'),
 
     # tickets
@@ -78,6 +79,10 @@ urlpatterns = [
 
     path('question-bank/delete/option/<int:pk>', views.qbank.QuestionOptionDelete.as_view(), name='qbank-option-delete'),
 
+    path('question-bank/key/delete/<int:pk>/image', views.qbank.QuestionKeyDeleteImage.as_view(), name='qbank-questionskey-delete-image'),
+    path('question-bank/key/delete/<int:pk>/pdf', views.qbank.QuestionKeyDeletePDF.as_view(), name='qbank-questionskey-delete-pdf'),
+    path('question-bank/delete/<int:pk>/image', views.qbank.QuestionDeleteImage.as_view(), name='qbank-questions-delete-image'),
+    path('question-bank/delete/<int:pk>/pdf', views.qbank.QuestionDeletePDF.as_view(), name='qbank-questions-delete-pdf'),
 
     # site 
     path('site/update', views.site.SiteUpdateView.as_view(), name='site'),
@@ -114,10 +119,14 @@ urlpatterns = [
     path('exam/<int:quiz_id>/questions/create/', views.quiz.QuestionCreateView.as_view(), name='quiz-questions-create'),
     path('exam/<int:quiz_id>/questions/update/<int:pk>', views.quiz.QuestionUpdateView.as_view(), name='quiz-questions-update'),
     path('exam/<int:quiz_id>/questions/delete/<int:pk>', views.quiz.QuestionDelete.as_view(), name='quiz-questions-delete'),
+    path('exam/<int:quiz_id>/questions/delete/<int:pk>/image', views.quiz.QuestionDeleteImage.as_view(), name='quiz-questions-delete-image'),
+    path('exam/<int:quiz_id>/questions/delete/<int:pk>/pdf', views.quiz.QuestionDeletePDF.as_view(), name='quiz-questions-delete-pdf'),
 
     # question key
     path('exam/<int:quiz_id>/question/<int:qid>/key/create/', views.quiz.QuestionAnswerKeyCreateView.as_view(), name='quiz-question-key-create'),
     path('exam/<int:quiz_id>/question/<int:qid>/key/update/', views.quiz.QuestionAnswerKeyUpdateView.as_view(), name='quiz-question-key-update'),
+    path('exam/<int:quiz_id>/question/<int:qid>/key/delete/<int:pk>/image', views.quiz.QuestionKeyDeleteImage.as_view(), name='quiz-questions-key-delete-image'),
+    path('exam/<int:quiz_id>/question/<int:qid>/key/delete/<int:pk>/pdf', views.quiz.QuestionKeyDeletePDF.as_view(), name='quiz-questions-key-delete-pdf'),
 
     # question option
     path('exam/<int:quiz_id>/question/<int:qid>/options/create/', views.quiz.QuestionOptionsCreateView.as_view(), name='quiz-question-option-create'),
@@ -127,6 +136,7 @@ urlpatterns = [
     # quiz questions answer 
     path('exam/<quiz_id>/question/<int:qid>/answers/', views.quiz.QuestionAnswerLitView.as_view(), name='quiz-question-answer-list'),
     path('exam/<quiz_id>/question/<int:qid>/answer/<int:pk>', views.quiz.QuestionAnswerUpdateView.as_view(), name='quiz-question-answer-update'),
+ 
     
     # reports 
     path('reports/', views.reports.ReportListView.as_view(), name='report-list'),

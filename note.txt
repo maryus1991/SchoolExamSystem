@@ -3,31 +3,28 @@
  
 
 phase 1 todo list
-    test the exam page and fix the template
+    
  
-
-    add negetive score
-    add score avg to main dashboard # fix the icons
-
 
 phase 2 todo list
     fix the search bar in favorate quiz qbank blog 
-    fix the responsive of dashboard panel and order detail
     fix the create at for student answer that for show the time of answer
     check the QuizDetail for larg scale
   
   
 phase 3 todo list 
- 
+    fix the wallets
 
 phase 4 todo list 
     add toggle them for admin panel
     fix the search fields
     add balk create of users
     add login option for admin to login in every account
-    fix the jalali time fields for base form
     FIX the nemodare in main page 
+    page for fast add users answers
  
  
 essenial todo :
-    fix the uploads files
+    chunk upload to s3 server for exam page or user answer and add progress for upload
+    make the site more responsive
+    add score avg to main dashboard # fix the icons

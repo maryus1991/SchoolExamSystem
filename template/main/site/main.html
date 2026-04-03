@@ -13,7 +13,17 @@
     <div class="container">
       <div class="d-flex align-items-center justify-content-between w-100">
         <div class="d-flex align-items-center gap-3">
-          <div class="navbar-brand-logo"><i class="bi bi-lightning-fill"></i></div>
+          <div class="navbar-brand-logo">  <picture>
+ 
+    <img src="{% url 'site:favicon' %}" 
+         alt="سورنا"
+         width="40"
+         height="40"
+         loading="eager"
+         decoding="async"
+         class="site-logo">
+</picture>
+</div>
           <span class="navbar-brand-text">آزمون‌آنلاین</span>
         </div>
         <div class="d-flex align-items-center gap-2 d-none d-md-flex">
@@ -336,7 +346,20 @@
       <div class="row g-5">
         <div class="col-lg-4">
           <div class="d-flex align-items-center gap-2 mb-3">
-            <div class="navbar-brand-logo"><i class="bi bi-lightning-fill"></i></div>
+            <div class="navbar-brand-logo">
+  <picture>
+ 
+    <img src="{% url 'site:favicon' %}" 
+         alt="سورنا"
+         width="50"
+         height="50"
+         loading="eager"
+         decoding="async"
+         class="site-logo"
+         class="rounded-lg"
+         >
+</picture>
+  </div>
             <span class="footer-brand">{{sitem.name}}</span>
           </div>
           <p style="color:#64748b;font-size:0.9rem;line-height:1.8;">{{ site.short_description }}</p>

@@ -8,8 +8,8 @@ from django.db.models.aggregates import Count
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
-from django.utils.timezone import now
-from .forms import QuizSearchForm
+from django.utils.timezone import now, timedelta
+from .forms import QuizSearchForm, AnswerForm
 import random
 from django.db.models import Q
 from order.models import Order, OrderDetail
@@ -80,7 +80,7 @@ class QuizListDetailView(ListView):
         if grade_category_id:queryset=queryset.filter(grade__id=grade_category_id)
         if lession_category_id:queryset=queryset.filter(major__id=lession_category_id)
         if major_category_id:queryset=queryset.filter(lession__id=major_category_id)
-        return  queryset.all()
+        return  queryset.order_by('-pk').all()
     
 
     def get_template_names(self):
@@ -124,9 +124,7 @@ class QuizListDetailView(ListView):
                 order = OrderDetail.objects.filter(
                     order__user=self.request.user, 
                     quiz__pk=pk,
-                ).filter(
-                    Q(order__status=Order.OrderStatus.active) | Q(order__status=Order.OrderStatus.paid)  
-                )
+                ) 
                 
                 data['quiz_in_order'] = order.exists()
                 data['order'] = order.first()
@@ -222,16 +220,23 @@ class SetQuizDetailForUser(LoginRequiredMixin, RedirectView):
             )
             return reverse('quiz:detail', kwargs={'pk': quiz.id})
 
-        if quiz.last_enter and self.quiz.last_enter < now():
+        if quiz.last_enter and quiz.last_enter < now():
             messages.error(
                 self.request, 'مدت مجاز ورود به ازمون تمام شده است'
             )
             return reverse('quiz:detail', kwargs={'pk': quiz.id})
 
-        UserQuizDetail.objects.get_or_create(
+        obj, created = UserQuizDetail.objects.get_or_create(
             quiz=quiz,
-            student=user
+            student=user,
+            
         )
+
+        if created or obj.student_start_at is None or (obj.student_finished_at <= now() and quiz.stop_at > now() and quiz and quiz.allow_to_edit_the_question_after_the_user_finish) :
+            obj.student_start_at = now()
+        else: 
+            obj.out_of_page += 1
+        obj.save()
 
         for question in quiz.questions.all():
             StudentAnswer.objects.get_or_create(
@@ -244,138 +249,142 @@ class SetQuizDetailForUser(LoginRequiredMixin, RedirectView):
             self.request, 'برای شما پاسخ نامه تعریف شد'
         )
 
-        return reverse('quiz:quiz-start-quesion-id', kwargs={'pk': quiz.id})
+        return reverse('quiz:quiz-start', kwargs={'pk': quiz.id})
+
 
 class QuizStarted(LoginRequiredMixin, View):
     """
-    quiz start
+    Quiz start view - handles displaying questions to students
     """
+    
     def dispatch(self, request, *args, **kwargs):
         self.pk = kwargs.get('pk')
-
-        self.queryset = Quiz.objects.filter(id=self.pk
-        ).prefetch_related('grade', 'major', 'lession', 
-        'student', 'questions', 'questions__options', 
-        'questions__student_answers', 'detail')
-    
-        if self.queryset.count() != 1 or not self.queryset.exists():
-   
-            messages.error(
-                request, 'ازمون یافت نشد'
-            )
-            raise Http404()
-
-       
-        self.quiz = self.queryset.first()
-
-        self.quiz_detail = self.quiz.detail.filter(student=request.user)
-        if not self.quiz_detail.exists():
-            return redirect(reverse('quiz:set-details', kwargs={'pk': self.quiz.id}))
-
-        self.unsolved_question = self.quiz.questions.filter(
-            student_answers__student=request.user,
-            student_answers__is_skipped=False,
-            student_answers__type_of_answer=StudentAnswer.TypeOfAnswer.NOT_ANSWERD
-            ).values_list('id', flat=True)
+        self.request = request
         
-        if len(self.unsolved_question) <= 0:
+        # Get quiz with optimized queries
+        self.quiz = get_object_or_404(
+            Quiz.objects.select_related('grade', 'major', 'lession'),
+            id=self.pk
+        )
+        
+        # Check if quiz detail exists for this student
+        self.quiz_detail = self.quiz.detail.filter(student=request.user).first()
+        if not self.quiz_detail :
+            return redirect(reverse('quiz:set-details', kwargs={'pk': self.quiz.id}))
+        
+        # Get unsolved questions (not answered yet)
+        self.unsolved_question_ids = list(
+            self.quiz.questions.filter(
+                student_answers__student=request.user,
+ 
+                student_answers__type_of_answer=StudentAnswer.TypeOfAnswer.NOT_ANSWERD
+            ).values_list('id', flat=True)
+        )
+        
+        # Check if all questions are answered
+        if not self.unsolved_question_ids and not self.quiz.allow_to_edit_the_answered_questions:
             messages.success(
-                request, 'شما با موفقعیت به همه سوالات پاسخ دادید و طراح این ازمون اجازه ویرایش سولات پاسخ داده شده را نداده'
-                )
+                request, 
+                'شما با موفقیت به همه سوالات پاسخ دادید و طراح این آزمون اجازه ویرایش سوالات پاسخ داده شده را نداده است'
+            )
             return redirect(reverse('quiz:quiz-finished', kwargs={'pk': self.pk}))
-
+        
+        # Determine which questions to show
         if self.quiz.allow_to_edit_the_answered_questions:
-            # for return all questuions
-            self.questions = self.quiz.questions
+            self.questions = self.quiz.questions.all()
         else:
-            # for return just not anwserd questions
             self.questions = self.quiz.questions.filter(
                 student_answers__type_of_answer=StudentAnswer.TypeOfAnswer.NOT_ANSWERD,
                 student_answers__student=request.user
             )
-    
+        
+        # Handle question_id from URL (if returning to a specific question)
         question_id = kwargs.get('question_id')
-        if question_id and self.quiz.allow_return_to_questions  :
-            self.question = self.questions.get(pk=question_id)
-            self.student_answers = StudentAnswer.objects.get_or_create(
-                student=request.user,
-                quiz = self.quiz,
-                question = self.question
-            )[0]
+        if question_id and self.quiz.allow_return_to_questions:
+            try:
+                self.question = self.questions.get(pk=question_id)
+            except self.questions.model.DoesNotExist:
+                raise Http404("سوال یافت نشد")
+        else:
+            # Select question based on quiz settings
+            if not self.quiz.change_the_order:
+                # Return first unsolved question (ordered)
+                self.question = self.questions.filter(
+                    student_answers__type_of_answer=StudentAnswer.TypeOfAnswer.NOT_ANSWERD
+                ).first()
+            else:
+                # Return random unsolved question
+                import random
+                try:
+                    self.question = self.quiz.questions.filter(
+                        id__in=self.unsolved_question_ids 
+                    ).get(pk=random.choice(self.unsolved_question_ids))
+                except:
+                    if self.quiz.allow_to_edit_the_answered_questions :
+                        self.question = self.quiz.questions.first()
+                    else:
+                        messages.success(request, 
+                            'شما با موفقیت به همه سوالات پاسخ دادید و طراح این آزمون اجازه ویرایش سوالات پاسخ داده شده را نداده است'
+                        )
+                        return redirect(reverse('quiz:quiz-finished', kwargs={'pk': self.pk}))
 
-            return super().dispatch(request, *args, **kwargs)
-                
-        if not self.quiz.change_the_order:
-            
-            self.question = self.questions.filter(
-                student_answers__type_of_answer=StudentAnswer.TypeOfAnswer.NOT_ANSWERD
-            ).first()
-
-            self.student_answers = StudentAnswer.objects.get_or_create(
-                student=request.user,
-                quiz = self.quiz,
-                question = self.question
-            )[0]
-
-            return super().dispatch(request, *args, **kwargs)
-
-        self.question = self.questions.get(pk=random.choice(self.unsolved_question))
-            
-        self.student_answers = StudentAnswer.objects.get_or_create(
+        
+        # Get or create student answer
+        self.student_answers, created = StudentAnswer.objects.get_or_create(
             student=request.user,
-            quiz = self.quiz,
-            question = self.question
-        )[0]
-
+            quiz=self.quiz,
+            question=self.question,
+            defaults={'type_of_answer': StudentAnswer.TypeOfAnswer.NOT_ANSWERD}
+        )
+        
         return super().dispatch(request, *args, **kwargs)
     
-
     def get(self, request, *args, **kwargs):
+        # Get solved questions (answered but not skipped)
+        solved_question_ids = list(
+            self.quiz.questions.filter(
+                student_answers__student=request.user,
+ 
+            ).exclude(
+                student_answers__type_of_answer=StudentAnswer.TypeOfAnswer.NOT_ANSWERD
+            ).values_list('id', flat=True)
+        )
+        
+        # Get skipped questions
+        skipped_question_ids = list(
+            self.quiz.questions.filter(
+                student_answers__student=request.user,
+
+                student_answers__type_of_answer=StudentAnswer.TypeOfAnswer.SKIPPED
+            ).values_list('id', flat=True)
+        )
+        
+        # All questions
+        all_question_ids = list(
+            self.quiz.questions.values_list('id', flat=True)
+        )
+        remaining_seconds = ((self.quiz_detail.student_start_at + timedelta(minutes=self.quiz.time_minutes)) - now()).total_seconds()
+
         context = {
             'quiz': self.quiz,
-            'answer': self.student_answers ,
-            'question': self.question, 
-
-            'solved_question': self.quiz.questions.filter(
-                student_answers__student=request.user,
-                student_answers__is_skipped=False,
-                ).exclude(
-                    student_answers__type_of_answer=StudentAnswer.TypeOfAnswer.NOT_ANSWERD
-                ).values_list('id', flat=True), 
-
-            'skipped_question': self.quiz.questions.filter(
-                student_answers__student=request.user,
-                student_answers__is_skipped=True,
-                student_answers__type_of_answer=StudentAnswer.TypeOfAnswer.SKIPPED
-
-                ).values_list('id', flat=True), 
-
-            'unsolved_question': self.unsolved_question,
-            'all_question': self.quiz.questions.values_list('id', flat=True), 
-            'quiz_detail': self.quiz_detail, 
+            'answer': self.student_answers,
+            'question': self.question,
+            'solved_question': solved_question_ids,
+            'solved_question_count': len(solved_question_ids),
+            'skipped_question': skipped_question_ids,
+            'skipped_question_count': len(skipped_question_ids),
+            'unsolved_question': self.unsolved_question_ids,
+            'unsolved_question_count': len(self.unsolved_question_ids),
+            'all_question': all_question_ids,
+            'all_question_count': len(all_question_ids),
+            'quiz_detail': self.quiz_detail,
+            'solved_skipped_questions': len(solved_question_ids) + len(skipped_question_ids),
+            'remaining_time': max(0, int(remaining_seconds / 60)),
+            'status': StudentAnswer.TypeOfAnswer,
         }
-        
-        context['solved_skipped_questions' ] = int(context.get('solved_question')) + int(context.get('skipped_question'))
+
+ 
         return render(request, 'main/exam/start-exam.html', context)
-
-class QuizFinished(LoginRequiredMixin, RedirectView):
-    """quiz finished"""
-
-    def get_redirect_url(self, *args, **kwargs):
-
-        pk = kwargs.get('pk')
-        quiz = get_object_or_404(Quiz, pk=pk, student=self.request.user)
-        
-        quiz_detail = UserQuizDetail.objects.update_or_create(
-            quiz = quiz, 
-            student = self.request.user,
-            student_finished_at = now()
-        )[0]
-
-        messages.success(self.request, 'از ازمون با موفقیت خارج شدید')
-        messages.warning(self.request, 'خسته نباشید')
-
-        return reverse('quiz:detail', kwargs={'pk':pk}) 
 
 class QuizSetAnswerOptions(LoginRequiredMixin, RedirectView):
     
@@ -432,8 +441,119 @@ class QuizSetSkippedToQuestion(LoginRequiredMixin, RedirectView):
 
         return reverse('quiz:quiz-start', kwargs={'pk':quiz_id})
 
+class QuizFinished(LoginRequiredMixin, RedirectView):
+        """quiz finished"""
+
+        def get_redirect_url(self, *args, **kwargs):
+
+            pk = kwargs.get('pk')
+            quiz = get_object_or_404(Quiz, pk=pk, student=self.request.user)
+            
+            quiz_detail = UserQuizDetail.objects.get(
+                quiz = quiz, 
+                student = self.request.user,
+            )
+
+            quiz_detail.student_finished_at = now()
+            quiz_detail.save()
+
+
+
+            messages.success(self.request, 'از ازمون با موفقیت خارج شدید')
+            messages.warning(self.request, 'خسته نباشید')
+
+            return reverse('quiz:detail', kwargs={'pk':pk}) 
+
 class QuizSetAnswerTextOrFiles(LoginRequiredMixin, RedirectView):
-    pass
+    """for upload files"""
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(
+            StudentAnswer, 
+            question_id=kwargs.get('question_id'),
+            quiz_id=kwargs.get('pk'),
+            student=self.request.user
+        )
+
+        form = AnswerForm(self.request.POST, self.request.FILES)
+
+        if not item.quiz.allow_to_edit_the_answered_questions:
+            messages.error(self.request, 'در این ازمون اجازه تغییر پاسخ ثبت شده')
+            return reverse('quiz:quiz-start', kwargs={'pk':kwargs.get('pk')})
+
+        if form.is_valid():
+            
+            if text:= form.cleaned_data.get('answer'):
+
+
+                item.description = text
+                item.type_of_answer = StudentAnswer.TypeOfAnswer.TEXT_BASED
+                
+        
+            if file:= form.cleaned_data.get('file'):
+ 
+                if  file.content_type in ['application/pdf']:
+                    
+                    item.pdf_file = form.files.get('file') 
+                    item.type_of_answer = StudentAnswer.TypeOfAnswer.PDF_BASED
+                    
+
+                else:
+                    item.image = form.files.get('file')
+                    item.type_of_answer = StudentAnswer.TypeOfAnswer.IMAGE_BASED
+                    
+
+            if image:= form.cleaned_data.get('image'):
+                item.image = form.files.get('image')
+                item.type_of_answer = StudentAnswer.TypeOfAnswer.IMAGE_BASED
+
+            item.created_at = now() 
+            item.save()
+            messages.success(self.request, 'پاسخ ثبت شد')
+        else:
+            messages.error(self.request, form.errors)
+
+        
+
+        return reverse('quiz:quiz-start', kwargs={'pk':kwargs.get('pk')})
+
+class QuizAnswerRemoveImage(LoginRequiredMixin, RedirectView):
+    """for delete the image"""
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(
+            StudentAnswer, 
+            question_id=kwargs.get('question_id'),
+            quiz_id=kwargs.get('pk'),
+            student=self.request.user
+        )
+
+        item.image = None
+        item.save()
+        messages.success(self.request, 'عکس حذف شد')
+
+        
+
+        return reverse('quiz:quiz-start', kwargs={'pk':kwargs.get('pk')})
+class QuizAnswerRemovePDF(LoginRequiredMixin, RedirectView):
+    """for delete the image"""
+    def get_redirect_url(self, *args, **kwargs):
+        item = get_object_or_404(
+            StudentAnswer, 
+            question_id=kwargs.get('question_id'),
+            quiz_id=kwargs.get('pk'),
+            student=self.request.user
+        )
+
+        item.pdf_file = None
+        item.save()
+        messages.success(self.request, 'pdf حذف شد')
+
+        
+
+        return reverse('quiz:quiz-start', kwargs={'pk':kwargs.get('pk')})
+
+
+
+
 
 
 
