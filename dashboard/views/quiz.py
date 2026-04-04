@@ -16,7 +16,7 @@ class QuizList(LoginRequiredMixin, ListView):
             is_active=True,   
         ).prefetch_related('grade', 'major', 'lession'
         ).annotate(question_count=Count('questions'))
-        return queryset
+        return queryset.order_by('-pk')
     
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)

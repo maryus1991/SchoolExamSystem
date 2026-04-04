@@ -111,9 +111,18 @@ body {
   font-family: 'Vazirmatn', 'Tahoma', sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.7;
+  line-height: 1.5;
   transition: background-color 0.4s ease, color 0.4s ease;
   overflow-x: hidden;
+}
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+.page-section {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 a {
@@ -184,11 +193,10 @@ a {
    PAGE SECTIONS
    ============================================================ */
 .page-section {
-  display: none;
-  min-height: 100vh;
+ 
   animation: fadeInUp 0.4s ease;
 }
-.page-section.active { display: block; }
+ 
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -1297,3 +1305,10 @@ a {
     flex: 1;
     word-break: break-word;
 }
+
+/* اضافه کنید به انتهای بخش style در همان فایل */
+
+/* حل مشکل اسکرول افقی موبایل */
+
+
+ 

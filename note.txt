@@ -13,12 +13,15 @@ phase 2 todo list
   
   
 phase 3 todo list 
-    fix the wallets
+ 
 
 phase 4 todo list 
+    add bulk create of users ###
+    add bulk add users to quiz ###
+    add student answer page  
+    
     add toggle them for admin panel
     fix the search fields
-    add balk create of users
     add login option for admin to login in every account
     FIX the nemodare in main page 
     page for fast add users answers
@@ -28,3 +31,4 @@ essenial todo :
     chunk upload to s3 server for exam page or user answer and add progress for upload
     make the site more responsive
     add score avg to main dashboard # fix the icons
+    

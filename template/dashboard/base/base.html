@@ -1,163 +1,583 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پروفایل | آزمون‌یار</title>
-  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"> -->
-  <link rel="stylesheet" href="/static/css/bootstrap5.css">
-  <link rel="stylesheet" href="/static/css/bootstrap5-icons.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پروفایل | آزمون‌یار</title>
+<link rel="stylesheet" href="/static/css/bootstrap5.css">
+<link rel="stylesheet" href="/static/css/dashboard/message.css">
+
+<style>
+/* ==================== SVG Icons ==================== */
+.svg-icon { width: 20px; height: 20px; flex-shrink: 0; }
+.svg-icon-sm { width: 16px; height: 16px; }
+.svg-icon-lg { width: 24px; height: 24px; }
+
+/* ==================== Dark/Light Theme ==================== */
+[data-theme="dark"] .sidebar { background: #1a1a2e; }
+[data-theme="dark"] .sidebar-logo { border-color: rgba(255,255,255,0.1); }
+[data-theme="dark"] .nav-section-title { color: rgba(255,255,255,0.4); }
+[data-theme="dark"] .sidebar-link { color: rgba(255,255,255,0.7); }
+[data-theme="dark"] .sidebar-link:hover { background: rgba(255,255,255,0.08); }
+[data-theme="dark"] .sidebar-link.active { background: rgba(79, 70, 229, 0.2); }
+[data-theme="dark"] .sidebar-footer { border-color: rgba(255,255,255,0.1); }
+[data-theme="dark"] .sidebar-footer .sidebar-link { background: rgba(239, 68, 68, 0.1); color: #fca5a5; }
+[data-theme="dark"] .sidebar-footer .sidebar-link:hover { background: rgba(239, 68, 68, 0.2); }
+[data-theme="dark"] .topbar { background: #1a1a2e; border-color: rgba(255,255,255,0.1); }
+[data-theme="dark"] .search-box { background: #0f0f1a; border-color: rgba(255,255,255,0.1); }
+[data-theme="dark"] .search-box input { color: #f7fafc; }
+[data-theme="dark"] .search-box input::placeholder { color: #718096; }
+[data-theme="dark"] .topbar-btn { color: #a0aec0; }
+[data-theme="dark"] .avatar-placeholder { background: #4f46e5; color: #fff; }
+
+/* ==================== Sidebar ==================== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 260px;
+  height: 100vh;
+  background: #1a1a2e;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.site-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.logo-sub {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.nav-section-title {
+  padding: 8px 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 1px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-right: 3px solid transparent;
+}
+
+.sidebar-link:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.sidebar-link.active {
+  background: rgba(79, 70, 229, 0.2);
+  color: #fff;
+  border-right-color: #4f46e5;
+}
+
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-footer .sidebar-link {
+  margin: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  border: none;
+}
+
+.sidebar-footer .sidebar-link:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+/* ==================== Topbar ==================== */
+    .topbar{position:fixed;top:0;right:260px;left:0;height:64px;background:var(--topbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:999;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;transition:all 0.3s;}
+
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 16px 10px 44px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f5f7fa;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a0aec0;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+}
+
+.topbar-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.topbar-btn:hover {
+  background: #f5f7fa;
+}
+
+.notif-dot {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 8px;
+  height: 8px;
+  background: #ef4444;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.theme-toggle {
+  width: 44px;
+  height: 24px;
+  background: #e2e8f0;
+  border-radius: 12px;
+  padding: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: #4f46e5;
+}
+
+.theme-toggle-thumb {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+[data-theme="dark"] .theme-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #4f46e5;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* ==================== Main Content ==================== */
+.main-wrapper {
+ 
+  min-height: 100vh;
+  transition: margin-right 0.3s ease;
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 991.98px) {
+  .sidebar {
+    transform: translateX(100%);
+  }
+  
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .main-wrapper {
+    margin-right: 0;
+  }
+  /* ==================== دکمه منوی همبرگر ==================== */
+.menu-toggle {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary, #2d3748);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.menu-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.menu-toggle:active {
+  background: rgba(0, 0, 0, 0.1);
+  transform: scale(0.95);
+}
+
+[data-theme="dark"] .menu-toggle {
+  color: #f7fafc;
+}
+
+[data-theme="dark"] .menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ==================== دکمه بستن سایدبار ==================== */
+.sidebar-close {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.sidebar-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ==================== بهبود لمسی لینک‌ها ==================== */
+.sidebar-link {
+  min-height: 48px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-right: 3px solid transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sidebar-link:active {
+  background: rgba(79, 70, 229, 0.3);
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.sidebar-link.active {
+  background: rgba(79, 70, 229, 0.2);
+  color: #fff;
+  border-right-color: #4f46e5;
+}
+  
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1035;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+  }
+  
+  .sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .topbar {
+    padding: 0 12px;
+  }
+  
+  .search-box {
+    display: none;
+  }
+  
+  .topbar-actions {
+    gap: 4px;
+  }
+  
+  .topbar-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
+}
+</style>
 
 <script>
-  // Theme toggle
-  function toggleTheme() {
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('theme', isDark ? 'light' : 'dark');
-  }
-  // Load saved theme
-  const saved = localStorage.getItem('theme');
-  if (saved === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    document.getElementById('themeIcon').textContent = '🌙';
-  }
+// Theme toggle
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
 
-  // Toast helper
-  function showToast(msg, type='success') {
-    const t = document.createElement('div');
-    t.className = `alert alert-${type} d-flex align-items-center gap-2 shadow-lg`;
-    t.style.cssText = 'border-radius:14px;font-family:Vazirmatn,sans-serif;font-size:0.88rem;animation:fadeInUp 0.3s;min-width:280px;';
-    t.innerHTML = `<i class="bi bi-check-circle-fill"></i> ${msg}`;
-    document.getElementById('toast-container').appendChild(t);
-    setTimeout(() => t.remove(), 3500);
-  }
+// Load saved theme
+const saved = localStorage.getItem('theme');
+if (saved === 'dark') {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.getElementById('themeIcon').textContent = '🌙';
+}
+
+// Sidebar toggle for mobile
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('show');
+ 
+}
+
+
+// Toast helper
+function showToast(msg, type='success') {
+  const t = document.createElement('div');
+  t.className = `alert alert-${type} d-flex align-items-center gap-2 shadow-lg position-fixed bottom-0 end-0 m-3`;
+  t.style.cssText = 'border-radius:14px;font-family:Vazirmatn,sans-serif;font-size:0.88rem;animation:fadeInUp 0.3s;z-index:9999;';
+  t.innerHTML = `<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${msg}`;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
 </script>
-{% block header %}
-
-{% endblock header %}
-  <link rel="stylesheet" href="/static/css/dashboard/message.css">
-
+{% block header %}{% endblock header %}
 </head>
 <body>
 
+<!-- Sidebar Overlay (Mobile) -->
+ 
 
+<!-- Messages Container -->
 <div class="messages-container" id="messagesContainer">
-    <!-- پیام‌های جنگو اینجا نمایش داده می‌شوند -->
-    {% if messages %}
-        {% for message in messages %}
-            <div class="message-item">
-                <div class="col-span-12 row item-center alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}info{% endif %} alert-dismissible fade show d-flex align-items-center" role="alert" style="gap: 12px;">
-                    <button type="button" class="btn-close col-span-2" data-bs-dismiss="alert" aria-label="Close">
-                    <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
-                    </button>
-                    <span class="col-span-10 ">
-                        {{ message }}
-                    </span>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
+  {% if messages %}
+    {% for message in messages %}
+<div class="message-item">
+<div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}info{% endif %} alert-dismissible fade show d-flex align-items-center" role="alert" style="gap:12px;border-radius:14px;margin:8px;">
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          {{ message }}
+</div>
+</div>
+    {% endfor %}
+  {% endif %}
 </div>
 
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+<!-- دکمه بستن سایدبار در موبایل -->
+<button class="sidebar-close d-lg-none" onclick="toggleSidebar()" type="button" aria-label="بستن منو">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
 
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class=" ">    <img src="{% url 'site:favicon' %}" 
-         alt="سورنا"
-         width="40"
-         height="40"
-         loading="eager"
-         decoding="async"
-         class="site-logo">
-</picture></div>
-      <div>
-        <div class="logo-text">سورنا</div>
-        <div class="logo-sub">پلتفرم هوشمند آزمون</div>
-      </div>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="nav-section-title">منو اصلی</div>
+<div class="sidebar-logo">
+<img src="{% url 'site:favicon' %}" alt="سورنا" width="40" height="40" loading="eager" class="site-logo">
+<div>
+<div class="logo-text">سورنا</div>
+<div class="logo-sub">پلتفرم هوشمند آزمون</div>
+</div>
+</div>
+<nav class="sidebar-nav">
+<div class="nav-section-title">منو اصلی</div>
+<a href="{% url 'dashboard:main' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      پروفایل من
+</a>
+<a href="{% url 'dashboard:profile' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      اطلاعات حساب
+</a>
+<a href="{% url 'dashboard:order-list' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 15h0M2 9.5h20"/></svg>
+      سفارشات
+</a>
+<a href="{% url 'site:main' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      صفحه اصلی
+</a>
+<div class="nav-section-title">آزمون‌ها و کارنامه‌ها</div>
+<a href="{% url 'dashboard:report-third' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      نمودارها
+</a>
+<a href="{% url 'dashboard:report-second-list' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      کارنامه‌ها
+</a>
+<a href="{% url 'dashboard:quiz-list' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      آزمون‌های برگزار شده
+</a>
+<div class="nav-section-title">سوالات و مقالات</div>
+<a href="{% url 'dashboard:blog-list' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      مقالات
+</a>
+<a href="{% url 'dashboard:qbank-list' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      سوالات
+</a>
+<a href="{% url 'dashboard:favorate-quiz-list' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      آزمون‌های مورد علاقه
+</a>
+<div class="nav-section-title">پشتیبانی</div>
+<a href="{% url 'dashboard:ticket-list' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12a5 5 0 0 0 5 5 8 8 0 0 1 5 2 8 8 0 0 1 5-2 5 5 0 0 0 5-5V7h-5a8 8 0 0 0-5 2 8 8 0 0 0-5-2H2v5z"/></svg>
+      تیکت‌ها
+</a>
+<a href="{% url 'dashboard:ticket-send' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      ارسال تیکت
+</a>
  
+
+<a href="{% url 'user:logout' %}" class="sidebar-link text-danger">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      خروج از حساب
+</a>
+</nav>
+<div class="sidebar-footer">
+<a href="{% url 'user:logout' %}" class="sidebar-link">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      خروج از حساب
+</a>
+</div>
+<script>
+// Active link
+const links = window.location.href;
+const elements = document.getElementsByClassName("sidebar-link");
+for (const elem of elements) {
+if (elem.href === links) {
+elem.classList.add("active");
+      }
+    }
+</script>
+</aside>
+
+<!-- Main Content -->
+<div class="main-wrapper">
+<!-- Topbar -->
+<header class="topbar">
+<!-- دکمه منوی همبرگر - واضح‌تر و قابل کلیک -->
+<button class="menu-toggle d-lg-none" onclick="toggleSidebar()" type="button" aria-label="باز کردن منو">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+</button>
+
  
-      <a href="{% url 'dashboard:main' %}" class="sidebar-link"><i class="bi bi-person-circle"></i> پروفایل من</a>
-      <a href="{% url 'dashboard:profile' %}" class="sidebar-link"><i class="bi bi-gear"></i> اطلاعات حساب</a>
-      <a href="{% url 'dashboard:order-list' %}" class="sidebar-link"><i class="bi bi-bank"></i>سفارشات  </a>
-      <a href="{% url 'site:main' %}" class="sidebar-link"><i class="bi bi-bank"></i>صفحه اصلی  </a>
-      <div class="nav-section-title"> آزمون‌ها و کارنامه‌ها</div>
+<div class="topbar-actions">
+<button class="topbar-btn" title="اعلان‌ها">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+<span class="notif-dot"></span>
+</button>
+<button class="topbar-btn" title="پیام‌ها">
+<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+<div class="theme-toggle" onclick="toggleTheme()" title="تغییر تم">
+<div class="theme-toggle-thumb" id="themeIcon">☀️</div>
+</div>
+<div class="avatar-placeholder" title="علی محمدی">ع</div>
+</div>
+</header>
 
-      <a href="{% url 'dashboard:report-third' %}" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> نمودار ها</a>
-      <a href="{% url 'dashboard:report-second-list' %}" class="sidebar-link"><i class="bi bi-collection"></i> کارنامه ها</a>
-      <a href="{% url 'dashboard:quiz-list' %}" class="sidebar-link"><i class="bi bi-list-columns"></i>  ازمون های برگذار شده</a>
- 
-
-      
-      <div class="nav-section-title">سوالات و مقالات مورد علاقه</div>
-
-      <a href="{% url 'dashboard:blog-list' %}" class="sidebar-link"><i class="bi bi-bank"></i> مقالات </a>
-      <a href="{% url 'dashboard:qbank-list' %}" class="sidebar-link"><i class="bi bi-bank"></i> سوالات </a>
-      <a href="{% url 'dashboard:favorate-quiz-list' %}" class="sidebar-link"><i class="bi bi-bank"></i> ازمون ها</a>
-      <div class="nav-section-title">پشتیبانی</div>
-
-      <a href="{% url 'dashboard:ticket-list' %}" class="sidebar-link"><i class="bi bi-ticket-perforated"></i> تیکت‌ها  </a>
-      <a href="{% url 'dashboard:ticket-send' %}" class="sidebar-link"><i class="bi bi-plus-circle"></i> ارسال تیکت</a>
-
-    </nav>
-    <div class="sidebar-footer">
-      <a href="{% url 'user:logout' %}" class="sidebar-link" style="margin: 0;"><i class="bi bi-box-arrow-right"></i> خروج از حساب</a>
-    </div>
-    <script>
-        links = window.location.href;
-        elements = document.getElementsByClassName("sidebar-link");
-        for (elem of elements) {
-
-            if (elem.href === links) {
-                elem.classList.add("active");
- 
-            }
-        }
-    </script>
-
-  </aside>
-
-  <!-- Topbar -->
-  <header class="topbar">
-    <button class="topbar-btn d-lg-none" onclick="document.getElementById('sidebar').classList.toggle('show')">
-      <i class="bi bi-list"></i>
-    </button>
-    <div class="search-box">
-      <i class="bi bi-search search-icon"></i>
-      <input type="text" placeholder="جستجو در داشبورد...">
-    </div>
-    <div class="topbar-actions">
-      <div class="topbar-btn" title="اعلان‌ها">
-        <i class="bi bi-bell"></i>
-        <span class="notif-dot"></span>
-      </div>
-      <div class="topbar-btn" title="پیام‌ها">
-        <i class="bi bi-chat-dots"></i>
-      </div>
-      <div class="theme-toggle" onclick="toggleTheme()" title="تغییر تم">
-        <div class="theme-toggle-thumb" id="themeIcon">☀️</div>
-      </div>
-      <div class="avatar-placeholder" title="علی محمدی">ع</div>
-    </div>
-  </header>
- 
-{% block content %}
-
-  
-{% endblock   %}
-
+<!-- Page Content -->
+<main class=" ">
+    {% block content %}{% endblock %}
+</main>
+</div>
 
 <script src="/static/js/main/bootstrap5.bundle.min.js"></script>
-
-{% block footer %}
-
-{% endblock footer %}
-
+{% block footer %}{% endblock footer %}
 </body>
 </html>

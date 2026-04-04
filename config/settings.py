@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-v)jzbylc57v$uk247bwifv2nf@jvg%7n@3hpks^-g_u1%ws-8*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sornac.ir' , 'sorna.runflare.run']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sornac.ir' , 'sorna.runflare.run', '10.224.115.118']
 
 
 

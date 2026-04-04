@@ -115,10 +115,11 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
     <div class="d-flex flex-column gap-2">
 
       {% for item in items %}
+ 
         <div  class="question-row">
           <div class="q-num pending-q">{{ item.pk }}</div>
           <div style="flex:1;">
-            <div class="q-title"><a href='{% url "sanatorium:exam-student-question-list" item.answer.quiz.id %}' > پاسخ نامه شماره {{item.pk}} </a></div>
+            <div class="q-title"><a href='{% if item.answer.id %}{% url "sanatorium:exam-student-question-list" pk=item.answer.id %}{% endif %}' > پاسخ نامه شماره {{item.pk}} </a></div>
           </div>
           <div style="flex:1;">
             <div class="q-title">زمان ثبت : {{item.create_at|to_jalali}} </div>

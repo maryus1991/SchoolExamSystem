@@ -7,11 +7,13 @@ from dashboard.forms import ChangePhoneNumberNaitnalID
 from user.models import User
 from django.contrib.auth import logout
 from django.db.models.aggregates import Avg
+ 
+
 
 # Create your views here.
 
 
-class Dashboard(TemplateView):
+class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/profile/01-profile.html'
 
     def get_context_data(self, **kwargs):
