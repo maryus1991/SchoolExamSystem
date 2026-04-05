@@ -110,7 +110,8 @@
  
     
   </div>
-      <table class="modern-table" id="mainTable">
+  <div class="table-responsive">
+      <table class=" modern-table" id="mainTable">
         <thead>
           <tr>
             <th>#</th>
@@ -138,6 +139,7 @@
           {% endfor %}
         </tbody>
       </table>
+      </div>
     </div>
  
   </div>
@@ -173,11 +175,11 @@
                     <!-- Page numbers -->
                     {% for page in page_obj.paginator.page_range %}
                         {% if page_obj.number == page %}
-                            <li class="page-item active" style="border-radius:var(--radius-md);
-                                                              border:none; 
-                                                              background:var(--gradient-blue);"
+                            <li class="page-item active" 
                                 aria-current="page">
-                                <a class="page-link" href="?page={{page}}" style="color:inherit;">
+                                <a class="page-link" href="?page={{page}}" style="border-radius:var(--radius-md);
+                                                              border:none; 
+                                                              background:var(--gradient-blue);">
                                     {{ forloop.counter }}
                                 </a>
                             </li>

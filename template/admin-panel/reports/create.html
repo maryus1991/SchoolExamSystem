@@ -29,7 +29,7 @@
 
       <div class="row g-3">
  
-        <form action="" class="row col-md-12 grid" method="post">
+        <form action="" class="row col-md-12 grid" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           {{form.as_ul}}
           {{form.media}}

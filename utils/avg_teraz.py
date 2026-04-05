@@ -42,7 +42,7 @@ def calculate_std_dev(scores_list):
     
     # ۳. محاسبه واریانس (برای نمونه تقسیم بر n-1 می‌کنیم)
     # اگر می‌خواهید دقیقا مثل فرمول ریاضی مدرسه باشد، می‌توانید (len(scores_list) - 1) را به len(scores_list) تغییر دهید
-    variance = sum_squared_diff / (len(scores_list) - 1)
+    variance = sum_squared_diff / ((len(scores_list) - 1) if (len(scores_list) - 1) > 0 else 1)
     
     # ۴. گرفتن ریشه دوم واریانس برای رسیدن به انحراف معیار
     std_dev = variance ** 0.5

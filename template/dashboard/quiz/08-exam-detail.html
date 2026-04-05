@@ -1,345 +1,611 @@
-
-
 {% extends "dashboard/base/base.html" %}
- {% load jalali_tags %}
- {% load time %}
- 
+{% load jalali_tags %}
+{% load time %}
   {% block header %}
-
   
-
-  <style>
-    :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);--gradient-2:linear-gradient(135deg,#00CEC9 0%,#81ecec 100%);--gradient-3:linear-gradient(135deg,#fd79a8 0%,#fab1d3 100%);}
+  
+<style>
+:root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);--gradient-2:linear-gradient(135deg,#00CEC9 0%,#81ecec 100%);--gradient-3:linear-gradient(135deg,#fd79a8 0%,#fab1d3 100%);}
     [data-theme="dark"]{--bg:#0f0e1a;--bg-2:#1a1830;--sidebar-bg:#1a1830;--card-bg:rgba(26,24,48,0.85);--card-border:rgba(162,155,254,0.15);--text-main:#e8e6ff;--text-muted:#a29bfe;--text-light:#6c6a8a;--shadow:0 8px 32px rgba(0,0,0,0.4);--topbar-bg:rgba(26,24,48,0.92);--border:rgba(162,155,254,0.12);}
-    *{font-family:'Vazirmatn',sans-serif;}body{background:var(--bg);color:var(--text-main);transition:all 0.3s;}
-    .sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);box-shadow:var(--shadow);position:fixed;right:0;top:0;z-index:1000;display:flex;flex-direction:column;border-left:1px solid var(--border);}
-    .sidebar-logo{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;}
-    .logo-icon{width:42px;height:42px;background:var(--gradient-1);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;}
-    .sidebar-nav{padding:1rem 0;flex:1;overflow-y:auto;}
-    .nav-section-title{padding:0.5rem 1.5rem;font-size:0.7rem;font-weight:700;color:var(--text-light);margin-top:0.5rem;}
-    .sidebar-link{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.5rem;color:var(--text-muted);text-decoration:none;border-radius:12px;margin:0.15rem 0.75rem;transition:all 0.2s;font-size:0.88rem;font-weight:500;}
-    .sidebar-link:hover,.sidebar-link.active{background:var(--gradient-1);color:white;box-shadow:0 4px 15px rgba(108,92,231,0.35);}
-    .badge-count{margin-right:auto;background:var(--accent);color:white;border-radius:50px;padding:1px 8px;font-size:0.7rem;font-weight:700;}
-    .sidebar-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);}
-    .topbar{position:fixed;top:0;right:260px;left:0;height:64px;background:var(--topbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:999;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;transition:all 0.3s;}
-    .topbar-actions{display:flex;align-items:center;gap:0.75rem;margin-right:auto;}
-    .topbar-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;position:relative;}
-    .topbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
-    .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--bg-2);}
-    .avatar-placeholder{width:38px;height:38px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;}
-    .main-content{margin-right:260px;padding-top:64px;}
-    .page-body{padding:2rem;}
-    .glass-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;box-shadow:var(--shadow);backdrop-filter:blur(20px);transition:all 0.3s;}
-    .glass-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);}
-    .section-title{font-size:1rem;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:0.5rem;}
-    .section-title::before{content:'';width:4px;height:20px;background:var(--gradient-1);border-radius:50px;display:inline-block;}
-    .badge-status{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.75rem;font-weight:600;}
-    .badge-success{background:rgba(0,184,148,0.15);color:var(--success);}
-    .badge-warning{background:rgba(253,203,110,0.2);color:#d9a010;}
-    .badge-danger{background:rgba(225,112,85,0.15);color:var(--danger);}
-    .badge-info{background:rgba(108,92,231,0.12);color:var(--primary);}
-    .theme-toggle{width:52px;height:28px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background 0.3s;}
+*{font-family:'Vazirmatn',sans-serif;}body{background:var(--bg);color:var(--text-main);transition:all 0.3s;}
+.sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);box-shadow:var(--shadow);position:fixed;right:0;top:0;z-index:1000;display:flex;flex-direction:column;border-left:1px solid var(--border);}
+.sidebar-logo{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;}
+.logo-icon{width:42px;height:42px;background:var(--gradient-1);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;}
+.sidebar-nav{padding:1rem 0;flex:1;overflow-y:auto;}
+.nav-section-title{padding:0.5rem 1.5rem;font-size:0.7rem;font-weight:700;color:var(--text-light);margin-top:0.5rem;}
+.sidebar-link{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.5rem;color:var(--text-muted);text-decoration:none;border-radius:12px;margin:0.15rem 0.75rem;transition:all 0.2s;font-size:0.88rem;font-weight:500;}
+.sidebar-link:hover,.sidebar-link.active{background:var(--gradient-1);color:white;box-shadow:0 4px 15px rgba(108,92,231,0.35);}
+.badge-count{margin-right:auto;background:var(--accent);color:white;border-radius:50px;padding:1px 8px;font-size:0.7rem;font-weight:700;}
+.sidebar-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);}
+.topbar{position:fixed;top:0;right:260px;left:0;height:64px;background:var(--topbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:999;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;transition:all 0.3s;}
+.topbar-actions{display:flex;align-items:center;gap:0.75rem;margin-right:auto;}
+.topbar-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;position:relative;}
+.topbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid var(--bg-2);}
+.avatar-placeholder{width:38px;height:38px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;}
+.main-content{margin-right:260px;padding-top:64px;}
+.page-body{padding:2rem;}
+.glass-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;box-shadow:var(--shadow);backdrop-filter:blur(20px);transition:all 0.3s;}
+.glass-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);}
+.section-title{font-size:1rem;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:0.5rem;}
+.section-title::before{content:'';width:4px;height:20px;background:var(--gradient-1);border-radius:50px;display:inline-block;}
+.badge-status{padding:0.3rem 0.8rem;border-radius:50px;font-size:0.75rem;font-weight:600;}
+.badge-success{background:rgba(0,184,148,0.15);color:var(--success);}
+.badge-warning{background:rgba(253,203,110,0.2);color:#d9a010;}
+.badge-danger{background:rgba(225,112,85,0.15);color:var(--danger);}
+.badge-info{background:rgba(108,92,231,0.12);color:var(--primary);}
+.theme-toggle{width:52px;height:28px;background:var(--border);border-radius:50px;position:relative;cursor:pointer;transition:background 0.3s;}
     [data-theme="dark"] .theme-toggle{background:var(--primary);}
-    .theme-toggle-thumb{position:absolute;top:3px;right:3px;width:22px;height:22px;background:white;border-radius:50%;transition:transform 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}
+.theme-toggle-thumb{position:absolute;top:3px;right:3px;width:22px;height:22px;background:white;border-radius:50%;transition:transform 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.65rem;}
     [data-theme="dark"] .theme-toggle-thumb{transform:translateX(-24px);}
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    .animate-in{animation:fadeInUp 0.5s ease forwards;}
-    .delay-1{animation-delay:0.1s;opacity:0}.delay-2{animation-delay:0.2s;opacity:0}
-    /* Timer component */
-    .timer-widget{background:var(--gradient-1);border-radius:20px;padding:1.5rem;color:white;text-align:center;}
-    .timer-display{font-size:3rem;font-weight:900;letter-spacing:2px;font-variant-numeric:tabular-nums;}
-    .timer-label{font-size:0.78rem;opacity:0.75;margin-top:0.25rem;}
-    .timer-controls{display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;}
-    .timer-btn{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:white;border-radius:10px;padding:0.4rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(10px);}
-    .timer-btn:hover{background:rgba(255,255,255,0.35);}
-    /* PDF viewer mock */
-    .pdf-viewer{background:var(--bg-2);border:2px solid var(--border);border-radius:16px;overflow:hidden;}
-    .pdf-toolbar{background:var(--card-bg);border-bottom:1px solid var(--border);padding:0.75rem 1rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;}
-    .pdf-toolbar-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.3rem 0.75rem;font-family:Vazirmatn,sans-serif;font-size:0.78rem;cursor:pointer;color:var(--text-main);transition:all 0.2s;}
-    .pdf-toolbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
-    .pdf-page{min-height:400px;padding:2rem;display:flex;flex-direction:column;gap:1rem;}
-    .pdf-question{border-right:4px solid var(--primary);padding:1rem;border-radius:0 12px 12px 0;background:var(--bg);}
-    .pdf-option{padding:0.5rem 0.75rem;border-radius:8px;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border);font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
-    .pdf-option.selected{background:rgba(0,184,148,0.12);border-color:var(--success);color:var(--success);}
-    .pdf-option.wrong{background:rgba(225,112,85,0.12);border-color:var(--danger);color:var(--danger);}
-
-        /* Q answer grid */
-    .q-grid{display: grid ;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:6px;}
-    .q-cell{width:60px;height:60px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;cursor:pointer;transition:transform 0.2s;border:2px solid transparent;}
-    .q-cell:hover{transform:scale(1.2);}
-   
-
-
-    .q-correct{background:rgba(0,184,148,0.15);color:var(--success);border-color:rgba(0,184,148,0.3);}
-    .q-wrong{background:rgba(225,112,85,0.15);color:var(--danger);border-color:rgba(225,112,85,0.3);}
-    .q-empty{background:rgba(108,92,231,0.08);color:var(--text-muted);border-color:var(--border);}
-    .q-no-answer{background:rgba(253,203,110,0.15);color:#d9a010;border-color:rgba(253,203,110,0.3);}
-
-    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
-  </style>
-{% endblock   %}
- 
-{% block content %}
- 
-<main class="main-content"><div class="page-body">
-
-  <!-- Header -->
-  <div class="d-flex align-items-center gap-3 mb-4 animate-in">
-    <a href="{% url 'dashboard:quiz-list' %}" style="width:40px;height:40px;border-radius:12px;background:var(--card-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-main);text-decoration:none;flex-shrink:0;transition:all 0.2s;" onmouseover="this.style.background='var(--gradient-1)';this.style.color='white'" onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text-main)'"><i class="bi bi-arrow-right"></i></a>
-    <div class="flex-grow-1">
-      <h5 style="font-weight:800;margin:0;">{{ quiz.name }}</h5>
-      <div style="font-size:0.82rem;color:var(--text-muted);">برگزار شده: {{ quiz.start_at|to_jalali:'%H:%M - %Y/%m/%d' }} • مدت: {{quiz.time_minutes}} دقیقه • {{items.count}} سوال</div>
-    </div>
-    <!-- <span class="badge-status badge-success" style="font-size:0.85rem;padding:0.4rem 1rem;">عالی ۸۵٪</span> -->
-  </div>
-
-
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.animate-in{animation:fadeInUp 0.5s ease forwards;}
+.delay-1{animation-delay:0.1s;opacity:0}.delay-2{animation-delay:0.2s;opacity:0}
+/* Timer component */
+.timer-widget{background:var(--gradient-1);border-radius:20px;padding:1.5rem;color:white;text-align:center;}
+.timer-display{font-size:3rem;font-weight:900;letter-spacing:2px;font-variant-numeric:tabular-nums;}
+.timer-label{font-size:0.78rem;opacity:0.75;margin-top:0.25rem;}
+.timer-controls{display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;}
+.timer-btn{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:white;border-radius:10px;padding:0.4rem 1rem;font-family:Vazirmatn,sans-serif;font-size:0.82rem;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(10px);}
+.timer-btn:hover{background:rgba(255,255,255,0.35);}
+/* PDF viewer mock */
+.pdf-viewer{background:var(--bg-2);border:2px solid var(--border);border-radius:16px;overflow:hidden;}
+.pdf-toolbar{background:var(--card-bg);border-bottom:1px solid var(--border);padding:0.75rem 1rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;}
+.pdf-toolbar-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.3rem 0.75rem;font-family:Vazirmatn,sans-serif;font-size:0.78rem;cursor:pointer;color:var(--text-main);transition:all 0.2s;}
+.pdf-toolbar-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;}
+.pdf-page{min-height:400px;padding:2rem;display:flex;flex-direction:column;gap:1rem;}
+.pdf-question{border-right:4px solid var(--primary);padding:1rem;border-radius:0 12px 12px 0;background:var(--bg);}
+.pdf-option{padding:0.5rem 0.75rem;border-radius:8px;margin-top:0.5rem;background:var(--card-bg);border:1px solid var(--border);font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+.pdf-option.selected{background:rgba(0,184,148,0.12);border-color:var(--success);color:var(--success);}
+.pdf-option.wrong{background:rgba(225,112,85,0.12);border-color:var(--danger);color:var(--danger);}
   
-
-
-  <div class="row g-4">
-
- 
-    <!-- PDF Viewer -->
-    <div class="col-lg-8 animate-in">
-              <!-- Question grid -->
-        <div class="animate-in delay-2 mb-4">
-          <div class="glass-card p-4">
-            <div class=" justify-content-between align-items-center mb-4">
-              <div class="section-title mb-2">وضعیت سوالات</div>
-              <style>
-                    .q-no-corrected {background:rgba(112, 22, 134, 0.15) ;color:rgba(112, 22, 134);    border-color:rgba(112, 22, 134); }
-                    .q-skipped      {background:rgba(251, 255, 0,0.15)   ;color: rgb(248, 188, 21);  border-color:rgba(252, 225, 107);}
-                    .q-wrong        {background:rgba(231, 66, 66, 0.15)  ;color:rgba(231, 66, 66);     border-color:rgba(231, 66, 66);  }
-                    .q-weak         {background:rgba(199, 126, 58, 0.15) ;color:rgb(199, 126, 58);   border-color:rgb(199, 126, 58);}
-                    .q-average      {background:rgba(95, 226, 91, 0.15)  ;color:rgb(95, 226, 91);    border-color:rgb(95, 226, 91); }
-                    .q-good         {background:rgba(9, 219, 247, 0.15)  ;color:rgba(9, 219, 247);     border-color:rgba(9, 219, 247);  }
-                    .q-correct      {background:rgba(0,184,148,0.15)     ;color: rgba(0,184,148) ;     border-color:rgba(0,184,148);    }
-              </style>
-              <div style="display:flex;gap:0.75rem;font-size:0.78rem;flex-wrap:wrap;">
-                 <span class="q-skipped   btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-skipped   " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> رد شده ({{skipped}})</span>
-                <span class="q-wrong     btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-wrong     " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> کاملا اشتباه ({{ wrong}})</span>
-                <span class="q-weak      btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-weak      " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> نیاز به تلاش بیشتر ({{ weak}})</span>
-                <span class="q-average   btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-average   " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> قابل قبول ({{ average}})</span>
-                <span class="q-good      btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-good      " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> نسبتا درست ({{good}})</span>
-                <span class="q-correct   btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-correct   " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> کاملا درست ({{excellent}})</span>
-                <span class="q-no-corrected    btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-no-corrected    " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> تصحیح نشده ({{not_corrected}})</span>
-              </div>
-
-            </div>
-            <div class="q-grid" id="qGrid">
-            
+/* Q answer grid */
+.q-grid{display: grid ;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:6px;}
+.q-cell{width:60px;height:60px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;cursor:pointer;transition:transform 0.2s;border:2px solid transparent;}
+.q-cell:hover{transform:scale(1.2);}
+  
+  
+.q-correct{background:rgba(0,184,148,0.15);color:var(--success);border-color:rgba(0,184,148,0.3);}
+.q-wrong{background:rgba(225,112,85,0.15);color:var(--danger);border-color:rgba(225,112,85,0.3);}
+.q-empty{background:rgba(108,92,231,0.08);color:var(--text-muted);border-color:var(--border);}
+.q-no-answer{background:rgba(253,203,110,0.15);color:#d9a010;border-color:rgba(253,203,110,0.3);}
+  
+@media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
+</style>
+{% endblock   %}
+{% block content %}
+<main class="main-content"><div class="page-body">
+  
+<!-- Header -->
+<div class="d-flex align-items-center gap-3 mb-4 animate-in">
+<a href="{% url 'dashboard:quiz-list' %}" style="width:40px;height:40px;border-radius:12px;background:var(--card-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-main);text-decoration:none;flex-shrink:0;transition:all 0.2s;" onmouseover="this.style.background='var(--gradient-1)';this.style.color='white'" onmouseout="this.style.background='var(--card-bg)';this.style.color='var(--text-main)'">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+</svg>
+</a>
+<div class="flex-grow-1">
+<h5 style="font-weight:800;margin:0;">{{ quiz.name }}</h5>
+<div style="font-size:0.82rem;color:var(--text-muted);">برگزار شده: {{ quiz.start_at|to_jalali:'%H:%M - %Y/%m/%d' }} • مدت: {{quiz.time_minutes}} دقیقه • {{quiz.questions.count}} سوال</div>
+</div>
+<!-- <span class="badge-status badge-success" style="font-size:0.85rem;padding:0.4rem 1rem;">عالی ۸۵٪</span> -->
+</div>
+  
+  
+  
+  
+<div class="row g-4">
+  
+<!-- PDF Viewer -->
+<div class="col-lg-8 animate-in">
+<!-- Question grid -->
+<div class="animate-in delay-2 mb-4">
+<div class="glass-card p-4">
+<div class=" justify-content-between align-items-center mb-4">
+<div class="section-title mb-2">وضعیت سوالات</div>
+<style>
+.q-no-corrected {background:rgba(112, 22, 134, 0.15) ;color:rgba(112, 22, 134);    border-color:rgba(112, 22, 134); }
+.q-skipped      {background:rgba(251, 255, 0,0.15)   ;color: rgb(248, 188, 21);  border-color:rgba(252, 225, 107);}
+.q-wrong        {background:rgba(231, 66, 66, 0.15)  ;color:rgba(231, 66, 66);     border-color:rgba(231, 66, 66);  }
+.q-weak         {background:rgba(199, 126, 58, 0.15) ;color:rgb(199, 126, 58);   border-color:rgb(199, 126, 58);}
+.q-average      {background:rgba(95, 226, 91, 0.15)  ;color:rgb(95, 226, 91);    border-color:rgb(95, 226, 91); }
+.q-good         {background:rgba(9, 219, 247, 0.15)  ;color:rgba(9, 219, 247);     border-color:rgba(9, 219, 247);  }
+.q-correct      {background:rgba(0,184,148,0.15)     ;color: rgba(0,184,148) ;     border-color:rgba(0,184,148);    }
+</style>
+<div style="display:flex;gap:0.75rem;font-size:0.78rem;flex-wrap:wrap;">
+<span class="q-skipped   btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-skipped   " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> رد شده ({{skipped}})</span>
+<span class="q-wrong     btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-wrong     " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> کاملا اشتباه ({{ wrong}})</span>
+<span class="q-weak      btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-weak      " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> نیاز به تلاش بیشتر ({{ weak}})</span>
+<span class="q-average   btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-average   " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> قابل قبول ({{ average}})</span>
+<span class="q-good      btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-good      " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> نسبتا درست ({{good}})</span>
+<span class="q-correct   btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-correct   " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> کاملا درست ({{excellent}})</span>
+<span class="q-no-corrected    btn btn-sm p-2"  style="display:flex;align-items:center;gap:4px;"><span class="q-no-corrected    " style="width:12px;height:12px;border-radius:3px; display:inline-block;"></span> تصحیح نشده ({{not_corrected}})</span>
+</div>
+  
+</div>
+<div class="q-grid" id="qGrid">
               {% for item in answers %}
-                <div class=" q-cell {% if item.is_skipped or item.type_of_answer == TypeOfAnswer.NOT_ANSWERD %}q-skipped{% elif item.corrected == corrected.not_corrected %} q-no-corrected {% elif item.corrected == corrected.excellent %} q-correct {% elif item.corrected == corrected.good %} q-good {% elif item.corrected == corrected.average %} q-average{% elif item.corrected == corrected.weak %} q-weak{% elif item.corrected == corrected.wrong %} q-wrong {% endif %} " 
-                title="سوال {{ item.question.id }}:  {% if item.is_skipped or item.type_of_answer == TypeOfAnswer.NOT_ANSWERD  %}پاسخ داده نشده{% elif item.corrected == corrected.not_corrected %}تصحیح نشده{% else %}{{item.corrected}}{% endif %}"><span>{{item.question.id}}</span><span style="font-size:0.6rem">
+<div class=" q-cell {% if item.is_skipped or item.type_of_answer == TypeOfAnswer.NOT_ANSWERD %}q-skipped{% elif item.corrected == corrected.not_corrected %} q-no-corrected {% elif item.corrected == corrected.excellent %} q-correct {% elif item.corrected == corrected.good %} q-good {% elif item.corrected == corrected.average %} q-average{% elif item.corrected == corrected.weak %} q-weak{% elif item.corrected == corrected.wrong %} q-wrong {% endif %} "
+title="سوال {{ item.question.id }}:  {% if item.is_skipped or item.type_of_answer == TypeOfAnswer.NOT_ANSWERD  %}پاسخ داده نشده{% elif item.corrected == corrected.not_corrected %}تصحیح نشده{% else %}{{item.corrected}}{% endif %}"><span>{{item.question.id}}</span><span style="font-size:0.6rem">
                   {% if item.corrected == corrected.not_corrected or item.is_skipped or item.type_of_answer == TypeOfAnswer.NOT_ANSWERD  %}
                     -
                   {% else %}
                     {{ item.score }} از {{ item.question.score }}
                   {% endif %}
-                </span></div>
-
+</span></div>
+  
               {% endfor %}
+</div>
+</div>
+</div>
+  
+<div class="glass-card p-0 overflow-hidden">
+<div class="pdf-toolbar">
+<div style="font-weight:700;font-size:0.88rem;flex:1;">سوالات آزمون</div>
+</div>
+<div class="pdf-page">
+          {% for item in answers %}
+<div class="pdf-question mt-2 mb-2">
+
+
+<!-- question infos  -->
+<div  style="font-weight:700;font-size:0.85rem;margin-bottom:0.5rem;">
+          سوال :      {{ item.question.id }}# | {{ item.question.name }} 
+<div class='mt-2 mb-2' style="font-weight:700;font-size:0.75rem">
+               {{ item.score }} از {{item.question.score}} نمره
+</div>
+                        {% if item.question.description %}
+<div class="pdf-option q-correct ">
+                {{ item.question.description|safe }}
+</div>
+              {% endif %}
+
+              {% if  item.question.image %}
+ 
+          <div class="media-container mb-4">
+            <div class="media-wrapper" style="
+              background: var(--bg-secondary);
+              border-radius: var(--radius-md);
+              padding: 16px;
+              display: inline-block;
+              max-width: 100%;
+              ">
+              <p>عکس اپلود شده</p>
+              <picture>
+                <source srcset="{{ item.question.image.url }}" type="image/webp">
+                <img 
+                  src="{{ item.question.image.url }}" 
+ 
+                  style="
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: var(--radius-sm);
+                    display: block;
+                  "
+                  loading="lazy"
+                >
+              </picture>
+
+            </div>
+      
+          </div>
+              {% endif %}
+  
+              {% if  item.question.pdf_file %}
+ 
+
+
+
+          <div class="w-100">
+            <div class="" style="background: var(--bg-secondary);border-radius: var(--radius-md);  ">
+              <div class="pdf-header d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-file-earmark-pdf-fill" style="color: var(--danger-500); font-size: 1.5rem;"></i>
+                <span style="color: var(--text-primary); font-weight: 600;">فایل pdf </span>
+              </div>
+              <iframe 
+                src="{{ item.question.pdf_file.url }}" 
+                style="
+                  width: 100%;
+                  height: 500px;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--radius-sm);
+                  background: white;
+                "
+                loading="lazy"
+              >
+              </iframe>
+              <a 
+                href="{{ item.question.pdf_file.url }}" 
+ 
+                class="btn btn-outline-primary mt-2"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  color: var(--primary-600);
+                  border-color: var(--primary-600);
+                "
+              >
+                <i class="bi bi-download"></i>
+                دانلود فایل PDF
+              </a>
  
             </div>
           </div>
-        </div>
+              {% endif %}
 
-      <div class="glass-card p-0 overflow-hidden">
-        <div class="pdf-toolbar">
-          <div style="font-weight:700;font-size:0.88rem;flex:1;">سوالات آزمون</div>
-   
-        </div>
-        <div class="pdf-page">
-          {% for item in answers %}
-          
-            <div class="pdf-question">
-              <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.5rem;">
-                {{ item.question.id }}# | {{ item.question.name }}
-              </div>
-              <div class='mt-2 mb-2' style="font-weight:700;font-size:0.75rem">
-               {{ item.score }} از {{item.question.score}} نمره
-              </div>
+</div>
 
+<!-- student answer -->
+<div class="">
+  <div class='mb-2 mt-2' style="font-weight:700;font-size:0.85rem;">
+                   جواب {{user.first_name}} :
+</div>
               {% if item.type_of_answer == TypeOfAnswer.OPTION %}
                 {% for option in item.question.options.all %}
-                  <div class="pdf-option {% if option.is_correct %} selected   {% endif %} {% if option.id == item.selected_option.id and not item.selected_option.is_correct   %}wrong{% endif %} ">{{forloop.counter}}) {{ option.text }}</div>
-                  
+<div class="pdf-option {% if option.is_correct %} selected   {% endif %} {% if option.id == item.selected_option.id and not item.selected_option.is_correct   %}wrong{% endif %} ">{{forloop.counter}}) {{ option.text }}</div>
                 {% endfor %}
-
-              {% elif item.type_of_answer == TypeOfAnswer.TEXT_BASED %}
-               <div class="pdf-option q-correct ">
+  {% endif %}
+              {% if item.description %}
+<div class="pdf-option q-correct ">
                 {{ item.description }}
-               </div>
-              {% elif item.type_of_answer == TypeOfAnswer.IMAGE_BASED %}
-               <div class="pdf-option">
- 
-              <div style="height:360px;background:var(--gradient-blue);display:flex;align-items:center;justify-content:center;font-size:3rem;">
-                  <a href='{{ item.image.url }}'  > 
-                
-                  <picture>
-                    <source srcset="{{ item.image.url }}"
-                            type="image/webp">
-                    <img src="{{ item.image.url }}"   width="360" height="360"
-                          loading="lazy">
-                  </picture>
-                </a>
-              </div>  
-               </div>
-
-              {% elif item.type_of_answer == TypeOfAnswer.PDF_BASED %}
-               <div class="pdf-option">
-                  <a href='{{ item.pdf_file.url }}'  target='_blank'> 
-                 <span class=" btn btn-block p-2 q-good"  style="display:flex;align-items:center;gap:4px;width:100%;">  
-
-                    
-                    لینک دانلود فایل
-                 </span>
-                  </a>
-               </div>
-
-              {% elif item.type_of_answer == TypeOfAnswer.SKIPPED %}
-               <div class="pdf-option">
-                 <span class="q-skipped   btn btn-block p-2"  style="display:flex;align-items:center;gap:4px;">  
-                  رد شده
-                 </span>
-               </div>
-
-              {% elif item.type_of_answer  == TypeOfAnswer.NOT_ANSWERD %}
-               <div class="pdf-option">
-                  <span class="q-wrong    btn btn-block p-2"  style="display:flex;align-items:center;gap:4px;">  
-                  پاسخی برای این سوال ثبت نکردید
-                 </span>
-               </div>
-
+</div>
               {% endif %}
 
+              {% if  item.image %}
  
-
-              <div class='mb-2 mt-2' style="font-weight:700;font-size:0.85rem;">
-                   جواب درست :
-              </div>
-               <div class="pdf-option">
-              {% if item.question.answer_key.type_of_answer == TypeOfKey.TEXT_BASED %}
-        
-                  {{ item.question.answer_key.description|safe }}
-               
-                {% elif item.question.answer_key.type_of_answer == TypeOfKey.IMAGE_BASED%}
-               
-  
-                <div style="height:360px;background:var(--gradient-blue);display:flex;align-items:center;justify-content:center;font-size:3rem;">
-                    <a href='{{ item.question.answer_key.image.url }}'  > 
-                  
-                    <picture>
-                      <source srcset="{{ item.question.answer_key.image.url }}"
-                              type="image/webp">
-                      <img src="{{ item.question.answer_key.image.url }}"   width="360" height="360"
-                            loading="lazy">
-                    </picture>
-                  </a>
-                </div>  
-             
-
-                {% elif item.question.answer_key.type_of_answer == TypeOfKey.PDF_BASED%}
-         
-                    <a href='{{ item.question.answer_key.pdf_file.url }}'  target='_blank'> 
-                  <span class=" btn btn-block p-2 q-good"  style="display:flex;align-items:center;gap:4px;width:100%;">  
-
-                      
-                      لینک دانلود فایل
-                  </span>
-                    </a>
-              
-              {% endif %}
-
-               </div>
-              
-
-
+          <div class="media-container mb-4">
+            <div class="media-wrapper" style="
+              background: var(--bg-secondary);
+              border-radius: var(--radius-md);
+              padding: 16px;
+              display: inline-block;
+              max-width: 100%;
+              ">
+              <p>عکس اپلود شده</p>
+              <picture>
+                <source srcset="{{ item.image.url }}" type="image/webp">
+                <img 
+                  src="{{ item.image.url }}" 
+ 
+                  style="
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: var(--radius-sm);
+                    display: block;
+                  "
+                  loading="lazy"
+                >
+              </picture>
 
             </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-
-    <!-- Sidebar info -->
-    <div class="col-lg-4">
-      <!-- Timer Demo -->
-      <div class="timer-widget mb-4 animate-in">
-        <div style="font-size:0.82rem;opacity:0.8;margin-bottom:0.5rem;"><i class="bi bi-clock"></i> زمان مصرف‌ شده در آزمون</div>
-        <div class="timer-display" id="timerDisplay">{{ quiz.time_minutes|convert_minutes_to_time_with_out_html }}</div>
+      
+          </div>
+              {% endif %}
+  
+              {% if  item.pdf_file %}
  
-        <div style="margin-top:0.75rem;background:rgba(255,255,255,0.2);border-radius:50px;height:8px;overflow:hidden;">
-          <div id='timer-line' style="width:100%;height:100%;background:white;border-radius:50px;"></div>
-        </div>
-        <div class="timer-controls">
-          <button class="timer-btn" onclick="startTimer()"><i class="bi bi-play-fill"></i> شروع</button>
-          <button class="timer-btn" onclick="pauseTimer()"><i class="bi bi-pause-fill"></i> مکث</button>
-          <button class="timer-btn" onclick="resetTimer()"><i class="bi bi-arrow-counterclockwise"></i> ریست</button>
-        </div>
-      </div>
 
-      {% if report and quiz.status == status.RESULTS_PUBLISHED %}
-      <!-- Exam info -->
-      <div class="glass-card p-4 animate-in delay-1">
-        <div class="section-title mb-3">اطلاعات آزمون</div>
-        <div style="display:flex;flex-direction:column;gap:0.75rem;">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
-            <span style="font-size:0.83rem;color:var(--text-muted);">نمره کل</span>
-            <span style="font-weight:800;color:var(--primary);">{{report.score}} از {{quiz.max_score}}</span>
+
+
+          <div class="w-100">
+            <div class="" style="background: var(--bg-secondary);border-radius: var(--radius-md);  ">
+              <div class="pdf-header d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-file-earmark-pdf-fill" style="color: var(--danger-500); font-size: 1.5rem;"></i>
+                <span style="color: var(--text-primary); font-weight: 600;">فایل pdf </span>
+              </div>
+              <iframe 
+                src="{{ item.pdf_file.url }}" 
+                style="
+                  width: 100%;
+                  height: 500px;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--radius-sm);
+                  background: white;
+                "
+                loading="lazy"
+              >
+              </iframe>
+              <a 
+                href="{{ item.pdf_file.url }}" 
+ 
+                class="btn btn-outline-primary mt-2"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  color: var(--primary-600);
+                  border-color: var(--primary-600);
+                "
+              >
+                <i class="bi bi-download"></i>
+                دانلود فایل PDF
+              </a>
+ 
+            </div>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
-            <span style="font-size:0.83rem;color:var(--text-muted);">درصد</span>
-            <span style="font-weight:800;color:var(--success);">{{report.percent}}٪</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
-            <span style="font-size:0.83rem;color:var(--text-muted);">تراز</span>
-            <span style="font-weight:800;color:var(--success);">{{report.teraze}}</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
-            <span style="font-size:0.83rem;color:var(--text-muted);">رتبه</span>
-            <span style="font-weight:800;color:var(--primary);">{{ report.order }} از {{ quiz.capacity }}</span>
-          </div>
- {% endif %}
-        </div>
-        {% comment %} <div class="d-flex gap-2 mt-3">
-          <a href="04-karnameye-sanavi-detail.html" style="background:var(--gradient-1);color:white;border-radius:10px;padding:0.5rem 1rem;font-size:0.82rem;font-weight:600;text-decoration:none;flex:1;text-align:center;"><i class="bi bi-file-earmark-bar-graph"></i> کارنامه</a>
-          <button style="background:var(--card-bg);border:1px solid var(--border);color:var(--text-main);border-radius:10px;padding:0.5rem 1rem;font-size:0.82rem;cursor:pointer;flex:1;font-family:Vazirmatn,sans-serif;"><i class="bi bi-download"></i> دانلود</button>
-        </div> {% endcomment %}
-      </div>
-    </div>
+              {% endif %}
+  
+              {% if item.type_of_answer == TypeOfAnswer.SKIPPED %}
+<div class="pdf-option">
+<span class="q-skipped   btn btn-block p-2"  style="display:flex;align-items:center;gap:4px;">  
+                  رد شده
+</span>
+</div>
+              {% endif %}
+  
+              {% if item.type_of_answer  == TypeOfAnswer.NOT_ANSWERD %}
+<div class="pdf-option">
+<span class="q-wrong    btn btn-block p-2"  style="display:flex;align-items:center;gap:4px;">  
+                  پاسخی برای این سوال ثبت نکردید
+</span>
+</div>
+  
+              {% endif %}
+  
   </div>
 
+
+<!-- key -->
+  <div class="">
+<div class='mb-2 mt-2' style="font-weight:700;font-size:0.85rem;">
+                   پاسخ نامه :
+</div>
+<div class="pdf-option">
+              {% if item.question.answer_key.description %}
+              <div class="p-2">
+                توضیحات : 
+                  {{ item.question.answer_key.description|safe }}
+                  </div>
+              {% endif %}
+
+                {% if item.question.answer_key.image %}
+           <div class="media-container mb-4">
+            <div class="media-wrapper" style="
+              background: var(--bg-secondary);
+              border-radius: var(--radius-md);
+              padding: 16px;
+              display: inline-block;
+              max-width: 100%;
+              ">
+              <p>عکس اپلود شده</p>
+              <picture>
+                <source srcset="{{ item.question.answer_key.image.url }}" type="image/webp">
+                <img 
+                  src="{{ item.question.answer_key.image.url }}" 
+ 
+                  style="
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: var(--radius-sm);
+                    display: block;
+                  "
+                  loading="lazy"
+                >
+              </picture>
+
+            </div>
+      
+          </div>
+              {% endif %}
+  
+                {% if item.question.answer_key.pdf_file %}
+ 
+
+
+          <div class="pdf-container mb-4">
+            <div class="" style="background: var(--bg-secondary);border-radius: var(--radius-md); ">
+              <div class="pdf-header d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-file-earmark-pdf-fill" style="color: var(--danger-500); font-size: 1.5rem;"></i>
+                <span style="color: var(--text-primary); font-weight: 600;">فایل pdf </span>
+              </div>
+              <iframe 
+                src="{{ item.question.answer_key.pdf_file.url }}" 
+                style="
+                  width: 100%;
+                  height: 500px;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--radius-sm);
+                  background: white;
+                "
+                loading="lazy"
+              >
+              </iframe>
+              <a 
+                href="{{ item.question.answer_key.pdf_file.url }}" 
+ 
+                class="btn btn-outline-primary mt-2"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  color: var(--primary-600);
+                  border-color: var(--primary-600);
+                "
+              >
+                <i class="bi bi-download"></i>
+                دانلود فایل PDF
+              </a>
+ 
+            </div>
+          </div>
+              {% endif %}
+  
+</div>
+  </div>
+  
+  
+  
+</div>
+          {% endfor %}
+</div>
+</div>
+</div>
+  
+<!-- Sidebar info -->
+<div class="col-lg-4">
+<!-- Timer Demo -->
+<div class="timer-widget mb-4 animate-in">
+<div style="font-size:0.82rem;opacity:0.8;margin-bottom:0.5rem;">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-left:6px;vertical-align:-2px;">
+<path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+</svg>
+ زمان مصرف‌ شده در آزمون</div>
+<div class="timer-display" id="timerDisplay">{{ quiz.time_minutes|convert_minutes_to_time_with_out_html }}</div>
+<div style="margin-top:0.75rem;background:rgba(255,255,255,0.2);border-radius:50px;height:8px;overflow:hidden;">
+<div id='timer-line' style="width:100%;height:100%;background:white;border-radius:50px;"></div>
+</div>
+<div class="timer-controls">
+<button class="timer-btn" onclick="startTimer()">
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="margin-left:4px;vertical-align:-2px;">
+<path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+</svg>
+ شروع</button>
+<button class="timer-btn" onclick="pauseTimer()">
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="margin-left:4px;vertical-align:-2px;">
+<path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>
+</svg>
+ مکث</button>
+<button class="timer-btn" onclick="resetTimer()">
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="margin-left:4px;vertical-align:-2px;">
+<path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+<path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+</svg>
+ ریست</button>
+</div>
+</div>
+  
+      {% if report and quiz.status == status.RESULTS_PUBLISHED %}
+<!-- Exam info -->
+<div class="glass-card p-4 animate-in delay-1">
+<div class="section-title mb-3">اطلاعات آزمون</div>
+<div style="display:flex;flex-direction:column;gap:0.75rem;">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+<span style="font-size:0.83rem;color:var(--text-muted);">نمره کل</span>
+<span style="font-weight:800;color:var(--primary);">{{report.score}} از {{quiz.max_score}}</span>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+<span style="font-size:0.83rem;color:var(--text-muted);">درصد</span>
+<span style="font-weight:800;color:var(--success);">{{report.percent}}٪</span>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+<span style="font-size:0.83rem;color:var(--text-muted);">تراز</span>
+<span style="font-weight:800;color:var(--success);">{{report.teraze}}</span>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--border);">
+<span style="font-size:0.83rem;color:var(--text-muted);">رتبه</span>
+<span style="font-weight:800;color:var(--primary);">{{ report.order }} از {{ quiz.capacity }}</span>
+</div>
+{% endif %}
+</div>
+ 
+</div>
+        <div class="d-flex justify-content-center mt-5">
+            <nav>
+                <ul class="pagination gap-1 mb-0" id="myPagination">
+               
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link"
+                            href="?page={{ page_obj.previous_page_number }}"
+                            style="border-radius:var(--radius-md);
+                                  border:1px solid var(--border-color); 
+                                  background:var(--bg-card); 
+                                  color:var(--text-secondary);">
+                            قبلی
+                        </a></li>
+                    {% else %}
+                        <li class="page-item disabled" aria-disabled="true">
+                            <a class="page-link"
+                              href="#"
+                              style="border-radius:var(--radius-md);
+                                      border:none; 
+                                      background:var(--bg-card); 
+                                      color:inherit;"
+                              tabindex="-1"
+                              aria-hidden="true">
+                                قبلی
+                            </a>
+                        </li>
+                    {% endif %}
+
+                 
+                    {% for page in page_obj.paginator.page_range %}
+                        {% if page_obj.number == page %}
+                            <li class="page-item active" 
+                                aria-current="page">
+                                <a class="page-link" href="?page={{page}}" style="border-radius:var(--radius-md);
+                                                              border:none; 
+                                                              background:var(--gradient-blue);">
+                                    {{ forloop.counter }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link"
+                                href="?page={{ page }}"
+                                style="border-radius:var(--radius-md);
+                                      border:1px solid var(--border-color); 
+                                      background:var(--bg-card); 
+                                      color:var(--text-secondary);">
+                                    {{ forloop.counter }}
+                            </a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                  
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link"
+                            href="?page={{ page_obj.next_page_number }}"
+                            style="border-radius:var(--radius-md);
+                                  border:1px solid var(--border-color); 
+                                  background:var(--bg-card); 
+                                  color:inherit;">
+                                بعدی
+                            </a></li>
+                    {% else %}
+                        <li class="page-item disabled" aria-disabled="true">
+                            <a class="page-link"
+                              href="#"
+                              style="border-radius:var(--radius-md);
+                                      border:none; 
+                                      background:var(--bg-card); 
+                                      color:inherit;"
+                              tabindex="-1"
+                              aria-hidden="true">
+                                بعدی
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>  
+</div>
+</div>
+  
 </div></main>
 {% endblock   %}
- 
 {% block footer %}
-
+  
 <script>
-  function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
-  const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
-
-
-   
-
-  let t={{quiz.time_minutes|return_scound}}, interval=null;
-  let total={{quiz.time_minutes|return_scound}};
-  const d=document.getElementById('timerDisplay');
-
-  function fmt(n){
-    const percent1234 = n / total;
-    console.log(percent1234)
-    document.getElementById('timer-line').style = 'width:' + percent1234 * 100 +'%;height:100%;background:white;border-radius:50px; ' ;
-    const h=Math.floor(n/3600);
-    const m=Math.floor((n%3600)/60);
-    const s=n%60;
-    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
-
-  function startTimer(){if(!interval)interval=setInterval(()=>{t--;d.textContent=fmt(t);},1000);}
-  function pauseTimer(){clearInterval(interval);interval=null;}
-  function resetTimer(){pauseTimer();t=total;d.textContent=fmt(t);}
- 
+function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
+const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
+  
+  
+  
+let t={{quiz.time_minutes|return_scound}}, interval=null;
+let total={{quiz.time_minutes|return_scound}};
+const d=document.getElementById('timerDisplay');
+const timerLine = document.getElementById('timer-line');
+  
+function fmt(n){
+const percent = n / total;
+timerLine.style.width = (percent * 100) + '%';
+const h=Math.floor(n/3600);
+const m=Math.floor((n%3600)/60);
+const s=n%60;
+return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+  
+function startTimer(){if(!interval)interval=setInterval(()=>{t--;d.textContent=fmt(t);},1000);}
+function pauseTimer(){clearInterval(interval);interval=null;}
+function resetTimer(){pauseTimer();t=total;d.textContent=fmt(t);}
 </script>
 {% endblock   %}
- 

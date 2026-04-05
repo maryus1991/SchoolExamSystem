@@ -7,12 +7,15 @@ phase 1 todo list
  
 
 phase 2 todo list
-    fix the search bar in favorate quiz qbank blog 
-    fix the create at for student answer that for show the time of answer
-    check the QuizDetail for larg scale
+ 
   
   
 phase 3 todo list 
+    fix the pages 
+    make the site more responsive
+
+    
+ 
  
 
 phase 4 todo list 
@@ -25,10 +28,15 @@ phase 4 todo list
     add login option for admin to login in every account
     FIX the nemodare in main page 
     page for fast add users answers
+
+    fix the auto correction
+    make the site more responsive
  
  
 essenial todo :
     chunk upload to s3 server for exam page or user answer and add progress for upload
-    make the site more responsive
-    add score avg to main dashboard # fix the icons
+    
+ 
+
+    fix the correction
     

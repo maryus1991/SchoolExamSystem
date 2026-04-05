@@ -134,7 +134,7 @@
       <!-- Input -->
 
       {% if item.status != status.fixed and item.status != status.cancelled %}
-      <form action="?next={% url 'admin-panel:ticket-chat' item.id %}" method="post">
+      <form enctype="multipart/form-data" action="?next={% url 'admin-panel:ticket-chat' item.id %}" method="post">
         {% csrf_token %}
       <div class="input-area">
         <div class="msg-input-box">

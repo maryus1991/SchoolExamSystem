@@ -138,7 +138,7 @@ ul.pagination {
  
  a {
  text-decoration-line: none;
-  color: var(--text-primary);
+color: var(--text-primary);
 
  background: none;
 }

@@ -60,6 +60,37 @@
     .color-info{color:var(--primary);}
     .donut-ring{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--color) calc(var(--pct)*1%),var(--border) 0);}
     @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{margin-right:0}.topbar{right:0}}
+ 
+    .view-btn {
+        background: transparent;
+        border: none;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 7px;
+        transition: all 0.3s ease;
+    }
+    
+    .view-btn svg {
+        transition: all 0.3s ease;
+    }
+    
+    .view-btn.active {
+        background: var(--gradient-1);
+        color: white;
+    }
+    
+    .view-btn:not(.active) {
+        color: var(--text-muted);
+    }
+    
+    .view-btn:hover {
+        transform: scale(1.1);
+    }
+ 
   </style>
  
 {% endblock   %}
@@ -74,8 +105,19 @@
     </div>
     <div style="display:flex;gap:0.5rem;align-items:center;">
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:0.4rem 0.75rem;display:flex;align-items:center;gap:0.5rem;">
-        <button onclick="setView('grid')" id="btnGrid" style="background:var(--gradient-1);border:none;color:white;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;"><i class="bi bi-grid-3x3-gap"></i></button>
-        <button onclick="setView('list')" id="btnList" style="background:transparent;border:none;color:var(--text-muted);width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;"><i class="bi bi-list-ul"></i></button>
+        <!-- دکمه گرید -->
+<button onclick="setView('grid')" id="btnGrid" style="background:var(--gradient-1);border:none;color:white;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
+    </svg>
+</button>
+
+<!-- دکمه لیست -->
+<button onclick="setView('list')" id="btnList" style="background:transparent;border:none;color:var(--text-muted);width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:7px;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+    </svg>
+</button>
       </div>
     </div>
   </div>
@@ -149,11 +191,11 @@
                     <!-- Page numbers -->
                     {% for page in page_obj.paginator.page_range %}
                         {% if page_obj.number == page %}
-                            <li class="page-item active" style="border-radius:var(--radius-md);
-                                                              border:none; 
-                                                              background:var(--gradient-blue);"
+                            <li class="page-item active" 
                                 aria-current="page">
-                                <a class="page-link" href="?page={{page}}" style="color:inherit;">
+                                <a class="page-link" href="?page={{page}}" style="border-radius:var(--radius-md);
+                                                              border:none; 
+                                                              background:var(--gradient-blue);">
                                     {{ forloop.counter }}
                                 </a>
                             </li>
@@ -205,11 +247,45 @@
 <script>
   function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').textContent=d?'☀️':'🌙';localStorage.setItem('theme',d?'light':'dark');}
   const s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').textContent='🌙';}
-  function setView(v){
-    const grid=document.getElementById('examGrid');
-    if(v==='list'){grid.className='row g-2 animate-in delay-2';grid.querySelectorAll('.col-md-4').forEach(c=>c.className='col-12');}
-    else{grid.className='row g-3 animate-in delay-2';grid.querySelectorAll('.col-12').forEach(c=>c.className='col-md-4 col-lg-3');}
-  }
+function setView(view) {
+    const grid = document.getElementById('examGrid');
+    const btnGrid = document.getElementById('btnGrid');
+    const btnList = document.getElementById('btnList');
+    
+    // گرفتن تمام کارت‌های آزمون
+    const cards = grid.querySelectorAll('[class*="col-"]');
+    
+    if (view === 'list') {
+        // حالت لیست
+        grid.className = 'row g-2 animate-in delay-2';
+        
+        cards.forEach(card => {
+            card.className = 'col-12';
+        });
+        
+        // آپدیت دکمه‌ها
+        btnGrid.style.background = 'transparent';
+        btnGrid.style.color = 'var(--text-muted)';
+        
+        btnList.style.background = 'var(--gradient-1)';
+        btnList.style.color = 'white';
+        
+    } else {
+        // حالت گرید
+        grid.className = 'row g-3 animate-in delay-2';
+        
+        cards.forEach(card => {
+            card.className = 'col-md-4 col-lg-3';
+        });
+        
+        // آپدیت دکمه‌ها
+        btnList.style.background = 'transparent';
+        btnList.style.color = 'var(--text-muted)';
+        
+        btnGrid.style.background = 'var(--gradient-1)';
+        btnGrid.style.color = 'white';
+    }
+}
 </script>
 {% endblock   %}
 

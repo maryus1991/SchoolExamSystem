@@ -7,7 +7,9 @@ from utils.avg_teraz import calculate_teraze, calculate_std_dev
 
 @receiver(post_save, sender=Quiz)
 def create_report_for_users(sender, instance, created, **kwargs):
-    if not created and instance.start_set_report and instance.status == Quiz.QuizStatus.CORRECTED and instance.student.exists():
+ 
+    if not created and instance.start_set_report and instance.student.exists():
+ 
         try:
    
             students = instance.student.all()
@@ -93,3 +95,4 @@ def create_report_for_users(sender, instance, created, **kwargs):
 
         except Exception as E:
             print('create reports quiz signals error : ', E)
+            

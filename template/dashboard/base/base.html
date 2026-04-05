@@ -1,3 +1,4 @@
+{% load list %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -557,17 +558,14 @@ elem.classList.add("active");
 
  
 <div class="topbar-actions">
-<button class="topbar-btn" title="اعلان‌ها">
-<svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-<span class="notif-dot"></span>
-</button>
-<button class="topbar-btn" title="پیام‌ها">
+ 
+<a class="topbar-btn" title="پیام‌ها" href="{% url 'dashboard:ticket-list' %}">
 <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-</button>
+</a>
 <div class="theme-toggle" onclick="toggleTheme()" title="تغییر تم">
 <div class="theme-toggle-thumb" id="themeIcon">☀️</div>
 </div>
-<div class="avatar-placeholder" title="علی محمدی">ع</div>
+<a class="avatar-placeholder" href="{% url 'dashboard:profile' %}"  title="{{user}}">{{user.get_full_name|list_index:0}}</a>
 </div>
 </header>
 
