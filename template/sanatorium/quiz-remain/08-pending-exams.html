@@ -95,169 +95,154 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
  {% endblock header %}
  {% block main %}
 <main class="main-content">
-
-  <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3 fade-in-up">
-    <div>
-      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">آزمون‌ها</h1>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;background:rgba(239,68,68,0.08);padding:8px 16px;border-radius:20px;">
-      <span style="width:8px;height:8px;background:#ef4444;border-radius:50%;display:inline-block;animation:pulse 1s infinite;"></span>
-      <span style="font-size:0.82rem;font-weight:700;color:#dc2626;">{{wait_corrected}}   آزمون در انتظار تصحیح</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;background:rgba(74, 239, 68, 0.43);padding:8px 16px;border-radius:20px;">
-      <span style="width:8px;height:8px;background:rgb(74, 239, 68);border-radius:50%;display:inline-block;animation:pulse 1s infinite;"></span>
-      <span style="font-size:0.82rem;font-weight:700;color:rgb(74, 239, 68);"> {{corrected}} ازمون تصحیح شده</span>
-    </div>
-  </div>
-
-  <!-- Alert Banner -->
- 
-
-  <!-- Exam Cards Grid -->
+  
+<div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3 fade-in-up">
+<div>
+<h1 style="font-size:1.5rem;font-weight:800;margin:0;">آزمون‌ها</h1>
+</div>
+<div style="display:flex;align-items:center;gap:8px;background:rgba(239,68,68,0.08);padding:8px 16px;border-radius:20px;">
+<span style="width:8px;height:8px;background:#ef4444;border-radius:50%;display:inline-block;animation:pulse 1s infinite;"></span>
+<span style="font-size:0.82rem;font-weight:700;color:#dc2626;">{{wait_corrected}}   آزمون در انتظار تصحیح</span>
+</div>
+<div style="display:flex;align-items:center;gap:8px;background:rgba(74, 239, 68, 0.43);padding:8px 16px;border-radius:20px;">
+<span style="width:8px;height:8px;background:rgb(74, 239, 68);border-radius:50%;display:inline-block;animation:pulse 1s infinite;"></span>
+<span style="font-size:0.82rem;font-weight:700;color:rgb(74, 239, 68);"> {{corrected}} ازمون تصحیح شده</span>
+</div>
+</div>
+  
+<!-- Alert Banner -->
+  
+<!-- Exam Cards Grid -->
   {% for item in items %}
-  <a href='{% url "sanatorium:exam-student-question-list" item.pk  %}' >
-    <div class="row g-3 m-1">
-     <div class="col-12 fade-in-up delay-1">
-      <div class="exam-pending-card {% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}">
-        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-          <div class=" gap-10 align-items-start col-10">
-             <div>
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                <span style="font-weight:800;font-size:1rem;">{{ item.name }}</span>
-                <span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><i class="bi bi-fire"></i>{{ item.status }}</span>
-                <span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><i class="bi bi-fire"></i>{{ item.grade.name }}</span>
-                <span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><i class="bi bi-fire"></i>{{ item.major.name }}</span>
-              </div>
-              <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:5px;">
-                <i class="bi bi-calendar3 me-1"></i> {{ item.start_at|to_jalali:'%Y/%m/%d' }} &nbsp;|&nbsp;
-                <i class="bi bi-file-text me-1"></i>{{ item.question_count }} سوال  &nbsp;|&nbsp;
-                <i class="bi bi-mortarboard me-1"></i>  درس {{item.lession.name }}  &nbsp;|&nbsp;
-                <i class="bi bi-mortarboard me-1"></i>   مبحث {{ item.section }}  &nbsp;|&nbsp;
-              </div>
-
-              <div style="display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;">
-               </div>
-
-
-              <div class="deadline-bar m-1 deadline-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}" style="width:100;"></div>
-                 <span style="font-size:0.8rem;color:var(--text-muted);">{{ item.student_count }} دانش‌آموز</span>
-              <div class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}" >هزینه تصحیح به ازای هر پاسخ نامه : {% if item.corrected_price %}{{item.corrected_price|tdc}} تومان {% else %} بدون هزینه {% endif %}</div>
-
-
-            </div>
-          </div>
-          <div class="d-flex flex-column gap-2 align-items-end">
-            <button class="btn-gradient" style="padding:9px 18px;">
-              <i class="bi bi-play-circle-fill"></i>شروع تصحیح
-            </button>
-            <button class="btn-glass" style="padding:7px 14px;font-size:0.78rem;"><i class="bi bi-info-circle"></i>جزئیات</button>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<a href='{% url "sanatorium:exam-student-question-list" item.pk  %}' >
+<div class="row g-3 m-1">
+<div class="col-12 fade-in-up delay-1">
+<div class="exam-pending-card {% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}">
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+<div class=" gap-10 align-items-start col-10">
+<div>
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+<span style="font-weight:800;font-size:1rem;">{{ item.name }}</span>
+<span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>{{ item.status }}</span>
+<span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>{{ item.grade.name }}</span>
+<span class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>{{ item.major.name }}</span>
+</div>
+<div style="font-size:0.82rem;color:var(--text-secondary);margin-top:5px;">
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="me-1"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg> {{ item.start_at|to_jalali:'%Y/%m/%d' }} &nbsp;|&nbsp;
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="me-1"><path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm-1 4H3a1 1 0 0 1 0-2h10a1 1 0 0 1 0 2zm0 3H3a1 1 0 0 1 0-2h10a1 1 0 0 1 0 2z"/></svg>{{ item.question_count }} سوال  &nbsp;|&nbsp;
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="me-1"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/></svg>  درس {{item.lession.name }}  &nbsp;|&nbsp;
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="me-1"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/></svg>   مبحث {{ item.section }}  &nbsp;|&nbsp;
+</div>
+  
+<div style="display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;">
+</div>
+  
+  
+<div class="deadline-bar m-1 deadline-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}" style="width:100;"></div>
+<span style="font-size:0.8rem;color:var(--text-muted);">{{ item.student.count }} دانش‌آموز</span>
+<div class="badge-custom badge-{% cycle 'urgent' 'new' 'inprog' 'finished' 'primary-card' %}" >هزینه تصحیح به ازای هر پاسخ نامه : {% if item.corrected_price %}{{item.corrected_price|tdc}} تومان {% else %} بدون هزینه {% endif %}</div>
+  
+  
+</div>
+</div>
+<div class="d-flex flex-column gap-2 align-items-end">
+<button class="btn-gradient" style="padding:9px 18px;">
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>شروع تصحیح
+</button>
+<button class="btn-glass" style="padding:7px 14px;font-size:0.78rem;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>جزئیات</button>
+  
+</div>
+</div>
+</div>
+</div>
+</div>
 </a>
 {% empty %}
-              <div class="badge-custom badge-new" > ازمونی یافت نشد </div>
-
+<div class="badge-custom badge-new" > ازمونی یافت نشد </div>
+  
   {% endfor %}
-
- 
-
- 
-         <div class="d-flex justify-content-center mt-5">
-            <nav>
-                <ul class="pagination gap-1 mb-0" id="myPagination">
-                    <!-- Previous Button -->
+  
+  
+<div class="d-flex justify-content-center mt-5">
+<nav>
+<ul class="pagination gap-1 mb-0" id="myPagination">
+<!-- Previous Button -->
                     {% if page_obj.has_previous %}
-                        <li class="page-item"><a class="page-link"
-                            href="?page={{ page_obj.previous_page_number }}"
-                            style="border-radius:var(--radius-md);
-                                  border:1px solid var(--border-color); 
-                                  background:var(--bg-card); 
+<li class="page-item"><a class="page-link"
+href="?page={{ page_obj.previous_page_number }}"
+style="border-radius:var(--radius-md);
+                                  border:1px solid var(--border-color);
+                                  background:var(--bg-card);
                                   color:var(--text-secondary);">
                             قبلی
-                        </a></li>
+</a></li>
                     {% else %}
-                        <li class="page-item disabled" aria-disabled="true">
-                            <a class="page-link"
-                              href="#"
-                              style="border-radius:var(--radius-md);
-                                      border:none; 
-                                      background:var(--bg-card); 
+<li class="page-item disabled" aria-disabled="true">
+<a class="page-link"
+href="#"
+style="border-radius:var(--radius-md);
+                                      border:none;
+                                      background:var(--bg-card);
                                       color:inherit;"
-                              tabindex="-1"
-                              aria-hidden="true">
+tabindex="-1"
+aria-hidden="true">
                                 قبلی
-                            </a>
-                        </li>
+</a>
+</li>
                     {% endif %}
-
-                    <!-- Page numbers -->
+  
+<!-- Page numbers -->
                     {% for page in page_obj.paginator.page_range %}
                         {% if page_obj.number == page %}
-                            <li class="page-item active" 
-                                aria-current="page">
-                                <a class="page-link" href="?page={{page}}" style="border-radius:var(--radius-md);
-                                                              border:none; 
+<li class="page-item active"
+aria-current="page">
+<a class="page-link" href="?page={{page}}" style="border-radius:var(--radius-md);
+                                                              border:none;
                                                               background:var(--gradient-blue);">
                                     {{ forloop.counter }}
-                                </a>
-                            </li>
+</a>
+</li>
                         {% else %}
-                            <li class="page-item"><a class="page-link"
-                                href="?page={{ page }}"
-                                style="border-radius:var(--radius-md);
-                                      border:1px solid var(--border-color); 
-                                      background:var(--bg-card); 
+<li class="page-item"><a class="page-link"
+href="?page={{ page }}"
+style="border-radius:var(--radius-md);
+                                      border:1px solid var(--border-color);
+                                      background:var(--bg-card);
                                       color:var(--text-secondary);">
                                     {{ forloop.counter }}
-                            </a></li>
+</a></li>
                         {% endif %}
                     {% endfor %}
-
-                    <!-- Next Button -->
+  
+<!-- Next Button -->
                     {% if page_obj.has_next %}
-                        <li class="page-item"><a class="page-link"
-                            href="?page={{ page_obj.next_page_number }}"
-                            style="border-radius:var(--radius-md);
-                                  border:1px solid var(--border-color); 
-                                  background:var(--bg-card); 
+<li class="page-item"><a class="page-link"
+href="?page={{ page_obj.next_page_number }}"
+style="border-radius:var(--radius-md);
+                                  border:1px solid var(--border-color);
+                                  background:var(--bg-card);
                                   color:inherit;">
                                 بعدی
-                            </a></li>
+</a></li>
                     {% else %}
-                        <li class="page-item disabled" aria-disabled="true">
-                            <a class="page-link"
-                              href="#"
-                              style="border-radius:var(--radius-md);
-                                      border:none; 
-                                      background:var(--bg-card); 
+<li class="page-item disabled" aria-disabled="true">
+<a class="page-link"
+href="#"
+style="border-radius:var(--radius-md);
+                                      border:none;
+                                      background:var(--bg-card);
                                       color:inherit;"
-                              tabindex="-1"
-                              aria-hidden="true">
+tabindex="-1"
+aria-hidden="true">
                                 بعدی
-                            </a>
-                        </li>
+</a>
+</li>
                     {% endif %}
-                </ul>
-            </nav>
-        </div>
-
- 
-
+</ul>
+</nav>
+</div>
+  
+  
 </main>
- 
 {% endblock main %}
-{% block footer %}
-
-<style>@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}</style>
-<script>
-function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';localStorage.setItem('theme','light');}}
-(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
-
  
-</script>
- {% endblock footer %} 

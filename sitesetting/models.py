@@ -58,7 +58,7 @@ class SiteLaw(models.Model):
     sort_number = models.IntegerField(default=0, verbose_name='ترتیب')
 
     def __str__(self):
-        return str(self.name)
+        return str(self.name)    
 
     class Meta:
         verbose_name = 'قانون'
@@ -114,6 +114,17 @@ class Site(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='وضعیت')
     active_blog = models.BooleanField(default=True, verbose_name='فعال بودن قسمت بلاگ ')
     active_qbank = models.BooleanField(default=True, verbose_name='فعال بودن قسمت بانک سوالات')
+    
+    active_registering = models.BooleanField(default=True, verbose_name='فعال کردن ثبت نام ')
+    active_login_otp = models.BooleanField(default=True, verbose_name='فعال کردن ورود با otp')
+    active_login_password = models.BooleanField(default=True, verbose_name='فعال کردن ورود با رمز عبور')
+    active_forgot_password = models.BooleanField(default=True, verbose_name='فعال کردن فراموشی رمز عبور')
+    force_to_message_verify = models.BooleanField(default=True, verbose_name='اجبار برای تاییده otp')
+
+    message_info    = models.CharField(max_length=255, verbose_name='پیام ابی', null=True, blank=True)
+    message_warning = models.CharField(max_length=255, verbose_name='پیام زرد', null=True, blank=True)
+    message_success = models.CharField(max_length=255, verbose_name='پیام سبز', null=True, blank=True)
+    message_danger    = models.CharField(max_length=255, verbose_name='پیام قرمز', null=True, blank=True)
     
 
     logo = ThumbnailerImageField(verbose_name='لوگو', upload_to=photo_path_upload_to, storage=LogoStorage)

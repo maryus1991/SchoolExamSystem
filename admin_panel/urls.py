@@ -13,6 +13,7 @@ urlpatterns = [
     path('users/update/<int:pk>', views.users.UserUpdate.as_view(), name='user-update'),
     path('users/active/<int:pk>', views.users.UserActiveDeactivate.as_view(), name='user-active'),
     path('users/verify/<int:pk>', views.users.UserVerifyUnverify.as_view(), name='user-verify'),
+    path('users/login/<int:pk>', views.users.AdminUserLoginOption.as_view(), name='user-login'),
 
     # categories
     # major

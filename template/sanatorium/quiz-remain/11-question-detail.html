@@ -81,8 +81,8 @@ iframe {
 
 /* Correction specific */
 .pdf-viewer{background:var(--bg-surface2);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;position:relative;}
-.pdf-toolbar{background:var(--bg-surface);border-bottom:1px solid var(--border-color);padding:8px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.pdf-page{padding:24px;min-height:340px;display:flex;flex-direction:column;align-items:flex-start;}
+.pdf-toolbar{background:var(--bg-surface);border-bottom:1px solid var(--border-color);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.pdf-page{padding:5px;min-height:340px;display:flex;flex-direction:column;align-items:flex-start;}
 .handwritten-sim{font-style:italic;color:var(--text-primary);font-size:0.88rem;line-height:2;border-right:3px solid var(--accent);padding-right:12px;background:rgba(79,70,229,0.03);border-radius:4px;padding:12px;width:100%;}
 .score-input-box{display:flex;flex-direction:column;gap:8px;}
 .score-slider-row{display:flex;align-items:center;gap:12px;}
@@ -111,349 +111,302 @@ iframe {
 </style>
  {% endblock header %}
 {% block main %}
-  
 <main class="main-content">
-
-  <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3 fade-in-up">
-    <div>
-      <h1 style="font-size:1.3rem;font-weight:800;margin:0;">تصحیح پاسه نامه شماره {{item.id}}</h1>
-      <div style="font-size:0.83rem;color:var(--text-secondary);margin-top:4px;"><a href="{% url 'sanatorium:exam-list' %}" style="color:var(--accent);text-decoration:none;">لیست سوالات</a> / سوال {{item.question.id}} — {{item.question.type_of_answer}} </div>
-    </div>
- 
-  </div>
-
-  <div class="row g-4">
-    <!-- Question + Answer (left 60%) -->
-    <div class="col-lg-7 fade-in-up delay-1">
-
-      <!-- Question Text -->
-      <div class="glass-card p-4 mb-3">
-        <div class="section-title mb-3">متن سوال</div>
-        <div style="background:var(--bg-surface2);border-radius:10px;padding:16px;border-right:4px solid var(--accent);">
-          <div style="font-weight:700;margin-bottom:8px;font-size:0.88rem;">سوال {{item.question.id}} — {{item.question.type_of_answer}} | {{item.question.score}} نمره</div>
-          {% if   item.question.type_of_question == type_of_questions.MULTIPLE_CHOICE %}
-            <div style="font-size:0.9rem;line-height:2;">
+  
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3 fade-in-up">
+<div>
+<h1 style="font-size:1.3rem;font-weight:800;margin:0;">تصحیح پاسه نامه شماره {{item.id}}</h1>
+<div style="font-size:0.83rem;color:var(--text-secondary);margin-top:4px;"><a href="{% url 'sanatorium:exam-list' %}" style="color:var(--accent);text-decoration:none;">لیست سوالات</a> / سوال {{item.question.id}} — {{item.question.type_of_answer}} </div>
+</div>
+</div>
+  
+<div class="row g-4">
+<!-- Question + Answer (left 60%) -->
+<div class="col-lg-7 fade-in-up delay-1">
+  
+<!-- Question Text -->
+<div class="glass-card p-4 mb-3">
+<div class="section-title mb-3">متن سوال</div>
+<div style="background:var(--bg-surface2);border-radius:10px;padding:16px;border-right:4px solid var(--accent);">
+<div style="font-weight:700;margin-bottom:8px;font-size:0.88rem;">سوال {{item.question.id}} — {{item.question.type_of_answer}} | {{item.question.score}} نمره</div>
+          {% if  item.question.options %}
+<div style="font-size:0.9rem;line-height:2;">
               {{item.question.name}}
               {% for option in item.question.options.all %}
-                <div class="mt-3 mx-3" style="text-align:center;font-size:1.1rem;padding:12px;background:var({% if option.is_correct %}--gradient-success{% elif option == item.selected_option %}--gradient-warning{% else %}--bg-surface{% endif %});border-radius:8px; font-family:serif;">
+<div class="mt-3 mx-3" style="text-align:center;font-size:1.1rem;padding:12px;background:var({% if option.is_correct %}--gradient-success{% elif option == item.selected_option %}--gradient-warning{% else %}--bg-surface{% endif %});border-radius:8px; font-family:serif;">
                   {{ option.text }}
-                </div>
+</div>
                 {% if option == item.selected_option and option.is_correct %}
-                  <span style="font-size:0.82rem;color:var(--text-muted);">دانش اموز گزینه درست را انتخاب کرده</span>
-
+<span style="font-size:0.82rem;color:var(--text-muted);">دانش اموز گزینه درست را انتخاب کرده</span>
+  
                 {% elif option != item.selected_option and option.is_correct  %}
-                  <span style="font-size:0.82rem;color:var(--text-muted);"> این گزینه درست است و دانش اموز این گزینه را انتخاب نکرده  </span>
+<span style="font-size:0.82rem;color:var(--text-muted);"> این گزینه درست است و دانش اموز این گزینه را انتخاب نکرده  </span>
                 {% elif option == item.selected_option %}
-                  <span style="font-size:0.82rem;color:var(--text-muted);">  دانش اموز این گزینه را انتخاب کرده  </span>
-
+<span style="font-size:0.82rem;color:var(--text-muted);">  دانش اموز این گزینه را انتخاب کرده  </span>
+  
                 {% endif %}
-
+  
               {% endfor %}
- 
-            </div>
-          {% elif item.question.type_of_question == type_of_questions.SHORT_ANSWER or item.question.type_of_question == type_of_questions.LONG_ANSWER  %}
-            <div style="font-size:0.9rem;line-height:2;">
-              {{item.question.name}}
-              <div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
-              {{ item.question.description|safe }}
-              </div>
-             </div>
- 
-          {% elif item.question.type_of_question == type_of_questions.IMAGE_BASED  %}
-              <div class="pdf-viewer" style="margin:0 16px 16px;">
-                <div class="pdf-toolbar">
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
-                  <a href="{{ item.question.image.url }}" class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
-                </div>
-                <div class="pdf-page">
-                  <!-- Simulated handwritten answer -->
-                  <div style="width:100%;">
-                        <div class="handwritten-sim">
-                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
-                            <picture>
-                              <source srcset="{{ item.question.image.url }}"
-                                      type="image/webp">
-                              <img src="{{ item.question.image.url }}"   width="360" height="360"
-                                    loading="lazy">
-                            </picture>
-                        </div>  
-                      </div>
-      
-                  </div>
-                </div>
-              </div>
-      
-
-          {% elif item.question.type_of_question == type_of_questions.PDF_BASED  %}
- 
-
-              <div class="pdf-viewer" style="margin:0 16px 16px;">
-                <div class="pdf-toolbar">
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
-                  <span style="margin-right:auto;font-size:0.72rem;color:var(--text-muted);">صفحه ۳ از ۱۰</span>
-
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
-                  <a href="{{ item.question.pdf_file.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
-                </div>
-                <div class="pdf-page">
-                  <!-- Simulated handwritten answer -->
-                  <div style="width:100%;">
-                        <div class="handwritten-sim">
-                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
-                          <iframe src="{{ item.question.pdf_file.url }}" scrolling="auto" width="360" height="360"></iframe>
-                        </div>  
-                      </div>
-                  </div>
-                </div>
-              </div>
+</div>
           {% endif %}
-
-        </div>
-        <!-- Tags -->
-        <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
-          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(79,70,229,0.1);color:#4f46e5;" >{{item.quiz.major.name}}</span>
-          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(8,145,178,0.1);color:#0891b2;" >{{item.quiz.grade.name}}</span>
-          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(245,158,11,0.1);color:#d97706;">{{item.quiz.lession.name}}</span>
-          <span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(245,158,11,0.1);color:#d97706;">{{item.quiz.section}}</span>
-        </div>  
-      </div>
-
+  
+          {% if item.question.description  %}
+<div style="font-size:0.9rem;line-height:2;">
+              {{item.question.name}}
+<div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
+              {{ item.question.description|safe }}
+</div>
+</div>
+          {% endif %}
+          {% if iitem.question.image  %}
+<div class=" " >
+<div class=" ">
+<!-- Simulated handwritten answer -->
+<div style="width:100%;">
+<div class="handwritten-sim">
+<div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+<picture>
+<source srcset="{{ item.question.image.url }}"
+type="image/webp">
+<img src="{{ item.question.image.url }}"   width="360" height="360"
+loading="lazy">
+</picture>
+</div>  
+</div>
+<a href="{{ item.question.image.url }}" class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>باز کردن در صفحه جدید</a>
+</div>
+</div>
+</div>
+          {% endif %}
+  
+          {% if item.question.pdf_file %}
+  
+<div class=" "  >
+<div class=" ">
+<!-- Simulated handwritten answer -->
+<div style="width:100%;">
+<div class="handwritten-sim">
+<div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+<iframe src="{{ item.question.pdf_file.url }}" scrolling="auto" width="360" height="360"></iframe>
+</div>  
+</div>
+</div>
+</div>
+<a href="{{ item.question.pdf_file.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>باز کردن در صفحه جدید</a>
+  
+</div>
+          {% endif %}
+  
+</div>
+<!-- Tags -->
+<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+<span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(79,70,229,0.1);color:#4f46e5;" >{{item.quiz.major.name}}</span>
+<span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(8,145,178,0.1);color:#0891b2;" >{{item.quiz.grade.name}}</span>
+<span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(245,158,11,0.1);color:#d97706;">{{item.quiz.lession.name}}</span>
+<span style="padding:3px 10px;border-radius:20px;font-size:0.7rem;background:rgba(245,158,11,0.1);color:#d97706;">{{item.quiz.section}}</span>
+</div>  
+</div>
+  
       {% if item.type_of_answer == type_of_answer.TEXT_BASED or item.type_of_answer == type_of_answer.IMAGE_BASED or item.type_of_answer == type_of_answer.PDF_BASED %}
-      <!-- Answer Sheet (PDF Viewer mock) -->
-      <div class="glass-card mb-3">
-        <div style="padding:16px 20px 8px;display:flex;justify-content:space-between;align-items:center;">
-          <div class="section-title">پاسخنامه دانش‌آموز</div>
-          <span style="font-size:0.75rem;color:var(--text-muted);">کد دانش اموز : {{item.student.pk}}</span>
-        </div>
-        <div class="pdf-viewer" style="margin:0 16px 16px;">
-          <div class="pdf-toolbar">
-            <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
-            <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
-            <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
-            <span style="margin-right:auto;font-size:0.72rem;color:var(--text-muted);">صفحه ۳ از ۱۰</span>
-            <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>دانلود</button>
-          </div>
-          <div class="pdf-page">
-            <!-- Simulated handwritten answer -->
-            <div style="width:100%;">
-              <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:8px;border-bottom:1px solid var(--border-color);padding-bottom:8px;"><i class="bi bi-person me-1"></i>علی رضایی — کد ملی: ۰۰۱... — کلاس ۱۰/الف</div>
-              <div style="font-weight:700;font-size:0.82rem;margin-bottom:10px;">حل سوال {{ item.question.pk }}:</div>
-
+<!-- Answer Sheet (PDF Viewer mock) -->
+<div class="glass-card mb-3">
+<div style="padding:16px 20px 8px;display:flex;justify-content:space-between;align-items:center;">
+<div class="section-title">پاسخنامه دانش‌آموز</div>
+<span style="font-size:0.75rem;color:var(--text-muted);">کد دانش اموز : {{item.student.pk}}</span>
+</div>
+<div   >
+<div class=" ">
+<!-- Simulated handwritten answer -->
+<div style="width:100%;">
+<div style="font-weight:700;font-size:0.82rem;margin-bottom:10px;">حل سوال {{ item.question.pk }}:</div>
+  
           {% if item.description %}
-            <div style="font-size:0.9rem;line-height:2;">
-               <div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
+<div style="font-size:0.9rem;line-height:2;">
+<div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
               {{ item.description }}
-              </div>
-             </div>
+</div>
+</div>
           {% endif %}
           {% if item.image  %}
-              <div class="pdf-viewer" style="margin:0 16px 16px;">
-                <div class="pdf-toolbar">
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
-                  <a href="{{ item.image.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
-                </div>
-                <div class="pdf-page">
-                  <!-- Simulated handwritten answer -->
-                  <div style="width:100%;">
-                        <div class="handwritten-sim">
-                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
-                            <picture>
-                              <source srcset="{{ item.image.url }}"
-                                      type="image/webp">
-                              <img src="{{ item.image.url }}"   width="360" height="360"
-                                    loading="lazy">
-                            </picture>
-                        </div>  
-                      </div>
-      
-                  </div>
-                </div>
-              </div>
-      
+<div   >
+<div >
+<!-- Simulated handwritten answer -->
+<div style="width:100%;">
+<div class="handwritten-sim">
+<div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+<picture>
+<source srcset="{{ item.image.url }}"
+type="image/webp">
+<img src="{{ item.image.url }}"   width="360" height="360"
+loading="lazy">
+</picture>
+</div>  
+</div>
+<a href="{{ item.image.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>باز کردن در صفحه جدید</a>
+</div>
+</div>
+</div>
           {% endif %}
-
+  
           {% if item.pdf_file  %}
- 
-
-              <div class="pdf-viewer" style="margin:0 16px 16px;">
-                <div class="pdf-toolbar">
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
-                  <span style="margin-right:auto;font-size:0.72rem;color:var(--text-muted);">صفحه ۳ از ۱۰</span>
-
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
-                  <a href="{{ item.pdf_file.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
-                </div>
-                <div class="pdf-page">
-                  <!-- Simulated handwritten answer -->
-                  <div style="width:100%;">
-                        <div class="handwritten-sim">
-                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
-                          <iframe src="{{ item.pdf_file.url }}" scrolling="auto" width="360" height="360"></iframe>
-                        </div>  
-                      </div>
-                  </div>
-                </div>
-              </div>
+  
+<div class=" mt-2" >
+<div  >
+<!-- Simulated handwritten answer -->
+<div style="width:100%;">
+<div class="handwritten-sim">
+<div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+<iframe src="{{ item.pdf_file.url }}" scrolling="auto" width="360" height="360"></iframe>
+</div>  
+</div>
+<a href="{{ item.pdf_file.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>باز کردن در صفحه جدید</a>
+  
+</div>
+</div>
+</div>
           {% endif %}
- 
-            </div>
-          </div>
-        </div>
-      </div>
+</div>
+</div>
+</div>
+</div>
       {% elif item.type_of_answer == type_of_answer.OPTION %}
-      <div class="glass-card mb-3">
-        <div class="m-3  btn btn-warning">
+<div class="glass-card mb-3">
+<div class="m-3  btn btn-warning">
           این سوال تستی می باشد و گزینه انتخابی دانش اموز در قسمت متن سوال رنگ زرد نمایان است و رنگ سبر هم گزینه درست هست اگر رنگ زرد نمایان نبود پس دانش اموز درست پاسخ داده است
-        </div>
-      </div>
+</div>
+</div>
       {% else %}
-      <div class="glass-card mb-3">
-        <div class="m-3  btn btn-danger ">
-          دانش اموز پاسخی برای این سوال ثبت نکرده است 
-        </div>
-      </div>
+<div class="glass-card mb-3">
+<div class="m-3  btn btn-danger ">
+          دانش اموز پاسخی برای این سوال ثبت نکرده است
+</div>
+</div>
       {% endif %}
-      <!-- Model Answer -->
-
-    </div>
-
-    <!-- Scoring Panel (right 40%) -->
-    <div class="col-lg-5 fade-in-up delay-2">
-      <div class="glass-card p-4">
-        <div class="section-title mb-3">پاسخ نمونه</div>
-        <div style="background:rgba(16,185,129,0.05);border-radius:10px;padding:14px;border:1px solid rgba(16,185,129,0.2);">
-          <div style="font-size:0.82rem;line-height:2.2;color:var(--text-secondary);">
+<!-- Model Answer -->
+  
+</div>
+  
+<!-- Scoring Panel (right 40%) -->
+<div class="col-lg-5 fade-in-up delay-2">
+<div class="glass-card p-4">
+<div class="section-title mb-3">پاسخ نمونه</div>
+<div style="background:rgba(16,185,129,0.05);border-radius:10px;padding:14px;border:1px solid rgba(16,185,129,0.2);">
+<div style="font-size:0.82rem;line-height:2.2;color:var(--text-secondary);">
           {% if item.question.answer_key.description %}
-            <div style="font-size:0.9rem;line-height:2;">
-               <div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
+<div style="font-size:0.9rem;line-height:2;">
+<div style="text-align:center;font-size:1.1rem;padding:12px;background:var(--bg-surface);border-radius:8px;margin:10px 0;font-family:serif;">
               {{ item.question.answer_key.description|safe }}
-              </div>
-             </div>
+</div>
+</div>
           {% endif %}
           {% if item.question.answer_key.image  %}
-              <div class="pdf-viewer" style="margin:0 16px 16px;">
-                <div class="pdf-toolbar">
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
-                  <a href="{{ item.question.answer_key.image.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
-                </div>
-                <div class="pdf-page">
-                  <!-- Simulated handwritten answer -->
-                  <div style="width:100%;">
-                        <div class="handwritten-sim">
-                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
-                            <picture>
-                              <source srcset="{{ item.question.answer_key.image.url }}"
-                                      type="image/webp">
-                              <img src="{{ item.question.answer_key.image.url }}"   width="360" height="360"
-                                    loading="lazy">
-                            </picture>
-                        </div>  
-                      </div>
-      
-                  </div>
-                </div>
-              </div>
-      
+<div class=" " >
+<div class=" ">
+<!-- Simulated handwritten answer -->
+<div style="width:100%;">
+<div class="handwritten-sim">
+<div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+<picture>
+<source srcset="{{ item.question.answer_key.image.url }}"
+type="image/webp">
+<img src="{{ item.question.answer_key.image.url }}"   width="360" height="360"
+loading="lazy">
+</picture>
+</div>  
+</div>
+<a href="{{ item.question.answer_key.image.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>باز کردن در صفحه جدید</a>
+</div>
+</div>
+</div>
           {% endif %}
-
-          {% if item.question.answer_key.pdf_file  %}
- 
-
-              <div class="pdf-viewer" style="margin:0 16px 16px;">
-                <div class="pdf-toolbar">
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-in"></i>بزرگ‌نمایی</button>
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-zoom-out"></i>کوچک‌نمایی</button>
-                  <span style="margin-right:auto;font-size:0.72rem;color:var(--text-muted);">صفحه ۳ از ۱۰</span>
-
-                  <button class="btn-glass" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-arrow-rotate-right"></i>چرخش</button>
-                  <a href="{{ item.question.answer_key.pdf_file.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><i class="bi bi-download"></i>باز کردن در صفحه جدید</a>
-                </div>
-                <div class="pdf-page">
-                  <!-- Simulated handwritten answer -->
-                  <div style="width:100%;">
-                        <div class="handwritten-sim">
-                        <div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
-                          <iframe src="{{ item.question.answer_key.pdf_file.url }}" scrolling="auto" width="360" height="360"></iframe>
-                        </div>  
-                      </div>
-                  </div>
-                </div>
-              </div>
-          {% endif %}
-
-          </div>
-        </div>
-      </div>
-      <!-- Score Input -->
-      <div class="glass-card p-4 mb-3 mt-3">
-        <div class="section-title mb-4">ثبت نمره</div>
-          <form action="{% url 'sanatorium:exam-student-question-detail-pk' pk=item.quiz.pk report_id=item.pk %}" method="post">
-            {% csrf_token %}
-            <div style="text-align:center;margin-bottom:10px;">
-              <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">نمره کل</div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                <button type="button" onclick="adjustScore(-0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:1.1rem;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">−</button>
-                  {{ form.score }}
-                <button type="button" onclick="adjustScore(0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:var(--gradient-primary);color:white;cursor:pointer;font-size:1.1rem;">+</button>
-              </div>
-              <div style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">از {{ item.question.score }} نمره</div>
-            </div>
-
-            <input type="range" class="score-slider" id="scoreSlider" min="0" max="{{ item.question.score }}" step="0.01" value="0" oninput="updateScoreFromSlider(this.value)">
-
-              {{form.corrected}}
   
+          {% if item.question.answer_key.pdf_file  %}
+  
+<div  >
+<div class=" ">
+<!-- Simulated handwritten answer -->
+<div style="width:100%;">
+<div class="handwritten-sim">
+<div style="height:360px;background:var(--bg-surface);display:flex;align-items:center;justify-content:center;font-size:3rem;">
+<iframe src="{{ item.question.answer_key.pdf_file.url }}" scrolling="auto" width="360" height="360"></iframe>
+</div>  
+</div>
+<a href="{{ item.question.answer_key.pdf_file.url }}" class="btn-glass" target="_blank" style="padding:5px 10px;font-size:0.75rem;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>باز کردن در صفحه جدید</a>
+</div>
+  
+</div>
+</div>
+          {% endif %}
+  
+</div>
+</div>
+</div>
+<!-- Score Input -->
+<div class="glass-card p-4 mb-3 mt-3">
+<div class="section-title mb-4">ثبت نمره</div>
+<form action="{% url 'sanatorium:exam-student-question-detail-pk' pk=item.quiz.pk report_id=item.pk %}" method="post">
+            {% csrf_token %}
+<div style="text-align:center;margin-bottom:10px;">
+<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">نمره کل</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+<button type="button" onclick="adjustScore(-0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:1.1rem;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">−</button>
+                  {{ form.score }}
+<button type="button" onclick="adjustScore(0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:var(--gradient-primary);color:white;cursor:pointer;font-size:1.1rem;">+</button>
+</div>
+<div style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">از {{ item.question.score }} نمره</div>
+</div>
+  
+<input type="range" class="score-slider" id="scoreSlider" min="0" max="{{ item.question.score }}" step="0.01" value="0" oninput="updateScoreFromSlider(this.value)">
+  
+              {{form.corrected}}
               {{form.satantorium_message}}
-            
-      
-            <div class="d-flex gap-2 mt-3">
-              <button type="submit" class="btn-gradient"  ><i class="bi bi-skip-end"></i>ذخیره و بعدی</button>
-            </div>
-          </form>
-        </div>
-      </div>
- 
- 
-
- 
-
-    </div>
-  </div>
-
+<div class="d-flex gap-2 mt-3">
+<button type="submit" class="btn-gradient"  ><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>ذخیره و بعدی</button>
+</div>
+</form>
+</div>
+</div>
+  
+  
+</div>
+</div>
+  
 </main>
- {% endblock main %}
+{% endblock main %}
 {% block footer %}
-
+  
 <script>
-function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';localStorage.setItem('theme','light');}}
-(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();
+function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/></svg>';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/></svg>';localStorage.setItem('theme','light');}}
+(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>';})();
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
-
+  
 let currentScore = 0;
 function setScore(v){
-  currentScore=v;
-  document.getElementById('scoreDisplay').value=v;
-  document.getElementById('scoreSlider').value=v;
+currentScore=v;
+const scoreDisplay = document.getElementById('scoreDisplay');
+const scoreSlider = document.getElementById('scoreSlider');
+if(scoreDisplay) scoreDisplay.value=v;
+if(scoreSlider) scoreSlider.value=v;
 }
 function adjustScore(d){setScore(Math.max(0,Math.min({{item.question.score}},currentScore+d)));}
 function updateScoreFromSlider(v){setScore(parseFloat(v));}
 function toPersian(n){return String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);}
 function recalcTotal(){
-  const inputs=document.querySelectorAll('.criteria-input');
-  let total=0;inputs.forEach(i=>{total+=parseFloat(i.value)||0;});
-  document.getElementById('criteriaTotal').textContent=toPersian(total)+' / ۸';
-  setScore(total);
+const inputs=document.querySelectorAll('.criteria-input');
+let total=0;inputs.forEach(i=>{total+=parseFloat(i.value)||0;});
+const criteriaTotal = document.getElementById('criteriaTotal');
+if(criteriaTotal) criteriaTotal.textContent=toPersian(total)+' / ۸';
+setScore(total);
 }
-
-
+  
+// Initialize score on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const scoreInput = document.getElementById('scoreDisplay') || document.querySelector('input[name="score"]');
+    if(scoreInput) {
+        currentScore = parseFloat(scoreInput.value) || 0;
+        setScore(currentScore);
+    }
+});
 </script>
- {% endblock footer %} 
+{% endblock footer %}

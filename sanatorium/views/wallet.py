@@ -60,4 +60,4 @@ class WalletRequestPayment(SanatorPermissionRequire, RedirectView):
         wallet.save()
         messages.success(self.request, 'درخواست شما به ادمین ارسال شد')
 
-        return reverse('admin-panel:wallet-list', kwargs=kwargs)
+        return reverse('sanatorium:wallet-detail', kwargs=kwargs)

@@ -24,6 +24,21 @@ class MainPage(TemplateView):
      main page
     """
 
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            site = Site.objects.first()
+            if site.message_info :
+                messages.info(request, site.message_info)
+            if site.message_warning :
+                messages.warning(request, site.message_warning)
+            if site.message_success :
+                messages.success(request, site.message_success)
+            if site.message_danger :
+                messages.error(request, site.message_danger)
+        except: pass
+        return super().dispatch(request, *args, **kwargs)
+    
+
     template_name = 'main/site/main.html'
 
     def get_context_data(self, **kwargs):

@@ -1,14 +1,39 @@
 from django.views.generic import  RedirectView, ListView, View
 from admin_panel.mixins import AdminPermissionRequire
 from user.models import User 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from admin_panel.forms.users import CreateUserForm, UpdateUserForm
 from django.contrib import messages
 from django.urls import reverse
-
+from django.contrib.auth import login
 
 
 # users
+
+class AdminUserLoginOption( View):
+    """for admin that can login in evey account"""
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+
+   
+        if request.user.is_superuser :
+            return response
+        else:
+            return redirect('/')
+
+    def get(self, *args, **kwargs):
+
+        
+        user = get_object_or_404(User, pk=kwargs.get('pk'))
+        
+        
+        messages.success(self.request, 'با موفقیت وارد حساب شدید')
+        login(self.request, user)
+
+        
+
+        return redirect('/')
 
 class UserListView(AdminPermissionRequire, ListView):
     """for list the users"""
@@ -17,6 +42,7 @@ class UserListView(AdminPermissionRequire, ListView):
     template_name = 'admin-panel/users/list.html'
     queryset = User.objects.prefetch_related('major', 'grade').all()
     paginate_by = 200
+    ordering = ['-pk']
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -41,6 +67,7 @@ class UserCreate(AdminPermissionRequire, View):
 
         form = CreateUserForm(request.POST or None)
         
+        
         if form.is_valid():
 
             PhoneNumber = form.cleaned_data.pop('PhoneNumber')
@@ -63,6 +90,9 @@ class UserCreate(AdminPermissionRequire, View):
         else:
             messages.error(request, form.errors)
         
+        if '_add' in request.POST:
+            request.POST = {}
+            return self.get(request, *args, **kwargs)
         return self.get(request, *args, **kwargs)
 
 class UserUpdate(AdminPermissionRequire, View):

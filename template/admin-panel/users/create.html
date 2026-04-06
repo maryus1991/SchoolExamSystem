@@ -81,12 +81,18 @@
  
             </div>
             <div class="card-body d-flex flex-column gap-2">
-              <button type="submit" class="btn btn-primary w-100"  >
+              <div class="row">
+                <button type="submit" name="_add" class="btn btn-success col-4  "  >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                ذخیره کاربر
+                ذخیره کاربر و افزدون کاربر بعدی
+              </button>
+              <button type="submit" class="btn btn-primary col-4"  >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                ذخیره کاربر و ادامه ویرایش 
               </button>
  
-              <a href="{% url 'admin-panel:user-list' %}" class="btn btn-ghost w-100">انصراف</a>
+              <a href="{% url 'admin-panel:user-list' %}" class="btn btn-warning  col-4">انصراف</a>
+              </div>
             </div>
             
           </div>

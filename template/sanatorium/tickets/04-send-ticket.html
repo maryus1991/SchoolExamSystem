@@ -36,94 +36,161 @@
 {% block main %}
 
 <main class="main-content"><div class="page-body">
-
-  <div class="row g-4">
-    <!-- Form -->
-    <div class="col-lg-8">
-      <form action="?next={% url 'sanatorium:ticket-list' %}" method="post"  enctype="multipart/form-data">
+  
+<div class="row g-4">
+<!-- Form -->
+<div class="col-lg-8">
+<form action="?next={% url 'sanatorium:ticket-list' %}" method="post"  enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="glass-card p-4 animate-in">
-        <div class="section-title mb-4">ارسال تیکت جدید</div>
-        <div class="mb-3 row">
-          <div class="col-md-6"> 
-            <label class="form-label">{{ form.name.label }}</label>
+<div class="glass-card p-4 animate-in">
+<div class="section-title mb-4">ارسال تیکت جدید</div>
+<div class="mb-3 row">
+<div class="col-md-6">
+<label class="form-label">{{ form.name.label }}</label>
             {{ form.name }}
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">{{ form.priority.label }}</label>
+</div>
+<div class="col-md-6">
+<label class="form-label">{{ form.priority.label }}</label>
             {{ form.priority }}
-          </div>
-        </div>
-
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            <label class="form-label">{{ form.placement.label }}</label>
- {{ form.placement }}
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">{{ form.problem.label }}</label>
+</div>
+</div>
+  
+<div class="row g-3 mb-3">
+<div class="col-md-6">
+<label class="form-label">{{ form.placement.label }}</label>
+{{ form.placement }}
+</div>
+<div class="col-md-6">
+<label class="form-label">{{ form.problem.label }}</label>
 {{ form.problem }}
-          </div>
-        </div>
- 
-        <div class="mb-3">
-          <label class="form-label">{{ form.description.label }}</label>
+</div>
+</div>
+<div class="mb-3">
+<label class="form-label">{{ form.description.label }}</label>
           {{ form.description }}
-        </div>
-
-        <div class="mb-4">
-          <label class="form-label">فایل پیوست</label>
-          <div class="upload-box" id="attachBox" ondragover="event.preventDefault();this.style.borderColor='var(--primary)'" ondragleave="this.style.borderColor=''" onclick="document.getElementById('attachInput').click()">
-            <i class="bi bi-paperclip" style="font-size:1.75rem;color:var(--primary);margin-bottom:0.5rem;display:block;"></i>
+</div>
+  
+  
+<div class="mb-4">
+    <label class="form-label">فایل پیوست</label>
+    <div class="upload-box" id="attachBox" 
+         ondragover="event.preventDefault();this.style.borderColor='var(--primary)'" 
+         ondragleave="this.style.borderColor=''" 
+         onclick="document.getElementById('attachInput').click()">
+        
+        <!-- آیکون پیش‌فرض - وسط‌چین -->
+        <div id="uploadIcon" class="d-flex flex-column align-items-center justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16" style="color:var(--primary);margin-bottom:0.5rem;">
+                <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
+            </svg>
             <div style="font-weight:600;font-size:0.88rem;">فایل‌ها را اینجا رها کنید یا کلیک کنید</div>
             <div style="font-size:0.75rem;color:var(--text-light);margin-top:0.25rem;">PDF, JPG, PNG, GIF — حداکثر ۵MB هر فایل</div>
-            {{ form.file }}
-          </div>
         </div>
-
-        <div class="d-flex gap-2 flex-wrap">
-          <button type="submit"  style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.7rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><i class="bi bi-send"></i> ارسال تیکت</button>
-          <a href="{% url 'sanatorium:ticket-list' %}" style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.7rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;text-decoration:none;display:inline-flex;align-items:center;">لغو</a>
+        
+        <!-- نمایش فایل انتخاب شده (مخفی) -->
+        <div id="filePreview" class="d-none flex-column align-items-center justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16" style="color:var(--success);margin-bottom:0.5rem;">
+                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+                <path d="M4.603 14.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.697 19.697 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a10.954 10.954 0 0 0 .98 1.686 5.753 5.753 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.856.856 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.712 5.712 0 0 1-.911-.95 11.651 11.651 0 0 0-1.997.406 11.307 11.307 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.793.793 0 0 1-.58.029z"/>
+            </svg>
+            <div id="fileName" style="font-weight:600;font-size:0.88rem;color:var(--text);"></div>
+            <div style="font-size:0.75rem;color:var(--success);margin-top:0.25rem;">فایل انتخاب شده</div>
+            <button type="button" onclick="event.stopPropagation();removeFile()" style="background:none;border:none;color:var(--error);font-size:0.75rem;margin-top:0.5rem;cursor:pointer;">حذف فایل</button>
         </div>
-      </div>
-      </form>
+        
+        {{ form.file }}
     </div>
-
-    <!-- Tips & FAQ -->
-    <div class="col-lg-4">
-      <div class="glass-card p-4 mb-4 animate-in" style="animation-delay:0.1s;opacity:0;">
-        <div class="section-title mb-3">راهنمای سریع</div>
-        <div style="background:rgba(108,92,231,0.06);border-radius:14px;padding:1rem;font-size:0.83rem;color:var(--text-muted);line-height:1.9;">
-          <div><i class="bi bi-check2-circle" style="color:var(--success);"></i> موضوع را واضح بنویسید</div>
-          <div><i class="bi bi-check2-circle" style="color:var(--success);"></i> اطلاعات دستگاه/مرورگر را ذکر کنید</div>
-          <div><i class="bi bi-check2-circle" style="color:var(--success);"></i> اسکرین‌شات پیوست کنید</div>
-          <div><i class="bi bi-check2-circle" style="color:var(--success);"></i> مراحل بروز مشکل را شرح دهید</div>
-        </div>
-        <div style="margin-top:1rem;padding:0.75rem;border-radius:10px;background:rgba(0,206,201,0.08);border:1px solid rgba(0,206,201,0.2);font-size:0.82rem;color:var(--secondary);">
-          <i class="bi bi-clock"></i> میانگین زمان پاسخ: <strong>۴-۸ ساعت</strong>
-        </div>
-      </div>
-
-      
-    </div>
-  </div>
-
+</div>
+  
+<div class="d-flex gap-2 flex-wrap">
+<button type="submit"  style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.7rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg> ارسال تیکت</button>
+<a href="{% url 'sanatorium:ticket-list' %}" style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.7rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;text-decoration:none;display:inline-flex;align-items:center;">لغو</a>
+</div>
+</div>
+</form>
+</div>
+  
+<!-- Tips & FAQ -->
+<div class="col-lg-4">
+<div class="glass-card p-4 mb-4 animate-in" style="animation-delay:0.1s;opacity:0;">
+<div class="section-title mb-3">راهنمای سریع</div>
+<div style="background:rgba(108,92,231,0.06);border-radius:14px;padding:1rem;font-size:0.83rem;color:var(--text-muted);line-height:1.9;">
+<div><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" style="color:var(--success);"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg> موضوع را واضح بنویسید</div>
+<div><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" style="color:var(--success);"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg> اطلاعات دستگاه/مرورگر را ذکر کنید</div>
+<div><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" style="color:var(--success);"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg> اسکرین‌شات پیوست کنید</div>
+<div><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" style="color:var(--success);"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg> مراحل بروز مشکل را شرح دهید</div>
+</div>
+<div style="margin-top:1rem;padding:0.75rem;border-radius:10px;background:rgba(0,206,201,0.08);border:1px solid rgba(0,206,201,0.2);font-size:0.82rem;color:var(--secondary);">
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/></svg> میانگین زمان پاسخ: <strong>۴-۸ ساعت</strong>
+</div>
+</div>
+  
+</div>
+</div>
+  
 </div></main>
 {% endblock   %}
-{% block footer %}
-
-<div class="toast-success" id="toast"><i class="bi bi-check-circle-fill"></i> تیکت با موفقیت ارسال شد! به زودی پاسخ دریافت خواهید کرد.</div>
+ {% block footer %}
+  
  
 <script>
  
+
+// مدیریت تغییر فایل
+document.getElementById('attachInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        showFileInfo(file);
+    }
+});
+
+// نمایش اطلاعات فایل
+function showFileInfo(file) {
+    const uploadIcon = document.getElementById('uploadIcon');
+    const filePreview = document.getElementById('filePreview');
+    const fileName = document.getElementById('fileName');
+    
+    // نمایش نام فایل (محدود به 30 کاراکتر)
+    let displayName = file.name;
+    if (displayName.length > 30) {
+        displayName = displayName.substring(0, 27) + '...';
+    }
+    fileName.textContent = displayName;
+    
+    // مخفی کردن آیکون آپلود و نمایش پیش‌نمایش
+    uploadIcon.classList.add('d-none');
+    filePreview.classList.remove('d-none');
+    filePreview.classList.add('d-flex');
+}
+
+// حذف فایل
+function removeFile() {
+    const uploadIcon = document.getElementById('uploadIcon');
+    const filePreview = document.getElementById('filePreview');
+    const input = document.getElementById('attachInput');
+    
+    // پاک کردن input
+    input.value = '';
+    
+    // بازگشت به حالت اولیه
+    filePreview.classList.add('d-none');
+    filePreview.classList.remove('d-flex');
+    uploadIcon.classList.remove('d-none');
+}
+
+// Drag & Drop
+const attachBox = document.getElementById('attachBox');
+
+attachBox.addEventListener('drop', function(e) {
+    e.preventDefault();
+    this.style.borderColor = '';
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        document.getElementById('attachInput').files = files;
+        showFileInfo(files[0]);
+    }
+});
  
-  function selectPriority(el){document.querySelectorAll('.priority-option').forEach(p=>p.classList.remove('selected'));el.classList.add('selected');}
-  function updateCharCount(){const v=document.getElementById('msgBody').value.length;document.getElementById('charCount').textContent=v;}
-  function submitTicket(){
-    const t=document.getElementById('toast');
-    t.style.display='flex';
-    setTimeout(()=>{t.style.display='none';window.location.href='12-ticket-list.html';},2500);
-  }
 </script>
- 
 {% endblock   %}

@@ -5,7 +5,7 @@
 {% load list %}
 {% block main %} 
 <main class="page-content">
-
+<style>.w-paid_order_percent{width: {{paid_order_percent}}%;}.w-active_order_percent{width: {{active_order_percent}}%;}.w-cancell_order_percent{width: {{cancell_order_percent}}%;}</style>
   <!-- Page Header -->
   <div class="page-header">
     <div class="page-header-info">
@@ -83,25 +83,49 @@
 
   <!-- Charts Row -->
   <div class="row g-3 mb-4">
-    <div class="col-xl-4">
+     <div class="col-xl-4">
       <div class="card">
         <div class="card-header">
           <div>
-            <div class="card-title">آمار ثبت‌نام کاربران</div>
-            <div class="card-subtitle">۱۲ ماه گذشته</div>
+            <div class="card-title">  اخرین ازمون ها</div>
+            <div class="card-subtitle">جدید ترین ازمون ها</div>
+            
           </div>
-          <div class="ms-auto d-flex gap-2">
-            <button class="btn btn-ghost btn-sm  ">ماهانه</button>
-            <button class="btn btn-ghost btn-sm">هفتگی</button>
-          </div>
+          <a href="{% url 'admin-panel:quiz-list' %}" class="btn btn-ghost btn-sm ms-auto">مشاهده همه</a>
         </div>
-        <div class="card-body">
-          <div class="chart-area" id="barChart" style="height:200px"></div>
-          <div class="d-flex justify-content-between mt-3" style="font-size:.72rem;color:var(--text-muted)">
-            <span>فروردین</span><span>اردیبهشت</span><span>خرداد</span><span>تیر</span>
-            <span>مرداد</span><span>شهریور</span><span>مهر</span><span>آبان</span>
-            <span>آذر</span><span>دی</span><span>بهمن</span><span>اسفند</span>
-          </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>نام و زمان برگذاری</th>
+                <th>وضعیت</th>
+                <th>ظرفیت فعلی / کل</th>
+ 
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in quiz_list %}
+              <tr>
+                  <td>
+                    <a href="{% url 'admin-panel:quiz-update' item.id %}"> 
+                      <div class="user-cell">
+                         
+                        <div class="user-cell-info">
+                          <div class="name">{{item.name}}</div>
+                          <div class="email">{{item.start_at|to_jalali:'%Y/%m/%d'}}</div>
+
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+                  <td><span class="badge badge-warning">{{item.status}}</span></td>
+                  <td style="color:var(--text-muted);font-size:.78rem"><span >{{item.filled_capacity}} / {{item.capacity}}</span></td>
+                  
+                </a>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -156,23 +180,24 @@
                 <span class="text-white" >پرداخت شده</span>
                 <span class="text-white">{{ paid_order_percent }}٪</span>
               </div>
-              <div class="progress"><div class="progress-bar btn-success w-{{paid_order_percent}}"></div></div>
+              <div class="progress"><div class="progress-bar btn-success  w-paid_order_percent"  ></div></div>
             </div>
             <div>
               <div class="d-flex justify-content-between mb-1" style="font-size:.8rem">
                 <span  class="text-white">در انتظار</span>
                 <span  class="text-white">{{active_order_percent}}٪</span>
               </div>
-              <div class="progress"><div class="progress-bar btn-warning w-{{active_order_percent}}"  ></div></div>
+              <div class="progress w-100"><div class="progress-bar btn-warning  w-active_order_percent"  ></div></div>
             </div>
             <div>
               <div class="d-flex justify-content-between mb-1" style="font-size:.8rem">
                 <span class="text-white" >لغو شده</span>
                 <span class="text-white"  >{{ cancell_order_percent }}٪</span>
               </div>
-              <div class="progress"><div class="progress-bar btn-danger w-{{cancell_order_percent}}"  ></div></div>
+              <div class="progress w-100"><div class="progress-bar btn-danger w-cancell_order_percent"    ></div></div>
             </div>
           </div>
+
           <div class="divider"></div>
           <div class="d-flex flex-column gap-2">
             <div class="d-flex align-items-center justify-content-between">
@@ -204,7 +229,7 @@
 
   <!-- Recent Users & Activity -->
   <div class="row g-3">
-        <div class="col-xl-4">
+        <div class="col-xl-5">
       <div class="card">
         <div class="card-header">
           <div>
@@ -259,7 +284,7 @@
       </div>
     </div>
  
-    <div class="col-xl-5">
+    <div class="col-xl-7">
       <div class="card">
         <div class="card-header">
           <div>
@@ -308,52 +333,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-3">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">  اخرین ازمون ها</div>
-            <div class="card-subtitle">جدید ترین ازمون ها</div>
-            
-          </div>
-          <a href="{% url 'admin-panel:quiz-list' %}" class="btn btn-ghost btn-sm ms-auto">مشاهده همه</a>
-        </div>
-        <div class="table-container">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>نام و زمان برگذاری</th>
-                <th>وضعیت</th>
-                <th>ظرفیت فعلی / کل</th>
- 
-              </tr>
-            </thead>
-            <tbody>
-              {% for item in quiz_list %}
-              <tr>
-                  <td>
-                    <a href="{% url 'admin-panel:quiz-update' item.id %}"> 
-                      <div class="user-cell">
-                         
-                        <div class="user-cell-info">
-                          <div class="name">{{item.name}}</div>
-                          <div class="email">{{item.start_at|to_jalali:'%Y/%m/%d'}}</div>
 
-                        </div>
-                      </div>
-                    </a>
-                  </td>
-                  <td><span class="badge badge-warning">{{item.status}}</span></td>
-                  <td style="color:var(--text-muted);font-size:.78rem"><span >{{item.filled_capacity}} / {{item.capacity}}</span></td>
-                  
-                </a>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
 
   </div>
 

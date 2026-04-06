@@ -18,9 +18,8 @@ class SanatoriumPendingExamList(SanatorPermissionRequire, ListView):
     paginate_by = 50
 
     def get_queryset(cls):
-        cls.queryset = Quiz.objects.filter(sanatorium=cls.request.user, is_active=True).prefetch_related('grade', 'major', 'lession').annotate(
+        cls.queryset = Quiz.objects.filter(sanatorium=cls.request.user, is_active=True).prefetch_related('grade', 'major', 'lession', 'student').annotate(
             question_count=Count('questions'),
-            student_count=Count('detail'),
         ).order_by('-pk')
         return cls.queryset
 

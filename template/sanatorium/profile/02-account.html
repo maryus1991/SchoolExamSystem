@@ -1,5 +1,5 @@
 {% extends "sanatorium/base/base.html" %}
- 
+{% load list %}
   {% block header %}
   <style>
     :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);--gradient-2:linear-gradient(135deg,#00CEC9 0%,#81ecec 100%);}
@@ -35,106 +35,95 @@
 {% block main %}
 
 <main class="main-content"><div class="page-body">
-
-  <div class="row g-4">
-    <!-- Sidebar nav -->
-    <div class="col-lg-3">
-      <div class="glass-card p-3 animate-in">
-        <div style="padding:0.5rem 0.5rem 1rem;border-bottom:1px solid var(--border);margin-bottom:0.75rem;">
-          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-            <div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-size:1.75rem;font-weight:800;margin-bottom:0.75rem;" id="mainAvatar">ع</div>
-            <div style="font-weight:700;">{{ user.get_full_name }}</div>
-            <div style="font-size:0.78rem;color:var(--text-muted);">دانش‌آموز</div>
-          </div>
-        </div>
-        <button class="settings-tab active" onclick="showTab('profile',this)"><i class="bi bi-person"></i> اطلاعات شخصی</button>
-        <button class="settings-tab" id="sec" onclick="showTab('security',this)"><i class="bi bi-shield-lock"></i> امنیت و رمز عبور</button>
-        <button class="settings-tab" id="numeer" onclick="showTab('number',this)"><i class="bi bi-shield-lock"></i>  تغییر شماره یا کد ملی  </button>
- 
-      </div>
-    </div>
-
-    <!-- Content -->
-    <div class="col-lg-9">
-      <!-- Profile tab -->
-      <div id="tab-profile" class="animate-in">
-        <div class="glass-card p-4 mb-4">
-          <div class="section-title mb-4">اطلاعات شخصی</div>
-          <div class="d-flex align-items-center gap-4 mb-4 flex-wrap">
-
- 
-          </div>
-          <form action="?next={% url 'sanatorium:edit-infos' %}" method="post">
-            {% csrf_token %}
-            <div class="row g-3">
-
-              <div class="col-md-6"><label class="form-label">{{ update_form.first_name.label }}</label>{{ update_form.first_name }}</div>
-              <div class="col-md-6"><label class="form-label">{{ update_form.last_name.label }}</label>{{ update_form.last_name }}</div>
-              <div class="col-md-6"><label class="form-label">{{ update_form.gender.label }}</label>{{ update_form.gender }} </div>
-              <div class="col-md-6"><label class="form-label">{{ update_form.province.label }}</label>{{ update_form.province }}</div>
-              <div class="col-md-6"><label class="form-label">{{ update_form.city.label }}</label>{{ update_form.city }}</div>
-              <div class="col-md-6"><label class="form-label">{{ update_form.school.label }}</label>{{ update_form.school }}</div>
-              <div class="col-md-6"><label class="form-label">{{ update_form.grade.label }}</label>{{ update_form.grade }}</div>
-              <div class="col-md-6"><label class="form-label">{{ update_form.major.label }}</label>{{ update_form.major }}</div>
-              <div class="col-md-6"><label class="form-label">{{ update_form.father_name.label }}</label>{{ update_form.father_name }}</div>
- 
-              <div class="col-md-6"><label class="form-label">{{ update_form.birth.label }}</label>{{ update_form.birth }}</div>
   
-
+<div class="row g-4">
+<!-- Sidebar nav -->
+<div class="col-lg-3">
+<div class="glass-card p-3 animate-in">
+<div style="padding:0.5rem 0.5rem 1rem;border-bottom:1px solid var(--border);margin-bottom:0.75rem;">
+<div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+<div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;color:white;font-size:1.75rem;font-weight:800;margin-bottom:0.75rem;" id="mainAvatar">{{user.get_full_name|list_index:0}}</div>
+<div style="font-weight:700;">{{ user.get_full_name }}</div>
+<div style="font-size:0.78rem;color:var(--text-muted);">{{user.type_of_user}}</div>
+</div>
+</div>
+<button class="settings-tab active" onclick="showTab('profile',this)"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Z"/><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z"/></svg> اطلاعات شخصی</button>
+<button class="settings-tab" id="sec" onclick="showTab('security',this)"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z"/><path d="M14 7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2v2Z"/></svg> امنیت و رمز عبور</button>
+<button class="settings-tab" id="numeer" onclick="showTab('number',this)"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z"/><path d="M14 7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2v2Z"/></svg>  تغییر شماره یا کد ملی  </button>
+</div>
+</div>
+  
+<!-- Content -->
+<div class="col-lg-9">
+<!-- Profile tab -->
+<div id="tab-profile" class="animate-in">
+<div class="glass-card p-4 mb-4">
+<div class="section-title mb-4">اطلاعات شخصی</div>
+<div class="d-flex align-items-center gap-4 mb-4 flex-wrap">
+  
+</div>
+<form action="?next={% url 'sanatorium:edit-infos' %}" method="post">
+            {% csrf_token %}
+<div class="row g-3">
+  
+<div class="col-md-6"><label class="form-label">{{ update_form.first_name.label }}</label>{{ update_form.first_name }}</div>
+<div class="col-md-6"><label class="form-label">{{ update_form.last_name.label }}</label>{{ update_form.last_name }}</div>
+<div class="col-md-6"><label class="form-label">{{ update_form.gender.label }}</label>{{ update_form.gender }} </div>
+<div class="col-md-6"><label class="form-label">{{ update_form.province.label }}</label>{{ update_form.province }}</div>
+<div class="col-md-6"><label class="form-label">{{ update_form.city.label }}</label>{{ update_form.city }}</div>
+<div class="col-md-6"><label class="form-label">{{ update_form.school.label }}</label>{{ update_form.school }}</div>
+<div class="col-md-6"><label class="form-label">{{ update_form.grade.label }}</label>{{ update_form.grade }}</div>
+<div class="col-md-6"><label class="form-label">{{ update_form.major.label }}</label>{{ update_form.major }}</div>
+<div class="col-md-6"><label class="form-label">{{ update_form.father_name.label }}</label>{{ update_form.father_name }}</div>
+<div class="col-md-6"><label class="form-label">{{ update_form.birth.label }}</label>{{ update_form.birth }}</div>
+  
               {{ update_form.media }}
-            </div>
-            <div class="d-flex gap-2 mt-4">
-            <button type="submit" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><i class="bi bi-check2"></i> ذخیره تغییرات</button>
-            <button type="reset"  style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.65rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;cursor:pointer;">لغو</button>
-          </div>
-          </form>
-
-        </div>
-      </div>
-
-      <!-- Security tab (hidden) -->
-      <div id="tab-security" style="display:none;">
-        <div class="glass-card p-4 mb-4">
-          
-          <form action="{% url 'dashboard:change-password' %}?next={% url 'sanatorium:edit-infos' %}#tab-security" method="post">
+</div>
+<div class="d-flex gap-2 mt-4">
+<button type="submit" style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;box-shadow:0 4px 15px rgba(108,92,231,0.35);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg> ذخیره تغییرات</button>
+<button type="reset"  style="background:var(--bg);border:1.5px solid var(--border);color:var(--text-muted);border-radius:12px;padding:0.65rem 1.5rem;font-family:Vazirmatn,sans-serif;font-size:0.9rem;cursor:pointer;">لغو</button>
+</div>
+</form>
+  
+</div>
+</div>
+  
+<!-- Security tab (hidden) -->
+<div id="tab-security" style="display:none;">
+<div class="glass-card p-4 mb-4">
+<form action="{% url 'dashboard:change-password' %}?next={% url 'sanatorium:edit-infos' %}#tab-security" method="post">
             {% csrf_token %}
-            <div class="section-title mb-4">تغییر رمز عبور</div>
-            <div class="row g-3">
-              <div class="col-12"><label class="form-label">رمز عبور فعلی</label>         {{ password_form.current_password }}</div>
-              <div class="col-12"><label class="form-label">رمز عبور جدید</label>       {{ password_form.password }}</div>
-   
-            </div>
-            <button type="submit"   style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
-          </form>
-        </div>
-         
-      </div>
-      <div id="tab-number" style="display:none;">
-        <div class="glass-card p-4 mb-4">
-          
-          <form action="{% url 'dashboard:change-phone-number' %}?next={% url 'sanatorium:edit-infos' %}#tab-number" method="post">
+<div class="section-title mb-4">تغییر رمز عبور</div>
+<div class="row g-3">
+<div class="col-12"><label class="form-label">رمز عبور فعلی</label>         {{ password_form.current_password }}</div>
+<div class="col-12"><label class="form-label">رمز عبور جدید</label>       {{ password_form.password }}</div>
+</div>
+<button type="submit"   style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
+</form>
+</div>
+</div>
+<div id="tab-number" style="display:none;">
+<div class="glass-card p-4 mb-4">
+<form action="{% url 'dashboard:change-phone-number' %}?next={% url 'sanatorium:edit-infos' %}#tab-number" method="post">
             {% csrf_token %}
-            <div class="section-title mb-4">تغییر شماره</div>
-            <div class="row g-3">
-              <div class="col-12"><label class="form-label">شماره جدید را وارد کنید</label>         {{ phoneNumber_form.PhoneNumber }}</div>
-              <div class="col-12"><label class="form-label">کدملی جدید خود را وارد کنید</label>         {{ phoneNumber_form.national_id }}</div>
-    
-            </div>
-            <button type="submit"   style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
-          </form>
-        </div>
-         
-      </div>
-
-    </div>
-  </div>
-
+<div class="section-title mb-4">تغییر شماره</div>
+<div class="row g-3">
+<div class="col-12"><label class="form-label">شماره جدید را وارد کنید</label>         {{ phoneNumber_form.PhoneNumber }}</div>
+<div class="col-12"><label class="form-label">کدملی جدید خود را وارد کنید</label>         {{ phoneNumber_form.national_id }}</div>
+</div>
+<button type="submit"   style="background:var(--gradient-1);border:none;color:white;border-radius:12px;padding:0.65rem 2rem;font-family:Vazirmatn,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;margin-top:1.25rem;">تغییر رمز عبور</button>
+</form>
+</div>
+</div>
+  
+</div>
+</div>
+  
 </div></main>
 {% endblock %}
 
 {% block footer %}
 
-<!-- <div class="toast-success flex"    ><i class="bi bi-check-circle-fill"></i> تغییرات با موفقیت ذخیره شد!</div> -->
  
  <script>
 
@@ -145,48 +134,7 @@
     el.classList.add('active');
   }
 
-  // window_url = String(window.location.href)
-
-  // if (window_url.contain('tab-security') ){
-  //   showTab('security', document.getElementById('sec'))
-  // }else if( window_url.contain('tab-number')   ){
-  //   showTab('security', document.getElementById('numeer'))
-
-  // }
-
-  function previewAvatar(input){
-    if(input.files&&input.files[0]){
-      const r=new FileReader();
-      r.onload=e=>{
-        const p=document.getElementById('avatarPreview');
-        p.style.display='none';
-        const existing=document.querySelector('.avatar-upload-area img');
-        if(existing)existing.remove();
-        const img=document.createElement('img');
-        img.src=e.target.result;
-        document.querySelector('.avatar-upload-area').appendChild(img);
-      };
-      r.readAsDataURL(input.files[0]);
-    }
-  }
-  function handleFileSelect(input){
-    if(input.files&&input.files[0])addFileToList(input.files[0]);
-  }
-  function handleDrop(e){
-    e.preventDefault();
-    document.getElementById('uploadBox').classList.remove('dragover');
-    if(e.dataTransfer.files[0])addFileToList(e.dataTransfer.files[0]);
-  }
-  function addFileToList(file){
-    const c=document.getElementById('uploadedFiles');
-    const d=document.createElement('div');
-    d.style.cssText='display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border-radius:12px;background:rgba(108,92,231,0.06);border:1px solid rgba(108,92,231,0.15);margin-top:0.5rem;';
-    const isPdf=file.type.includes('pdf');
-    const size=(file.size/1024/1024).toFixed(2);
-    d.innerHTML=`<div style="width:40px;height:40px;border-radius:10px;background:${isPdf?'rgba(225,112,85,0.15)':'rgba(108,92,231,0.12)'};display:flex;align-items:center;justify-content:center;color:${isPdf?'#e17055':'#6C5CE7'};flex-shrink:0;"><i class="bi bi-file-earmark-${isPdf?'pdf':'image'}-fill"></i></div><div><div style="font-size:0.85rem;font-weight:600;">${file.name}</div><div style="font-size:0.75rem;color:var(--text-muted);">${size} MB • در حال آپلود...</div></div><div style="margin-right:auto;"><div style="width:16px;height:16px;border-radius:50%;border:2px solid var(--primary);border-top-color:transparent;animation:spin 0.8s linear infinite;"></div></div>`;
-    c.appendChild(d);
-    setTimeout(()=>{d.querySelector('div:last-child').innerHTML='<i class="bi bi-check-circle-fill" style="color:var(--success);"></i>';},1500);
-  }
+ 
  
 </script>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>

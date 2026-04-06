@@ -34,6 +34,15 @@ class Logout(LoginRequiredMixin, RedirectView):
 class LoginWithOTP(View):
     template_name =  'main/auth/login-otp.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        
+        if not Site.objects.first().active_login_otp:
+            messages.warning(request, 'ورود با رمز یک بار مصرف غیر فعال شده است')
+            return redirect('user:login-password')
+
+        return super().dispatch(request, *args, **kwargs)
+    
+
     def get(self, request, *args, **kwargs):
         context = {
             'site':Site.objects.first(),
@@ -96,6 +105,18 @@ class LoginWithOTP(View):
 
 class LoginWithPassword(View):
     template_name =  'main/auth/login-password.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        
+        if not Site.objects.first().active_login_password:
+            messages.warning(request, 'ورود با رمز  غیر فعال شده است')
+            return redirect('site:main')
+        
+        if not Site.objects.first().force_to_login_with_otp:
+            messages.warning(request, 'ورود با رمز  غیر فعال شده است حتما باید با رمز یک بار مصرف وارد بشوید')
+            return redirect('user:login')
+
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         context = {
@@ -187,6 +208,15 @@ class LoginWithPassword(View):
 class Register(View):
     template_name =  'main/auth/register.html'
 
+
+    def dispatch(self, request, *args, **kwargs):
+        
+        if not Site.objects.first().active_registering:
+            messages.warning(request, 'صفحه ثبت نام غیر فعال شده است')
+            return redirect('site:main')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         
    
@@ -247,10 +277,24 @@ class Register(View):
 
                     
                     user[0].set_password(password)
-                    user[0].private_code = get_random_string(1000)
+                    if Site.objects.first().force_to_message_verify:
+                        user[0].private_code = get_random_string(1000)
+                    else:
+                        user[0].is_verified = True
+
+
                     user[0].save()
 
                     messages.success(request, 'حساب با موفقیت ساخته شد')
+
+ 
+                    if not Site.objects.first().force_to_message_verify:
+                        if next_url:
+                            return redirect(next_url)
+                    
+                        else:
+                            return redirect('dashboard:main')
+                        
 
                     if next_url:
                         return redirect(reverse('user:otp', kwargs={'private_code':user[0].private_code}) + '?next=' + next_url )
@@ -353,7 +397,14 @@ class ForgotPassword(View):
     form = LoginPassword
     otp_form = OTPForm
 
+    def dispatch(self, request, *args, **kwargs):
+        
+        if not Site.objects.first().active_forgot_password:
+            messages.warning(request, '  ورود به صفحه فراموشی رمز  غیر فعال شده است لطفا از طریق صفحه تماس با ما با ادمین در ارتباط باشید')
+            return redirect('site:main')
+ 
 
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         next_param = request.GET.get('next') 

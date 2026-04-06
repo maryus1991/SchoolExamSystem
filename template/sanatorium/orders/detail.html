@@ -72,160 +72,145 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 </style>
  {% endblock header %}
 {% block main %}
- 
 <main class="main-content">
-
-  <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3 fade-in-up">
-    <div>
-      <h1 style="font-size:1.5rem;font-weight:800;margin:0;">لیست پاسخ نامه های  {{wallet.quiz.name}}  </h1>
-     </div>
-    <div>
-    <a href='{% url "sanatorium:wallet-list"  %}' class="btn-gradient"><i class="bi bi-pencil-square"></i>   لیست کیف پول ها</a>
- 
+  
+<div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3 fade-in-up">
+<div>
+<h1 style="font-size:1.5rem;font-weight:800;margin:0;">لیست پاسخ نامه های  {{wallet.quiz.name}}  </h1>
+</div>
+<div>
+<a href='{% url "sanatorium:wallet-list"  %}' class="btn-gradient"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/></svg>   لیست کیف پول ها</a>
     {% if wallet.status == status.active  %}
-      <a href="{% url 'sanatorium:wallet-payment' wallet.id %}" class="btn-gradient btn btn-success">درخواست تصفیه </a>
- 
+<a href="{% url 'sanatorium:wallet-payment' wallet.id %}" class="btn-gradient btn btn-success">درخواست تصفیه </a>
     {% elif wallet.status == status.request_to_paid  %}
-      <a href="#" class=" btn btn-warning">درخواست ارسال شد</a>
+<a href="#" class=" btn btn-warning">درخواست ارسال شد</a>
 {% else%}
-      <a class=" btn btn-success"> تصفیه شده</a>
-
+<a class=" btn btn-success"> تصفیه شده</a>
+  
     {% endif %}
-    </div>
- 
-  </div>
-
-  <!-- quiz info -->
-  <div class="student-info-card fade-in-up delay-1">
-     
-    <div>
-      <div style="font-size:1.1rem;font-weight:800;">{{wallet.quiz.name}} </div>
-      <div style="opacity:0.85;font-size:0.82rem;margin-top:3px;"><i class="bi bi-hash me-1"></i>کد: {{wallet.quiz.pk}} &nbsp;|&nbsp; <i class="bi bi-calendar3 me-1"></i>{{ wallet.quiz.start_at|to_jalali }} &nbsp;|&nbsp; {{wallet.get_payment_price|tdc}} تومان</div>
-    </div>
-    <div style="margin-right:auto;text-align:center;">
- 
-    </div>
- 
-  </div>
- 
-
-  <!-- Questions List -->
-  <div class="glass-card p-4 fade-in-up delay-2">
-    <div class="section-title mb-3">جزییات </div>
-    <div class="d-flex flex-column gap-2">
-
+</div>
+</div>
+  
+<!-- quiz info -->
+<div class="student-info-card fade-in-up delay-1">
+<div>
+<div style="font-size:1.1rem;font-weight:800;">{{wallet.quiz.name}} </div>
+<div style="opacity:0.85;font-size:0.82rem;margin-top:3px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="me-1"><path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6v7z"/></svg>کد: {{wallet.quiz.pk}} &nbsp;|&nbsp; <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="me-1"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/></svg>{{ wallet.quiz.start_at|to_jalali }} &nbsp;|&nbsp; {{wallet.get_payment_price|tdc}} تومان</div>
+</div>
+<div style="margin-right:auto;text-align:center;">
+</div>
+</div>
+  
+<!-- Questions List -->
+<div class="glass-card p-4 fade-in-up delay-2">
+<div class="section-title mb-3">جزییات </div>
+<div class="d-flex flex-column gap-2">
+  
       {% for item in items %}
- 
-        <div  class="question-row">
-          <div class="q-num pending-q">{{ item.pk }}</div>
-          <div style="flex:1;">
-            <div class="q-title"><a href='{% if item.answer.id %}{% url "sanatorium:exam-student-question-list" pk=item.answer.id %}{% endif %}' > پاسخ نامه شماره {{item.pk}} </a></div>
-          </div>
-          <div style="flex:1;">
-            <div class="q-title">زمان ثبت : {{item.create_at|to_jalali}} </div>
-            <div class="q-meta"></div>
-          </div>
-          <div style="flex:1; ">
-            <div class="q-title">{{item.get_item_price|tdc}} تومان </div>
-          </div>
- 
-        </div>
+<div  class="question-row">
+<div class="q-num pending-q">{{ item.pk }}</div>
+<div style="flex:1;">
+<div class="q-title"><a href='{% if item.answer.id %}{% url "sanatorium:exam-student-question-list" pk=item.answer.id %}{% endif %}' > پاسخ نامه شماره {{item.pk}} </a></div>
+</div>
+<div style="flex:1;">
+<div class="q-title">زمان ثبت : {{item.create_at|to_jalali}} </div>
+<div class="q-meta"></div>
+</div>
+<div style="flex:1; ">
+<div class="q-title">{{item.get_item_price|tdc}} تومان </div>
+</div>
+</div>
          {% empty %}
-              <div class="btn btn-info btn-block" > جزییاتی یافت نشد </div>
+<div class="btn btn-info btn-block" > جزییاتی یافت نشد </div>
       {% endfor %}
-
- 
-    </div>
-        <div class="d-flex justify-content-center mt-5">
-            <nav>
-                <ul class="pagination gap-1 mb-0" id="myPagination">
-                    <!-- Previous Button -->
+  
+</div>
+<div class="d-flex justify-content-center mt-5">
+<nav>
+<ul class="pagination gap-1 mb-0" id="myPagination">
+<!-- Previous Button -->
                     {% if page_obj.has_previous %}
-                        <li class="page-item"><a class="page-link"
-                            href="?page={{ page_obj.previous_page_number }}"
-                            style="border-radius:var(--radius-md);
-                                  border:1px solid var(--border-color); 
-                                  background:var(--bg-card); 
+<li class="page-item"><a class="page-link"
+href="?page={{ page_obj.previous_page_number }}"
+style="border-radius:var(--radius-md);
+                                  border:1px solid var(--border-color);
+                                  background:var(--bg-card);
                                   color:var(--text-secondary);">
                             قبلی
-                        </a></li>
+</a></li>
                     {% else %}
-                        <li class="page-item disabled" aria-disabled="true">
-                            <a class="page-link"
-                              href="#"
-                              style="border-radius:var(--radius-md);
-                                      border:none; 
-                                      background:var(--bg-card); 
+<li class="page-item disabled" aria-disabled="true">
+<a class="page-link"
+href="#"
+style="border-radius:var(--radius-md);
+                                      border:none;
+                                      background:var(--bg-card);
                                       color:inherit;"
-                              tabindex="-1"
-                              aria-hidden="true">
+tabindex="-1"
+aria-hidden="true">
                                 قبلی
-                            </a>
-                        </li>
+</a>
+</li>
                     {% endif %}
-
-                    <!-- Page numbers -->
+  
+<!-- Page numbers -->
                     {% for page in page_obj.paginator.page_range %}
                         {% if page_obj.number == page %}
-                            <li class="page-item active" style="border-radius:var(--radius-md);
-                                                              border:none; 
-                                                              background:var(--gradient-blue);"
-                                aria-current="page">
-                                <a class="page-link" href="?page={{page}}" style="color:inherit;">
+<li class="page-item active"
+aria-current="page">
+<a class="page-link" href="?page={{page}}"  style="border-radius:var(--radius-md);
+                                                              border:none;
+                                                              background:var(--gradient-blue);">
                                     {{ forloop.counter }}
-                                </a>
-                            </li>
+</a>
+</li>
                         {% else %}
-                            <li class="page-item"><a class="page-link"
-                                href="?page={{ page }}"
-                                style="border-radius:var(--radius-md);
-                                      border:1px solid var(--border-color); 
-                                      background:var(--bg-card); 
+<li class="page-item"><a class="page-link"
+href="?page={{ page }}"
+style="border-radius:var(--radius-md);
+                                      border:1px solid var(--border-color);
+                                      background:var(--bg-card);
                                       color:var(--text-secondary);">
                                     {{ forloop.counter }}
-                            </a></li>
+</a></li>
                         {% endif %}
                     {% endfor %}
-
-                    <!-- Next Button -->
+  
+<!-- Next Button -->
                     {% if page_obj.has_next %}
-                        <li class="page-item"><a class="page-link"
-                            href="?page={{ page_obj.next_page_number }}"
-                            style="border-radius:var(--radius-md);
-                                  border:1px solid var(--border-color); 
-                                  background:var(--bg-card); 
+<li class="page-item"><a class="page-link"
+href="?page={{ page_obj.next_page_number }}"
+style="border-radius:var(--radius-md);
+                                  border:1px solid var(--border-color);
+                                  background:var(--bg-card);
                                   color:inherit;">
                                 بعدی
-                            </a></li>
+</a></li>
                     {% else %}
-                        <li class="page-item disabled" aria-disabled="true">
-                            <a class="page-link"
-                              href="#"
-                              style="border-radius:var(--radius-md);
-                                      border:none; 
-                                      background:var(--bg-card); 
+<li class="page-item disabled" aria-disabled="true">
+<a class="page-link"
+href="#"
+style="border-radius:var(--radius-md);
+                                      border:none;
+                                      background:var(--bg-card);
                                       color:inherit;"
-                              tabindex="-1"
-                              aria-hidden="true">
+tabindex="-1"
+aria-hidden="true">
                                 بعدی
-                            </a>
-                        </li>
+</a>
+</li>
                     {% endif %}
-                </ul>
-            </nav>
-        </div>
- 
-  </div>
-
+</ul>
+</nav>
+</div>
+</div>
+  
 </main>
- {% endblock main %}
+{% endblock main %}
 {% block footer %}
-
+  
 <script>
-function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.className='bi bi-sun-fill';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.className='bi bi-moon-stars';localStorage.setItem('theme','light');}}
-(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').className='bi bi-sun-fill';})();
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
-function saveDraft(){const a=document.createElement('div');a.innerHTML='<div style="position:fixed;bottom:20px;left:20px;background:var(--bg-surface);color:var(--text-primary);padding:14px 20px;border-radius:12px;font-family:Vazirmatn,sans-serif;font-size:0.85rem;font-weight:600;z-index:9999;display:flex;gap:8px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,0.15);border:1px solid var(--border-color);"><i class="bi bi-floppy-fill" style="color:var(--accent);"></i> نمرات موقت ذخیره شدند</div>';document.body.appendChild(a);setTimeout(()=>a.remove(),2500);}
+function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/></svg>';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/></svg>';localStorage.setItem('theme','light');}}
+(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>';})();
 </script>
- 
-{% endblock footer %} 
+{% endblock footer %}

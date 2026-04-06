@@ -4,30 +4,24 @@
 
 phase 1 todo list
     
- 
 
 phase 2 todo list
  
   
-  
 phase 3 todo list 
-    fix the pages 
-    make the site more responsive
-
-    
- 
- 
+    fix the score progress bar of correcting page
 
 phase 4 todo list 
-    add bulk create of users ###
+ 
     add bulk add users to quiz ###
-    add student answer page  
+    page for fast add users answers
+ 
     
     add toggle them for admin panel
     fix the search fields
-    add login option for admin to login in every account
-    FIX the nemodare in main page 
-    page for fast add users answers
+ 
+ 
+ 
 
     fix the auto correction
     make the site more responsive
@@ -36,7 +30,9 @@ phase 4 todo list
 essenial todo :
     chunk upload to s3 server for exam page or user answer and add progress for upload
     
- 
-
     fix the correction
     
+     
+
+
+ 
