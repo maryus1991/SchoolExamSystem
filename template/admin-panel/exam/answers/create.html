@@ -7,12 +7,21 @@
   <main class="page-content">
 
       <div class="page-header">
+        {% if item %}
         <div class="page-header-info">
           <h1>پاسخ نامه کاربر </h1>
           <h3>{{item.student.get_full_name|default:item.student}}</h3>
           <h3>ازمون : {{quiz.name}} / شماره : #{{item.id}}</h3>
           <h3>  سوال : {{question.name}} / شماره : #{{question.id}}</h3>
         </div>
+        {% else %}
+        <div class="page-header-info">
+          <h1>افزودن پاسخ نامه برای سوال {{question.name}}/#{{question.id}} برای ازمون {{quiz.name}}/#{{quiz.id}}</h1>
+
+           
+           
+        </div>
+        {% endif %}
        <div class="page-header-actions">
         <a href="{% url 'admin-panel:quiz-update' quiz.id %}" class="btn btn-primary btn-sm">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -39,13 +48,105 @@
  
         <form action="" enctype="multipart/form-data" class="row col-md-12 grid" method="post">
           {% csrf_token %}
+          {% if users %}
+          <div class="">
+            <p>دانش اموزان :</p>
+            {% for item in users %}
+              <div class="badge badge-success m-1">
+                <label for="user-choose-{{item.id}}">
+                  <input type="radio" value="{{item.id}}" name="user" id="user-choose-{{item.id}}">
+                  <span class="m-1">#{{item.id}} : {{ item }}</span>
+                </label>
+              </div>  
+            {% endfor %}
+            </div>
+          {% endif %}
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <button type="submit" name="add" class="btn btn-success m-2  ">ثبت و اضافه کردن پاسخ نامه دیگر</button>
+ 
+          </div>
+
           {{form.as_ul}}
           {{form.media}}
-          <button type="submit" class="btn btn-success btn-lg w-100">ثبت</button>
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <button type="submit" name="add" class="btn btn-success m-2 btn-lg">ثبت و اضافه کردن پاسخ نامه دیگر</button>
+            <button type="submit" class="btn btn-success m-2 btn-lg"> ثبت و برگشتن به لیست</button>
+
+          </div>
         </form>
 
  
       </div>
+      {% if item %}
+                 {% if item.pdf_file %}
+          <div class="pdf-container mb-4">
+            <div class="pdf-wrapper" style="background: var(--bg-secondary);border-radius: var(--radius-md);padding: 16px; ">
+              <div class="pdf-header d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-file-earmark-pdf-fill" style="color: var(--danger-500); font-size: 1.5rem;"></i>
+                <span style="color: var(--text-primary); font-weight: 600;">فایل pdf </span>
+              </div>
+              <iframe 
+                src="{{ item.pdf_file.url }}" 
+                style="
+                  width: 100%;
+                  height: 500px;
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--radius-sm);
+                  background: white;
+                "
+                loading="lazy"
+              >
+              </iframe>
+              <a 
+                href="{{ item.pdf_file.url }}" 
+ 
+                class="btn btn-outline-primary mt-2"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  color: var(--primary-600);
+                  border-color: var(--primary-600);
+                "
+              >
+                <i class="bi bi-download"></i>
+                دانلود فایل PDF
+              </a>
+ 
+            </div>
+          </div>
+          {% endif %}
 
+            {% if item.image %}
+          <div class="media-container mb-4">
+            <div class="media-wrapper" style="
+              background: var(--bg-secondary);
+              border-radius: var(--radius-md);
+              padding: 16px;
+              display: inline-block;
+              max-width: 100%;
+              ">
+              <p>عکس اپلود شده</p>
+              <picture>
+                <source srcset="{{ item.image.url }}" type="image/webp">
+                <img 
+                  src="{{ item.image.url }}" 
+ 
+                  style="
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: var(--radius-sm);
+                    display: block;
+                  "
+                  loading="lazy"
+                >
+              </picture>
+
+            </div>
+ 
+              </a>
+          </div>
+          {% endif %}
+      {% endif %}
     </main>
  {% endblock main %}

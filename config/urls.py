@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls import static
+from django.utils.crypto import get_random_string
 
 urlpatterns = [
     path('admin/', admin.site.urls),

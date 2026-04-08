@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: docker.arvancloud.ir/postgres:15
+    container_name: postgres
+    restart: always
+    env_file:
+      - .envs
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: app
+    restart: always
+    command: sh -c "
+       python manage.py makemigrations &&
+       python manage.py migrate &&
+       python manage.py collectstatic --no-input && 
+       python manage.py runserver 0.0.0.0:8000 " 
+
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    expose:
+      - 8000
+    depends_on:
+      - postgres
+    env_file:
+      - .envs
+
+
+  nginx:
+    image: docker.arvancloud.ir/nginx:latest
+    container_name: nginx_server
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_volume:/app/static
+      - media_volume:/app/media
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

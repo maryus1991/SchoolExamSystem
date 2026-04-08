@@ -1,11 +1,57 @@
 from django.views.generic import CreateView, UpdateView, RedirectView, ListView, View
 from admin_panel.mixins import AdminPermissionRequire
-from quiz.models import Quiz, QuestionOption, Question, QuestionAnswerKey, StudentAnswer
+from quiz.models import Quiz, QuestionOption, Question, QuestionAnswerKey, StudentAnswer, User, UserQuizDetail
 from admin_panel.forms.quiz import QuizModelForm, QuestionModelForm, QuestionAnwerKeyModelForm, QuestionOptionsModelForm, StudentAnswerModelForm
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, get_list_or_404
 from django.db.models.aggregates import Count
+from django.db.models import Q
+
+
+class AddGrouplyUsersToQuiz(AdminPermissionRequire, ListView):
+    """for add users to quiz"""
+
+    model = User
+    paginate_by = 250
+    template_name = 'admin-panel/exam/users/list.html'
+    context_object_name = 'items'
+    ordering = '-id'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.quiz : Quiz = get_object_or_404(Quiz.objects.prefetch_related('student'), pk=kwargs.get('quiz_id'))
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs) -> dict[str, ...]:
+        context = super().get_context_data(**kwargs)
+        context["quiz"] = self.quiz 
+        context["type"] = User.TypeOfUser 
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if 'add' in request.POST:
+            users = request.POST.getlist('users')
+            users = User.objects.filter(id__in=users)
+            self.quiz.student.add(*users)
+
+            for user in users:
+                UserQuizDetail.objects.get_or_create(
+                    quiz = self.quiz,
+                    student=user
+                )
+
+
+            messages.success(request, f'{users.count()} کاربر به ازمون اضافه شدن ')
+
+        if 'remove' in request.POST:
+            removed_users = request.POST.getlist('remove_users')
+            removed_users = User.objects.filter(id__in=removed_users)
+            self.quiz.student.remove(*removed_users)
+
+            messages.error(request, f'{removed_users.count()} کاربر از ازمون حذف شدن ')
+
+        return self.get(request, *args, **kwargs)
+
 
 class QuizListView(AdminPermissionRequire, ListView):
     """for list the exams"""
@@ -239,6 +285,7 @@ class QuestionDeletePDF(AdminPermissionRequire, RedirectView):
         
         return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':kwargs.get('quiz_id'), 'pk':question.id})
 
+
 class QuestionAnswerKeyCreateView(AdminPermissionRequire, CreateView):
     """ for create key for question"""
 
@@ -366,6 +413,7 @@ class QuestionKeyDeletePDF(AdminPermissionRequire, RedirectView):
         
         return reverse('admin-panel:quiz-question-key-update', kwargs={'quiz_id':kwargs.get('quiz_id'), 'qid':item.question.id})
 
+
 class QuestionOptionsCreateView(AdminPermissionRequire, CreateView):
     """for create option to question"""
 
@@ -453,7 +501,7 @@ class QuestionOptionDelete(AdminPermissionRequire, RedirectView):
         return reverse('admin-panel:quiz-questions-update', kwargs={'quiz_id':kwargs.get('quiz_id'), 'pk':kwargs.get('qid')})
 
 
-class QuestionAnswerLitView(AdminPermissionRequire, ListView):
+class QuestionAnswerListView(AdminPermissionRequire, ListView):
     """for list the student anwers """
     
     template_name = 'admin-panel/exam/answers/list.html'
@@ -474,6 +522,108 @@ class QuestionAnswerLitView(AdminPermissionRequire, ListView):
     def get_queryset(self):
         return StudentAnswer.objects.filter(quiz=self.quiz, question=self.question
         ).prefetch_related('student', 'corrected_by').all()
+class QuestionAnswerCreateView(AdminPermissionRequire, CreateView):
+    """ for add the answer of user"""
+
+    template_name = 'admin-panel/exam/answers/create.html'
+    context_object_name = 'item'
+    form_class = StudentAnswerModelForm
+ 
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['selected_option'] = QuestionOption.objects.filter(question__id=self.kwargs.get('qid'))
+        return kwargs
+ 
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.question = get_object_or_404(Question.objects.prefetch_related('quiz', 'quiz__student'), pk=kwargs.get('qid'))
+ 
+        self.quiz = self.question.quiz
+
+        self.users = self.quiz.student.filter(
+            answers__type_of_answer=StudentAnswer.TypeOfAnswer.NOT_ANSWERD,
+            answers__question=self.question
+        ).order_by('-pk').distinct().all() 
+
+        if not self.users.exists():
+            messages.success(self.request, 'کارنامه ها ی تمامی دانش اموزان این ازمون برای این سوال وارد شدند')
+            return redirect(reverse('admin-panel:quiz-questions-list', kwargs={'quiz_id':self.quiz.id}))   
+
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs)  :
+        context = super().get_context_data(**kwargs)
+        context["quiz"] = self.quiz 
+        context["question"] = self.question  
+        context['users'] = self.users.all()
+
+        return context
+
+    def form_valid(self, form):
+        # ذخیره اولیه فرم
+        self.object = form.save(commit=False)
+        
+        # تنظیم student
+        try:
+            user_id = self.request.POST.get('user')
+            
+            if user_id:
+                self.object.student = User.objects.get(pk=user_id)
+            else:
+                messages.error(self.request, 'کاربر معتبر نیست')
+                return self.form_invalid(form)
+            
+        except (ValueError, User.DoesNotExist):
+            messages.error(self.request, 'کاربر معتبر نیست')
+            return self.form_invalid(form)
+        
+        # تنظیم quiz و question
+        self.object.quiz = self.quiz
+        self.object.question = self.question
+        
+        # تعیین نوع پاسخ
+        if self.object.type_of_answer == StudentAnswer.TypeOfAnswer.NOT_ANSWERD:
+            if self.object.image:
+                type_of_answer = StudentAnswer.TypeOfAnswer.IMAGE_BASED
+            elif self.object.pdf_file:
+                type_of_answer = StudentAnswer.TypeOfAnswer.PDF_BASED
+            elif self.object.selected_option:
+                type_of_answer = StudentAnswer.TypeOfAnswer.OPTION
+            elif self.object.is_skipped:
+                type_of_answer = StudentAnswer.TypeOfAnswer.SKIPPED
+            else  :
+                type_of_answer = StudentAnswer.TypeOfAnswer.TEXT_BASED
+        
+        # استفاده از update_or_create برای جلوگیری از duplicate
+        obj, created = StudentAnswer.objects.update_or_create(
+            student=self.object.student,
+            quiz=self.object.quiz,
+            question=self.object.question,
+            defaults={
+                'description': self.object.description,
+                'selected_option': self.object.selected_option,
+                'image': self.object.image,
+                'pdf_file': self.object.pdf_file,
+                'is_skipped': self.object.is_skipped,
+                'type_of_answer': type_of_answer,
+            }
+        )
+        
+        self.object = obj
+        messages.success(self.request, 'تغییرات اعمال شد')
+        return redirect(self.get_success_url())
+
+    
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+        
+    def get_success_url(self):
+        if 'add' in self.request.POST:
+            return reverse('admin-panel:quiz-question-answer-create', kwargs={'quiz_id':self.quiz.id, 'qid':self.question.id})
+
+        return reverse('admin-panel:quiz-question-answer-list', kwargs={'quiz_id':self.quiz.id, 'qid':self.question.id})   
 class QuestionAnswerUpdateView(AdminPermissionRequire, UpdateView):
     """ for update the answer """
 
@@ -481,6 +631,11 @@ class QuestionAnswerUpdateView(AdminPermissionRequire, UpdateView):
     context_object_name = 'item'
     form_class = StudentAnswerModelForm
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['selected_option'] = QuestionOption.objects.filter(question__id=self.kwargs.get('qid'))
+        return kwargs
+    
     def dispatch(self, request, *args, **kwargs):
         self.item = get_object_or_404(
             StudentAnswer.objects.prefetch_related('quiz', 'student', 'question'), 
@@ -510,5 +665,8 @@ class QuestionAnswerUpdateView(AdminPermissionRequire, UpdateView):
         return super().form_invalid(form)
         
     def get_success_url(self):
+        if 'add' in self.request.POST:
+            return reverse('admin-panel:quiz-question-answer-create', kwargs={'quiz_id':self.quiz.id, 'qid':self.question.id})
+
         return reverse('admin-panel:quiz-question-answer-list', kwargs={'quiz_id':self.quiz.id, 'qid':self.question.id})
 

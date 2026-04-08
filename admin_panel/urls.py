@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.utils.crypto import get_random_string
 
 app_name = 'admin-panel'
 
@@ -87,6 +88,7 @@ urlpatterns = [
 
     # site 
     path('site/update', views.site.SiteUpdateView.as_view(), name='site'),
+    path(f'site/{get_random_string(200)}/backup/download/', views.site.DownloadDatabaseBackupView.as_view(), name='backup'),
 
     # site law
     path('site/law/', views.site.SiteLawListView.as_view(), name='site-law-list'),
@@ -114,6 +116,8 @@ urlpatterns = [
     path('exam/update/<int:pk>', views.quiz.QuizUpdateView.as_view(), name='quiz-update'),
     path('exam/active/<int:pk>', views.quiz.QuizActivateView.as_view(), name='quiz-active'),
     path('exam/start-currecting/<int:pk>', views.quiz.QuizStartCurrectingView.as_view(), name='quiz-currecting'),
+    path('exam/<int:quiz_id>/users', views.quiz.AddGrouplyUsersToQuiz.as_view(), name='quiz-users-add'),
+    
 
     # questions
     path('exam/<int:quiz_id>/questions/', views.quiz.QuestionListView.as_view(), name='quiz-questions-list'),
@@ -135,8 +139,9 @@ urlpatterns = [
     path('exam/<int:quiz_id>/question/<int:qid>/options/delete/<int:pk>', views.quiz.QuestionOptionDelete.as_view(), name='quiz-question-option-delete'),
 
     # quiz questions answer 
-    path('exam/<quiz_id>/question/<int:qid>/answers/', views.quiz.QuestionAnswerLitView.as_view(), name='quiz-question-answer-list'),
-    path('exam/<quiz_id>/question/<int:qid>/answer/<int:pk>', views.quiz.QuestionAnswerUpdateView.as_view(), name='quiz-question-answer-update'),
+    path('exam/<quiz_id>/question/<int:qid>/answers/', views.quiz.QuestionAnswerListView.as_view(), name='quiz-question-answer-list'),
+    path('exam/<quiz_id>/question/<int:qid>/answers/create/', views.quiz.QuestionAnswerCreateView.as_view(), name='quiz-question-answer-create'),
+    path('exam/<quiz_id>/question/<int:qid>/answer/update/<int:pk>', views.quiz.QuestionAnswerUpdateView.as_view(), name='quiz-question-answer-update'),
  
     
     # reports 

@@ -1,13 +1,75 @@
-<!-- PAGE TEMPLATE BASE - Copy and modify for each page -->
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> پنل مدیریت سورنا</title>
   <link rel="stylesheet" href="/static/css/bootstrap5.css">
   <link rel="stylesheet" href="/static/css/admin-panel/main.css">
+  <!-- استایل‌های ریسپانسیو -->
+   
+  <script>
+      // ذخیره و بازیابی تم
+function initTheme() {
+  const themeToggle = document.getElementById('themeToggle');
+  const themeToggleCompact = document.getElementById('themeToggleCompact');
+  const htmlElement = document.documentElement;
+  
+  // بررسی تم ذخیره شده
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  htmlElement.setAttribute('data-theme', savedTheme);
+  
+  if (themeToggle) {
+    themeToggle.checked = savedTheme === 'light';
+  }
+  
+  if (themeToggleCompact) {
+    themeToggleCompact.checked = savedTheme === 'light';
+  }
+  
+  // رویداد تغییر تم
+  function toggleTheme() {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    htmlElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    if (themeToggle) {
+      themeToggle.checked = newTheme === 'light';
+    }
+    
+    if (themeToggleCompact) {
+      themeToggleCompact.checked = newTheme === 'light';
+    }
+  }
+  
+  // اضافه کردن رویداد کلیک
+  if (themeToggle) {
+    themeToggle.addEventListener('change', toggleTheme);
+  }
+  
+  if (themeToggleCompact) {
+    themeToggleCompact.addEventListener('change', toggleTheme);
+  }
+  
+  // همگام‌سازی دو سوئیچ
+  if (themeToggle && themeToggleCompact) {
+    themeToggle.addEventListener('change', function() {
+      themeToggleCompact.checked = this.checked;
+    });
+    
+    themeToggleCompact.addEventListener('change', function() {
+      themeToggle.checked = this.checked;
+    });
+  }
+}
 
+// اجرا هنگام لود صفحه
+document.addEventListener('DOMContentLoaded', initTheme);
+
+  </script>
+ 
 </head>
 <body>
 <div class="app-wrapper">
@@ -52,6 +114,15 @@
             <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
           </svg>
           صفحه تخصصی ادمین
+        </a>
+      </div>  
+      <div class="nav-item badge-danger ">
+        <a href="{% url 'admin-panel:backup' %}" class="nav-link-item">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          دانلود بکاپ دیتابیس
         </a>
       </div>  
     {% endif %}
@@ -128,8 +199,7 @@
       <ul class="nav-submenu collapse" id="menuUsers">
         <li class="nav-item"><a href="{% url 'admin-panel:user-list' %}" class="nav-link-item">لیست کاربران</a></li>
         <li class="nav-item"><a href="{% url 'admin-panel:user-create' %}" class="nav-link-item">ایجاد کاربر</a></li>
-        <li class="nav-item"><a href="/admin-panel/pages/users/bulk-add.html" class="nav-link-item">افزودن گروهی</a></li>
- 
+  
       </ul>
     </div>
 
@@ -217,8 +287,7 @@
   </nav>
  
 </aside>
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-  </div>
+   </div>
   <div class="main-content">
     <div id="topbarContainer">
       <header class="topbar">
@@ -240,34 +309,6 @@
         </svg>
        
       </button>
-      <div class="dropdown-menu dropdown-menu-start p-2" style="width:300px;max-width:90vw">
-        <div class="dropdown-header">اعلان‌ها</div>
-        <div class="notif-item">
-          <div class="notif-dot"></div>
-          <div>
-            <div class="notif-text">کاربر جدید ثبت‌نام کرد</div>
-            <div class="notif-time">۵ دقیقه پیش</div>
-          </div>
-        </div>
-        <div class="notif-item">
-          <div class="notif-dot" style="background:var(--accent-warning)"></div>
-          <div>
-            <div class="notif-text">سفارش جدید دریافت شد</div>
-            <div class="notif-time">۲۰ دقیقه پیش</div>
-          </div>
-        </div>
-        <div class="notif-item">
-          <div class="notif-dot" style="background:var(--accent-success)"></div>
-          <div>
-            <div class="notif-text">پرداخت با موفقیت انجام شد</div>
-            <div class="notif-time">۱ ساعت پیش</div>
-          </div>
-        </div>
-        <div class="dropdown-divider"></div>
-        <a href="/admin-panel/pages/#" class="dropdown-item justify-content-center" style="font-size:.78rem;color:var(--accent-primary)">مشاهده همه اعلان‌ها</a>
-      </div>
-    </div>
-    <div class="dropdown">
        <ul class="dropdown-menu dropdown-menu-start">
         <li class="dropdown-header">{{user.get_full_name}}</li>
  
@@ -278,6 +319,27 @@
         </a></li>
       </ul>
     </div>
+<div class="sidebar-theme-switch">
+   <label class="theme-switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="theme-slider"></span>
+    <svg class="theme-icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+    <svg class="theme-icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+  </label>
+</div>
+ 
   </div>
 </header>
     </div>
@@ -286,7 +348,7 @@
     <!-- پیام‌های جنگو اینجا نمایش داده می‌شوند -->
     {% if messages %}
         {% for message in messages %}
-            <div class="message-item">
+            <div class="message-item"   >
                 <div class="col-span-12  row item-center alert btn-{% if message.tags == 'error' %}danger{% elif message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}primary{% endif %} alert-dismissible fade show d-flex align-items-center"  >
                     <button type="button" class="btn-close col-span-2" data-bs-dismiss="alert" aria-label="Close">
                     <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
@@ -316,5 +378,71 @@
 <script src="/static/js/admin-panel/components.js"></script>
 <script src="/static/js/admin-panel/main.js"></script>
  
+<!-- اسکریپت مدیریت ریسپانسیو -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    links = window.location.href;
+    elements = document.getElementsByClassName("nav-link-item");
+    for (elem of elements) {
+
+        if (elem.href === links) {
+            elem.classList.add("active");
+
+        }
+    }
+
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarContainer = document.getElementById('sidebarContainer');
+      sidebarOverlay  
+    
+    if (sidebarToggle && sidebarContainer) {
+      sidebarToggle.addEventListener('click', function() {
+        sidebarContainer.classList.toggle('sidebar-open');
+ 
+      });
+      
+      
+ 
+    }
+    
+    // مدیریت نمایش مناسب در اندازه‌های مختلف
+    function handleResponsive() {
+      const isMobile = window.innerWidth < 992;
+      
+      if (isMobile) {
+        // در موبایل، منو به صورت پیش‌فرض بسته است
+        if (sidebarContainer && !sidebarContainer.classList.contains('sidebar-open')) {
+          sidebarContainer.style.right = '-100%';
+        }
+      } else {
+        // در دسکتاپ، منو همیشه باز است
+        if (sidebarContainer) {
+          sidebarContainer.style.right = '0';
+          sidebarContainer.classList.remove('sidebar-open');
+        }
+ 
+      }
+    }
+    
+    // اجرای اولیه
+    handleResponsive();
+    
+    // تغییر در سایز پنجره
+    window.addEventListener('resize', handleResponsive);
+    
+    // بستن منو هنگام کلیک روی لینک‌ها در موبایل
+    const navLinks = document.querySelectorAll('.nav-link-item');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        if (window.innerWidth < 992) {
+          sidebarContainer.classList.remove('sidebar-open');
+ 
+        }
+      });
+    });
+  });
+
+
+</script>
 </body>
 </html>

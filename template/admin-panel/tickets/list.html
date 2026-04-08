@@ -5,6 +5,22 @@
  
   
 {% block main %}
+  <script>
+      function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  }
+  // Load saved theme
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+ 
+  }
+  </script>
+
  
   <style >
          :root{--primary:#6C5CE7;--primary-2:#a29bfe;--secondary:#00CEC9;--accent:#fd79a8;--success:#00b894;--warning:#fdcb6e;--danger:#e17055;--bg:#f0f2ff;--bg-2:#ffffff;--sidebar-bg:#ffffff;--card-bg:rgba(255,255,255,0.75);--card-border:rgba(108,92,231,0.12);--text-main:#2d3436;--text-muted:#636e72;--text-light:#b2bec3;--shadow:0 8px 32px rgba(108,92,231,0.10);--shadow-hover:0 16px 48px rgba(108,92,231,0.18);--topbar-bg:rgba(255,255,255,0.85);--border:rgba(108,92,231,0.10);--gradient-1:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 100%);}
@@ -20,10 +36,11 @@
     /* Ticket item */
     .ticket-item{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1.25rem;cursor:pointer;transition:all 0.25s;backdrop-filter:blur(20px);}
     .ticket-item:hover{transform:translateX(-4px);border-color:var(--primary);box-shadow:var(--shadow-hover);}
-    .ticket-item.unread{border-right:4px solid var(--primary);}
+    .ticket-item.unread{border-right:4px solid rgb(255, 0, 0);}
     .ticket-category{padding:0.25rem 0.7rem;border-radius:6px;font-size:0.72rem;font-weight:700;}
-    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)}.main-content{padding: 10px 10px 10px 10px ;}.topbar{right:0}}
+    @media(max-width:992px){.sidebar{transform:translateX(100%)}.sidebar.show{transform:translateX(0)} .topbar{right:0}}
   </style>
+
 
 <main class="m-5"><div class="">
 
@@ -48,7 +65,7 @@
   <div style="display:flex;flex-direction:column;gap:0.75rem;" class="animate-in delay-1">
     {% for item in items %}
     <a href="{% url 'admin-panel:ticket-chat' item.pk %}">
-      <div class="ticket-item {% if item.status == status.awating_user %}unread{% endif %} " >
+      <div class="ticket-item {% if item.status == status.awating_admin %}unread{% endif %} " >
         <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
           <span style="font-weight:800;color:var(--text-muted);font-size:0.78rem;">#{{item.id}}</span>
           <span class="badge badge-{% if item.status == status.awating_admin or item.status == status.awating_user %}warning{% elif item.status == status.fixed %}success{% else %}primary{% endif %} ">{{ item.status }}</span>
@@ -168,29 +185,11 @@
 
 <script>
   // Theme toggle
-  function toggleTheme() {
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('theme', isDark ? 'light' : 'dark');
-  }
-  // Load saved theme
-  const saved = localStorage.getItem('theme');
-  if (saved === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
- 
-  }
+
 
   // Toast helper
-  function showToast(msg, type='success') {
-    const t = document.createElement('div');
-    t.className = `alert alert-${type} d-flex align-items-center gap-2 shadow-lg`;
-    t.style.cssText = 'border-radius:14px;font-family:Vazirmatn,sans-serif;font-size:0.88rem;animation:fadeInUp 0.3s;min-width:280px;';
-    t.innerHTML = `<i class="bi bi-check-circle-fill"></i> ${msg}`;
-    document.getElementById('toast-container').appendChild(t);
-    setTimeout(() => t.remove(), 3500);
-  }
+
+  
 </script>
 
   

@@ -9,12 +9,23 @@
 
       <div class="page-header">
         <div class="page-header-info">
-          <h1>لیست کاربران</h1>
-          <p>مدیریت و مشاهده همه کاربران سیستم</p>
+          <h1>لیست کاربران ازمون {{ quiz.name }}</h1>
+          <p>مدیریت و مشاهده همه کاربران از ازمون</p>
         </div>
         <div class="page-header-actions">
  
- 
+          <a href="{% url 'admin-panel:quiz-list' %}" class="btn btn-outline-secondary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            لیست ازمون
+          </a>
+          <a href="{% url 'admin-panel:quiz-update' quiz.id %}" class="btn btn-outline-secondary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            ویرایش ازمون
+          </a>
+          <a href="{% url 'admin-panel:user-list' %}" class="btn btn-outline-secondary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            صفحه کاربران
+          </a>
           <a href="{% url 'admin-panel:user-create' %}" class="btn btn-primary btn-sm">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             کاربر جدید
@@ -62,77 +73,85 @@
             </button>
           </div>
         </div>
-
-        <div class="table-container">
-          <table class="table" id="usersTable">
-            <thead>
-              <tr>
-                <th class="table-check">#</th>
-                <th>کاربر</th>
-                <th>نقش</th>
-                <th>شماره موبایل</th>
-                <th>تاریخ تولد</th>
-                <th>تاریخ عضویت</th>
-                <th>آخرین ورود</th>
-                <th>کدملی</th>
-                <th>استان</th>
-                <th>شهر</th>
-                <th>مدرسه</th>
-                <th>پایه</th>
-                <th>رشته</th>
-
-                <th>  وضعیت شماره</th>
-                <th>  وضعیت حساب</th>
-                <th>عملیات</th>
-
- 
-              </tr>
-            </thead>
-            <tbody>
-              {% for item in items %}
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="table-container">
+            <table class="table" id="usersTable">
+              <thead>
                 <tr>
-                  <td>{{item.id}}</td>
-                  <td>
-                    <div class="user-cell">
-                      <div class="avatar">{{user.first_name|list_index:0}}.{{user.last_name|list_index:0}}</div>
-                      <div class="user-cell-info">
-                        <div class="name"> {{item.get_full_name}}</div>
-                        <div class="email">نام پدر : {{item.father_name}} | جنسیت : {% if item.gender == gender.MALE %}مذکر {% else %} مونث {% endif %}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td> {% if item.type_of_user == type.ADMIN or item.is_superuser %}  <span class="badge badge-warning">ادمین</span>{% elif item.type_of_user == type.SANATORUM  %}<span class="badge badge-success">مصحح</span>{%  elif item.type_of_user == type.REGULAR %}<span class="badge badge-primary">دانش اموز </span>{% endif %}  </span></td>
-                  <td dir='ltr'>{{item.PhoneNumber}}</td>
-                  <td  >{{item.birth|to_jalali:'%Y/%m/%d'}}</td>
-                  <td  >{{item.date_joined|to_jalali}}</td>
-                  <td  >{{item.last_login|to_jalali}}</td>
-              
-                  <td><span class=" ">{{item.national_id}}</span></td>
-                  <td><span class="badge badge-primary">{{item.province}}</span></td>
-                  <td><span class="badge badge-primary">{{item.city}}</span></td>
-                  <td><span class="badge badge-primary">{{item.school}}</span></td>
-                  <td><span class="">{{item.grade.name}}</span></td>
-                  <td><span class="">{{item.major.name}}</span></td>
-                  <td>{% if item.is_verified %}<a href='{% url "admin-panel:user-verify" item.pk %}' class="badge badge-success">تایید شده{% else %}<a href='{% url "admin-panel:user-verify" item.pk %}' class="badge badge-danger">تایید نشده{% endif %}</a></td>
-                  <td>{% if item.is_active %}<a href='{% url "admin-panel:user-active" item.pk %}'  class="badge badge-success">فعال {% else %}<a href='{% url "admin-panel:user-active" item.pk %}' class="badge badge-danger">غیر فعال {% endif %}</a></td>
-       
-                  <td>
-                    <div class="d-flex gap-1" >
-                      <a class="btn btn-ghost btn-sm btn-icon" data-bs-toggle="tooltip" title="ویرایش" href='{% url "admin-panel:user-update" item.id  %}'>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                      </a>
- 
-                       <a class="btn btn-info btn-sm btn-icon" href="{% url 'admin-panel:user-login' item.id %}" data-bs-toggle="tooltip" title="ورود به این حساب" >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                       </a>  
-                    </div>
-                  </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+                  <th class=""></th>
+                  <th class="table-check">#</th>
+                  <th>کاربر</th>
+                  <th>نقش</th>
+                  <th>شماره موبایل</th>
+                  <th>تاریخ تولد</th>
+  
+                  <th>کدملی</th>
+                  <th>استان</th>
+                  <th>شهر</th>
+                  <th>مدرسه</th>
+                  <th>پایه</th>
+                  <th>رشته</th>
 
+  
+                  <th>  عملیات  / حذف</th>
+
+  
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in items %}
+                  <tr>
+                    <td>
+                      <input type="checkbox" title="اضافه به ازمون" name="users" {% if item in quiz.student.all %} checked {% endif %}  value="{{item.id}}" class="form-check-input p-0 m-0" id="" >
+                    </td>
+                    <td>{{item.id}}</td>
+                    <td>
+                      <div class="user-cell">
+                         <div class="user-cell-info">
+                          <div class="name"> {{item.get_full_name}}</div>
+                          <div class="email">نام پدر : {{item.father_name}} | جنسیت : {% if item.gender == gender.MALE %}مذکر {% else %} مونث {% endif %}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td> {% if item.type_of_user == type.ADMIN or item.is_superuser %}  <span class="badge badge-warning">ادمین</span>{% elif item.type_of_user == type.SANATORUM  %}<span class="badge badge-success">مصحح</span>{%  elif item.type_of_user == type.REGULAR %}<span class="badge badge-primary">دانش اموز </span>{% endif %}  </span></td>
+                    <td dir='ltr'>{{item.PhoneNumber}}</td>
+                    <td  >{{item.birth|to_jalali:'%Y/%m/%d'}}</td>
+  
+                
+                    <td><span class=" ">{{item.national_id}}</span></td>
+                    <td><span class="badge badge-primary">{{item.province}}</span></td>
+                    <td><span class="badge badge-primary">{{item.city}}</span></td>
+                    <td><span class="badge badge-primary">{{item.school}}</span></td>
+                    <td><span class="">{{item.grade.name}}</span></td>
+                    <td><span class="">{{item.major.name}}</span></td>
+          
+                    <td>
+                      <div class="d-flex gap-1" >
+                        <a class="btn btn-ghost btn-sm btn-icon" data-bs-toggle="tooltip" title="ویرایش" href='{% url "admin-panel:user-update" item.id  %}'>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </a>
+                        
+                        <div class="btn btn-danger btn-sm ">
+                          <input type="checkbox" name="remove_users" title="حذف از ازمون"   value="{{item.id}}" class="form-check-input btn btn-sm "   >
+                        </div>
+  
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <button name="add"  class="btn btn-primary m-2">
+             اضافه
+          </button>
+          <button name="remove"  class="btn btn-danger m-2">
+             حذف
+          </button>
+          </div>
+        </form>
         <div class="card-footer d-flex align-items-center justify-content-between flex-wrap gap-3">
           <span class='badge'>{{items.count}}</span>
           <nav>

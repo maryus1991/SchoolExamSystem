@@ -11,23 +11,84 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+from os import path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+local_env_file = path.join(BASE_DIR, ".envs")
+
+if path.isfile(local_env_file):
+    load_dotenv(dotenv_path=local_env_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v)jzbylc57v$uk247bwifv2nf@jvg%7n@3hpks^-g_u1%ws-8*'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sornac.ir' , 'sorna.runflare.run', '10.224.115.118']
+ALLOWED_HOSTS  = os.getenv("ALLOWED_HOSTS", default="sornac.ir,sorna-academy.ir,localhost").split(",")
+CORS_ALLOW_ALL_ORIGINS = True
+
+DATABASES = {
+    "default": {
+        "ENGINE": os.getenv("POSTGRES_ENGIN", default="django.db.backends.postgresql"),
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST", default="postgres"),
+        "PORT": os.getenv("POSTGRES_PORT", default="5432"),
+    }
+}
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = "c328142"
+
+AWS_S3_ENDPOINT_URL = "https://c328142.parspack.net"
+
+AWS_S3_REGION_NAME = "us-east-1"
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_S3_ADDRESSING_STYLE = "path"
+
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
 
 
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_SSL_REDIRECT = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_SSL_REDIRECT = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://sornac.ir",
+    "https://www.sornac.ir",
+    "https://sorna-academy.ir",
+    "https://www.sorna-academy.ir",
+]
 
 # Application definition
 
@@ -60,7 +121,7 @@ INSTALLED_APPS = [
 
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+
 
 THUMBNAIL_DEFAULT_OPTIONS = {
     'format': 'WEBP',      # همیشه WebP تولید کنه
@@ -106,12 +167,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
 
 
 # Password validation
@@ -148,10 +204,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIRS=[
-    BASE_DIR / 'static'
-]
+STATIC_ROOT = BASE_DIR / 'static'
+# STATICFILES_DIRS=[
+#     BASE_DIR / 'static'
+# ]
 
 
 MEDIA_URL = '/media/'
@@ -215,14 +271,9 @@ CKEDITOR_5_FILE_STORAGE = 'config.storage.CKEditorMediaStorage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # اطلاعات اتصال
-AWS_ACCESS_KEY_ID = 'ac023df1-eacb-4f6d-a2e7-27876110428f'
-AWS_SECRET_ACCESS_KEY = '0fa8ff33ffb2badc391eee0362b8503778ad5100b48e50f90c0e906bfa219a2d'
-AWS_STORAGE_BUCKET_NAME = 'sorna'
-AWS_S3_REGION_NAME = 'ir-thr-at1'
+
  
-AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.arvanstorage.ir'
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.arvanstorage.ir'
-AWS_QUERYSTRING_EXPIRE = 1
+
 
 
 FILE_UPLOAD_TEMP_DIR = BASE_DIR / 'tmp/'

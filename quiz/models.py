@@ -200,28 +200,27 @@ class StudentAnswer(models.Model):
         SKIPPED = 'رد شده', 'رد شده'
         NOT_ANSWERD = 'جواب داده نشده', 'جواب داده نشده'
 
+    image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ', storage=PrivateMediaStorage)
+    pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF پاسخ', storage=PrivateMediaStorage)
+    type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', default=TypeOfAnswer.NOT_ANSWERD)
+    selected_option = models.ForeignKey(QuestionOption,on_delete=models.SET_NULL ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده',  db_index=True)
+    is_skipped = models.BooleanField(default=False, verbose_name='رد شده' )
     quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='student_answers', verbose_name='آزمون',  db_index=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='student_answers', null=True, blank=True , verbose_name='سوال',  db_index=True)
     description = models.TextField(blank=True, null=True,verbose_name='متن پاسخ' )
-    image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ', storage=PrivateMediaStorage)
-    pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF پاسخ', storage=PrivateMediaStorage)
-    is_skipped = models.BooleanField(default=False, verbose_name='رد شده' )
-    satantorium_message = CKEditor5Field(blank=True, null=True, verbose_name='نظر مصصح' )
-
     student = models.ForeignKey(User, on_delete=models.CASCADE,related_name='answers', verbose_name='دانش‌آموز',  db_index=True)
-    selected_option = models.ForeignKey(QuestionOption,on_delete=models.SET_NULL ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده',  db_index=True)
-    corrected_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='corrected_answers', verbose_name='تصحیح‌کننده',  db_index=True)
-    type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', default=TypeOfAnswer.NOT_ANSWERD)
+
+    satantorium_message = CKEditor5Field(blank=True, null=True, verbose_name='نظر مصصح' )
     corrected = models.CharField(max_length=100, choices=TypeOfCorrect.choices,verbose_name='کیفیت جواب', default=TypeOfCorrect.not_corrected ,)
     corrected_at = models.DateTimeField(null=True, blank=True, verbose_name='زمان تصحیح')
     score = models.FloatField(default=0, verbose_name='نمره داده شده')
     created_at = models.DateTimeField(auto_now_add=True) # time to answer
+    corrected_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='corrected_answers', verbose_name='تصحیح‌کننده',  db_index=True)
     class Meta:
         ordering = ['student']
         verbose_name = 'پاسخ دانش‌آموز'
         verbose_name_plural = 'پاسخ‌های دانش‌آموزان'
-        unique_together = ('student', 'question')
-
+ 
     def __str__(self):
         return f"{self.id} - {str(self.student.PhoneNumber).replace(' ', '')} - {self.quiz.name} - {self.score}"
     

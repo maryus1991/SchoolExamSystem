@@ -345,26 +345,46 @@ loading="lazy">
 <!-- Score Input -->
 <div class="glass-card p-4 mb-3 mt-3">
 <div class="section-title mb-4">ثبت نمره</div>
+
+
 <form action="{% url 'sanatorium:exam-student-question-detail-pk' pk=item.quiz.pk report_id=item.pk %}" method="post">
-            {% csrf_token %}
-<div style="text-align:center;margin-bottom:10px;">
-<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">نمره کل</div>
-<div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-<button type="button" onclick="adjustScore(-0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:1.1rem;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">−</button>
-                  {{ form.score }}
-<button type="button" onclick="adjustScore(0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:var(--gradient-primary);color:white;cursor:pointer;font-size:1.1rem;">+</button>
-</div>
-<div style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">از {{ item.question.score }} نمره</div>
-</div>
+    {% csrf_token %}
+    
+    <div style="text-align:center;margin-bottom:10px;">
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">نمره کل</div>
+        
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+            <!-- دکمه منفی -->
+            <button type="button" onclick="adjustScore(-0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--border-color);background:var(--bg-surface);cursor:pointer;font-size:1.1rem;transition:var(--transition);" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-color)'">−</button>
+            
+            <!-- فیلد اصلی جنگو (اینپوت نمره) -->
+            <div class="score-input-wrapper">
+                {{ form.score }}
+            </div>
+            
+            <!-- دکمه مثبت -->
+            <button type="button" onclick="adjustScore(0.25)" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);background:var(--gradient-primary);color:white;cursor:pointer;font-size:1.1rem;">+</button>
+        </div>
+        
+        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">از {{ item.question.score }} نمره</div>
+    </div>
   
-<input type="range" class="score-slider" id="scoreSlider" min="0" max="{{ item.question.score }}" step="0.01" value="0" oninput="updateScoreFromSlider(this.value)">
+    <!-- اسلایدر -->
+    <input type="range" class="score-slider" id="scoreSlider" min="0" max="{{ item.question.score|stringformat:'s'|default:'0' }}" step="0.01" value="0" oninput="updateScoreFromSlider(this.value)">
   
-              {{form.corrected}}
-              {{form.satantorium_message}}
-<div class="d-flex gap-2 mt-3">
-<button type="submit" class="btn-gradient"  ><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>ذخیره و بعدی</button>
-</div>
-</form>
+    <!-- سایر فیلدهای فرم -->
+    {{ form.corrected }}
+    {{ form.satantorium_message }}
+    
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn-gradient">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>
+            ذخیره و بعدی
+        </button>
+    </div>
+</form> 
+
+
 </div>
 </div>
   
@@ -377,35 +397,70 @@ loading="lazy">
 {% block footer %}
   
 <script>
-function toggleTheme(){const h=document.documentElement,i=document.getElementById('themeIcon');if(h.getAttribute('data-theme')==='light'){h.setAttribute('data-theme','dark');i.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/></svg>';localStorage.setItem('theme','dark');}else{h.setAttribute('data-theme','light');i.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/></svg>';localStorage.setItem('theme','light');}}
-(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);if(t==='dark')document.getElementById('themeIcon').innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>';})();
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');}
-  
+ 
 let currentScore = 0;
-function setScore(v){
-currentScore=v;
-const scoreDisplay = document.getElementById('scoreDisplay');
-const scoreSlider = document.getElementById('scoreSlider');
-if(scoreDisplay) scoreDisplay.value=v;
-if(scoreSlider) scoreSlider.value=v;
+// گرفتن حداکثر نمره از جنگو و تبدیل آن به عدد در جاوا اسکریپت
+const maxScore = parseFloat("{{ item.question.score|default:'0' }}");
+
+// تابعی برای پیدا کردن اینپوت اصلی که جنگو ساخته است
+function getDjangoScoreInput() {
+    return document.querySelector('input[name="score"]');
 }
-function adjustScore(d){setScore(Math.max(0,Math.min({{item.question.score}},currentScore+d)));}
-function updateScoreFromSlider(v){setScore(parseFloat(v));}
-function toPersian(n){return String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);}
+
+function setScore(v) {
+    // جلوگیری از ثبت مقدار NaN یا خالی
+    v = parseFloat(v);
+    if (isNaN(v)) v = 0;
+    
+    currentScore = v;
+    
+    const djangoInput = getDjangoScoreInput();
+    const scoreSlider = document.getElementById('scoreSlider');
+    
+    if(djangoInput) djangoInput.value = v;
+    if(scoreSlider) scoreSlider.value = v;
+}
+
+function adjustScore(d) {
+    // بررسی عدم عبور از 0 و حداکثر نمره
+    let newScore = currentScore + d;
+    setScore(Math.max(0, Math.min(maxScore, newScore)));
+}
+
+function updateScoreFromSlider(v) {
+    setScore(v);
+}
+
+function toPersian(n){
+    return String(n).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+}
+
 function recalcTotal(){
-const inputs=document.querySelectorAll('.criteria-input');
-let total=0;inputs.forEach(i=>{total+=parseFloat(i.value)||0;});
-const criteriaTotal = document.getElementById('criteriaTotal');
-if(criteriaTotal) criteriaTotal.textContent=toPersian(total)+' / ۸';
-setScore(total);
+    const inputs = document.querySelectorAll('.criteria-input');
+    let total = 0;
+    inputs.forEach(i => { total += parseFloat(i.value) || 0; });
+    const criteriaTotal = document.getElementById('criteriaTotal');
+    if(criteriaTotal) criteriaTotal.textContent = toPersian(total) + ' / ۸';
+    setScore(total);
 }
   
-// Initialize score on page load
+// زمان لود شدن صفحه
 document.addEventListener('DOMContentLoaded', function() {
-    const scoreInput = document.getElementById('scoreDisplay') || document.querySelector('input[name="score"]');
-    if(scoreInput) {
-        currentScore = parseFloat(scoreInput.value) || 0;
+    const djangoInput = getDjangoScoreInput();
+    
+    if(djangoInput) {
+        // خواندن مقدار اولیه (اگر کاربر در حال ویرایش نمره قبلی است)
+        currentScore = parseFloat(djangoInput.value) || 0;
         setScore(currentScore);
+        
+        // اضافه کردن یک شنونده: اگر کاربر دستی در کادر نمره تایپ کرد، اسلایدر هم آپدیت شود
+        djangoInput.addEventListener('input', function(e) {
+            let typedValue = parseFloat(e.target.value);
+            if (isNaN(typedValue)) typedValue = 0;
+            // جلوگیری از تایپ عدد بیشتر از سقف مجاز
+            typedValue = Math.max(0, Math.min(maxScore, typedValue));
+            setScore(typedValue);
+        });
     }
 });
 </script>

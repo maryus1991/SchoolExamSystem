@@ -195,6 +195,17 @@ class QuestionOptionsModelForm(BaseForm, forms.ModelForm):
         fields = ['text' ,'is_correct' ,'order']
 
 class StudentAnswerModelForm(BaseForm, forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+ 
+        options = kwargs.pop('selected_option', None)
+        
+        super().__init__(*args, **kwargs)
+        
+ 
+        if options is not None:
+            self.fields['selected_option'].queryset = options
+
     satantorium_message = forms.CharField(
         required=False,
         widget=CKEditor5Widget(),

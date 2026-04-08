@@ -1,11 +1,12 @@
 from admin_panel.mixins import AdminPermissionRequire
-from sitesetting.models import Ticket, TicketChat
+from sitesetting.models import Ticket
 from django.views.generic import View, ListView
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Q
 from django.http import Http404
 from admin_panel.forms.tickers import TicketChatForm
 from django.contrib import messages
+from django.db.models import Case, When, Value, IntegerField
 
 class TicketListViews(AdminPermissionRequire, ListView):
     """ for list the tickets """
@@ -17,7 +18,16 @@ class TicketListViews(AdminPermissionRequire, ListView):
 
 
     def get_queryset(self):
-        return Ticket.objects.prefetch_related('user', 'problem', 'placement') 
+        return Ticket.objects.prefetch_related('user', 'problem', 'placement').annotate(
+            status_priority=Case(
+                When(status=Ticket.TicketStatus.awating_admin, then=Value(1)),
+                When(status=Ticket.TicketStatus.awating_user, then=Value(2)),
+                When(status=Ticket.TicketStatus.fixed, then=Value(3)),
+                When(status=Ticket.TicketStatus.cancelled, then=Value(4)),
+                default=Value(5),
+                output_field=IntegerField()
+            )
+        ).order_by('status_priority', '-create_at')
     
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -44,9 +54,6 @@ class TicketChat(AdminPermissionRequire, View):
         
         item = item.last()
 
-        # for chat in item.chats.filter(is_read_by_admin=False).all():
-        #     chat.is_read_by_admin = True
-        #     chat.save()
         item.chats.filter(is_read_by_admin=False).update(is_read_by_admin = True)
 
         context={
@@ -62,7 +69,7 @@ class TicketChat(AdminPermissionRequire, View):
     def post(self, request , *args, **kwargs):
 
 
-        messages.success(request, 'پیام شما ارسال شد')
+      
         item = Ticket.objects.filter(
             user=request.user, 
             pk=kwargs.get('pk'), 

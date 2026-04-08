@@ -22,3 +22,5 @@ urllib3==2.6.3
 django-cors-headers
 django-storages 
 boto3
+dotenv
+gunicorn

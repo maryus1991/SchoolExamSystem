@@ -30,7 +30,7 @@
               <th>عنوان آزمون</th>
               <th>رشته/پایه/درس</th>
               <th>دانش اموز</th>
-              <th>نمره / نمره کل ازمون</th>
+              <th>  نمره کل ازمون / نمره</th>
               <th>درصد</th>
               <th>تراز</th>
               <th>زمان ثبت</th>
@@ -45,7 +45,7 @@
               <td><div class="fw-semibold" style="color:var(--text-primary)"><a href="{% url 'admin-panel:quiz-update' item.quiz.id %}">{{item.quiz.name}}</a></div></td>
               <td><span class="badge badge-primary" >{{item.major.name}}</span><span class="badge badge-success" >{{item.grade.name}}</span><span class="badge badge-warning" >{{item.lession.name}}</span></td>
               <td><a href="{% url 'admin-panel:user-update' item.user.id %}">{{item.user.get_full_name|default:item.user}}</a></td>
-              <td>{{item.quiz.score}} | {{item.score}}</td>
+              <td>{{item.quiz.max_score}} | {{item.score}}</td>
               <td>%{{item.percent}}</td>
               <td><div >{{item.teraze}}</div></td>
               <td>{{item.create_at|to_jalali}}</td>

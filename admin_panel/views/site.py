@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, UpdateView, CreateView, ListView
+from django.views.generic import TemplateView, UpdateView, CreateView, ListView, View
 from admin_panel.forms.site import SiteModelForm, SiteLawModelForm, TeamModelForm, QuestionAndAnswerModelForm
 from django.contrib import messages
 from admin_panel.mixins import AdminPermissionRequire
@@ -9,8 +9,52 @@ from sitesetting.models import Ticket
 from order.models import Order
 from quiz.models import Quiz
 from django.db.models import Q
-
+from django.http import HttpResponse, HttpResponseNotAllowed
+from django.core.management import call_command
 from django.utils.timezone import timedelta, now    
+import io
+ 
+
+class DownloadDatabaseBackupView(AdminPermissionRequire, View):
+ 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseNotAllowed('شما اجازه دانلود ندارید')
+    
+
+    def get(self, request, *args, **kwargs):
+        # ایجاد یک فایل متنی موقت در حافظه (RAM)
+        output = io.StringIO()
+        
+        try:
+            # فراخوانی دستور dumpdata جنگو
+            # جداول لاگ‌ها، سشن‌ها و پرمیژن‌ها را حذف می‌کنیم تا موقع ری‌استور ارور ندهد
+            call_command(
+                'dumpdata',
+                format='json',
+                indent=2,
+                exclude=['contenttypes', 'auth.permission', 'admin.logentry', 'sessions.session'],
+                stdout=output
+            )
+            
+            # برگرداندن نشانگر به ابتدای فایل
+            output.seek(0)
+            
+            # آماده‌سازی فایل برای دانلود
+            response = HttpResponse(output.read(), content_type='application/json')
+            
+            # تولید نام فایل بر اساس تاریخ و ساعت فعلی
+            filename = f"db_backup_{now().strftime('%Y-%m-%d_%H-%M-%S')}.json"
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            
+            return response
+            
+        except Exception as e:
+            return HttpResponse(f"خطا در تهیه بکاپ: {str(e)}", status=500)
+        finally:
+            output.close()
 
 class Main(TemplateView):
     template_name = 'admin-panel/main.html'
@@ -55,7 +99,6 @@ class Main(TemplateView):
 
         return context
     
-
 class SiteUpdateView(AdminPermissionRequire, UpdateView):
     """for update the site settings """
 

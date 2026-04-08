@@ -39,7 +39,6 @@ class SanatoriumPendingExamList(SanatorPermissionRequire, ListView):
 
         return data
  
-
 class SanatoriumReportsListPerStudentOfExam(SanatorPermissionRequire, ListView):
     """for list the reposrts"""
     template_name =  'sanatorium/quiz-remain/10-exam-questions.html'
@@ -76,7 +75,6 @@ class SanatoriumReportsListPerStudentOfExam(SanatorPermissionRequire, ListView):
         data['quiz'] = Quiz.objects.filter(pk=self.pk, sanatorium=self.request.user).first()
         return data
 
-
 class SanatoriumQuestionDetailPerStudentOfExam(SanatorPermissionRequire, View):
     """for correcting the student answear"""
     
@@ -99,18 +97,33 @@ class SanatoriumQuestionDetailPerStudentOfExam(SanatorPermissionRequire, View):
         )
  
         if cls.report_id:
-            answer = answer.filter(pk=cls.report_id)
-            return answer.first()
+            answer = answer.filter(pk=cls.report_id).first()
 
         else:
             answer = answer.filter(
-            corrected=StudentAnswer.TypeOfCorrect.not_corrected,
-            corrected_at__isnull=True,
-            corrected_by__isnull=True,
-            )
+            corrected=StudentAnswer.TypeOfCorrect.not_corrected
+            ).order_by('question__pk').first()
+             
+
+
+        
+        return cls.auto_correction_for_option_questions(answer) 
+
+    def auto_correction_for_option_questions(self, answer):
+        if answer and answer.selected_option  :
+
+            if answer.selected_option.is_correct :
             
-            return answer.order_by('question__pk').first()
-    
+                answer.score = answer.question.score
+                answer.corrected = StudentAnswer.TypeOfCorrect.excellent
+            else:
+                answer.score = 0
+                answer.corrected = StudentAnswer.TypeOfCorrect.wrong
+
+            answer.corrected_at = now()
+            answer.save()
+        return answer
+
     def get(cls, request, *args, **kwargs):
 
         queryset = cls.get_queryset()
@@ -146,6 +159,18 @@ class SanatoriumQuestionDetailPerStudentOfExam(SanatorPermissionRequire, View):
 
         return render(request, cls.template_name, context)
 
+    def set_status_of_score_by_percent(self, percent):
+        if percent >= 80:
+            return StudentAnswer.TypeOfCorrect.excellent
+        elif 80 > percent >= 60: 
+            return StudentAnswer.TypeOfCorrect.good
+        elif 60 > percent >= 40: 
+            return StudentAnswer.TypeOfCorrect.average
+        elif 40 > percent >= 10: 
+            return StudentAnswer.TypeOfCorrect.weak
+        else:
+            return StudentAnswer.TypeOfCorrect.wrong
+
     def post(cls, request, *args, **kwargs):
         form = SanatoriumCorecctingPanelForm(request.POST or None)
 
@@ -157,7 +182,7 @@ class SanatoriumQuestionDetailPerStudentOfExam(SanatorPermissionRequire, View):
                
                     queryset.corrected_by = request.user
                     queryset.corrected_at = now()
-                    queryset.corrected = form.cleaned_data.get('corrected')
+                    queryset.corrected = form.cleaned_data.get('corrected') if form.cleaned_data.get('corrected') != StudentAnswer.TypeOfCorrect.not_corrected else cls.set_status_of_score_by_percent(100 * queryset.score / queryset.question.score)
                     queryset.satantorium_message = form.cleaned_data.get('satantorium_message') or 'پیام از طرف مصحح ارسال نشده است'
 
                     score = float(form.cleaned_data.get('score')) 
@@ -194,3 +219,5 @@ class SanatoriumQuestionDetailPerStudentOfExam(SanatorPermissionRequire, View):
         else:
             messages.error(request, form.errors)
             return cls.get(request, *args, **kwargs)
+
+

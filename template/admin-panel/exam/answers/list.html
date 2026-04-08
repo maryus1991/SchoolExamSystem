@@ -21,6 +21,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           لیست سوالات 
         </a>
+        <a href="{% url 'admin-panel:quiz-question-answer-create' quiz.id question.id %}" class="btn btn-success btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          اضافه کردن پاسخنامه  
+        </a>
       </div>
     </div>
  
@@ -48,7 +52,7 @@
             {% for item in items %}
             <tr>
               <td>{{item.pk}}</td>
-              <td><a href="{% url 'admin-panel:user-update' item.student.id %}">{{ item.student.get_full_name|default:item.student }}</a></td>
+              <td><a href="{% url 'admin-panel:user-update' item.student.id %}">#{{item.student.id}} / {{ item.student.get_full_name|default:item.student }}</a></td>
               <td>{{item.created_at|to_jalali}}</td>
               <td><span class="badge badge-primary" >{{item.type_of_answer}}</span></td>
               <td> {{question.score}} / {{item.score}} </td>

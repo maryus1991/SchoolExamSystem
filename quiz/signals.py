@@ -17,19 +17,18 @@ def create_report_for_users(sender, instance, created, **kwargs):
 
 
             for student in students:
-                score_data = StudentAnswer.objects.filter(quiz=instance, student=student).aggregate(
-                    total_score=Sum('score'),
-                    total_count=Count('score')
-                )
+                score_data = StudentAnswer.objects.filter(quiz=instance, student=student)
                 
                 for item in instance.questions.all():
                     StudentAnswer.objects.get_or_create(quiz=instance, student=student, question=item)
     
                 
-                total_score = score_data['total_score'] or 0
-                total_count = score_data['total_count'] or 1
+                total_score = sum(score_data.values_list('score', flat=True)) or 0
+                total_count = instance.max_score or 1
+ 
                 
-                percent = (total_score / total_count) if total_count > 0 else 0
+                percent = (total_score  / total_count) * 100 if total_count > 0 else 0
+ 
                 percent_list.append(percent)
                 report, _ = Report.objects.get_or_create(
                     user=student,

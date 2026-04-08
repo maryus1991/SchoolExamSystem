@@ -1,11 +1,4 @@
-/* =========================================
-   ADMIN PANEL - MAIN STYLESHEET
-   Dark Theme | RTL | Persian
-   ========================================= */
-
-/* @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap'); */
-
-/* ---- CSS VARIABLES ---- */
+ 
 :root {
   --bg-primary:     #0d1117;
   --bg-secondary:   #161b22;
@@ -61,6 +54,11 @@
 .message-item {
     margin-bottom: 10px;
     animation: slideIn 0.3s ease-out;
+    
+    margin-bottom: 0.5rem;
+    position: sticky;
+    z-index: 99999;
+    
 }
 
 @keyframes slideIn {
@@ -169,7 +167,7 @@ p { color: var(--text-secondary); margin-bottom: 0; }
   height: 100vh;
   display: flex;
   flex-direction: column;
-  z-index: 1040;
+  z-index: 1030;
   transition: transform var(--transition-slow);
   overflow: hidden;
 }
@@ -365,7 +363,7 @@ p { color: var(--text-secondary); margin-bottom: 0; }
 
 /* ---- MAIN CONTENT ---- */
 .main-content {
-  margin-right: var(--sidebar-width);
+ 
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1311,4 +1309,642 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 @media (max-width: 575.98px) {
   .page-header-actions { width: 100%; }
   .page-header-actions .btn { flex: 1; justify-content: center; }
+}
+
+
+    @media (max-width: 992px) {
+      .app-wrapper {
+        flex-direction: column;
+      }
+      
+      #sidebarContainer {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        z-index: 1000;
+        transition: right 0.3s ease;
+      }
+      
+      #sidebarContainer.sidebar-open {
+        right: 0;
+      }
+      
+      .main-content {
+        margin-right: 0;
+        width: 100%;
+      }
+
+      
+      .sidebar-overlay.active {
+        display: block;
+      }
+      
+      .topbar-toggle {
+        display: flex !important;
+      }
+      
+      .sidebar-nav .nav-item .nav-link-item,
+      .sidebar-nav .nav-item .nav-collapse-toggle {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .nav-submenu {
+        padding-right: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .topbar-end {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+      
+      .dropdown-menu {
+        position: fixed !important;
+        top: 60px !important;
+        right: 10px !important;
+        left: 10px !important;
+        width: auto !important;
+        max-width: calc(100vw - 20px) !important;
+      }
+      
+      .messages-container .alert {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .messages-container .btn-close {
+        margin-bottom: 0.5rem;
+      }
+      
+      .app-footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .sidebar-logo {
+        padding: 1rem;
+      }
+      
+      .logo-text {
+        font-size: 1rem;
+      }
+      
+      .topbar {
+        padding: 0.5rem 1rem;
+      }
+      
+      .topbar-btn {
+        padding: 0.375rem;
+      }
+      
+ 
+      
+      .nav-icon {
+        width: 18px;
+        height: 18px;
+      }
+      
+      .collapse-arrow {
+        width: 14px;
+        height: 14px;
+      }
+    }
+    
+    /* استایل‌های عمومی برای ریسپانسیو */
+    .app-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    #sidebarContainer {
+      width: 250px;
+      flex-shrink: 0;
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    .topbar-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    
+    .sidebar-overlay {
+      display: none;
+    }
+    
+    /* بهبود نمایش پیام‌ها در موبایل */
+    .messages-container {
+      position: fixed;
+      top: 70px;
+      right: 0;
+      left: 0;
+      z-index: 1030;
+      padding: 0 15px;
+    }
+    
+    .message-item {
+      margin-bottom: 0.5rem;
+      position: sticky;
+      z-index: 99999;
+    }
+    
+    /* بهبود نمایش dropdown در موبایل */
+    .dropdown-menu {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    
+    /* بهبود نمایش footer */
+    .app-footer {
+      margin-top: auto;
+      padding: 1rem;
+    }
+
+    /* تم تاریک (پیش‌فرض) */
+:root {
+  --bg-primary:     #0d1117;
+  --bg-secondary:   #161b22;
+  --bg-tertiary:    #1c2333;
+  --bg-card:        #1a2035;
+  --bg-hover:       #21293d;
+  --bg-input:       #0d1117;
+
+  --border-color:   #30363d;
+  --border-light:   #21293d;
+
+  --accent-primary: #4f8ef7;
+  --accent-hover:   #3d7cf5;
+  --accent-glow:    rgba(79, 142, 247, 0.15);
+
+  --accent-success: #2ea043;
+  --accent-warning: #d29922;
+  --accent-danger:  #f85149;
+  --accent-info:    #58a6ff;
+  --accent-purple:  #a371f7;
+
+  --text-primary:   #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted:     #6e7681;
+  --text-accent:    #4f8ef7;
+
+  --sidebar-width:  270px;
+  --navbar-height:  64px;
+
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,0.6);
+  --shadow-glow: 0 0 20px rgba(79, 142, 247, 0.2);
+
+  --transition: 0.2s ease;
+  --transition-slow: 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* تم روشن */
+[data-theme="light"] {
+  --bg-primary:     #f8fafc;
+  --bg-secondary:   #ffffff;
+  --bg-tertiary:    #f1f5f9;
+  --bg-card:        #ffffff;
+  --bg-hover:       #f1f5f9;
+  --bg-input:       #ffffff;
+
+  --border-color:   #e2e8f0;
+  --border-light:   #f1f5f9;
+
+  --accent-primary: #3b82f6;
+  --accent-hover:   #2563eb;
+  --accent-glow:    rgba(59, 130, 246, 0.1);
+
+  --accent-success: #10b981;
+  --accent-warning: #f59e0b;
+  --accent-danger:  #ef4444;
+  --accent-info:    #0ea5e9;
+  --accent-purple:  #8b5cf6;
+
+  --text-primary:   #1e293b;
+  --text-secondary: #64748b;
+  --text-muted:     #94a3b8;
+  --text-accent:    #3b82f6;
+
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.1);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,0.1);
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+/* استایل سوئیچ تم */
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 34px;
+  transition: .4s;
+}
+
+.theme-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  right: 4px;
+  bottom: 3px;
+  background-color: var(--text-primary);
+  border-radius: 50%;
+  transition: .4s;
+}
+
+.theme-switch input:checked + .theme-slider {
+  background-color: var(--accent-primary);
+}
+
+.theme-switch input:checked + .theme-slider:before {
+  transform: translateX(-30px);
+}
+
+.theme-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--text-secondary);
+}
+
+.theme-icon.sun {
+  left: 8px;
+}
+
+.theme-icon.moon {
+  right: 8px;
+}
+
+/* استایل دکمه تغییر تم در نوار کناری */
+.sidebar-theme-switch {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+   margin-top: auto;
+}
+
+.theme-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* استایل دکمه تغییر تم در نوار بالا */
+.topbar-theme-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.topbar-theme-switch:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent-primary);
+}
+
+.theme-switch-compact {
+  width: 40px;
+  height: 20px;
+}
+
+.theme-switch-compact .theme-slider:before {
+  height: 16px;
+  width: 16px;
+  right: 2px;
+  bottom: 2px;
+}
+
+.theme-switch-compact input:checked + .theme-slider:before {
+  transform: translateX(-20px);
+}
+
+/* تنظیمات اسکرول‌بار برای تم روشن */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* تنظیمات مودال برای تم روشن */
+[data-theme="light"] .modal-content {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .btn-close {
+  filter: none;
+  opacity: 0.5;
+}
+
+[data-theme="light"] .btn-close:hover {
+  opacity: 0.75;
+}
+
+/* تنظیمات جدول برای تم روشن */
+[data-theme="light"] .table thead th {
+  background: #f8fafc;
+  color: #64748b;
+  border-bottom-color: #e2e8f0;
+}
+
+[data-theme="light"] .table tbody td {
+  color: #475569;
+  border-bottom-color: #f1f5f9;
+}
+
+[data-theme="light"] .table tbody tr:hover td {
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+[data-theme="light"] .table-striped tbody tr:nth-of-type(even) td {
+  background: rgba(241, 245, 249, 0.5);
+}
+
+/* تنظیمات کارت‌ها برای تم روشن */
+[data-theme="light"] .card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+[data-theme="light"] .stat-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .stat-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* تنظیمات dropdown برای تم روشن */
+[data-theme="light"] .dropdown-menu {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+/* تنظیمات input برای تم روشن */
+[data-theme="light"] .form-control,
+[data-theme="light"] .form-select {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+[data-theme="light"] .form-control:focus,
+[data-theme="light"] .form-select:focus {
+  background: #ffffff;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* تنظیمات badge برای تم روشن */
+[data-theme="light"] .badge-primary {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="light"] .badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+[data-theme="light"] .badge-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+[data-theme="light"] .badge-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+/* تنظیمات alert برای تم روشن */
+[data-theme="light"] .alert-primary {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+[data-theme="light"] .alert-success {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+[data-theme="light"] .alert-danger {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+[data-theme="light"] .alert-warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+/* تنظیمات skeleton برای تم روشن */
+[data-theme="light"] .skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+}
+
+/* تنظیمات overlay برای تم روشن */
+[data-theme="light"] .sidebar-overlay {
+  background: rgba(0,0,0,0.4);
+}
+
+/* تنظیمات form-check برای تم روشن */
+[data-theme="light"] .form-check-input {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+}
+
+[data-theme="light"] .form-check-input:checked {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+/* تنظیمات input-group برای تم روشن */
+[data-theme="light"] .input-group-text {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+/* تنظیمات pagination برای تم روشن */
+[data-theme="light"] .page-item .page-link {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #64748b;
+}
+
+[data-theme="light"] .page-item .page-link:hover {
+  background: #f8fafc;
+  border-color: var(--accent-primary);
+  color: #1e293b;
+}
+
+[data-theme="light"] .page-item.active .page-link {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+/* تنظیمات tabs برای تم روشن */
+[data-theme="light"] .nav-tabs {
+  border-bottom-color: #e2e8f0;
+}
+
+[data-theme="light"] .nav-tabs .nav-link {
+  color: #64748b;
+}
+
+[data-theme="light"] .nav-tabs .nav-link:hover {
+  color: #1e293b;
+  border-bottom-color: #cbd5e1;
+}
+
+[data-theme="light"] .nav-tabs .nav-link.active {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+}
+
+/* تنظیمات empty state برای تم روشن */
+[data-theme="light"] .empty-state .empty-icon {
+  background: #f1f5f9;
+}
+
+[data-theme="light"] .empty-state .empty-icon svg {
+  color: #94a3b8;
+}
+
+[data-theme="light"] .empty-state h5 {
+  color: #64748b;
+}
+
+[data-theme="light"] .empty-state p {
+  color: #94a3b8;
+}
+
+/* تنظیمات progress برای تم روشن */
+[data-theme="light"] .progress {
+  background: #f1f5f9;
+}
+
+/* تنظیمات divider برای تم روشن */
+[data-theme="light"] .divider {
+  background: #e2e8f0;
+}
+
+/* تنظیمات filter-select برای تم روشن */
+[data-theme="light"] .filter-select {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+
+[data-theme="light"] .filter-select:focus {
+  border-color: var(--accent-primary);
+}
+
+/* تنظیمات notif-item برای تم روشن */
+[data-theme="light"] .notif-item:hover {
+  background: #f8fafc;
+}
+
+/* تنظیمات chart برای تم روشن */
+[data-theme="light"] .chart-bar {
+  background: #3b82f6;
+}
+
+[data-theme="light"] .chart-bar.accent {
+  background: #8b5cf6;
+}
+
+/* تنظیمات topbar-search برای تم روشن */
+[data-theme="light"] .topbar-search input {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+[data-theme="light"] .topbar-search input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* تنظیمات table-search برای تم روشن */
+[data-theme="light"] .table-search input {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+[data-theme="light"] .table-search input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }

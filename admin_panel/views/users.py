@@ -157,7 +157,10 @@ class UserUpdate(AdminPermissionRequire, View):
 
         else:
             messages.error(request, form.errors)
-        
+
+
+        if '_add' in request.POST:
+            return redirect('admin-panel:user-create')
         return self.get(request, *args, **kwargs)
 
 class UserActiveDeactivate(AdminPermissionRequire, RedirectView):

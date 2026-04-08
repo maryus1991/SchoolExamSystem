@@ -53,4 +53,4 @@ class WalletChangeStatus(AdminPermissionRequire, RedirectView):
         wallet.save()
         messages.success(self.request, 'کیف پول به وضعیت پرداخت شده تبدیل شد')
 
-        return reverse('sanatorium:wallet-detail', kwargs=kwargs)
+        return reverse('admin-panel:wallet-detail', kwargs=kwargs)
