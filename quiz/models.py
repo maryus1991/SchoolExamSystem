@@ -200,9 +200,9 @@ class StudentAnswer(models.Model):
         SKIPPED = 'رد شده', 'رد شده'
         NOT_ANSWERD = 'جواب داده نشده', 'جواب داده نشده'
 
+    type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', default=TypeOfAnswer.NOT_ANSWERD)
     image = models.ImageField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='تصویر پاسخ', storage=PrivateMediaStorage)
     pdf_file = models.FileField(upload_to=photo_path_upload_to, blank=True, null=True, verbose_name='فایل PDF پاسخ', storage=PrivateMediaStorage)
-    type_of_answer = models.CharField(max_length=50,choices=TypeOfAnswer.choices,verbose_name='نوع پاسخ', default=TypeOfAnswer.NOT_ANSWERD)
     selected_option = models.ForeignKey(QuestionOption,on_delete=models.SET_NULL ,null=True,blank=True,verbose_name='گزینه انتخاب‌شده',  db_index=True)
     is_skipped = models.BooleanField(default=False, verbose_name='رد شده' )
     quiz = models.ForeignKey('Quiz', on_delete=models.CASCADE, related_name='student_answers', verbose_name='آزمون',  db_index=True)

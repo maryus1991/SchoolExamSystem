@@ -18,8 +18,11 @@ phase 4 todo list
 essenial todo :
     chunk upload to s3 server for exam page or user answer and add progress for upload
     fix the auto convert to pdf
- 
-    
+    add pdf.js insted of iframe
+    no need to add to order when started exam
+    fix the sanaturiom selection in quiz  # اصلاح جاهایی که بی حد و مرز ابجکت میاره در فرم ها سلکت ها 
+    add font
+
  
      
 

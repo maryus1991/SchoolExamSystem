@@ -249,7 +249,14 @@ s
               </svg>  ازمون پایان یافت
             </a>
           
-          {%  elif item.price != 0 %}
+          {%  elif item.price == 0 %}
+              <a href="{% url 'quiz:set-details' pk=item.id %}" class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill me-2" viewBox="0 0 16 16">
+                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                </svg>  ورود به ازمون
+                
+              </a>
+          {%  elif user in item.student.all %}
               <a href="{% url 'quiz:set-details' pk=item.id %}" class="btn-success-gradient btn w-100 btn-lg mt-4 mb-3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill me-2" viewBox="0 0 16 16">
                   <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>

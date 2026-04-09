@@ -129,6 +129,7 @@ class QuizListDetailView(ListView):
                 data['quiz_in_order'] = order.exists()
                 data['order'] = order.first()
                 data['order_status'] = Order.OrderStatus
+                data['item'] = self.get_queryset()
 
             else:
                 data['quiz_in_order'] = False

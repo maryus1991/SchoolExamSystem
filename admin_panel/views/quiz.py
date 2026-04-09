@@ -541,6 +541,14 @@ class QuestionAnswerCreateView(AdminPermissionRequire, CreateView):
  
         self.quiz = self.question.quiz
 
+        for user in self.quiz.student.all():
+          
+            StudentAnswer.objects.get_or_create(
+                quiz = self.quiz,
+                question = self.question,
+                student = user
+            )
+
         self.users = self.quiz.student.filter(
             answers__type_of_answer=StudentAnswer.TypeOfAnswer.NOT_ANSWERD,
             answers__question=self.question
@@ -561,10 +569,10 @@ class QuestionAnswerCreateView(AdminPermissionRequire, CreateView):
         return context
 
     def form_valid(self, form):
-        # ذخیره اولیه فرم
+     
         self.object = form.save(commit=False)
         
-        # تنظیم student
+    
         try:
             user_id = self.request.POST.get('user')
             
@@ -578,11 +586,10 @@ class QuestionAnswerCreateView(AdminPermissionRequire, CreateView):
             messages.error(self.request, 'کاربر معتبر نیست')
             return self.form_invalid(form)
         
-        # تنظیم quiz و question
         self.object.quiz = self.quiz
         self.object.question = self.question
         
-        # تعیین نوع پاسخ
+      
         if self.object.type_of_answer == StudentAnswer.TypeOfAnswer.NOT_ANSWERD:
             if self.object.image:
                 type_of_answer = StudentAnswer.TypeOfAnswer.IMAGE_BASED
@@ -595,7 +602,6 @@ class QuestionAnswerCreateView(AdminPermissionRequire, CreateView):
             else  :
                 type_of_answer = StudentAnswer.TypeOfAnswer.TEXT_BASED
         
-        # استفاده از update_or_create برای جلوگیری از duplicate
         obj, created = StudentAnswer.objects.update_or_create(
             student=self.object.student,
             quiz=self.object.quiz,
@@ -606,7 +612,7 @@ class QuestionAnswerCreateView(AdminPermissionRequire, CreateView):
                 'image': self.object.image,
                 'pdf_file': self.object.pdf_file,
                 'is_skipped': self.object.is_skipped,
-                'type_of_answer': type_of_answer,
+                'type_of_answer': type_of_answer if type_of_answer else StudentAnswer.TypeOfAnswer.NOT_ANSWERD ,
             }
         )
         

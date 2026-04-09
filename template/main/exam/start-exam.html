@@ -98,12 +98,25 @@
                                 <source srcset="{{ question.image.url }}" type="image/webp">
                                 <img src="{{ question.image.url }}" style="max-width:100%;max-height:300px;width:auto;height:auto;object-fit:contain;" loading="lazy" alt="Question Image">
                             </picture>
-                        </div>  
+                        </div>
+                                                <p class='p-2' style="font-size:0.85rem;">عکس اپلود شده
+                                                    <br>
+                                <a href="{{ question.image.url }}" class="btn btn-success" >دانلود</a>
+                            
+
+                        </p>  
                         {% endif %}
                         
                         <!-- Question PDF -->
                         {% if question.pdf_file %}
                         <div style="margin-bottom:20px;">
+                                                    <p class='p-2' style="font-size:0.85rem;">فایل اپلود شده
+                                                    <br>
+
+                                <a href="{{ question.pdf_file.url }}" class="btn btn-success" >دانلود</a>
+                            
+
+                        </p>
                             <iframe src="{{ question.pdf_file.url }}" scrolling="auto" style="width:100%;height:300px;border:2px solid var(--border-color);border-radius:var(--radius-lg);"></iframe>
                         </div>
                         {% endif %}

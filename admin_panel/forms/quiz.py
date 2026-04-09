@@ -63,7 +63,7 @@ class QuizModelForm(BaseForm, forms.ModelForm):
 
     class Meta:
         model = Quiz
-        exclude = ['id']
+        exclude = ['id', 'student']
 
 class QuestionModelForm(BaseForm, forms.ModelForm):
 
