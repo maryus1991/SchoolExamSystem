@@ -7,7 +7,168 @@
 <title>پروفایل | آزمون‌یار</title>
 <link rel="stylesheet" href="/static/css/bootstrap5.css">
 <link rel="stylesheet" href="/static/css/dashboard/message.css">
+<script>
+// ۱. این بخش باید در HEAD باشد تا قبل از لود شدن بدنه سایت اجرا شود
+(function() {
+    // زیر نظر گرفتن کل صفحه برای پیدا کردن آی‌فریم‌های جدید
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                // اگر المان اضافه شده یک iframe بود و کشف شد
+                if (node.tagName === 'IFRAME' && node.src && node.src.includes('sornac.ir')) {
+                    
+                    // لینک را برمیداریم و src اصلی را پاک میکنیم تا مرورگر دانلود نکند!
+                    const fileUrl = node.src;
+                    node.removeAttribute('src'); 
+                    
+                    // به آن دیتای خودمان را میدهیم
+                    node.setAttribute('data-blob-src', fileUrl);
+                    node.classList.add('smart-iframe');
+                    
+                    // استایل اولیه برای جلوگیری از بدشکل شدن سایت
+                    node.style.opacity = '0';
+                }
+            });
+        });
+    });
 
+    // شروع نظارت بر روی کل سند HTML
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+
+    // ۲. اجرای اسکریپت دانلودگر بعد از اینکه کل صفحه لود شد
+    document.addEventListener("DOMContentLoaded", function () {
+        // توقف نظارت چون صفحه کامل لود شده است
+        observer.disconnect(); 
+
+        const iframes = document.querySelectorAll('iframe.smart-iframe');
+
+        iframes.forEach(function (iframe) {
+            const fileUrl = iframe.getAttribute('data-blob-src');
+            if (!fileUrl) return;
+
+            // ساخت کانتینر لودینگ و پروگرس بار (دقیقاً مشابه کد قبلی)
+            const wrapper = document.createElement('div');
+            wrapper.className = 'smart-iframe-wrapper';
+            wrapper.style.width = iframe.getAttribute('width') || iframe.style.width || '100%';
+            wrapper.style.height = iframe.getAttribute('height') || iframe.style.height || '500px';
+
+            const loader = document.createElement('div');
+            loader.className = 'smart-iframe-loader';
+
+            const text = document.createElement('div');
+            text.className = 'smart-iframe-text';
+            text.innerText = 'در حال دریافت فایل... 0%';
+
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'smart-progress-container';
+
+            const progressBar = document.createElement('div');
+            progressBar.className = 'smart-progress-bar';
+
+            progressContainer.appendChild(progressBar);
+            loader.appendChild(text);
+            loader.appendChild(progressContainer);
+            
+            iframe.parentNode.insertBefore(wrapper, iframe);
+            wrapper.appendChild(iframe);
+            wrapper.appendChild(loader);
+            
+            iframe.style.opacity = '1'; // نمایش مجدد آی‌فریم
+
+            // شروع فرآیند دانلود
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', fileUrl, true);
+            xhr.responseType = 'blob';
+
+            xhr.onprogress = function (event) {
+                if (event.lengthComputable) {
+                    const percentComplete = Math.round((event.loaded / event.total) * 100);
+                    progressBar.style.width = percentComplete + '%';
+                    text.innerText = 'در حال دریافت فایل... ' + percentComplete + '%';
+                } else {
+                    progressBar.style.width = '100%';
+                    text.innerText = 'در حال دریافت فایل...';
+                }
+            };
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    text.innerText = 'آماده‌سازی فایل...';
+                    const blob = xhr.response;
+                    const objectUrl = URL.createObjectURL(blob);
+                    
+                    // حالا فایل را با لینک محلی به آی‌فریم می‌دهیم
+                    iframe.src = objectUrl;
+
+                    setTimeout(() => {
+                        loader.style.opacity = '0';
+                        setTimeout(() => { loader.style.display = 'none'; }, 400);
+                    }, 500);
+                } else {
+                    text.innerText = 'خطا در دریافت فایل!';
+                    text.style.color = 'red';
+                }
+            };
+            xhr.send();
+        });
+    });
+})();
+</script>
+<style>
+  /* کانتینر نگهدارنده آی‌فریم و لودینگ */
+.smart-iframe-wrapper {
+    position: relative;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+}
+
+/* لایه لودینگ که روی آی‌فریم قرار می‌گیرد */
+.smart-iframe-loader {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    font-family: Tahoma, Arial, sans-serif;
+    transition: opacity 0.4s ease;
+}
+
+/* متن درصد و وضعیت */
+.smart-iframe-text {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    direction: rtl;
+}
+
+/* نوار پیشرفت خالی */
+.smart-progress-container {
+    width: 60%;
+    max-width: 400px;
+    height: 12px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* قسمت پر شونده نوار پیشرفت */
+.smart-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    border-radius: 10px;
+    transition: width 0.1s linear;
+}
+
+</style>
 <style>
 /* ==================== SVG Icons ==================== */
 .svg-icon { width: 20px; height: 20px; flex-shrink: 0; }
