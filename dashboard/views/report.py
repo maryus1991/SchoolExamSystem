@@ -23,7 +23,7 @@ class SecontReportList(LoginRequiredMixin, ListView):
  
         context = {
             'count_good_result': self.queryset.filter(Q(status=Report.ReportStatus.good)|Q(status=Report.ReportStatus.excellent)).count(),
-            'percent_avg': (sum(queryset_list) // (len(queryset_list) * 100))*100 ,
+            'percent_avg': (sum(list(queryset_list)) // ((len(list(queryset_list)) if len(list(queryset_list))>0 else 0.01  ) * 100))*100 ,
             'grade':       GradeCategories.objects.filter(is_active=True).all(),
             'lession':   LessionCategories.objects.filter(is_active=True).all(),
             'major':       MajorCategories.objects.filter(is_active=True).all(),
@@ -43,15 +43,15 @@ class ThirdReport(LoginRequiredMixin, TemplateView):
         score_list = list(user_reports.values_list('score', flat=True))
 
 
-        context["avg_percent"] = sum(percents_list) / len(percents_list)
-        context["avg_score"] = sum(score_list) / len(score_list)
+        context["avg_percent"] = sum(percents_list) / len(percents_list) if len(percents_list) > 0 else 1
+        context["avg_score"] = sum(score_list) / len(score_list) if len(score_list) > 0 else 1
         
-        context["best_percent"] = max(percents_list)
-        context["best_order"] = user_reports.order_by('-order').first().order 
-        context["best_teraze"] = user_reports.order_by('-teraze').first().teraze
-        context["best_score"] = max(score_list)
+        context["best_order"] = user_reports.order_by('-order').first().order if user_reports else 0  
+        context["best_teraze"] = user_reports.order_by('-teraze').first().teraze if user_reports else 0
+        context["best_percent"] = max(percents_list) if len(percents_list) > 0 else 0 
+        context["best_score"] = max(score_list) if len(score_list) > 0 else 0
 
-        context["report_list"] = user_reports.order_by('-pk').annotate(teraze_avg=Avg('teraze')).all()[:25]
+        context["report_list"] = user_reports.order_by('-pk').annotate(teraze_avg=Avg('teraze')).all()[:25] 
   
         return context
     

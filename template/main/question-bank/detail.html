@@ -154,532 +154,514 @@
   </div>
 </nav>
   
-  <div class="container py-5">
+<div class="container py-5">
     <div class="row g-4">
-      <!-- Main Content -->
-      <div class="col-lg-8">
-        <!-- Question Card -->
-        <div class="question-card" style="
-          background: var(--bg-card);
-          border: 1px solid var(--border-color);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-          margin-bottom: 24px;
-        ">
-          <!-- Badges -->
-          <div class="d-flex flex-wrap gap-2 mb-4">
-            <span class="badge-custom badge-info">{{ item.category.name }}</span>
-            <span class="badge-custom badge-warning">{{ item.possible.name }}</span>
-            <span class="badge-custom badge-muted">{{ item.type_of_question }}</span>
-          </div>
-          
-          <!-- Question Title -->
-          <h5 class="fw-700 mb-3" style="color: var(--text-primary);">متن سوال</h5>
-          
-          <!-- Question Text -->
-          <div class="content-box" style="
-            background: var(--bg-secondary);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            margin-bottom: 24px;
-            line-height: 2;
-            font-size: 1rem;
-            color: var(--text-primary);
-          ">
-            {{ item.name }}
-          </div>
-          
-          <!-- Question Description -->
-          {% if item.description %}
-          <div class="content-box" style="
-            background: var(--bg-secondary);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            margin-bottom: 24px;
-            line-height: 2;
-            font-size: 1rem;
-            color: var(--text-primary);
-          ">
-            {{ item.description|safe }}
-          </div>
-          {% endif %}
-          
-          <!-- Question Image -->
-          {% if item.image %}
-          <div class="media-container mb-4">
-            <div class="media-wrapper" style="
-              background: var(--bg-secondary);
-              border-radius: var(--radius-md);
-              padding: 16px;
-              display: inline-block;
-              max-width: 100%;
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Question Card -->
+            <div class="question-card" style="
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-lg);
+                padding: 24px;
+                margin-bottom: 24px;
             ">
-              <picture>
-                <source srcset="{{ item.image.url }}" type="image/webp">
-                <img 
-                  src="{{ item.image.url }}" 
-                  alt="{{ item.title }}" 
-                  style="
-                    max-width: 100%;
-                    height: auto;
-                    border-radius: var(--radius-sm);
-                    display: block;
-                  "
-                  loading="lazy"
-                >
-              </picture>
-            </div>
-          </div>
-          {% endif %}
-          
-          <!-- Question PDF -->
-          {% if item.pdf_file %}
-          <div class="pdf-container mb-4">
-            <div class="pdf-wrapper" style="
-              background: var(--bg-secondary);
-              border-radius: var(--radius-md);
-              padding: 16px;
-            ">
-              <div class="pdf-header d-flex align-items-center gap-2 mb-3">
-                <i class="bi bi-file-earmark-pdf-fill" style="color: var(--danger-500); font-size: 1.5rem;"></i>
-                <span style="color: var(--text-primary); font-weight: 600;">فایل پیوستی سوال</span>
-              </div>
-              <iframe 
-                src="{{ item.pdf_file.url }}" 
-                style="
-                  width: 100%;
-                  height: 500px;
-                  border: 1px solid var(--border-color);
-                  border-radius: var(--radius-sm);
-                  background: white;
-                "
-                loading="lazy"
-              >
-              </iframe>
-              <a 
-                href="{{ item.pdf_file.url }}" 
-                target="_blank"
-                class="btn btn-outline-primary mt-2"
-                style="
-                  display: inline-flex;
-                  align-items: center;
-                  gap: 8px;
-                  color: var(--primary-600);
-                  border-color: var(--primary-600);
-                "
-              >
-                <i class="bi bi-download"></i>
-                دانلود فایل PDF
-              </a>
-            </div>
-          </div>
-          {% endif %}
-          
-          <!-- Options -->
-          {% if item.has_options %}
-          <div class="options-container mt-4">
-            <h6 class="fw-700 mb-3" style="color: var(--text-primary);">گزینه‌ها</h6>
-            <div class="d-flex flex-column gap-3">
-              {% for option in item.options.all %}
-              <div 
-                class="option-item {% if option.is_correct %}correct{% endif %}" 
-                style="
-                  display: flex;
-                  align-items: flex-start;
-                  gap: 12px;
-                  padding: 16px;
-                  background: var(--bg-secondary);
-                  border: 2px solid var(--border-color);
-                  border-radius: var(--radius-md);
-                  transition: var(--transition);
-                  {% if option.is_correct %}
-                  border-color: var(--accent-500);
-                  background: rgba(16, 185, 129, 0.08);
-                  {% endif %}
-                "
-              >
-                <span 
-                  class="option-letter" 
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 32px;
-                    height: 32px;
-                    border-radius: 50%;
-                    background: var(--bg-card);
-                    border: 2px solid var(--border-color);
-                    font-weight: 700;
-                    font-size: 0.875rem;
-                    flex-shrink: 0;
-                    {% if option.is_correct %}
-                    border-color: var(--accent-500);
-                    background: var(--accent-500);
-                    color: white;
-                    {% endif %}
-                  "
-                >
-                  {{ option.id }}
-                </span>
-                <span class="option-text" style="
-                  flex: 1;
-                  color: var(--text-primary);
-                  line-height: 1.6;
-                  {% if option.is_correct %}
-                  color: var(--accent-500);
-                  font-weight: 600;
-                  {% endif %}
+                <!-- Badges -->
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <span class="badge-custom badge-info">{{ item.category.name }}</span>
+                    <span class="badge-custom badge-warning">{{ item.possible.name }}</span>
+                    <span class="badge-custom badge-muted">{{ item.type_of_question }}</span>
+                </div>
+
+                <!-- Question Title -->
+                <h5 class="fw-700 mb-3" style="color: var(--text-primary);">متن سوال</h5>
+
+                <!-- Question Text -->
+                <div class="content-box" style="
+                    background: var(--bg-secondary);
+                    border-radius: var(--radius-md);
+                    padding: 20px;
+                    margin-bottom: 24px;
+                    line-height: 2;
+                    font-size: 1rem;
+                    color: var(--text-primary);
                 ">
-                  {{ option.text }}
-                  {% if option.is_correct %}
-                  <i class="bi bi-check-circle-fill ms-2" style="color: var(--accent-500);"></i>
-                  {% endif %}
-                </span>
-              </div>
-              {% endfor %}
+                    {{ item.name }}
+                </div>
+
+                <!-- Question Description -->
+                {% if item.description %}
+                <div class="content-box" style="
+                    background: var(--bg-secondary);
+                    border-radius: var(--radius-md);
+                    padding: 20px;
+                    margin-bottom: 24px;
+                    line-height: 2;
+                    font-size: 1rem;
+                    color: var(--text-primary);
+                ">
+                    {{ item.description|safe }}
+                </div>
+                {% endif %}
+
+                <!-- Question Image -->
+                {% if item.image %}
+                <div class="media-container mb-4">
+                    <div class="media-wrapper" style="
+                        background: var(--bg-secondary);
+                        border-radius: var(--radius-md);
+                        padding: 16px;
+                        display: inline-block;
+                        max-width: 100%;
+                    ">
+                        <picture>
+                            <source srcset="{{ item.image.url }}" type="image/webp">
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}" style="
+                                max-width: 100%;
+                                height: auto;
+                                border-radius: var(--radius-sm);
+                                display: block;
+                            " loading="lazy">
+                        </picture>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Question PDF -->
+                {% if item.pdf_file %}
+                <div class="pdf-container mb-4">
+                    <div class="pdf-wrapper" style="
+                        background: var(--bg-secondary);
+                        border-radius: var(--radius-md);
+                        padding: 16px;
+                    ">
+                        <div class="pdf-header d-flex align-items-center gap-2 mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="var(--danger-500)" viewBox="0 0 16 16">
+                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                                <path d="M4.603 14.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.697 19.697 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.126-.97-.176-1.71-.176-2.066 0-.368.06-.648.177-.84.118-.19.3-.306.553-.36.635-.13 1.482-.13 2.302 0 .252.054.435.17.553.36.118.192.177.472.177.84 0 .356-.05.996-.176 2.066a7.26 7.26 0 0 1-.43 1.295 19.69 19.69 0 0 0 1.062 2.227c.37.219.7.48.897.787.21.326.275.714.08 1.102a.815.815 0 0 1-.438.42c-.492.196-1.71.33-3.2.33-1.49 0-2.708-.134-3.2-.33z"/>
+                            </svg>
+                            <span style="color: var(--text-primary); font-weight: 600;">فایل پیوستی سوال</span>
+                        </div>
+                        <iframe src="{{ item.pdf_file.url }}" style="
+                            width: 100%;
+                            height: 500px;
+                            border: 1px solid var(--border-color);
+                            border-radius: var(--radius-sm);
+                            background: white;
+                        " loading="lazy">
+                        </iframe>
+                        <a href="{{ item.pdf_file.url }}" target="_blank" class="btn btn-outline-primary mt-2" style="
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                            color: var(--primary-600);
+                            border-color: var(--primary-600);
+                        ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                            </svg>
+                            دانلود فایل PDF
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Options -->
+                {% if item.has_options %}
+                <div class="options-container mt-4">
+                    <h6 class="fw-700 mb-3" style="color: var(--text-primary);">گزینه‌ها</h6>
+                    <div class="d-flex flex-column gap-3">
+                        {% for option in item.options.all %}
+                        <div class="option-item {% if option.is_correct %}correct{% endif %}" style="
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 12px;
+                            padding: 16px;
+                            background: var(--bg-secondary);
+                            border: 2px solid var(--border-color);
+                            border-radius: var(--radius-md);
+                            transition: var(--transition);
+                            {% if option.is_correct %}
+                            border-color: var(--accent-500);
+                            background: rgba(16, 185, 129, 0.08);
+                            {% endif %}
+                        ">
+                            <span class="option-letter" style="
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 32px;
+                                height: 32px;
+                                border-radius: 50%;
+                                background: var(--bg-card);
+                                border: 2px solid var(--border-color);
+                                font-weight: 700;
+                                font-size: 0.875rem;
+                                flex-shrink: 0;
+                                {% if option.is_correct %}
+                                border-color: var(--accent-500);
+                                background: var(--accent-500);
+                                color: white;
+                                {% endif %}
+                            ">
+                                {{ option.id }}
+                            </span>
+                            <span class="option-text" style="
+                                flex: 1;
+                                color: var(--text-primary);
+                                line-height: 1.6;
+                                {% if option.is_correct %}
+                                color: var(--accent-500);
+                                font-weight: 600;
+                                {% endif %}
+                            ">
+                                {{ option.text }}
+                                {% if option.is_correct %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="var(--accent-500)" viewBox="0 0 16 16" style="margin-right: 8px; vertical-align: middle;">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
             </div>
-          </div>
-          {% endif %}
-        </div>
-        
-        <!-- Solution Card -->
-        <div class="solution-card" style="
-          background: var(--bg-card);
-          border: 1px solid var(--border-color);
-          border-right: 4px solid var(--accent-500);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-        ">
-          <h5 class="fw-700 mb-4" style="color: var(--text-primary);">
-            <i class="bi bi-lightbulb-fill me-2" style="color: var(--warm-500);"></i>
-            پاسخنامه
-          </h5>
-          
-          {% if item.answer_key.description %}
-          <div class="content-box" style="
-            background: var(--bg-secondary);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            margin-bottom: 24px;
-            line-height: 2;
-            font-size: 1rem;
-            color: var(--text-primary);
-          ">
-            {{ item.answer_key.description|safe }}
-          </div>
-          {% endif %}
-          
-          {% if item.answer_key.image %}
-          <div class="media-container mb-4">
-            <div class="media-wrapper" style="
-              background: var(--bg-secondary);
-              border-radius: var(--radius-md);
-              padding: 16px;
-              display: inline-block;
-              max-width: 100%;
+
+            <!-- Solution Card -->
+            <div class="solution-card" style="
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-right: 4px solid var(--accent-500);
+                border-radius: var(--radius-lg);
+                padding: 24px;
             ">
-              <picture>
-                <source srcset="{{ item.answer_key.image.url }}" type="image/webp">
-                <img 
-                  src="{{ item.answer_key.image.url }}" 
-                  alt="پاسخ سوال" 
-                  style="
-                    max-width: 100%;
-                    height: auto;
-                    border-radius: var(--radius-sm);
-                    display: block;
-                  "
-                  loading="lazy"
-                >
-              </picture>
+                <h5 class="fw-700 mb-4" style="color: var(--text-primary);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--warm-500)" viewBox="0 0 16 16" style="margin-left: 8px; vertical-align: middle;">
+                        <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                    پاسخنامه
+                </h5>
+
+                {% if item.answer_key.description %}
+                <div class="content-box" style="
+                    background: var(--bg-secondary);
+                    border-radius: var(--radius-md);
+                    padding: 20px;
+                    margin-bottom: 24px;
+                    line-height: 2;
+                    font-size: 1rem;
+                    color: var(--text-primary);
+                ">
+                    {{ item.answer_key.description|safe }}
+                </div>
+                {% endif %}
+
+                {% if item.answer_key.image %}
+                <div class="media-container mb-4">
+                    <div class="media-wrapper" style="
+                        background: var(--bg-secondary);
+                        border-radius: var(--radius-md);
+                        padding: 16px;
+                        display: inline-block;
+                        max-width: 100%;
+                    ">
+                        <picture>
+                            <source srcset="{{ item.answer_key.image.url }}" type="image/webp">
+                            <img src="{{ item.answer_key.image.url }}" alt="پاسخ سوال" style="
+                                max-width: 100%;
+                                height: auto;
+                                border-radius: var(--radius-sm);
+                                display: block;
+                            " loading="lazy">
+                        </picture>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if item.answer_key.pdf_file %}
+                <div class="pdf-container mb-4">
+                    <div class="pdf-wrapper" style="
+                        background: var(--bg-secondary);
+                        border-radius: var(--radius-md);
+                        padding: 16px;
+                    ">
+                        <div class="pdf-header d-flex align-items-center gap-2 mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="var(--danger-500)" viewBox="0 0 16 16">
+                                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                                <path d="M4.603 14.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.697 19.697 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.126-.97-.176-1.71-.176-2.066 0-.368.06-.648.177-.84.118-.19.3-.306.553-.36.635-.13 1.482-.13 2.302 0 .252.054.435.17.553.36.118.192.177.472.177.84 0 .356-.05.996-.176 2.066a7.26 7.26 0 0 1-.43 1.295 19.69 19.69 0 0 0 1.062 2.227c.37.219.7.48.897.787.21.326.275.714.08 1.102a.815.815 0 0 1-.438.42c-.492.196-1.71.33-3.2.33-1.49 0-2.708-.134-3.2-.33z"/>
+                            </svg>
+                            <span style="color: var(--text-primary); font-weight: 600;">فایل پاسخنامه</span>
+                        </div>
+                        <iframe src="{{ item.answer_key.pdf_file.url }}" style="
+                            width: 100%;
+                            height: 500px;
+                            border: 1px solid var(--border-color);
+                            border-radius: var(--radius-sm);
+                            background: white;
+                        " loading="lazy">
+                        </iframe>
+                        <a href="{{ item.answer_key.pdf_file.url }}" target="_blank" class="btn btn-outline-primary mt-2" style="
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                            color: var(--primary-600);
+                            border-color: var(--primary-600);
+                        ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1 1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                            </svg>
+                            دانلود پاسخنامه PDF
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
             </div>
-          </div>
-          {% endif %}
-          
-          {% if item.answer_key.pdf_file %}
-          <div class="pdf-container mb-4">
-            <div class="pdf-wrapper" style="
-              background: var(--bg-secondary);
-              border-radius: var(--radius-md);
-              padding: 16px;
-            ">
-              <div class="pdf-header d-flex align-items-center gap-2 mb-3">
-                <i class="bi bi-file-earmark-pdf-fill" style="color: var(--danger-500); font-size: 1.5rem;"></i>
-                <span style="color: var(--text-primary); font-weight: 600;">فایل پاسخنامه</span>
-              </div>
-              <iframe 
-                src="{{ item.answer_key.pdf_file.url }}" 
-                style="
-                  width: 100%;
-                  height: 500px;
-                  border: 1px solid var(--border-color);
-                  border-radius: var(--radius-sm);
-                  background: white;
-                "
-                loading="lazy"
-              >
-              </iframe>
-              <a 
-                href="{{ item.answer_key.pdf_file.url }}" 
-                target="_blank"
-                class="btn btn-outline-primary mt-2"
-                style="
-                  display: inline-flex;
-                  align-items: center;
-                  gap: 8px;
-                  color: var(--primary-600);
-                  border-color: var(--primary-600);
-                "
-              >
-                <i class="bi bi-download"></i>
-                دانلود پاسخنامه PDF
-              </a>
-            </div>
-          </div>
-          {% endif %}
         </div>
-      </div>
-      
-      <!-- Sidebar -->
-      <div class="col-lg-4">
-        <div class="sidebar-card" style="
-          background: var(--bg-card);
-          border: 1px solid var(--border-color);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-          position: sticky;
-          top: 100px;
-        ">
-          <h6 class="fw-700 mb-4" style="color: var(--text-primary);">اطلاعات سوال</h6>
-          
-          <!-- Timer -->
-          <div class="timer-box mb-4" style="
-            background: linear-gradient(135deg, var(--primary-600), var(--secondary-600));
-            border-radius: var(--radius-md);
-            padding: 20px;
-            text-align: center;
-          ">
-<!-- Timer Section -->
-<div class="timer-box mb-4" style="
-  background: linear-gradient(135deg, var(--primary-600), var(--secondary-600));
-  border-radius: var(--radius-md);
-  padding: 20px;
-  text-align: center;
-">
-  <div style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin-bottom: 8px;">زمان پیشنهادی حل</div>
-  
-  <!-- تایمر -->
-  <div class="timer-display" style="color: white; font-size: 2rem; font-weight: 700; font-family: monospace; margin-bottom: 16px;">
-    <span id="timer-minutes">{{ item.solving_time }}</span>:<span id="timer-seconds">00</span>
-  </div>
-  
-  <!-- دکمه‌های کنترل -->
-  <div class="timer-controls d-flex justify-content-center gap-2">
-    <button 
-      id="timer-start" 
-      onclick="startTimer()" 
-      class="btn-timer"
-      style="
-        background: rgba(255,255,255,0.2);
-        border: 1px solid rgba(255,255,255,0.3);
-        color: white;
-        padding: 8px 16px;
-        border-radius: var(--radius-sm);
-        cursor: pointer;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      "
-    >
-      <i class="bi bi-play-fill"></i> شروع
-    </button>
-    
-    <button 
-      id="timer-pause" 
-      onclick="pauseTimer()" 
-      class="btn-timer"
-      style="
-        background: rgba(255,255,255,0.2);
-        border: 1px solid rgba(255,255,255,0.3);
-        color: white;
-        padding: 8px 16px;
-        border-radius: var(--radius-sm);
-        cursor: pointer;
-        transition: var(--transition);
-        display: none;
-        align-items: center;
-        gap: 6px;
-      "
-    >
-      <i class="bi bi-pause-fill"></i> مکث
-    </button>
-    
-    <button 
-      id="timer-reset" 
-      onclick="resetTimer()" 
-      class="btn-timer"
-      style="
-        background: rgba(255,255,255,0.2);
-        border: 1px solid rgba(255,255,255,0.3);
-        color: white;
-        padding: 8px 16px;
-        border-radius: var(--radius-sm);
-        cursor: pointer;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      "
-    >
-      <i class="bi bi-arrow-counterclockwise"></i> ریست
-    </button>
-  </div>
-  
-  <!-- نوار پیشرفت -->
-  <div class="timer-progress mt-3" style="
-    height: 4px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 2px;
-    overflow: hidden;
-  ">
-    <div 
-      id="timer-progress-bar" 
-      style="
-        height: 100%;
-        background: white;
-        width: 100%;
-        transition: width 1s linear;
-      "
-    ></div>
-  </div>
-  
- 
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="sidebar-card" style="
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-lg);
+                padding: 24px;
+                position: sticky;
+                top: 100px;
+            ">
+                <h6 class="fw-700 mb-4" style="color: var(--text-primary);">اطلاعات سوال</h6>
+
+                <!-- Timer -->
+                <div class="timer-box mb-4" style="
+                    background: linear-gradient(135deg, var(--primary-600), var(--secondary-600));
+                    border-radius: var(--radius-md);
+                    padding: 20px;
+                    text-align: center;
+                ">
+                    <div style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin-bottom: 8px;">زمان پیشنهادی حل</div>
+
+                    <!-- تایمر -->
+                    <div class="timer-display" style="color: white; font-size: 2rem; font-weight: 700; font-family: monospace; margin-bottom: 16px;">
+                        <span id="timer-minutes">{{ item.solving_time }}</span>:<span id="timer-seconds">00</span>
+                    </div>
+
+                    <!-- دکمه‌های کنترل -->
+                    <div class="timer-controls d-flex justify-content-center gap-2">
+                        <button id="timer-start" onclick="startTimer()" class="btn-timer" style="
+                            background: rgba(255,255,255,0.2);
+                            border: 1px solid rgba(255,255,255,0.3);
+                            color: white;
+                            padding: 8px 16px;
+                            border-radius: var(--radius-sm);
+                            cursor: pointer;
+                            transition: var(--transition);
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                        ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                            </svg>
+                            شروع
+                        </button>
+
+                        <button id="timer-pause" onclick="pauseTimer()" class="btn-timer" style="
+                            background: rgba(255,255,255,0.2);
+                            border: 1px solid rgba(255,255,255,0.3);
+                            color: white;
+                            padding: 8px 16px;
+                            border-radius: var(--radius-sm);
+                            cursor: pointer;
+                            transition: var(--transition);
+                            display: none;
+                            align-items: center;
+                            gap: 6px;
+                        ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>
+                            </svg>
+                            مکث
+                        </button>
+
+                        <button id="timer-reset" onclick="resetTimer()" class="btn-timer" style="
+                            background: rgba(255,255,255,0.2);
+                            border: 1px solid rgba(255,255,255,0.3);
+                            color: white;
+                            padding: 8px 16px;
+                            border-radius: var(--radius-sm);
+                            cursor: pointer;
+                            transition: var(--transition);
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                        ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                            </svg>
+                            ریست
+                        </button>
+                    </div>
+
+                    <!-- نوار پیشرفت -->
+                    <div class="timer-progress mt-3" style="
+                        height: 4px;
+                        background: rgba(255,255,255,0.2);
+                        border-radius: 2px;
+                        overflow: hidden;
+                    ">
+                        <div id="timer-progress-bar" style="
+                            height: 100%;
+                            background: white;
+                            width: 100%;
+                            transition: width 1s linear;
+                        "></div>
+                    </div>
+                </div>
+
+                <!-- JavaScript تایمر -->
+                <script>
+                    // متغیرهای تایمر
+                    let totalSeconds = {{ item.solving_time }} * 60;
+                    let remainingSeconds = totalSeconds;
+                    let timerInterval = null;
+                    let isRunning = false;
+
+                    // المان‌ها
+                    const timerMinutes = document.getElementById('timer-minutes');
+                    const timerSeconds = document.getElementById('timer-seconds');
+                    const timerProgressBar = document.getElementById('timer-progress-bar');
+                    const btnStart = document.getElementById('timer-start');
+                    const btnPause = document.getElementById('timer-pause');
+                    const btnReset = document.getElementById('timer-reset');
+
+                    // بروزرسانی نمایش تایمر
+                    function updateTimerDisplay() {
+                        const minutes = Math.floor(remainingSeconds / 60);
+                        const seconds = remainingSeconds % 60;
+
+                        timerMinutes.textContent = minutes.toString().padStart(2, '0');
+                        timerSeconds.textContent = seconds.toString().padStart(2, '0');
+
+                        // بروزرسانی نوار پیشرفت
+                        const progress = (remainingSeconds / totalSeconds) * 100;
+                        timerProgressBar.style.width = progress + '%';
+                    }
+
+                    // شروع تایمر
+                    function startTimer() {
+                        if (remainingSeconds <= 0) {
+                            resetTimer();
+                            return;
+                        }
+
+                        if (!isRunning) {
+                            isRunning = true;
+
+                            // تغییر دکمه‌ها
+                            btnStart.style.display = 'none';
+                            btnPause.style.display = 'flex';
+
+                            timerInterval = setInterval(() => {
+                                remainingSeconds--;
+                                updateTimerDisplay();
+
+                                if (remainingSeconds <= 0) {
+                                    clearInterval(timerInterval);
+                                    isRunning = false;
+                                    btnPause.style.display = 'none';
+                                    btnStart.style.display = 'flex';
+                                    btnStart.innerHTML = `
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-left: 4px;">
+                                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                        </svg>
+                                        شروع مجدد
+                                    `;
+
+                                    // صدای آلارم (اختیاری)
+                                    // new Audio('/path/to/alarm.mp3').play();
+                                }
+                            }, 1000);
+                        }
+                    }
+
+                    // مکث تایمر
+                    function pauseTimer() {
+                        if (isRunning) {
+                            clearInterval(timerInterval);
+                            isRunning = false;
+
+                            // تغییر دکمه‌ها
+                            btnPause.style.display = 'none';
+                            btnStart.style.display = 'flex';
+                            btnStart.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                                </svg>
+                                ادامه
+                            `;
+                        }
+                    }
+
+                    // ریست تایمر
+                    function resetTimer() {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        remainingSeconds = totalSeconds;
+
+                        updateTimerDisplay();
+
+                        // ریست دکمه‌ها
+                        btnStart.style.display = 'flex';
+                        btnPause.style.display = 'none';
+                        btnStart.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                            </svg>
+                            شروع
+                        `;
+                    }
+
+                    // هاور دکمه‌ها
+                    document.querySelectorAll('.btn-timer').forEach(btn => {
+                        btn.addEventListener('mouseenter', () => {
+                            btn.style.background = 'rgba(255,255,255,0.3)';
+                        });
+                        btn.addEventListener('mouseleave', () => {
+                            btn.style.background = 'rgba(255,255,255,0.2)';
+                        });
+                    });
+                </script>
+
+                <!-- Info List -->
+                <div class="info-list d-flex flex-column gap-3" style="font-size: 0.9rem;">
+                    <div class="info-item d-flex justify-content-between">
+                        <span style="color: var(--text-muted);">درس:</span>
+                        <span style="color: var(--text-primary); font-weight: 600;">{{ item.category.name }}</span>
+                    </div>
+                    <div class="info-item d-flex justify-content-between">
+                        <span style="color: var(--text-muted);">مبحث:</span>
+                        <span style="color: var(--text-primary); font-weight: 600;">{{ item.lesson }}</span>
+                    </div>
+                    <div class="info-item d-flex justify-content-between">
+                        <span style="color: var(--text-muted);">سطح:</span>
+                        <span class="badge-custom badge-warning">متوسط</span>
+                    </div>
+                    <div class="info-item d-flex justify-content-between">
+                        <span style="color: var(--text-muted);">بازدید:</span>
+                        <span style="color: var(--text-primary); font-weight: 600;">{{ item.views_counts }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- JavaScript تایمر -->
-<script>
-  // متغیرهای تایمر
-  let totalSeconds = {{ item.solving_time }} * 60;
-  let remainingSeconds = totalSeconds;
-  let timerInterval = null;
-  let isRunning = false;
-  
-  // المان‌ها
-  const timerMinutes = document.getElementById('timer-minutes');
-  const timerSeconds = document.getElementById('timer-seconds');
-  const timerProgressBar = document.getElementById('timer-progress-bar');
-  const btnStart = document.getElementById('timer-start');
-  const btnPause = document.getElementById('timer-pause');
-  const btnReset = document.getElementById('timer-reset');
-  
-  // بروزرسانی نمایش تایمر
-  function updateTimerDisplay() {
-    const minutes = Math.floor(remainingSeconds / 60);
-    const seconds = remainingSeconds % 60;
-    
-    timerMinutes.textContent = minutes.toString().padStart(2, '0');
-    timerSeconds.textContent = seconds.toString().padStart(2, '0');
-    
-    // بروزرسانی نوار پیشرفت
-    const progress = (remainingSeconds / totalSeconds) * 100;
-    timerProgressBar.style.width = progress + '%';
-  }
-  
-  // شروع تایمر
-  function startTimer() {
-    if (remainingSeconds <= 0) {
-      resetTimer();
-      return;
-    }
-    
-    if (!isRunning) {
-      isRunning = true;
-       
-      // تغییر دکمه‌ها
-      btnStart.style.display = 'none';
-      btnPause.style.display = 'flex';
-      
-      timerInterval = setInterval(() => {
-        remainingSeconds--;
-        updateTimerDisplay();
-        
-        if (remainingSeconds <= 0) {
-          clearInterval(timerInterval);
-          isRunning = false;
-           btnPause.style.display = 'none';
-          btnStart.style.display = 'flex';
-          btnStart.innerHTML = '<i class="bi bi-arrow-clockwise"></i> شروع مجدد';
-          
-          // صدای آلارم (اختیاری)
-          // new Audio('/path/to/alarm.mp3').play();
-        }
-      }, 1000);
-    }
-  }
-  
-  // مکث تایمر
-  function pauseTimer() {
-    if (isRunning) {
-      clearInterval(timerInterval);
-      isRunning = false;
-       
-      // تغییر دکمه‌ها
-      btnPause.style.display = 'none';
-      btnStart.style.display = 'flex';
-      btnStart.innerHTML = '<i class="bi bi-play-fill"></i> ادامه';
-    }
-  }
-  
-  // ریست تایمر
-  function resetTimer() {
-    clearInterval(timerInterval);
-    isRunning = false;
-    remainingSeconds = totalSeconds;
-    
-    updateTimerDisplay();
-     
-    // ریست دکمه‌ها
-    btnStart.style.display = 'flex';
-    btnPause.style.display = 'none';
-    btnStart.innerHTML = '<i class="bi bi-play-fill"></i> شروع';
-  }
-  
-  // هاور دکمه‌ها
-  document.querySelectorAll('.btn-timer').forEach(btn => {
-    btn.addEventListener('mouseenter', () => {
-      btn.style.background = 'rgba(255,255,255,0.3)';
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.background = 'rgba(255,255,255,0.2)';
-    });
-  });
-</script>
-          </div>
-          
-          <!-- Info List -->
-          <div class="info-list d-flex flex-column gap-3" style="font-size: 0.9rem;">
-            <div class="info-item d-flex justify-content-between">
-              <span style="color: var(--text-muted);">درس:</span>
-              <span style="color: var(--text-primary); font-weight: 600;">{{ item.category.name }}</span>
-            </div>
-            <div class="info-item d-flex justify-content-between">
-              <span style="color: var(--text-muted);">مبحث:</span>
-              <span style="color: var(--text-primary); font-weight: 600;">{{ item.lesson }}</span>
-            </div>
-            <div class="info-item d-flex justify-content-between">
-              <span style="color: var(--text-muted);">سطح:</span>
-              <span class="badge-custom badge-warning">متوسط</span>
-            </div>
-            <div class="info-item d-flex justify-content-between">
-              <span style="color: var(--text-muted);">بازدید:</span>
-              <span style="color: var(--text-primary); font-weight: 600;">{{ item.views_counts }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
 </div>
 
 <!-- استایل‌های اضافی -->

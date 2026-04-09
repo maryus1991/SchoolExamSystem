@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='site',
             name='copyright',
-            field=models.CharField(default='© 1405 سورنا . تمام حقوق محفوظ است.', max_length=255, verbose_name='متن کپی رایت'),
+            field=models.CharField(default='© 1405 سرنا . تمام حقوق محفوظ است.', max_length=255, verbose_name='متن کپی رایت'),
         ),
         migrations.AddField(
             model_name='site',

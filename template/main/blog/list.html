@@ -180,7 +180,9 @@
         color: var(--text-muted);
         flex-shrink: 0;
       ">
-        <i class="bi bi-search" style="font-size: 1.1rem;"></i>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" style="font-size: 1.1rem; width: 1.1rem; height: 1.1rem;">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>
       </div>
       
       <!-- فیلد ورودی -->
@@ -220,7 +222,9 @@
           transition: var(--transition);
         "
       >
-        <i class="bi bi-arrow-left"></i>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
       </button>
     </div>
   </form>
@@ -328,7 +332,10 @@
               font-size: 0.8rem;
               color: var(--text-muted);
             ">
-              <i class="bi bi-clock" style="color: var(--primary-500);"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16" style="color: var(--primary-500);">
+                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+              </svg>
               {{ item.time_to_read_minutes }} دقیقه
             </span>
             
@@ -342,7 +349,9 @@
               transition: var(--transition-fast);
             ">
               ادامه مطلب
-              <i class="bi bi-arrow-left" style="font-size: 0.75rem;"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16" style="font-size: 0.75rem; width: 0.75rem; height: 0.75rem;">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+              </svg>
             </span>
           </div>
         </div>
@@ -359,12 +368,9 @@
       border: 1px dashed var(--border-color);
       border-radius: var(--radius-lg);
     ">
-      <i class="bi bi-inbox" style="
-        font-size: 4rem;
-        color: var(--text-muted);
-        margin-bottom: 16px;
-        display: block;
-      "></i>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-inbox" viewBox="0 0 16 16" style="font-size: 4rem; width: 4rem; height: 4rem; color: var(--text-muted); margin-bottom: 16px; display: block; margin-left: auto; margin-right: auto;">
+        <path d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4H4.98zm-1.17-.437A1.5 1.5 0 0 1 4.98 3h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.311l-.001 5.51A2.001 2.001 0 0 1 13.996 16H2.004a2.001 2.001 0 0 1-2.004-2.001V8.5a.5.5 0 0 1 .1-.311l3.7-4.626zM2 8.5v5.496a1 1 0 0 0 1.004 1h10.992a1 1 0 0 0 1.004-1V8.5H10.5a.5.5 0 0 1-.5.5 2.5 2.5 0 0 1-5 0 .5.5 0 0 1-.5-.5H2z"/>
+      </svg>
       <h4 style="
         color: var(--text-secondary);
         font-weight: 600;
@@ -381,6 +387,8 @@
   </div>
   {% endfor %}
 </div>
+  </div>
+
 
 <!-- استایل‌های هاور و انیمیشن -->
 <style>

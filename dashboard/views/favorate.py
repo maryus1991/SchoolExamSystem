@@ -9,13 +9,17 @@ class FavorateQuestionList(LoginRequiredMixin, ListView):
     template_name = 'dashboard/favorate/09-question-list.html'
     context_object_name = 'items'
     paginate_by = 50
+    allow_empty = True
 
     def get_queryset(self):
-        if query := self.request.GET.get('q'):
-            return self.request.user.favorate.qbank.filter(is_active=True).filter(
-            Q(name__contains=query)                 
-            ).all()
-        return self.request.user.favorate.qbank.filter(is_active=True).prefetch_related('category', 'possible').all()
+        try:
+            if query := self.request.GET.get('q'):
+                return self.request.user.favorate.qbank.filter(is_active=True).filter(
+                Q(name__contains=query)                 
+                ).all()
+            return self.request.user.favorate.qbank.filter(is_active=True).prefetch_related('category', 'possible').all()
+        except:
+            return []
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -26,25 +30,27 @@ class FavorateBlogList(LoginRequiredMixin, ListView):
     template_name = 'dashboard/favorate/09-blog-list.html'
     context_object_name = 'items'
     paginate_by = 50
-
+    allow_empty = True
 
     
     def get_queryset(self):
-        if query := self.request.GET.get('q'):
-            return self.request.user.favorate.blog.filter(is_active=True).filter(
-            Q(title__contains=query)|                                              
-            Q(category__contains=query)|                                              
-            Q(short_content__contains=query)|                                              
-            Q(content__contains=query)                                              
-            ).all()
-        return self.request.user.favorate.blog.filter(is_active=True).all()
-
+        try:
+            if query := self.request.GET.get('q'):
+                return self.request.user.favorate.blog.filter(is_active=True).filter(
+                Q(title__contains=query)|                                              
+                Q(category__contains=query)|                                              
+                Q(short_content__contains=query)|                                              
+                Q(content__contains=query)                                              
+                ).all()
+            return self.request.user.favorate.blog.filter(is_active=True).all()
+        except:
+            return []
 
 class FavorateQuizList(LoginRequiredMixin, ListView):
     template_name = 'dashboard/favorate/09-quiz-list.html'
     context_object_name = 'items'
     paginate_by = 50
-
+    allow_empty = True
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -52,10 +58,13 @@ class FavorateQuizList(LoginRequiredMixin, ListView):
         return data
         
     def get_queryset(self):
-        if query := self.request.GET.get('q'):
-            return self.request.user.favorate.quiz.filter(is_active=True).filter(
-            Q(name__contains=query)                 
-            ).all()
-        return self.request.user.favorate.quiz.filter(is_active=True).prefetch_related('grade').all()
+        try:
+            if query := self.request.GET.get('q'):
+                return self.request.user.favorate.quiz.filter(is_active=True).filter(
+                Q(name__contains=query)                 
+                ).all()
+            return self.request.user.favorate.quiz.filter(is_active=True).prefetch_related('grade').all()
+        except:
+            return []
 
  

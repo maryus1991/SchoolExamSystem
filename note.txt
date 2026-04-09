@@ -3,7 +3,7 @@
  
 
 phase 1 todo list
-    
+    fix the icons
 
 phase 2 todo list
  

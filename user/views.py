@@ -193,7 +193,7 @@ class LoginWithPassword(View):
             elif user.is_staff and user.type_of_user == User.TypeOfUser.SANATORUM:
                 return redirect('sanatorium:main')
             elif user.is_superuser and user.type_of_user == User.TypeOfUser.ADMIN:
-                return redirect('sanatorium:main')
+                return redirect('admin-panel:main')
                 
             return redirect('dashboard:main')
 

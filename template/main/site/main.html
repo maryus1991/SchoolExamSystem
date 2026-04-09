@@ -10,143 +10,7 @@
 <div class="page-section active w-100" id="page-landing">
 
   <!-- Navbar -->
-<nav class="main-navbar navbar navbar-expand-lg auto-scroll">
-  <div class="container">
-    <!-- Brand/Logo -->
-    <div class="d-flex align-items-center gap-2">
-      <div class="navbar-brand-logo">
-        <picture>
-          <img src="{% url 'site:favicon' %}" 
-               alt="سورنا"
-               width="40"
-               height="40"
-               loading="eager"
-               decoding="async"
-               class="site-logo">
-        </picture>
-      </div>
-      <span class="navbar-brand-text ">  سورنا</span>
-    </div>
 
-    <!-- Mobile Toggle Button -->
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
-            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-      <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-      </svg>
-    </button>
-
-    <!-- Collapsible Content -->
-    <div class="collapse navbar-collapse" id="navbarContent">
-      <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between w-100 gap-3 gap-lg-0">
-        
-        <!-- Navigation Links -->
-        <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-4">
-          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'quiz:list' %}">آزمون‌ها</a>
-          {% if site.active_qbank %}
-          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'qbank:list' %}">بانک سوال</a>
-          {% endif %}
-          {% if site.active_blog %}
-          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'blog:list' %}">مقالات</a>
-          {% endif %}
-          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'site:about' %}">درباره ما</a>
-          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'site:contact' %}">تماس</a>
-                   
-              {% if user.is_authenticated %}
-    
-                  <a class="nav-link-custom btn text-start text-lg-center d-lg-none" href="{% url 'dashboard:main' %}">
- 
-                    داشبورد
-                  </a>
- 
-                  <a class="nav-link-custom btn text-start text-lg-center d-lg-none" href="{% url 'dashboard:order-list' %}">
-   
-                    سبد خرید
-                  </a>
-            
-                
-                {% if user.is_superuser %}
-                  {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
-            
-                      <a class="  btn text-start text-lg-center text-primary d-lg-none" href="{% url 'admin-panel:main' %}">
-       
-                        داشبورد ادمین
-                      </a>
-                 
-                  {% endif %}
-                {% endif %}
-                
-                {% if user.is_staff and user.type_of_user == 'S' %}
-               
-                    <a class=" btn text-start text-warning text-lg-center d-lg-none" href="{% url 'sanatorium:main' %}">
- 
-                      داشبورد مصحح
-                    </a>
-               
-                {% endif %}
-                
-               <hr class="dropdown-divider"> 
-           
-                  <a class="btn    text-lg-center d-lg-none text-danger" href="{% url 'user:logout' %}">
- 
-                    خروج
-                  </a>
-              
-              {% else %}
-              
-                  <a class=" btn text-info text-start text-lg-center d-lg-none" href="{% url 'user:login' %}">
- 
-                    ورود
-                  </a>
-     
-                  <a class="nav-link-custom btn text-start text-lg-center d-lg-none" href="{% url 'user:register' %}">
- 
-                    ثبت نام
-                  </a>
-                 
-              {% endif %}
-             
-        </div>
-
-        <!-- Right Side Items -->
-        <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-3">
-          <!-- Theme Toggle -->
-          <div class="theme-toggle" onclick="toggleTheme()">
-            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
-            </svg>
-            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M9.37 5.51c-.18.64-.27 1.31-.27 1.99 0 4.08 3.32 7.4 7.4 7.4.68 0 1.35-.09 1.99-.27C17.45 17.19 14.93 19 12 19c-3.86 0-7-3.14-7-7 0-2.93 1.81-5.45 4.37-6.49zM12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4C12.92 3.04 12.46 3 12 3z"/>
-            </svg>
-          </div>
-
-          <!-- User Section - Desktop -->
-          <div class="d-none d-lg-flex  flex-column flex-lg-row align-items-start align-items-lg-center gap-2">
-            {% if user.is_authenticated %}
-              <a class="btn-outline-custom btn btn-sm text-lg-center" href="{% url 'dashboard:main' %}">داشبورد</a>
-              <a class="btn-outline-custom btn btn-sm text-lg-center" href="{% url 'dashboard:order-list' %}">سبد خرید</a>
-              
-              {% if user.is_superuser %}
-                {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
-                  <a class="btn-outline-custom btn btn-sm text-start text-lg-center" href="{% url 'admin-panel:main' %}">داشبورد ادمین</a>
-                {% endif %}
-              {% endif %}
-              
-              {% if user.is_staff and user.type_of_user == 'S' %}
-                <a class="btn-outline-custom btn btn-sm text-start text-lg-center" href="{% url 'sanatorium:main' %}">داشبورد مصحح</a>
-              {% endif %}
-            {% else %}
-              <a class="btn-outline-custom btn-sm text-sm text-lg-center" href="{% url 'user:login' %}">ورود</a>
-              <a class="btn-primary-gradient btn-sm text-sm text-lg-center text-decoration-none" href="{% url 'user:register' %}">ثبت نام</a>
-            {% endif %}
-          </div>
-
- 
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
 
 <style>
 /* Base Navbar Styles */
@@ -468,7 +332,142 @@ function updateThemeIcons(theme) {
 document.addEventListener('DOMContentLoaded', initTheme);
 </script>
 
+<nav class="main-navbar navbar navbar-expand-lg auto-scroll">
+  <div class="container">
+    <!-- Brand/Logo -->
+    <div class="d-flex align-items-center gap-2">
+      <div class="navbar-brand-logo">
+        <picture>
+          <img src="{% url 'site:favicon' %}" 
+               alt="سرنا"
+               width="40"
+               height="40"
+               loading="eager"
+               decoding="async"
+               class="site-logo">
+        </picture>
+      </div>
+      <span class="navbar-brand-text ">  سرنا</span>
+    </div>
 
+    <!-- Mobile Toggle Button -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+      </svg>
+    </button>
+
+    <!-- Collapsible Content -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between w-100 gap-3 gap-lg-0">
+        
+        <!-- Navigation Links -->
+        <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-4">
+          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'quiz:list' %}">آزمون‌ها</a>
+          {% if site.active_qbank %}
+          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'qbank:list' %}">بانک سوال</a>
+          {% endif %}
+          {% if site.active_blog %}
+          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'blog:list' %}">مقالات</a>
+          {% endif %}
+          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'site:about' %}">درباره ما</a>
+          <a class="nav-link-custom btn text-start text-lg-center" href="{% url 'site:contact' %}">تماس</a>
+                   
+              {% if user.is_authenticated %}
+    
+                  <a class="nav-link-custom btn text-start text-lg-center d-lg-none" href="{% url 'dashboard:main' %}">
+ 
+                    داشبورد
+                  </a>
+ 
+                  <a class="nav-link-custom btn text-start text-lg-center d-lg-none" href="{% url 'dashboard:order-list' %}">
+   
+                    سبد خرید
+                  </a>
+            
+                
+                {% if user.is_superuser %}
+                  {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
+            
+                      <a class="  btn text-start text-lg-center text-primary d-lg-none" href="{% url 'admin-panel:main' %}">
+       
+                        داشبورد ادمین
+                      </a>
+                 
+                  {% endif %}
+                {% endif %}
+                
+                {% if user.is_staff and user.type_of_user == 'S' %}
+               
+                    <a class=" btn text-start text-warning text-lg-center d-lg-none" href="{% url 'sanatorium:main' %}">
+ 
+                      داشبورد مصحح
+                    </a>
+               
+                {% endif %}
+                
+               <hr class="dropdown-divider"> 
+           
+                  <a class="btn    text-lg-center d-lg-none text-danger" href="{% url 'user:logout' %}">
+ 
+                    خروج
+                  </a>
+              
+              {% else %}
+              
+                  <a class=" btn text-info text-start text-lg-center d-lg-none" href="{% url 'user:login' %}">
+ 
+                    ورود
+                  </a>
+     
+                  <a class="nav-link-custom btn text-start text-lg-center d-lg-none" href="{% url 'user:register' %}">
+ 
+                    ثبت نام
+                  </a>
+                 
+              {% endif %}
+             
+        </div>
+
+        <!-- Right Side Items -->
+        <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-3">
+          <!-- Theme Toggle -->
+          <div class="theme-toggle" onclick="toggleTheme()">
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
+            </svg>
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9.37 5.51c-.18.64-.27 1.31-.27 1.99 0 4.08 3.32 7.4 7.4 7.4.68 0 1.35-.09 1.99-.27C17.45 17.19 14.93 19 12 19c-3.86 0-7-3.14-7-7 0-2.93 1.81-5.45 4.37-6.49zM12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4C12.92 3.04 12.46 3 12 3z"/>
+            </svg>
+          </div>
+
+          <!-- User Section - Desktop -->
+          <div class="d-none d-lg-flex  flex-column flex-lg-row align-items-start align-items-lg-center gap-2">
+            {% if user.is_authenticated %}
+              <a class="btn-outline-custom btn btn-sm text-lg-center" href="{% url 'dashboard:main' %}">داشبورد</a>
+              <a class="btn-outline-custom btn btn-sm text-lg-center" href="{% url 'dashboard:order-list' %}">سبد خرید</a>
+              
+              {% if user.is_superuser %}
+                {% if user.type_of_user == 'S' or user.type_of_user == 'A' %}
+                  <a class="btn-outline-custom btn btn-sm text-start text-lg-center" href="{% url 'admin-panel:main' %}">داشبورد ادمین</a>
+                {% endif %}
+              {% endif %}
+              
+              {% if user.is_staff and user.type_of_user == 'S' %}
+                <a class="btn-outline-custom btn btn-sm text-start text-lg-center" href="{% url 'sanatorium:main' %}">داشبورد مصحح</a>
+              {% endif %}
+            {% else %}
+              <a class="btn-outline-custom btn-sm text-sm text-lg-center" href="{% url 'user:login' %}">ورود</a>
+              <a class="btn-primary-gradient btn-sm text-sm text-lg-center text-decoration-none" href="{% url 'user:register' %}">ثبت نام</a>
+            {% endif %}
+          </div>
+
+ 
+        </div>
+      </div>
+    </div>
+  </nav>
 
   <!-- Hero Section -->
  
@@ -480,7 +479,9 @@ document.addEventListener('DOMContentLoaded', initTheme);
       <div class="row align-items-center  ">
         <div class="col-lg-6">
           <div class="section-badge" style="background:rgba(255,255,255,0.15);color:white;">
-            <i class="bi bi-stars"></i>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left:4px;">
+              <path d="M8 0l1.5 4.5L16 8l-4.5 1.5L8 16l-1.5-4.5L0 8l4.5-1.5L8 0z"/>
+            </svg>
             {{ site.tag }}
           </div>
           <h1 class="hero-title mb-4">
@@ -493,10 +494,14 @@ document.addEventListener('DOMContentLoaded', initTheme);
           <div class="d-flex gap-3 flex-wrap">
             <a href='{% url "quiz:list" %}' class="btn btn-light btn-lg fw-700 rounded-pill px-4"  
               style="font-family:inherit;font-weight:700;">
-              <i class="bi bi-play-fill me-2"></i> شروع رایگان
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left:8px;">
+                <path d="M4 2v12l8-6z"/>
+              </svg> شروع رایگان
           </a>
             <a href='{% url "quiz:list" %}' class="btn-glass btn btn-lg"  >
-              <i class="bi bi-collection-fill me-2"></i> مشاهده آزمون‌ها
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left:8px;">
+                <path d="M2 2v12h12V2H2zm1 1h10v10H3V3zm2 1v8h6V4H5zm1 1h4v1H6V5zm0 2h4v1H6V7zm0 2h4v1H6V9z"/>
+              </svg> مشاهده آزمون‌ها
             </a>
           </div>
        
@@ -546,7 +551,11 @@ document.addEventListener('DOMContentLoaded', initTheme);
 
             <div class="hero-card-float position-absolute" style="bottom:60px;right:40px;width:200px;animation-delay:4s;">
               <div class="d-flex align-items-center gap-2 mb-2">
-                <div style="background:rgba(16,185,129,0.3);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;">✓</div>
+                <div style="background:rgba(16,185,129,0.3);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="#10b981">
+                    <path d="M13.5 4.5l-7 7-3.5-3.5 1.5-1.5 2 2 5.5-5.5 1.5 1.5z"/>
+                  </svg>
+                </div>
                 <div>
                   <div style="font-size:0.7rem;opacity:0.7;">تصحیح شد</div>
                   <div style="font-weight:700;">آزمون ریاضی ۱</div>
@@ -578,7 +587,9 @@ document.addEventListener('DOMContentLoaded', initTheme);
     <div class="container">
       <div class="text-center mb-5">
         <div class="section-badge mx-auto" style="width:fit-content;">
-          <i class="bi bi-gem"></i> ویژگی‌های منحصربه‌فرد
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left:4px;">
+            <path d="M8 0l1.5 4.5L16 8l-4.5 1.5L8 16l-1.5-4.5L0 8l4.5-1.5L8 0z"/>
+          </svg> ویژگی‌های منحصربه‌فرد
         </div>
         <h2 class="section-title">چرا {{site.name}}؟</h2>
         <p class="text-secondary mt-3 mx-auto" style="max-width:550px;">
@@ -588,42 +599,66 @@ document.addEventListener('DOMContentLoaded', initTheme);
       <div class="row g-4">
         <div class="col-lg-4 col-md-6">
           <div class="card-custom h-100">
-            <div class="feature-icon fi-blue"><i class="bi bi-cpu-fill"></i></div>
+            <div class="feature-icon fi-blue">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M2 2v12h12V2H2zm1 1h10v10H3V3zm2 1v8h6V4H5zm1 1h4v1H6V5zm0 2h4v1H6V7zm0 2h4v1H6V9z"/>
+              </svg>
+            </div>
             <h5 class="fw-700 mb-2">تصحیح هوشمند با AI</h5>
             <p class="text-secondary mb-0" style="font-size:0.9rem;">تصحیح خودکار پاسخ‌های تشریحی و چندگزینه‌ای با دقت بالا توسط هوش مصنوعی.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
           <div class="card-custom h-100">
-            <div class="feature-icon fi-purple"><i class="bi bi-camera-fill"></i></div>
+            <div class="feature-icon fi-purple">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 3a5 5 0 00-5 5 5 5 0 005 5 5 5 0 005-5 5 5 0 00-5-5zm0 1a4 4 0 014 4 4 4 0 01-4 4 4 4 0 01-4-4 4 4 0 014-4zm0 2a2 2 0 00-2 2 2 2 0 002 2 2 2 0 002-2 2 2 0 00-2-2z"/>
+              </svg>
+            </div>
             <h5 class="fw-700 mb-2">آپلود عکس پاسخ</h5>
             <p class="text-secondary mb-0" style="font-size:0.9rem;">دانش‌آموزان می‌توانند پاسخ خود را عکاسی کنند و سیستم آن را به PDF تبدیل می‌کند.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
           <div class="card-custom h-100">
-            <div class="feature-icon fi-green"><i class="bi bi-bar-chart-fill"></i></div>
+            <div class="feature-icon fi-green">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M1 1v14h14V1H1zm1 1h12v12H2V2zm2 2v8h8V4H4zm1 1h6v6H5V5zm1 1v4h4V6H6z"/>
+              </svg>
+            </div>
             <h5 class="fw-700 mb-2">کارنامه جامع</h5>
             <p class="text-secondary mb-0" style="font-size:0.9rem;">تحلیل عملکرد در سه سطح: کارنامه اولیه، ثانویه و ثالث با نمودارهای تعاملی.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
           <div class="card-custom h-100">
-            <div class="feature-icon fi-warm"><i class="bi bi-lightning-fill"></i></div>
+            <div class="feature-icon fi-warm">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 1L1 8l7 7 7-7-7-7zM2 8l6-6 6 6-6 6-6-6z"/>
+              </svg>
+            </div>
             <h5 class="fw-700 mb-2">بانک سوال هوشمند</h5>
             <p class="text-secondary mb-0" style="font-size:0.9rem;">بیش از ۱۰,۰۰۰ سوال طبقه‌بندی شده با فیلترهای پیشرفته و زمان پیشنهادی.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
           <div class="card-custom h-100">
-            <div class="feature-icon fi-red"><i class="bi bi-stopwatch-fill"></i></div>
+            <div class="feature-icon fi-red">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 1a7 7 0 00-7 7 7 7 0 007 7 7 7 0 007-7 7 7 0 00-7-7zm0 1a6 6 0 016 6 6 6 0 01-6 6 6 6 0 01-6-6 6 6 0 016-6zM7 3v5h2V3H7zm0 6v2h2V9H7z"/>
+              </svg>
+            </div>
             <h5 class="fw-700 mb-2">آزمون با تایمر</h5>
             <p class="text-secondary mb-0" style="font-size:0.9rem;">کنترل دقیق زمان آزمون با هشدارهای صوتی و بصری جهت مدیریت بهتر وقت.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
           <div class="card-custom h-100">
-            <div class="feature-icon fi-blue"><i class="bi bi-shield-check-fill"></i></div>
+            <div class="feature-icon fi-blue">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 1a7 7 0 00-7 7 7 7 0 007 7 7 7 0 007-7 7 7 0 00-7-7zm0 1a6 6 0 016 6 6 6 0 01-6 6 6 6 0 01-6-6 6 6 0 016-6zm0 2v2h2V4H8zm0 4v2h2V8H8z"/>
+              </svg>
+            </div>
             <h5 class="fw-700 mb-2">امنیت و تقلب‌ناپذیر</h5>
             <p class="text-secondary mb-0" style="font-size:0.9rem;">سیستم ضد تقلب پیشرفته با نظارت تصویری و قفل مرورگر برای آزمون‌های حساس.</p>
           </div>
@@ -638,7 +673,9 @@ document.addEventListener('DOMContentLoaded', initTheme);
       <div class="d-flex justify-content-between align-items-end mb-5">
         <div>
           <div class="section-badge" style="width:fit-content;">
-            <i class="bi bi-calendar-check"></i> آزمون‌های پیش‌رو
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left:4px;">
+              <path d="M2 2v12h12V2H2zm1 1h10v10H3V3zm2 1v8h6V4H5zm1 1h4v1H6V5zm0 2h4v1H6V7zm0 2h4v1H6V9z"/>
+            </svg> آزمون‌های پیش‌رو
           </div>
           <h2 class="section-title mt-2">آخرین آزمون‌ها</h2>
         </div>
@@ -658,12 +695,21 @@ document.addEventListener('DOMContentLoaded', initTheme);
             <h5 class="fw-700 mb-2">{{ item.name }} </h5>
             <p class="text-secondary" style="font-size:0.85rem;">{{ item.section }}</p>
             <div class="d-flex gap-3 mb-4" style="font-size:0.8rem;color:var(--text-muted);">
-              <span><i class="bi bi-clock me-1"></i>{{ item.time_minutes }} دقیقه</span>
-              <span><i class="bi bi-question-circle me-1"></i>{{ item.questions.count }} سوال</span>
+              <span>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" style="margin-left:4px;">
+                  <path d="M8 1a7 7 0 00-7 7 7 7 0 007 7 7 7 0 007-7 7 7 0 00-7-7zm0 1a6 6 0 016 6 6 6 0 01-6 6 6 6 0 01-6-6 6 6 0 016-6zM7 3v5h2V3H7z"/>
+                </svg>{{ item.time_minutes }} دقیقه</span>
+              <span>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" style="margin-left:4px;">
+                  <path d="M8 1a7 7 0 00-7 7 7 7 0 007 7 7 7 0 007-7 7 7 0 00-7-7zm0 1a6 6 0 016 6 6 6 0 01-6 6 6 6 0 01-6-6 6 6 0 016-6zm0 2v2h2V4H8zm0 4v2h2V8H8z"/>
+                </svg>{{ item.questions.count }} سوال</span>
  
             </div>
             <div class="d-flex justify-content-between align-items-center">
-              <div style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-calendar3 me-1"></i>{{ item.start_at|to_jalali }} </div>
+              <div style="font-size:0.85rem;color:var(--text-muted);">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" style="margin-left:4px;">
+                  <path d="M2 2v12h12V2H2zm1 1h10v10H3V3zm2 1v8h6V4H5zm1 1h4v1H6V5zm0 2h4v1H6V7zm0 2h4v1H6V9z"/>
+                </svg>{{ item.start_at|to_jalali }} </div>
               <a href='{{item.get_absolute_url}}' class="btn-outline-custom badge-{% cycle 'info' 'success' 'warning' %} btn btn-sm">مشاهده</a>
             </div>
           </div>
@@ -678,7 +724,11 @@ document.addEventListener('DOMContentLoaded', initTheme);
   <section style="padding:80px 0;background:var(--bg-primary);">
     <div class="container">
       <div class="text-center mb-5">
-        <div class="section-badge mx-auto" style="width:fit-content;"><i class="bi bi-map"></i> نحوه کار</div>
+        <div class="section-badge mx-auto" style="width:fit-content;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-left:4px;">
+            <path d="M1 1v14h14V1H1zm1 1h12v12H2V2zm2 2v8h8V4H4zm1 1h6v6H5V5zm1 1v4h4V6H6z"/>
+          </svg> نحوه کار
+        </div>
         <h2 class="section-title mt-2">سه گام تا یادگیری</h2>
       </div>
       <div class="row g-4 align-items-center">
@@ -716,8 +766,16 @@ document.addEventListener('DOMContentLoaded', initTheme);
             </div>
             <div class="p-4" style="background:var(--bg-card);">
               <div class="row g-3 mb-3">
-                <div class="col-6"><div class="card-stat stat-blue"><div class="d-flex justify-content-between"><div><div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div><div class="mt-2" style="font-size:1.5rem;font-weight:800;">۱۲</div><div style="font-size:0.75rem;color:var(--text-muted);">آزمون شرکت کرده</div></div></div></div></div>
-                <div class="col-6"><div class="card-stat stat-green"><div class="d-flex justify-content-between"><div><div class="stat-icon"><i class="bi bi-star-fill"></i></div><div class="mt-2" style="font-size:1.5rem;font-weight:800;">۱۷.۸</div><div style="font-size:0.75rem;color:var(--text-muted);">میانگین نمرات</div></div></div></div></div>
+                <div class="col-6"><div class="card-stat stat-blue"><div class="d-flex justify-content-between"><div><div class="stat-icon">
+                  <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 1a7 7 0 00-7 7 7 7 0 007 7 7 7 0 007-7 7 7 0 00-7-7zm0 1a6 6 0 016 6 6 6 0 01-6 6 6 6 0 01-6-6 6 6 0 016-6zm-1 2v5h2V4H7z"/>
+                  </svg>
+                </div><div class="mt-2" style="font-size:1.5rem;font-weight:800;">۱۲</div><div style="font-size:0.75rem;color:var(--text-muted);">آزمون شرکت کرده</div></div></div></div></div>
+                <div class="col-6"><div class="card-stat stat-green"><div class="d-flex justify-content-between"><div><div class="stat-icon">
+                  <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 1l1.5 4.5L16 8l-4.5 1.5L8 16l-1.5-4.5L0 8l4.5-1.5L8 0z"/>
+                  </svg>
+                </div><div class="mt-2" style="font-size:1.5rem;font-weight:800;">۱۷.۸</div><div style="font-size:0.75rem;color:var(--text-muted);">میانگین نمرات</div></div></div></div></div>
               </div>
               <div class="mb-3">
                 <div class="d-flex justify-content-between mb-2" style="font-size:0.85rem;">
@@ -744,11 +802,15 @@ document.addEventListener('DOMContentLoaded', initTheme);
     <div class="container text-center" style="position:relative;z-index:1;">
       <h2 style="font-size:2.5rem;font-weight:900;color:white;margin-bottom:16px;">آماده‌اید شروع کنید؟</h2>
       <a class="btn btn-light btn-lg rounded-pill px-5 fw-700" style="font-family:inherit;"  href='{% url "quiz:list" %}'>
-        شروع  <i class="bi bi-arrow-left ms-2"></i>
+        شروع  
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right:8px;">
+          <path d="M10 8l-4 4V4l4 4z"/>
+        </svg>
       </a>
     </div>
   </section>
 
+  
   <!-- Footer -->
   <footer class="main-footer">
     <div class="container">
@@ -756,59 +818,64 @@ document.addEventListener('DOMContentLoaded', initTheme);
         <div class="col-lg-4">
           <div class="d-flex align-items-center gap-2 mb-3">
             <div class="navbar-brand-logo">
-  <picture>
- 
-    <img src="{% url 'site:favicon' %}" 
-         alt="سورنا"
-         width="50"
-         height="50"
-         loading="eager"
-         decoding="async"
-         class="site-logo"
-         class="rounded-lg"
-         >
-</picture>
-  </div>
+              <picture>
+                <img src="{% url 'site:favicon' %}" 
+                     alt="سرنا"
+                     width="50"
+                     height="50"
+                     loading="eager"
+                     decoding="async"
+                     class="site-logo rounded-lg">
+              </picture>
+            </div>
             <span class="footer-brand">{{sitem.name}}</span>
           </div>
           <p style="color:#64748b;font-size:0.9rem;line-height:1.8;">{{ site.short_description }}</p>
           <div class="d-flex gap-2 mt-3">
-
-            {% if  site.instagram_link  %}<a class="footer-social" href="{{ site.instagram_link }}"><i class="bi bi-instagram"></i></a>{% endif %}
-            {% if  site.telegram_link  %}<a class="footer-social" href="{{ site.telegram_link }}"><i class="bi bi-telegram"></i></a>{% endif %}
-            {% if  site.eitaa_link  %}<a class="footer-social" href="{{ site.eitaa_link }}"><i class="bi bi-telegram"></i></a>{% endif %}
- 
+            {% if site.instagram_link %}
+            <a class="footer-social" href="{{ site.instagram_link }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+            {% endif %}
+            {% if site.telegram_link %}
+            <a class="footer-social" href="{{ site.telegram_link }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.69 1.02-.59.05-1.04-.39-1.62-.76-.9-.59-1.41-.96-2.28-1.54-1-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.79 1.14-5.06 3.35-.48.33-.92.49-1.31.48-.43-.01-1.26-.24-1.88-.44-.76-.24-1.36-.37-1.31-.78.03-.2.25-.41.69-.62 2.72-1.18 4.53-1.97 5.43-2.36 2.68-1.12 3.24-1.31 3.6-1.31.08 0 .26.02.38.12.1.08.13.19.14.27-.01.06.01.28 0 0z"/>
+              </svg>
+            </a>
+            {% endif %}
+            {% if site.eitaa_link %}
+            <a class="footer-social" href="{{ site.eitaa_link }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.69 1.02-.59.05-1.04-.39-1.62-.76-.9-.59-1.41-.96-2.28-1.54-1-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.06-.2-.07-.06-.17-.04-.24-.02-.1.02-1.79 1.14-5.06 3.35-.48.33-.92.49-1.31.48-.43-.01-1.26-.24-1.88-.44-.76-.24-1.36-.37-1.31-.78.03-.2.25-.41.69-.62 2.72-1.18 4.53-1.97 5.43-2.36 2.68-1.12 3.24-1.31 3.6-1.31.08 0 .26.02.38.12.1.08.13.19.14.27-.01.06.01.28 0 0z"/>
+              </svg>
+            </a>
+            {% endif %}
           </div>
         </div>
         <div class="col-lg-2 col-6">
           <div style="color:white;font-weight:700;margin-bottom:16px;">دسترسی سریع</div>
-          <a class="footer-link" href="{% url 'quiz:list' %}" >لیست آزمون‌ها</a>
-          <a class="footer-link" href="{% url 'qbank:list' %}" >بانک سوال</a>
-          <a class="footer-link" href="{% url 'blog:list' %}" >مقالات</a>
-          <a class="footer-link" href="{% url 'site:about' %}" >درباره ما</a>
+          <a class="footer-link" href="{% url 'quiz:list' %}">لیست آزمون‌ها</a>
+          <a class="footer-link" href="{% url 'qbank:list' %}">بانک سوال</a>
+          <a class="footer-link" href="{% url 'blog:list' %}">مقالات</a>
+          <a class="footer-link" href="{% url 'site:about' %}">درباره ما</a>
         </div>
         <div class="col-lg-2 col-6">
           <div style="color:white;font-weight:700;margin-bottom:16px;">حساب کاربری</div>
-          <a class="footer-link" href="{% url 'user:login' %}" >ورود</a>
-          <a class="footer-link" href="{% url 'user:register' %}" >ثبت نام</a>
-          <a class="footer-link" href="{% url 'dashboard:main' %}" >داشبورد</a>
-          <a class="footer-link" href="{% url 'site:contact' %}" >پشتیبانی</a>
+          <a class="footer-link" href="{% url 'user:login' %}">ورود</a>
+          <a class="footer-link" href="{% url 'user:register' %}">ثبت نام</a>
+          <a class="footer-link" href="{% url 'dashboard:main' %}">داشبورد</a>
+          <a class="footer-link" href="{% url 'site:contact' %}">پشتیبانی</a>
         </div>
-        {% comment %} <div class="col-lg-4"> {% endcomment %}
-          {% comment %} <div style="color:white;font-weight:700;margin-bottom:16px;">خبرنامه</div>
-          <p style="color:#64748b;font-size:0.85rem;margin-bottom:12px;">برای دریافت آخرین آزمون‌ها و مقالات در خبرنامه ما عضو شوید.</p>
-          <div class="d-flex gap-2">
-            <input type="email" class="form-control-custom" style="flex:1;" placeholder="ایمیل شما">
-            <button class="btn-primary-gradient btn" style="white-space:nowrap;">عضویت</button>
-          </div>
-        </div> {% endcomment %}
       </div>
       <hr class="footer-divider">
       <div class="d-flex justify-content-between align-items-center" style="font-size:0.8rem;color:#475569;">
         <span>{{site.copyright}}</span>
- 
       </div>
     </div>
   </footer>
+
 </div>
 {% endblock content %}

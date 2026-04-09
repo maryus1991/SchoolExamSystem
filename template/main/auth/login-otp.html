@@ -14,7 +14,7 @@
       <div style="position:relative;z-index:1;">
         <div class="mb-4">
           <div class="navbar-brand-logo mb-3">    <img src="{% url 'site:favicon' %}" 
-         alt="سورنا"
+         alt="سرنا"
          width="40"
          height="40"
          loading="eager"
@@ -27,15 +27,27 @@
         <!-- Features list -->
         <div class="d-flex flex-column gap-3 mt-5">
           <div class="d-flex align-items-center gap-3">
-            <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-check-lg" style="color:white;"></i></div>
+            <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" style="color:white;" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+              </svg>
+            </div>
             <span style="color:rgba(255,255,255,0.85);font-size:0.9rem;">بیش از {{site.number_questions}} سوال در بانک سوال</span>
           </div>
           <div class="d-flex align-items-center gap-3">
-            <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-check-lg" style="color:white;"></i></div>
+            <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" style="color:white;" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+              </svg>
+            </div>
             <span style="color:rgba(255,255,255,0.85);font-size:0.9rem;">تصحیح هوشمند با هوش مصنوعی</span>
           </div>
           <div class="d-flex align-items-center gap-3">
-            <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-check-lg" style="color:white;"></i></div>
+            <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" style="color:white;" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+              </svg>
+            </div>
             <span style="color:rgba(255,255,255,0.85);font-size:0.9rem;">کارنامه جامع و تحلیل عملکرد</span>
           </div>
         </div>
@@ -69,7 +81,9 @@
           {% csrf_token %}
           <div class="mb-4">
              <div class="input-group-custom">
-              <i class="bi bi-person input-icon"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person input-icon" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+              </svg>
               {{ form.PhoneNumber }}
             </div>
           </div>
@@ -79,7 +93,10 @@
             <a href="{% url 'user:login-password' %}{% if next_url %}?next={{next_url}}{% endif %}" style="font-size:0.875rem;color:var(--primary-600);text-decoration:none;font-weight:600;" >ورود با رمز عبور</a>
           </div>
           <button type="submit" class="btn-primary-gradient btn w-100 btn-lg mb-3"    >
-            ارسال کد <i class="bi bi-arrow-left ms-2"></i>
+            ارسال کد 
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left ms-2" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
           </button>
   
           <div class="text-center" >

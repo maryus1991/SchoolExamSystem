@@ -96,7 +96,7 @@ class Site(models.Model):
     tag = models.CharField(max_length=255, verbose_name='تگ')
     work_hour = models.CharField(max_length=255, verbose_name='ساعات کاری')
     short_description = models.CharField(max_length=255, verbose_name='توضیحات کوتاه')
-    copyright = models.CharField(max_length=255, verbose_name='متن کپی رایت', default='© 1405 سورنا . تمام حقوق محفوظ است.')
+    copyright = models.CharField(max_length=255, verbose_name='متن کپی رایت', default='© 1405 سرنا . تمام حقوق محفوظ است.')
 
     # links 
     instagram_link = models.CharField(max_length=500, verbose_name='لینک حساب اینستاگرام', null=True, blank=True)

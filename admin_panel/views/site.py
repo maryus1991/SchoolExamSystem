@@ -74,7 +74,7 @@ class Main(TemplateView):
 
         context['orders_list'] = orders.prefetch_related('user').all()[:4]
         context['order_count'] = orders.count()
-        context['all_order_count'] = orders.count()
+        context['all_order_count'] = orders.count() if orders.count() > 0 else 0
         context['active_order_count'] = orders.filter(status=Order.OrderStatus.active).count()
         context['active_order_percent'] = round( 
                 (context['active_order_count'] / context['all_order_count']) * 100
