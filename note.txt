@@ -23,7 +23,7 @@ essenial todo :
     fix the sanaturiom selection in quiz  # اصلاح جاهایی که بی حد و مرز ابجکت میاره در فرم ها سلکت ها 
     add font
     fix the currection stats of score
-
+    add caching
  
      
 

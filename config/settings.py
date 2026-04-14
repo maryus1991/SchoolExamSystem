@@ -30,27 +30,28 @@ if path.isfile(local_env_file):
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', default=False)
+DEBUG = False if os.getenv('DEBUG', default="False") == 'False' else True
+
 
 ALLOWED_HOSTS  = os.getenv("ALLOWED_HOSTS", default="sornac.ir,sorna-academy.ir,localhost").split(",")
 CORS_ALLOW_ALL_ORIGINS = True
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": os.getenv("POSTGRES_ENGIN", default="django.db.backends.postgresql"),
-#         "NAME": os.getenv("POSTGRES_DB"),
-#         "USER": os.getenv("POSTGRES_USER"),
-#         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-#         "HOST": os.getenv("POSTGRES_HOST", default="postgres"),
-#         "PORT": os.getenv("POSTGRES_PORT", default="5432"),
-#     }
-# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": os.getenv("POSTGRES_ENGIN", default="django.db.backends.postgresql"),
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST", default="postgres"),
+        "PORT": os.getenv("POSTGRES_PORT", default="5432"),
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = "c328142"
@@ -68,34 +69,24 @@ AWS_S3_FILE_OVERWRITE = False
 
 
 
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
 
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# # SECURE_SSL_REDIRECT = True
-# SECURE_BROWSER_XSS_FILTER = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# X_FRAME_OPTIONS = "DENY"
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_SSL_REDIRECT = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
 
 
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_HTTPONLY = True
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
-# SECURE_BROWSER_XSS_FILTER = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# X_FRAME_OPTIONS = "DENY"
-
-# CSRF_TRUSTED_ORIGINS = [
-#     "https://sornac.ir",
-#     "https://www.sornac.ir",
-#     "https://sorna-academy.ir",
-#     "https://www.sorna-academy.ir",
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://sornac.ir",
+    "https://www.sornac.ir",
+    "https://sorna-academy.ir",
+    "https://www.sorna-academy.ir",
+]
 
 # Application definition
 
@@ -112,7 +103,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'jalali_date',
     'storages',
-    # 'corsheaders',
+    'corsheaders',
 
     # apps
     'user',
