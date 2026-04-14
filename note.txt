@@ -3,8 +3,8 @@
  
 
 phase 1 todo list
-    fix the icons
-
+ 
+ 
 phase 2 todo list
  
   
@@ -22,6 +22,7 @@ essenial todo :
     no need to add to order when started exam
     fix the sanaturiom selection in quiz  # اصلاح جاهایی که بی حد و مرز ابجکت میاره در فرم ها سلکت ها 
     add font
+    fix the currection stats of score
 
  
      

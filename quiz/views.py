@@ -28,9 +28,9 @@ class QuizListDetailView(ListView):
     paginate_by = 50
 
     def get_queryset(self):
-        queryset = Quiz.objects.filter(is_active=True).prefetch_related('grade', 'major', 'lession')
+        queryset = Quiz.objects.filter(is_active=True).prefetch_related('grade', 'major', 'lession', 'questions')
 
-        queryset = queryset.annotate(views_count=Count('views'), question_count=Count('questions'))
+        queryset = queryset.annotate(views_count=Count('views'))
 
         pk = self.kwargs.get('pk')
         grade_category_id = self.kwargs.get('grade_category_id')
