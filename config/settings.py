@@ -27,33 +27,34 @@ if path.isfile(local_env_file):
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-v)jzbylc57v$uk247bwifv2nf@jvg%7n@3hpks^-g_u1%ws-8*' #os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False if os.getenv('DEBUG', default="False") == 'False' else True
+#DEBUG = False if os.getenv('DEBUG', default="False") == 'False' else True
+DEBUG=True
 
-
-ALLOWED_HOSTS  = os.getenv("ALLOWED_HOSTS", default="sornac.ir,sorna-academy.ir,localhost").split(",")
+#ALLOWED_HOSTS  = os.getenv("ALLOWED_HOSTS", default="sornac.ir,sorna-academy.ir,localhost").split(",")
+ALLOWED_HOSTS = ["sorna.runflare.run", "maryus", "localhost", "127.0.0.1"]
 CORS_ALLOW_ALL_ORIGINS = True
 
-DATABASES = {
-    "default": {
-        "ENGINE": os.getenv("POSTGRES_ENGIN", default="django.db.backends.postgresql"),
-        "NAME": os.getenv("POSTGRES_DB"),
-        "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": os.getenv("POSTGRES_HOST", default="postgres"),
-        "PORT": os.getenv("POSTGRES_PORT", default="5432"),
-    }
-}
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#     "default": {
+#         "ENGINE": os.getenv("POSTGRES_ENGIN", default="django.db.backends.postgresql"),
+#         "NAME": os.getenv("POSTGRES_DB"),
+#         "USER": os.getenv("POSTGRES_USER"),
+#         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+#         "HOST": os.getenv("POSTGRES_HOST", default="postgres"),
+#         "PORT": os.getenv("POSTGRES_PORT", default="5432"),
 #     }
 # }
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+AWS_ACCESS_KEY_ID = "Vn0HMEtUFqQRkUPr" #os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = "Cxl96wsxfDMggmxqCjiLKzpgdWzWCW6z" #os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = "c328142"
 
 AWS_S3_ENDPOINT_URL = "https://media.sornac.ir"
@@ -80,13 +81,14 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 
-
 CSRF_TRUSTED_ORIGINS = [
-    "https://sornac.ir",
-    "https://www.sornac.ir",
-    "https://sorna-academy.ir",
-    "https://www.sorna-academy.ir",
+#    "https://sornac.ir",
+#    "https://www.sornac.ir",
+#    "https://sorna-academy.ir",
+#    "https://www.sorna-academy.ir",
+"https://sorna.runflare.run"
 ]
+
 
 # Application definition
 

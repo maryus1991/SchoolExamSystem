@@ -12,12 +12,12 @@ class FavIcon(View):
     """for return the favicon.ico"""
 
     def get(self, *args, **kwargs):
-        try:
-            logo = Site.objects.first().logo
-            return HttpResponsePermanentRedirect(logo.url)
-        except:
-            with open(BASE_DIR / 'sorna.jpg', 'rb') as f :
-                return HttpResponse(f.read(), content_type="image/png")
+        #try:
+        #    logo = Site.objects.first().logo
+        #    return HttpResponsePermanentRedirect(logo.url)
+        #except:
+        with open(BASE_DIR / 'sorna.jpg', 'rb') as f :
+            return HttpResponse(f.read(), content_type="image/png")
 
 class MainPage(TemplateView):
     """

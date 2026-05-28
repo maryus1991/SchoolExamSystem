@@ -21,17 +21,19 @@ from django.conf.urls import static
 from django.utils.crypto import get_random_string
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(f'{get_random_string(1000)}/admin/', admin.site.urls),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
+    #path(f'{get_random_string(1000)}/admin-panel/', include('admin_panel.urls')),
+    #path(f'{get_random_string(100)}/sanatorium/', include('sanatorium.urls')),
+	path(f'admin-panel/', include('admin_panel.urls')),
+	path(f'sanatorium/', include('sanatorium.urls')),
 
     # apps 
     path('blog/', include('blog.urls')), 
     path('order/', include('order.urls')),
-    path('admin-panel/', include('admin_panel.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('question-bank/', include('qbank.urls')),
     path('user/', include('user.urls')),
-    path('sanatorium/', include('sanatorium.urls')),
     path('quiz/', include('quiz.urls')),
     path('report/', include('report.urls')),
     path('', include('sitesetting.urls')),

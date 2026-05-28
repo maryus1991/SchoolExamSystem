@@ -24,7 +24,7 @@ essenial todo :
     add font
     fix the currection stats of score
     add caching
- 
+    add staff activation for sanaturiom
      
 
 
